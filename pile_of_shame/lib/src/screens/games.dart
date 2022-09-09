@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pile_of_shame/src/widgets/game_list_item.dart';
 
+import '../widgets/game_list_summary.dart';
+
 enum AgeRestriction {
   unknown,
   usk0,
@@ -63,7 +65,7 @@ class _GameScreenState extends State<GameScreen> {
       itemCount: numItems,
       itemBuilder: (context, i) {
         if (i == numItems - 1) {
-          return Center(child: Text('${games.length} Einträge'));
+          return GameListSummary(games: games);
         }
         if (i.isOdd) {
           return const Divider();
