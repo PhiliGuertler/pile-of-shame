@@ -1,4 +1,49 @@
 import 'package:flutter/material.dart';
+import 'package:pile_of_shame/src/widgets/game_list_item.dart';
+
+enum AgeRestriction {
+  unknown,
+  usk0,
+  usk6,
+  usk12,
+  usk16,
+  usk18,
+}
+
+class Game {
+  String platform;
+  String title;
+  double? price;
+  AgeRestriction? ageRestriction;
+
+  Game(
+      {required this.platform,
+      required this.title,
+      this.price,
+      this.ageRestriction});
+}
+
+List<Game> games = [
+  Game(
+      platform: 'Nintendo Switch',
+      title: 'Xenoblade Chronicles Definitive Edition',
+      price: 30,
+      ageRestriction: AgeRestriction.usk12),
+  Game(
+      platform: 'Nintendo Switch',
+      title: 'Xenoblade Chronicles 2',
+      price: 46.99,
+      ageRestriction: AgeRestriction.usk12),
+  Game(
+      platform: 'Nintendo Switch',
+      title: 'Xenoblade Chronicles 3',
+      price: 56.86,
+      ageRestriction: AgeRestriction.usk12),
+  Game(
+      platform: 'Steam',
+      title: 'Bayonetta',
+      ageRestriction: AgeRestriction.usk18),
+];
 
 class GameScreen extends StatefulWidget {
   const GameScreen({super.key});
@@ -10,13 +55,19 @@ class GameScreen extends StatefulWidget {
 class _GameScreenState extends State<GameScreen> {
   @override
   Widget build(BuildContext context) {
+    int numItems = games.length * 2 - 1;
+    numItems = numItems < 0 ? 0 : numItems;
+
     return ListView.builder(
       padding: const EdgeInsets.all(16.0),
+      itemCount: numItems,
       itemBuilder: (context, i) {
         if (i.isOdd) {
           return const Divider();
         }
-        return const ListTile(title: Text('TODO: Display Game entries'));
+        return GameListItem(
+          game: games[(i ~/ 2)],
+        );
       },
     );
   }
