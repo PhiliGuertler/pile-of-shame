@@ -56,12 +56,15 @@ class _GameScreenState extends State<GameScreen> {
   @override
   Widget build(BuildContext context) {
     int numItems = games.length * 2 - 1;
-    numItems = numItems < 0 ? 0 : numItems;
+    numItems = numItems < 0 ? 0 : numItems + 2;
 
     return ListView.builder(
       padding: const EdgeInsets.all(16.0),
       itemCount: numItems,
       itemBuilder: (context, i) {
+        if (i == numItems - 1) {
+          return Center(child: Text('${games.length} Einträge'));
+        }
         if (i.isOdd) {
           return const Divider();
         }
