@@ -32,12 +32,14 @@ class AgeRestrictionWidget extends StatelessWidget {
                         child: Text(
                           game.getAgeRestrictionText(),
                           style: TextStyle(
-                              color: game
-                                          .getAgeRestictionColor()
-                                          .computeLuminance() >
-                                      0.5
-                                  ? Colors.black
-                                  : Colors.white),
+                            color: game
+                                        .getAgeRestictionColor()
+                                        .computeLuminance() >
+                                    0.5
+                                ? Colors.black
+                                : Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ),
