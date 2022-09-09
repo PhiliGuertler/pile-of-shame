@@ -14,22 +14,47 @@ class GameListItem extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          game.title,
-          style: headingStyle,
-        ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              game.platform,
-              style: defaultStyle,
-            ),
-            if (game.price != null)
-              Text(
-                '${game.price!.toStringAsFixed(2)} €',
-                style: defaultStyle,
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    game.title,
+                    style: headingStyle,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        game.platform,
+                        style: defaultStyle,
+                      ),
+                      if (game.price != null)
+                        Text(
+                          '${game.price!.toStringAsFixed(2)} €',
+                          style: defaultStyle,
+                        ),
+                    ],
+                  ),
+                ],
               ),
+            ),
+            if (game.ageRestriction != null)
+              Container(
+                  padding: EdgeInsets.all(8.0),
+                  child: CircleAvatar(
+                      backgroundColor: game.getAgeRestictionColor(),
+                      child: Text(game.getAgeRestrictionText(),
+                          style: TextStyle(
+                              color: game
+                                          .getAgeRestictionColor()
+                                          .computeLuminance() >
+                                      0.5
+                                  ? Colors.black
+                                  : Colors.white))))
           ],
         )
       ],
