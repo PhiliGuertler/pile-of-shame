@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:pile_of_shame/src/screens/games.dart';
+import '../screens/games.dart';
+import './age_restriction.dart';
 
 class GameListItem extends StatelessWidget {
   const GameListItem({super.key, required this.game});
@@ -8,8 +9,8 @@ class GameListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    TextStyle headingStyle = TextStyle(fontSize: 24);
-    TextStyle defaultStyle = TextStyle(fontSize: 16);
+    TextStyle headingStyle = const TextStyle(fontSize: 24);
+    TextStyle defaultStyle = const TextStyle(fontSize: 16);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -44,17 +45,9 @@ class GameListItem extends StatelessWidget {
             ),
             if (game.ageRestriction != null)
               Container(
-                  padding: EdgeInsets.all(8.0),
-                  child: CircleAvatar(
-                      backgroundColor: game.getAgeRestictionColor(),
-                      child: Text(game.getAgeRestrictionText(),
-                          style: TextStyle(
-                              color: game
-                                          .getAgeRestictionColor()
-                                          .computeLuminance() >
-                                      0.5
-                                  ? Colors.black
-                                  : Colors.white))))
+                padding: const EdgeInsets.all(8.0),
+                child: AgeRestrictionWidget(game: game),
+              )
           ],
         )
       ],
