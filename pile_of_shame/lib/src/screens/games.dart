@@ -12,6 +12,44 @@ enum AgeRestriction {
   usk18,
 }
 
+class AgeRestrictions {
+  static Color getAgeRestictionColor(AgeRestriction ageRestriction) {
+    switch (ageRestriction) {
+      case AgeRestriction.usk0:
+        return Colors.white;
+      case AgeRestriction.usk6:
+        return Colors.yellow;
+      case AgeRestriction.usk12:
+        return Colors.green;
+      case AgeRestriction.usk16:
+        return Colors.blue;
+      case AgeRestriction.usk18:
+        return Colors.red;
+      case AgeRestriction.unknown:
+      default:
+        return Colors.grey;
+    }
+  }
+
+  static String getAgeRestrictionText(AgeRestriction ageRestriction) {
+    switch (ageRestriction) {
+      case AgeRestriction.usk0:
+        return "0";
+      case AgeRestriction.usk6:
+        return "6";
+      case AgeRestriction.usk12:
+        return "12";
+      case AgeRestriction.usk16:
+        return "16";
+      case AgeRestriction.usk18:
+        return "18";
+      case AgeRestriction.unknown:
+      default:
+        return "???";
+    }
+  }
+}
+
 class Game {
   String platform;
   String title;
@@ -25,39 +63,13 @@ class Game {
       this.ageRestriction});
 
   Color getAgeRestictionColor() {
-    switch (this.ageRestriction) {
-      case AgeRestriction.usk0:
-        return Colors.white;
-      case AgeRestriction.usk6:
-        return Colors.yellow;
-      case AgeRestriction.usk12:
-        return Colors.green;
-      case AgeRestriction.usk16:
-        return Colors.blue;
-      case AgeRestriction.usk18:
-        return Colors.red;
-      case AgeRestriction.unknown:
-      default:
-        return Colors.transparent;
-    }
+    return AgeRestrictions.getAgeRestictionColor(
+        ageRestriction ?? AgeRestriction.unknown);
   }
 
   String getAgeRestrictionText() {
-    switch (this.ageRestriction) {
-      case AgeRestriction.usk0:
-        return "0";
-      case AgeRestriction.usk6:
-        return "6";
-      case AgeRestriction.usk12:
-        return "12";
-      case AgeRestriction.usk16:
-        return "16";
-      case AgeRestriction.usk18:
-        return "18";
-      case AgeRestriction.unknown:
-      default:
-        return "";
-    }
+    return AgeRestrictions.getAgeRestrictionText(
+        ageRestriction ?? AgeRestriction.unknown);
   }
 }
 
@@ -66,21 +78,30 @@ List<Game> games = [
       platform: 'Nintendo Switch',
       title: 'Xenoblade Chronicles Definitive Edition',
       price: 30,
-      ageRestriction: AgeRestriction.usk12),
+      ageRestriction: AgeRestriction.usk0),
   Game(
       platform: 'Nintendo Switch',
       title: 'Xenoblade Chronicles 2',
       price: 46.99,
-      ageRestriction: AgeRestriction.usk12),
+      ageRestriction: AgeRestriction.usk6),
   Game(
       platform: 'Nintendo Switch',
       title: 'Xenoblade Chronicles 3',
       price: 56.86,
       ageRestriction: AgeRestriction.usk12),
   Game(
+      platform: 'Nintendo Switch',
+      title: 'Xenoblade Chronicles 4',
+      price: 46.99,
+      ageRestriction: AgeRestriction.usk16),
+  Game(
       platform: 'Steam',
       title: 'Bayonetta',
       ageRestriction: AgeRestriction.usk18),
+  Game(
+    platform: 'Gog',
+    title: 'Irgendwas, kp',
+  ),
 ];
 
 class GameScreen extends StatefulWidget {

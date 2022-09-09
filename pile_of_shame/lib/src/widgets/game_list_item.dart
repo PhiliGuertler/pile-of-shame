@@ -43,11 +43,10 @@ class GameListItem extends StatelessWidget {
                 ],
               ),
             ),
-            if (game.ageRestriction != null)
-              Container(
-                padding: const EdgeInsets.all(8.0),
-                child: AgeRestrictionWidget(game: game),
-              )
+            Container(
+              padding: const EdgeInsets.all(8.0),
+              child: AgeRestrictionWidget(game: game),
+            )
           ],
         )
       ],
