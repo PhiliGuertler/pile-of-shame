@@ -7,7 +7,7 @@ class RawgGame {
   String name;
   int id;
   int metacriticScore;
-  Uri backgroundImage;
+  String backgroundImage;
   String released;
 
   RawgGame({
@@ -23,7 +23,7 @@ class RawgGame {
       name: json['name'],
       id: json['id'],
       metacriticScore: json['metacritic'],
-      backgroundImage: Uri.parse(json['background_image']),
+      backgroundImage: json['background_image'],
       released: json['released'],
     );
   }
@@ -33,7 +33,7 @@ class RawgApi {
   static final RawgApi _instance = RawgApi._internal();
   factory RawgApi() => _instance;
 
-  RawgApi._internal() {}
+  RawgApi._internal();
 
   Future<Iterable<RawgGame>> searchGameByName(String gameName) async {
     final response = await http.post(Uri.parse(
