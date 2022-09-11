@@ -50,20 +50,25 @@ class _GameScreenState extends State<GameScreen> {
     int numItems = games.length * 2 - 1;
     numItems = numItems < 0 ? 0 : numItems + 2;
 
-    return ListView.builder(
-      padding: const EdgeInsets.all(16.0),
-      itemCount: numItems,
-      itemBuilder: (context, i) {
-        if (i == numItems - 1) {
-          return GameListSummary(games: games);
-        }
-        if (i.isOdd) {
-          return const Divider();
-        }
-        return GameListItem(
-          game: games[(i ~/ 2)],
-        );
-      },
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Hauptseite'),
+      ),
+      body: ListView.builder(
+        padding: const EdgeInsets.all(16.0),
+        itemCount: numItems,
+        itemBuilder: (context, i) {
+          if (i == numItems - 1) {
+            return GameListSummary(games: games);
+          }
+          if (i.isOdd) {
+            return const Divider();
+          }
+          return GameListItem(
+            game: games[(i ~/ 2)],
+          );
+        },
+      ),
     );
   }
 }
