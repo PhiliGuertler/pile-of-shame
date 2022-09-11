@@ -48,37 +48,45 @@ class GameScreen extends StatefulWidget {
 class _GameScreenState extends State<GameScreen> {
   @override
   Widget build(BuildContext context) {
-    int numItems = games.length * 2 - 1;
-    numItems = numItems < 0 ? 0 : numItems + 2;
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Hauptseite'),
       ),
-      body: ListView.builder(
-        padding: const EdgeInsets.all(8.0),
-        itemCount: numItems,
-        itemBuilder: (context, i) {
-          if (i == numItems - 1) {
-            return GameListSummary(games: games);
-          }
-          if (i.isOdd) {
-            return const Divider();
-          }
-
-          var currentGame = games[(i ~/ 2)];
-          return InkWell(
-            onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => GameDetails(game: currentGame)));
-            },
-            child: GameListItem(
-              game: currentGame,
+      body: Column(
+        children: [
+          ListView(
+            shrinkWrap: true,
+            children: ListTile.divideTiles(
+              context: context,
+              tiles: games.map(
+                (game) => InkWell(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => GameDetails(game: game)));
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.all(8.0),
+                    child: GameListItem(
+                      game: game,
+                    ),
+                  ),
+                ),
+              ),
+            ).toList(),
+          ),
+          Container(
+            padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+            child: const Divider(
+              thickness: 3,
             ),
-          );
-        },
+          ),
+          Container(
+            padding: const EdgeInsets.all(8.0),
+            child: GameListSummary(games: games),
+          ),
+        ],
       ),
     );
   }
