@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pile_of_shame/src/widgets/game_list_item.dart';
 
 import '../models/game.dart';
 
@@ -9,16 +10,16 @@ class GameDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    num price = game.price != null ? game.price! : 0;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Details'),
       ),
-      body: Column(children: [
-        Text(game.title),
-        Text(game.platform),
-        Text('${price.toStringAsFixed(2)} €'),
-      ]),
+      body: Container(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(children: [
+          GameListItem(game: game),
+        ]),
+      ),
     );
   }
 }
