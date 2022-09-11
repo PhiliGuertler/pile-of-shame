@@ -36,8 +36,8 @@ class RawgApi {
   RawgApi._internal();
 
   Future<Iterable<RawgGame>> searchGameByName(String gameName) async {
-    final response = await http.post(Uri.parse(
-        'https://api.rawg.io/api/games?search=$gameName&key=$rawgApiKey'));
+    final response = await http.get(Uri.parse(
+        'https://api.rawg.io/api/games?key=$rawgApiKey&search=$gameName'));
 
     if (response.statusCode == 200) {
       // find the game we wanted
