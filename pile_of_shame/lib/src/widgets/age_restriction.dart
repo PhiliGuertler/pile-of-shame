@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../screens/games.dart';
+import '../models/game.dart';
 
 class AgeRestrictionWidget extends StatelessWidget {
   const AgeRestrictionWidget({super.key, required this.game});
@@ -18,7 +18,7 @@ class AgeRestrictionWidget extends StatelessWidget {
           color: game.getAgeRestictionColor().withOpacity(0.5),
           child: Center(
             child: RotationTransition(
-              turns: AlwaysStoppedAnimation(1 / 8),
+              turns: const AlwaysStoppedAnimation(1 / 8),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(8.0),
                 child: SizedBox(
@@ -27,7 +27,7 @@ class AgeRestrictionWidget extends StatelessWidget {
                   child: ColoredBox(
                     color: game.getAgeRestictionColor(),
                     child: RotationTransition(
-                      turns: AlwaysStoppedAnimation(-1 / 8),
+                      turns: const AlwaysStoppedAnimation(-1 / 8),
                       child: Center(
                         child: Text(
                           game.getAgeRestrictionText(),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../screens/games.dart';
+import '../models/game.dart';
 import './age_restriction.dart';
 
 class GameListItem extends StatelessWidget {

@@ -35,7 +35,7 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: GameScreen(),
+      body: const GameScreen(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           debugPrint("TODO: Implement addition");

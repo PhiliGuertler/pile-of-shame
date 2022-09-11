@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
-import '../screens/games.dart';
+import '../models/game.dart';
 
 class GameListSummary extends StatelessWidget {
   const GameListSummary({super.key, required this.games});
