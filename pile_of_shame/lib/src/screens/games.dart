@@ -4,6 +4,7 @@ import 'package:pile_of_shame/src/widgets/game_list_item.dart';
 import '../models/age_restrictions.dart';
 import '../models/game.dart';
 import '../widgets/game_list_summary.dart';
+import 'game_details.dart';
 
 List<Game> games = [
   Game(
@@ -64,8 +65,18 @@ class _GameScreenState extends State<GameScreen> {
           if (i.isOdd) {
             return const Divider();
           }
-          return GameListItem(
-            game: games[(i ~/ 2)],
+
+          var currentGame = games[(i ~/ 2)];
+          return InkWell(
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => GameDetails(game: currentGame)));
+            },
+            child: GameListItem(
+              game: currentGame,
+            ),
           );
         },
       ),

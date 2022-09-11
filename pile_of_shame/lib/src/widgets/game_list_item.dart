@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pile_of_shame/src/screens/game_details.dart';
 import '../models/game.dart';
 import './age_restriction.dart';
 
@@ -17,53 +16,47 @@ class GameListItem extends StatelessWidget {
       fontSize: 16,
     );
 
-    return InkWell(
-      onTap: () {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => GameDetails(game: game)));
-      },
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      game.title,
-                      style: headingStyle,
-                    ),
-                    Text(
-                      game.platform,
-                      style: defaultStyle,
-                    ),
-                  ],
-                ),
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  if (game.isFavourite)
-                    const Icon(Icons.favorite, color: Colors.red),
-                  if (!game.isFavourite) const Icon(Icons.favorite_outline),
-                  if (game.price != null)
-                    Text(
-                      '${game.price!.toStringAsFixed(2)} €',
-                      style: defaultStyle,
-                    ),
+                  Text(
+                    game.title,
+                    style: headingStyle,
+                  ),
+                  Text(
+                    game.platform,
+                    style: defaultStyle,
+                  ),
                 ],
               ),
-              Container(
-                padding: const EdgeInsets.all(8.0),
-                child: AgeRestrictionWidget(game: game),
-              )
-            ],
-          )
-        ],
-      ),
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                if (game.isFavourite)
+                  const Icon(Icons.favorite, color: Colors.red),
+                if (!game.isFavourite) const Icon(Icons.favorite_outline),
+                if (game.price != null)
+                  Text(
+                    '${game.price!.toStringAsFixed(2)} €',
+                    style: defaultStyle,
+                  ),
+              ],
+            ),
+            Container(
+              padding: const EdgeInsets.only(left: 8.0, top: 8.0, bottom: 8.0),
+              child: AgeRestrictionWidget(game: game),
+            )
+          ],
+        )
+      ],
     );
   }
 }
