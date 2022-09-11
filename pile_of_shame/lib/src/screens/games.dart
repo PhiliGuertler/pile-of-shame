@@ -56,7 +56,7 @@ class _GameScreenState extends State<GameScreen> {
         title: const Text('Hauptseite'),
       ),
       body: ListView.builder(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(8.0),
         itemCount: numItems,
         itemBuilder: (context, i) {
           if (i == numItems - 1) {
