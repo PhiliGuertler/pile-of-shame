@@ -1,9 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:pile_of_shame/src/network/rawg/rawg_api.dart';
 import 'package:pile_of_shame/src/widgets/game_list_item.dart';
 import 'package:transparent_image/transparent_image.dart';
 
+import '../models/age_restrictions.dart';
 import '../models/game.dart';
+
+class Pair<T1, T2> {
+  final T1 a;
+  final T2 b;
+
+  Pair(this.a, this.b);
+}
 
 class GameDetails extends StatefulWidget {
   const GameDetails({super.key, required this.game});
@@ -33,7 +42,7 @@ class _GameDetailsState extends State<GameDetails> {
       body: Column(children: [
         FutureBuilder<Iterable<RawgGame>>(
           future: gameInfos,
-          builder: ((context, snapshot) {
+          builder: ((futureBuilderContext, snapshot) {
             return Stack(
               children: [
                 ShaderMask(
@@ -49,16 +58,15 @@ class _GameDetailsState extends State<GameDetails> {
                   blendMode: BlendMode.dstIn,
                   child: SizedBox(
                     width: MediaQuery.of(context).size.width,
-                    height: 250,
+                    height: 350,
                     child: snapshot.hasData
                         ? FadeInImage.memoryNetwork(
-                            fadeInDuration: const Duration(seconds: 1),
+                            fadeInDuration: const Duration(milliseconds: 250),
                             placeholder: kTransparentImage,
                             image: snapshot.data!.first.backgroundImage,
-                            fit: BoxFit.fitHeight,
+                            fit: BoxFit.fitWidth,
                           )
                         : null,
-                    // if (snapshot.hasError) Text('${snapshot.error}'),
                   ),
                 ),
               ],
@@ -67,7 +75,71 @@ class _GameDetailsState extends State<GameDetails> {
         ),
         Container(
           padding: const EdgeInsets.all(8.0),
-          child: GameListItem(game: widget.game),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              GameListItem(game: widget.game),
+              const Text('Bearbeitbare Informationen:'),
+              ListView.builder(
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                itemCount: 4,
+                itemBuilder: (context, index) {
+                  var editableData = <Pair<String, String>>[
+                    Pair('Name', widget.game.title),
+                    Pair('Platform', widget.game.platform),
+                    Pair('Preis',
+                        '${widget.game.price?.toStringAsFixed(2) ?? 0.toStringAsFixed(2)} €'),
+                    Pair(
+                        'Altersfreigabe',
+                        AgeRestrictions.getAgeRestrictionText(
+                            widget.game.ageRestriction ??
+                                AgeRestriction.unknown)),
+                  ];
+                  var item = editableData[index];
+                  return ListTile(
+                    title: Text(item.a),
+                    subtitle: Text(item.b),
+                  );
+                },
+              ),
+              FutureBuilder<Iterable<RawgGame>>(
+                future: gameInfos,
+                builder: ((context, snapshot) {
+                  var displayData = snapshot.hasData
+                      ? <Pair<String, String>>[
+                          Pair('Name', snapshot.data!.first.name),
+                          Pair(
+                              'Erscheinungsdatum',
+                              DateFormat.yMd().format(DateTime.parse(
+                                  snapshot.data!.first.released))),
+                          Pair('Metacritic Wertung',
+                              snapshot.data!.first.metacriticScore.toString()),
+                        ]
+                      : <Pair<String, String>>[];
+                  if (snapshot.hasData) {
+                    return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text('RAWG.io Infos zum Spiel:'),
+                          ListView.builder(
+                              scrollDirection: Axis.vertical,
+                              shrinkWrap: true,
+                              itemCount: displayData.length,
+                              itemBuilder: (context, index) {
+                                var item = displayData[index];
+                                return ListTile(
+                                  title: Text(item.a),
+                                  subtitle: Text(item.b),
+                                );
+                              }),
+                        ]);
+                  }
+                  return Container();
+                }),
+              ),
+            ],
+          ),
         ),
       ]),
     );
