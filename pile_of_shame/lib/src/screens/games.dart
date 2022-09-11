@@ -8,11 +8,16 @@ import 'game_details.dart';
 
 List<Game> games = [
   Game(
-      platform: 'Nintendo Switch',
-      title: 'Xenoblade Chronicles Definitive Edition',
-      price: 30,
-      isFavourite: true,
-      ageRestriction: AgeRestriction.usk0),
+    platform: 'Nintendo Switch',
+    title: 'Xenoblade Chronicles Definitive Edition',
+    price: 30,
+    isFavourite: true,
+    ageRestriction: AgeRestriction.usk0,
+    backgroundImage:
+        'https://www.futurezone.de/wp-content/uploads/sites/11/2022/05/weltraum-milchstrasse.jpg',
+    metacriticScore: 1111,
+    wasScraped: true,
+  ),
   Game(
       platform: 'Nintendo Switch',
       title: 'Xenoblade Chronicles 2',
@@ -24,9 +29,9 @@ List<Game> games = [
       price: 56.86,
       ageRestriction: AgeRestriction.usk12),
   Game(
-      platform: 'Nintendo Switch',
-      title: 'Xenoblade Chronicles 4',
-      price: 46.99,
+      platform: 'Playstation 2',
+      title: 'SSX 3',
+      price: 13.68,
       ageRestriction: AgeRestriction.usk16),
   Game(
       platform: 'Steam',

@@ -24,13 +24,27 @@ class GameDetails extends StatefulWidget {
 }
 
 class _GameDetailsState extends State<GameDetails> {
-  late Future<Iterable<RawgGame>> gameInfos;
+  late Future<Game> mostRecentGame;
 
   @override
   void initState() {
     super.initState();
-    // Fetch game info here
-    gameInfos = RawgApi().searchGameByName(widget.game.title);
+    if (!widget.game.wasScraped) {
+      // Fetch game info here
+      mostRecentGame =
+          RawgApi().searchGameByName(widget.game.title).then((value) {
+        widget.game.backgroundImage = value.first.backgroundImage;
+        widget.game.releaseDate = DateTime.parse(value.first.released);
+        widget.game.metacriticScore = value.first.metacriticScore;
+        widget.game.rawgGameId = value.first.id;
+
+        // TODO: This should update the persisted game object!
+        return widget.game;
+      });
+      widget.game.wasScraped = true;
+    } else {
+      mostRecentGame = Future<Game>(() => widget.game);
+    }
   }
 
   @override
@@ -39,109 +53,80 @@ class _GameDetailsState extends State<GameDetails> {
       appBar: AppBar(
         title: const Text('Details'),
       ),
-      body: Column(children: [
-        FutureBuilder<Iterable<RawgGame>>(
-          future: gameInfos,
-          builder: ((futureBuilderContext, snapshot) {
-            return Stack(
+      body: FutureBuilder<Game>(
+        future: mostRecentGame,
+        builder: (context, snapshot) => Column(children: [
+          ShaderMask(
+            shaderCallback: (bounds) {
+              return const LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [Colors.black, Colors.transparent],
+                stops: [0.6, 1.0],
+              ).createShader(Rect.fromLTRB(0, 0, bounds.width, bounds.height));
+            },
+            blendMode: BlendMode.dstIn,
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width,
+              height: 350,
+              child:
+                  (snapshot.hasData && snapshot.data!.backgroundImage != null)
+                      ? FadeInImage.memoryNetwork(
+                          fadeInDuration: const Duration(milliseconds: 250),
+                          placeholder: kTransparentImage,
+                          image: snapshot.data!.backgroundImage!,
+                          fit: BoxFit.fitWidth,
+                        )
+                      : Container(),
+            ),
+          ),
+          Container(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                ShaderMask(
-                  shaderCallback: (bounds) {
-                    return const LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [Colors.black, Colors.transparent],
-                      stops: [0.6, 1.0],
-                    ).createShader(
-                        Rect.fromLTRB(0, 0, bounds.width, bounds.height));
-                  },
-                  blendMode: BlendMode.dstIn,
-                  child: SizedBox(
-                    width: MediaQuery.of(context).size.width,
-                    height: 350,
-                    child: snapshot.hasData
-                        ? FadeInImage.memoryNetwork(
-                            fadeInDuration: const Duration(milliseconds: 250),
-                            placeholder: kTransparentImage,
-                            image: snapshot.data!.first.backgroundImage,
-                            fit: BoxFit.fitWidth,
-                          )
-                        : null,
-                  ),
+                GameListItem(game: widget.game),
+                ListView(
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  children: [
+                    if (snapshot.hasData) Pair('Name', snapshot.data!.title),
+                    if (snapshot.hasData)
+                      Pair('Platform', snapshot.data!.platform),
+                    if (snapshot.hasData)
+                      Pair('Preis',
+                          '${snapshot.data!.price?.toStringAsFixed(2) ?? 0.toStringAsFixed(2)} €'),
+                    if (snapshot.hasData)
+                      Pair(
+                          'Altersfreigabe',
+                          AgeRestrictions.getAgeRestrictionText(
+                              snapshot.data!.ageRestriction ??
+                                  AgeRestriction.unknown)),
+                    if (snapshot.hasData)
+                      Pair('Favorisiert',
+                          '${snapshot.data!.isFavourite ? 'Ja' : 'Nein'}'),
+                    if (snapshot.hasData && snapshot.data!.releaseDate != null)
+                      Pair('Erscheinungsdatum',
+                          DateFormat.yMd().format(snapshot.data!.releaseDate!)),
+                    if (snapshot.hasData &&
+                        snapshot.data!.metacriticScore != null)
+                      Pair('Metacritic Score',
+                          '${snapshot.data!.metacriticScore!.toString()} / 100'),
+                    if (snapshot.hasData && snapshot.data!.rawgGameId != null)
+                      Pair('Scraping powered by RAWG.io',
+                          'Game-ID ${snapshot.data!.rawgGameId!.toString()}'),
+                  ]
+                      .map((item) => ListTile(
+                            title: Text(item.a),
+                            subtitle: Text(item.b),
+                          ))
+                      .toList(),
                 ),
               ],
-            );
-          }),
-        ),
-        Container(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              GameListItem(game: widget.game),
-              const Text('Bearbeitbare Informationen:'),
-              ListView.builder(
-                scrollDirection: Axis.vertical,
-                shrinkWrap: true,
-                itemCount: 4,
-                itemBuilder: (context, index) {
-                  var editableData = <Pair<String, String>>[
-                    Pair('Name', widget.game.title),
-                    Pair('Platform', widget.game.platform),
-                    Pair('Preis',
-                        '${widget.game.price?.toStringAsFixed(2) ?? 0.toStringAsFixed(2)} €'),
-                    Pair(
-                        'Altersfreigabe',
-                        AgeRestrictions.getAgeRestrictionText(
-                            widget.game.ageRestriction ??
-                                AgeRestriction.unknown)),
-                  ];
-                  var item = editableData[index];
-                  return ListTile(
-                    title: Text(item.a),
-                    subtitle: Text(item.b),
-                  );
-                },
-              ),
-              FutureBuilder<Iterable<RawgGame>>(
-                future: gameInfos,
-                builder: ((context, snapshot) {
-                  var displayData = snapshot.hasData
-                      ? <Pair<String, String>>[
-                          Pair('Name', snapshot.data!.first.name),
-                          Pair(
-                              'Erscheinungsdatum',
-                              DateFormat.yMd().format(DateTime.parse(
-                                  snapshot.data!.first.released))),
-                          Pair('Metacritic Wertung',
-                              snapshot.data!.first.metacriticScore.toString()),
-                        ]
-                      : <Pair<String, String>>[];
-                  if (snapshot.hasData) {
-                    return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text('RAWG.io Infos zum Spiel:'),
-                          ListView.builder(
-                              scrollDirection: Axis.vertical,
-                              shrinkWrap: true,
-                              itemCount: displayData.length,
-                              itemBuilder: (context, index) {
-                                var item = displayData[index];
-                                return ListTile(
-                                  title: Text(item.a),
-                                  subtitle: Text(item.b),
-                                );
-                              }),
-                        ]);
-                  }
-                  return Container();
-                }),
-              ),
-            ],
+            ),
           ),
-        ),
-      ]),
+        ]),
+      ),
     );
   }
 }
