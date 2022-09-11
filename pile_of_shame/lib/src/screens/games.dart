@@ -10,6 +10,7 @@ List<Game> games = [
       platform: 'Nintendo Switch',
       title: 'Xenoblade Chronicles Definitive Edition',
       price: 30,
+      isFavourite: true,
       ageRestriction: AgeRestriction.usk0),
   Game(
       platform: 'Nintendo Switch',

@@ -9,8 +9,12 @@ class GameListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    TextStyle headingStyle = const TextStyle(fontSize: 24);
-    TextStyle defaultStyle = const TextStyle(fontSize: 16);
+    TextStyle headingStyle = const TextStyle(
+      fontSize: 24,
+    );
+    TextStyle defaultStyle = const TextStyle(
+      fontSize: 16,
+    );
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -26,22 +30,25 @@ class GameListItem extends StatelessWidget {
                     game.title,
                     style: headingStyle,
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        game.platform,
-                        style: defaultStyle,
-                      ),
-                      if (game.price != null)
-                        Text(
-                          '${game.price!.toStringAsFixed(2)} €',
-                          style: defaultStyle,
-                        ),
-                    ],
+                  Text(
+                    game.platform,
+                    style: defaultStyle,
                   ),
                 ],
               ),
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                if (game.isFavourite)
+                  const Icon(Icons.favorite, color: Colors.red),
+                if (!game.isFavourite) const Icon(Icons.favorite_outline),
+                if (game.price != null)
+                  Text(
+                    '${game.price!.toStringAsFixed(2)} €',
+                    style: defaultStyle,
+                  ),
+              ],
             ),
             Container(
               padding: const EdgeInsets.all(8.0),
