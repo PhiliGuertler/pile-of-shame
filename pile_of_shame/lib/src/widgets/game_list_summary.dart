@@ -9,9 +9,12 @@ class GameListSummary extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double priceSum = games
-        .map((game) => game.price ?? 0)
-        .reduce((value, price) => value + price);
+    double priceSum = 0;
+    if (games.isNotEmpty) {
+      games
+          .map((game) => game.price ?? 0)
+          .reduce((value, price) => value + price);
+    }
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
