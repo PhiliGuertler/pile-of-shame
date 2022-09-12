@@ -53,79 +53,85 @@ class _GameDetailsState extends State<GameDetails> {
       appBar: AppBar(
         title: const Text('Details'),
       ),
-      body: FutureBuilder<Game>(
-        future: mostRecentGame,
-        builder: (context, snapshot) => Column(children: [
-          ShaderMask(
-            shaderCallback: (bounds) {
-              return const LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [Colors.black, Colors.transparent],
-                stops: [0.6, 1.0],
-              ).createShader(Rect.fromLTRB(0, 0, bounds.width, bounds.height));
-            },
-            blendMode: BlendMode.dstIn,
-            child: SizedBox(
-              width: MediaQuery.of(context).size.width,
-              height: 350,
-              child:
-                  (snapshot.hasData && snapshot.data!.backgroundImage != null)
-                      ? FadeInImage.memoryNetwork(
-                          fadeInDuration: const Duration(milliseconds: 250),
-                          placeholder: kTransparentImage,
-                          image: snapshot.data!.backgroundImage!,
-                          fit: BoxFit.fitWidth,
-                        )
-                      : Container(),
+      body: SingleChildScrollView(
+        child: FutureBuilder<Game>(
+          future: mostRecentGame,
+          builder: (context, snapshot) => Column(children: [
+            ShaderMask(
+              shaderCallback: (bounds) {
+                return const LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [Colors.black, Colors.transparent],
+                  stops: [0.6, 1.0],
+                ).createShader(
+                    Rect.fromLTRB(0, 0, bounds.width, bounds.height));
+              },
+              blendMode: BlendMode.dstIn,
+              child: SizedBox(
+                width: MediaQuery.of(context).size.width,
+                height: 350,
+                child:
+                    (snapshot.hasData && snapshot.data!.backgroundImage != null)
+                        ? FadeInImage.memoryNetwork(
+                            fadeInDuration: const Duration(milliseconds: 250),
+                            placeholder: kTransparentImage,
+                            image: snapshot.data!.backgroundImage!,
+                            fit: BoxFit.fitWidth,
+                          )
+                        : Container(),
+              ),
             ),
-          ),
-          Container(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                GameListItem(game: widget.game),
-                ListView(
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  children: [
-                    if (snapshot.hasData) Pair('Name', snapshot.data!.title),
-                    if (snapshot.hasData)
-                      Pair('Platform', snapshot.data!.platform),
-                    if (snapshot.hasData)
-                      Pair('Preis',
-                          '${snapshot.data!.price?.toStringAsFixed(2) ?? 0.toStringAsFixed(2)} €'),
-                    if (snapshot.hasData)
-                      Pair(
-                          'Altersfreigabe',
-                          AgeRestrictions.getAgeRestrictionText(
-                              snapshot.data!.ageRestriction ??
-                                  AgeRestriction.unknown)),
-                    if (snapshot.hasData)
-                      Pair('Favorisiert',
-                          '${snapshot.data!.isFavourite ? 'Ja' : 'Nein'}'),
-                    if (snapshot.hasData && snapshot.data!.releaseDate != null)
-                      Pair('Erscheinungsdatum',
-                          DateFormat.yMd().format(snapshot.data!.releaseDate!)),
-                    if (snapshot.hasData &&
-                        snapshot.data!.metacriticScore != null)
-                      Pair('Metacritic Score',
-                          '${snapshot.data!.metacriticScore!.toString()} / 100'),
-                    if (snapshot.hasData && snapshot.data!.rawgGameId != null)
-                      Pair('Scraping powered by RAWG.io',
-                          'Game-ID ${snapshot.data!.rawgGameId!.toString()}'),
-                  ]
-                      .map((item) => ListTile(
-                            title: Text(item.a),
-                            subtitle: Text(item.b),
-                          ))
-                      .toList(),
-                ),
-              ],
+            Container(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  GameListItem(game: widget.game),
+                  ListView(
+                    scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
+                    children: [
+                      if (snapshot.hasData) Pair('Name', snapshot.data!.title),
+                      if (snapshot.hasData)
+                        Pair('Platform', snapshot.data!.platform),
+                      if (snapshot.hasData)
+                        Pair('Preis',
+                            '${snapshot.data!.price?.toStringAsFixed(2) ?? 0.toStringAsFixed(2)} €'),
+                      if (snapshot.hasData)
+                        Pair(
+                            'Altersfreigabe',
+                            AgeRestrictions.getAgeRestrictionText(
+                                snapshot.data!.ageRestriction ??
+                                    AgeRestriction.unknown)),
+                      if (snapshot.hasData)
+                        Pair('Favorisiert',
+                            '${snapshot.data!.isFavourite ? 'Ja' : 'Nein'}'),
+                      if (snapshot.hasData &&
+                          snapshot.data!.releaseDate != null)
+                        Pair(
+                            'Erscheinungsdatum',
+                            DateFormat.yMd()
+                                .format(snapshot.data!.releaseDate!)),
+                      if (snapshot.hasData &&
+                          snapshot.data!.metacriticScore != null)
+                        Pair('Metacritic Score',
+                            '${snapshot.data!.metacriticScore!.toString()} / 100'),
+                      if (snapshot.hasData && snapshot.data!.rawgGameId != null)
+                        Pair('Scraping powered by RAWG.io',
+                            'Game-ID ${snapshot.data!.rawgGameId!.toString()}'),
+                    ]
+                        .map((item) => ListTile(
+                              title: Text(item.a),
+                              subtitle: Text(item.b),
+                            ))
+                        .toList(),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ]),
+          ]),
+        ),
       ),
     );
   }

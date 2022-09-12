@@ -81,7 +81,8 @@ class _GameScreenState extends State<GameScreen> {
           )
         ],
       ),
-      body: Column(
+      body: SingleChildScrollView(
+        child: Column(
         children: [
           ListView(
             shrinkWrap: true,
@@ -116,6 +117,7 @@ class _GameScreenState extends State<GameScreen> {
             child: GameListSummary(games: games),
           ),
         ],
+        ),
       ),
     );
   }
