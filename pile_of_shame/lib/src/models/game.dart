@@ -58,4 +58,49 @@ class Game {
     return AgeRestrictions.getAgeRestrictionText(
         ageRestriction ?? AgeRestriction.unknown);
   }
+
+  Game.fromJson(Map<String, dynamic> json)
+      : title = json['title'],
+        platform = json['platform'],
+        price = json['price'],
+        ageRestriction = json['ageRestriction'] != null
+            ? AgeRestriction.values[json['ageRestriction']]
+            : null,
+        isFavourite = json['isFavourite'],
+        wasScraped = json['wasScraped'],
+        releaseDate = json['releaseDate'] != null
+            ? DateTime.parse(json['releaseDate'])
+            : null,
+        metacriticScore = json['metacriticScore'],
+        backgroundImage = json['backgroundImage'],
+        rawgGameId = json['rawgGameId'];
+
+  Map<String, dynamic> toJson() => {
+        'title': title,
+        'platform': platform,
+        'price': price,
+        'ageRestriction': ageRestriction?.index,
+        'isFavourite': isFavourite,
+        'wasScraped': wasScraped,
+        'releaseDate': releaseDate?.toIso8601String(),
+        'metacriticScore': metacriticScore,
+        'backgroundImage': backgroundImage,
+        'rawgGameId': rawgGameId,
+      };
+
+  @override
+  bool operator ==(Object other) {
+    return (other is Game)
+        ? (title == other.title &&
+            platform == other.platform &&
+            price == other.price &&
+            ageRestriction == other.ageRestriction &&
+            isFavourite == other.isFavourite &&
+            wasScraped == other.wasScraped &&
+            releaseDate == other.releaseDate &&
+            metacriticScore == other.metacriticScore &&
+            backgroundImage == other.backgroundImage &&
+            rawgGameId == other.rawgGameId)
+        : false;
+  }
 }
