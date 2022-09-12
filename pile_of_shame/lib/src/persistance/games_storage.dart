@@ -27,7 +27,9 @@ class GamesStorage {
       // Read it
       final contents = await file.readAsString();
       // decode the json contents to a List of Games
-      return jsonDecode(contents);
+      List<dynamic> decodedContents = jsonDecode(contents);
+      // generate Game-Objects from the decoded contents
+      return decodedContents.map((entry) => Game.fromJson(entry)).toList();
     } catch (error) {
       debugPrint(
           'An error occured while reading the file: ${error.toString()}');
