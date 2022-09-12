@@ -8,43 +8,6 @@ import '../models/game.dart';
 import '../widgets/game_list_summary.dart';
 import 'game_details.dart';
 
-List<Game> games = [
-  Game(
-    platform: 'Nintendo Switch',
-    title: 'Xenoblade Chronicles Definitive Edition',
-    price: 30,
-    isFavourite: true,
-    ageRestriction: AgeRestriction.usk0,
-    // backgroundImage:
-    // 'https://www.futurezone.de/wp-content/uploads/sites/11/2022/05/weltraum-milchstrasse.jpg',
-    // metacriticScore: 1111,
-    // wasScraped: true,
-  ),
-  Game(
-      platform: 'Nintendo Switch',
-      title: 'Xenoblade Chronicles 2',
-      price: 46.99,
-      ageRestriction: AgeRestriction.usk6),
-  Game(
-      platform: 'Nintendo Switch',
-      title: 'Xenoblade Chronicles 3',
-      price: 56.86,
-      ageRestriction: AgeRestriction.usk12),
-  Game(
-      platform: 'Playstation 2',
-      title: 'SSX 3',
-      price: 13.68,
-      ageRestriction: AgeRestriction.usk16),
-  Game(
-      platform: 'Steam',
-      title: 'Bayonetta',
-      ageRestriction: AgeRestriction.usk18),
-  Game(
-    platform: 'Gog',
-    title: 'Irgendwas, kp',
-  ),
-];
-
 class GameScreen extends StatefulWidget {
   const GameScreen({super.key});
 
@@ -53,6 +16,18 @@ class GameScreen extends StatefulWidget {
 }
 
 class _GameScreenState extends State<GameScreen> {
+  List<Game> _games = [];
+
+  @override
+  void initState() {
+    super.initState();
+    GamesStorage().readGames().then((value) {
+      setState(() {
+        _games = value;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,7 +50,7 @@ class _GameScreenState extends State<GameScreen> {
           IconButton(
             onPressed: () {
               debugPrint('TODO: Import/Export files');
-              GamesStorage().writeGames(games);
+              GamesStorage().writeGames(_games);
             },
             icon: const Icon(Icons.import_export),
           )
@@ -83,40 +58,40 @@ class _GameScreenState extends State<GameScreen> {
       ),
       body: SingleChildScrollView(
         child: Column(
-        children: [
-          ListView(
-            shrinkWrap: true,
-            children: ListTile.divideTiles(
-              context: context,
-              tiles: games.map(
-                (game) => InkWell(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => GameDetails(game: game)));
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.all(8.0),
-                    child: GameListItem(
-                      game: game,
+          children: [
+            ListView(
+              shrinkWrap: true,
+              children: ListTile.divideTiles(
+                context: context,
+                tiles: _games.map(
+                  (game) => InkWell(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => GameDetails(game: game)));
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(8.0),
+                      child: GameListItem(
+                        game: game,
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ).toList(),
-          ),
-          Container(
-            padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-            child: const Divider(
-              thickness: 3,
+              ).toList(),
             ),
-          ),
-          Container(
-            padding: const EdgeInsets.all(8.0),
-            child: GameListSummary(games: games),
-          ),
-        ],
+            Container(
+              padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+              child: const Divider(
+                thickness: 3,
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.all(8.0),
+              child: GameListSummary(games: _games),
+            ),
+          ],
         ),
       ),
     );
