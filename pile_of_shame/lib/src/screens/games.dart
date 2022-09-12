@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:pile_of_shame/src/persistance/games_storage.dart';
+import 'package:pile_of_shame/src/screens/game_addition.dart';
 import 'package:pile_of_shame/src/widgets/game_list_item.dart';
 
 import '../models/age_restrictions.dart';
@@ -13,10 +15,10 @@ List<Game> games = [
     price: 30,
     isFavourite: true,
     ageRestriction: AgeRestriction.usk0,
-    backgroundImage:
-        'https://www.futurezone.de/wp-content/uploads/sites/11/2022/05/weltraum-milchstrasse.jpg',
-    metacriticScore: 1111,
-    wasScraped: true,
+    // backgroundImage:
+    // 'https://www.futurezone.de/wp-content/uploads/sites/11/2022/05/weltraum-milchstrasse.jpg',
+    // metacriticScore: 1111,
+    // wasScraped: true,
   ),
   Game(
       platform: 'Nintendo Switch',
@@ -56,6 +58,28 @@ class _GameScreenState extends State<GameScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Hauptseite'),
+        actions: [
+          IconButton(
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const AddGameScreen()));
+              },
+              icon: const Icon(Icons.add_circle_outline)),
+          IconButton(
+              onPressed: () {
+                debugPrint('TODO: Filter list');
+              },
+              icon: const Icon(Icons.filter_list)),
+          IconButton(
+            onPressed: () {
+              debugPrint('TODO: Import/Export files');
+              GamesStorage().writeGames(games);
+            },
+            icon: const Icon(Icons.import_export),
+          )
+        ],
       ),
       body: Column(
         children: [
