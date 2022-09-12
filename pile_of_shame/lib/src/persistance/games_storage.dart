@@ -10,7 +10,6 @@ import '../models/game.dart';
 class GamesStorage {
   Future<String> get _localPath async {
     final directory = await getApplicationDocumentsDirectory();
-    debugPrint('LocalPath: ${directory.toString()}');
 
     return directory.path;
   }
