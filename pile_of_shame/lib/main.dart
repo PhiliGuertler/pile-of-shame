@@ -18,8 +18,23 @@ class PileOfShameApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Pile of Shame',
-      theme: ThemeData.dark(),
+      theme: ThemeData(
+        brightness: Brightness.light,
+        colorScheme: ColorScheme.fromSwatch(
+          brightness: Brightness.light,
+          primarySwatch: Colors.deepOrange,
+        ),
+      ),
+      darkTheme: ThemeData(
+        brightness: Brightness.dark,
+        colorScheme: ColorScheme.fromSwatch(
+          brightness: Brightness.dark,
+          primarySwatch: Colors.deepOrange,
+        ),
+      ),
+      themeMode: ThemeMode.system,
       home: const GameScreen(),
     );
   }
