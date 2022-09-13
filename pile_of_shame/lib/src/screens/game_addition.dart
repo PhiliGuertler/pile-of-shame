@@ -1,9 +1,10 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:pile_of_shame/src/models/age_restrictions.dart';
+import 'package:pile_of_shame/src/persistance/storage.dart';
 import 'package:pile_of_shame/src/widgets/age_restriction.dart';
+
+import '../models/game.dart';
 
 // TODO: Move these platforms to a (potentially growing) list in a persisted file
 final platforms = [
@@ -67,7 +68,7 @@ class _AddGameScreenState extends State<AddGameScreen> {
   AgeRestriction? _selectedAge;
   String? _selectedPlatform;
   String? _selectedName;
-  num? _selectedPrice;
+  double? _selectedPrice;
 
   @override
   Widget build(BuildContext context) {
@@ -79,17 +80,22 @@ class _AddGameScreenState extends State<AddGameScreen> {
         padding: const EdgeInsets.all(8.0),
         child: Form(
           key: _formKey,
-          autovalidateMode: AutovalidateMode.always,
           child: Column(
             children: [
               TextFormField(
                 decoration: const InputDecoration(
                   icon: Icon(Icons.sports_esports),
                   hintText: 'NieR: Automata, Super Mario Odyssey, ...',
-                  labelText: 'Name',
+                  labelText: 'Name*',
                 ),
                 onChanged: (value) {
                   _selectedName = value;
+                },
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Komm schon, gib mir einen Namen.';
+                  }
+                  return null;
                 },
               ),
               Autocomplete(
@@ -104,10 +110,16 @@ class _AddGameScreenState extends State<AddGameScreen> {
                     decoration: const InputDecoration(
                       icon: Icon(Icons.videogame_asset),
                       hintText: 'Wii, Nintendo Switch, PC, ...',
-                      labelText: 'Platform',
+                      labelText: 'Platform*',
                     ),
                     onChanged: (value) {
                       _selectedPlatform = value;
+                    },
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Wo kann man das Spiel den spielen?';
+                      }
+                      return null;
                     },
                   );
                 }),
@@ -144,7 +156,6 @@ class _AddGameScreenState extends State<AddGameScreen> {
                   children: [
                     Expanded(
                       child: SizedBox(
-                        // width: 130,
                         height: 160,
                         child: DropdownButtonFormField2<AgeRestriction>(
                           decoration: const InputDecoration(
@@ -159,7 +170,6 @@ class _AddGameScreenState extends State<AddGameScreen> {
                           isExpanded: true,
                           itemHeight: 70,
                           buttonHeight: 160,
-                          // dropdownWidth: 100,
                           value: _selectedAge,
                           items: AgeRestriction.values
                               .map<DropdownMenuItem<AgeRestriction>>(
@@ -184,14 +194,27 @@ class _AddGameScreenState extends State<AddGameScreen> {
                     Container(
                       padding: const EdgeInsets.all(16.0),
                       child: ElevatedButton(
-                        onPressed: () {
+                        onPressed: () async {
                           // Validate returns true if the form is valid, or false otherwise.
                           if (_formKey.currentState!.validate()) {
+                            final Game game = Game(
+                                title: _selectedName!,
+                                platform: _selectedPlatform!,
+                                price: _selectedPrice,
+                                ageRestriction: _selectedAge);
+
+                            // get the list of games from storage
+                            final gameList = await Storage().readGames();
+                            gameList.add(game);
+                            await Storage().writeGames(gameList);
+
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                   content: Text(
-                                      '$_selectedName, $_selectedPlatform, $_selectedPrice, $_selectedAge')),
+                                      'Spiel $_selectedName hinzugefügt.')),
                             );
+
+                            Navigator.pop(context);
                           }
                         },
                         child: const Text('Hinzufügen'),
