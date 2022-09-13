@@ -79,114 +79,111 @@ class _AddGameScreenState extends State<AddGameScreen> {
           autovalidateMode: AutovalidateMode.always,
           child: Column(
             children: [
-              Row(
-                children: [
-                  Expanded(
-                    child: Container(
-                      padding: const EdgeInsets.only(right: 16.0),
-                      child: Column(
-                        children: [
-                          TextFormField(
-                            decoration: const InputDecoration(
-                              icon: Icon(Icons.sports_esports),
-                              hintText:
-                                  'NieR: Automata, Super Mario Odyssey, ...',
-                              labelText: 'Name',
-                            ),
-                          ),
-                          Autocomplete(
-                            fieldViewBuilder: ((context, textEditingController,
-                                focusNode, onFieldSubmitted) {
-                              return TextFormField(
-                                controller: textEditingController,
-                                focusNode: focusNode,
-                                decoration: const InputDecoration(
-                                  icon: Icon(Icons.videogame_asset),
-                                  hintText: 'Wii, Nintendo Switch, PC, ...',
-                                  labelText: 'Platform',
-                                ),
-                              );
-                            }),
-                            optionsBuilder: ((textEditingValue) {
-                              if (textEditingValue.text == '') {
-                                return const Iterable<String>.empty();
-                              }
-                              return platforms.where((platform) {
-                                return platform.toLowerCase().contains(
-                                    textEditingValue.text.toLowerCase());
-                              });
-                            }),
-                          ),
-                          TextFormField(
-                            decoration: const InputDecoration(
-                              icon: Icon(Icons.sell),
-                              labelText: 'Preis',
-                            ),
-                            validator: (String? value) {
-                              if (value == null || value.isEmpty) return null;
-                              return double.tryParse(value) != null
-                                  ? null
-                                  : 'Komm schon, gib eine gültige Zahl ein!';
-                            },
-                            keyboardType: TextInputType.number,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 130,
-                    height: 120,
-                    child: DropdownButtonHideUnderline(
-                      child: DropdownButtonFormField2<AgeRestriction>(
-                        decoration: const InputDecoration(
-                          labelText: 'Altersfreigabe',
-                          enabledBorder: InputBorder.none,
-                          border: InputBorder.none,
-                          focusedBorder: InputBorder.none,
-                          errorBorder: InputBorder.none,
-                          disabledBorder: InputBorder.none,
-                          focusedErrorBorder: InputBorder.none,
-                        ),
-                        isExpanded: true,
-                        itemHeight: 70,
-                        buttonHeight: 120,
-                        dropdownWidth: 100,
-                        value: _selectedAge,
-                        items: AgeRestriction.values
-                            .map<DropdownMenuItem<AgeRestriction>>(
-                                (AgeRestriction ageRestriction) {
-                          return DropdownMenuItem<AgeRestriction>(
-                            value: ageRestriction,
-                            child: Center(
-                              child: AgeRestrictionWidget(
-                                ageRestriction: ageRestriction,
-                              ),
-                            ),
-                          );
-                        }).toList(),
-                        onChanged: ((AgeRestriction? value) {
-                          setState(() {
-                            _selectedAge = value;
-                          });
-                        }),
-                      ),
-                    ),
-                  ),
-                ],
+              TextFormField(
+                decoration: const InputDecoration(
+                  icon: Icon(Icons.sports_esports),
+                  hintText: 'NieR: Automata, Super Mario Odyssey, ...',
+                  labelText: 'Name',
+                ),
               ),
-              ElevatedButton(
-                  onPressed: () {
-                    // Validate returns true if the form is valid, or false otherwise.
-                    if (_formKey.currentState!.validate()) {
-                      // If the form is valid, display a snackbar. In the real world,
-                      // you'd often call a server or save the information in a database.
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Processing Data')),
-                      );
-                    }
-                  },
-                  child: const Text('Hinzufügen'))
+              Autocomplete(
+                fieldViewBuilder: ((context, textEditingController, focusNode,
+                    onFieldSubmitted) {
+                  return TextFormField(
+                    controller: textEditingController,
+                    focusNode: focusNode,
+                    decoration: const InputDecoration(
+                      icon: Icon(Icons.videogame_asset),
+                      hintText: 'Wii, Nintendo Switch, PC, ...',
+                      labelText: 'Platform',
+                    ),
+                  );
+                }),
+                optionsBuilder: ((textEditingValue) {
+                  if (textEditingValue.text == '') {
+                    return const Iterable<String>.empty();
+                  }
+                  return platforms.where((platform) {
+                    return platform
+                        .toLowerCase()
+                        .contains(textEditingValue.text.toLowerCase());
+                  });
+                }),
+              ),
+              TextFormField(
+                decoration: const InputDecoration(
+                  icon: Icon(Icons.sell),
+                  labelText: 'Preis',
+                  prefixIcon: Icon(Icons.euro),
+                ),
+                validator: (String? value) {
+                  if (value == null || value.isEmpty) return null;
+                  return double.tryParse(value) != null
+                      ? null
+                      : 'Komm schon, gib eine gültige Zahl ein!';
+                },
+                keyboardType: TextInputType.number,
+              ),
+              Center(
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: SizedBox(
+                        // width: 130,
+                        height: 160,
+                        child: DropdownButtonFormField2<AgeRestriction>(
+                          decoration: const InputDecoration(
+                            labelText: 'Altersfreigabe',
+                            enabledBorder: InputBorder.none,
+                            border: InputBorder.none,
+                            focusedBorder: InputBorder.none,
+                            errorBorder: InputBorder.none,
+                            disabledBorder: InputBorder.none,
+                            focusedErrorBorder: InputBorder.none,
+                          ),
+                          isExpanded: true,
+                          itemHeight: 70,
+                          buttonHeight: 160,
+                          // dropdownWidth: 100,
+                          value: _selectedAge,
+                          items: AgeRestriction.values
+                              .map<DropdownMenuItem<AgeRestriction>>(
+                                  (AgeRestriction ageRestriction) {
+                            return DropdownMenuItem<AgeRestriction>(
+                              value: ageRestriction,
+                              child: Center(
+                                child: AgeRestrictionWidget(
+                                  ageRestriction: ageRestriction,
+                                ),
+                              ),
+                            );
+                          }).toList(),
+                          onChanged: ((AgeRestriction? value) {
+                            setState(() {
+                              _selectedAge = value;
+                            });
+                          }),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.all(16.0),
+                      child: ElevatedButton(
+                        onPressed: () {
+                          // Validate returns true if the form is valid, or false otherwise.
+                          if (_formKey.currentState!.validate()) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                  content: Text('TODO: Implement this')),
+                            );
+                          }
+                        },
+                        child: const Text('Hinzufügen'),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         ),
