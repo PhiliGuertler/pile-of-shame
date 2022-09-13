@@ -11,7 +11,7 @@ class GameListSummary extends StatelessWidget {
   Widget build(BuildContext context) {
     double priceSum = 0;
     if (games.isNotEmpty) {
-      games
+      priceSum = games
           .map((game) => game.price ?? 0)
           .reduce((value, price) => value + price);
     }
