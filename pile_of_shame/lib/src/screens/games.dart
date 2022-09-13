@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:pile_of_shame/src/persistance/games_storage.dart';
+import 'package:pile_of_shame/src/persistance/storage.dart';
 import 'package:pile_of_shame/src/screens/game_addition.dart';
 import 'package:pile_of_shame/src/widgets/game_list_item.dart';
 
-import '../models/age_restrictions.dart';
 import '../models/game.dart';
 import '../widgets/game_list_summary.dart';
 import 'game_details.dart';
@@ -21,7 +20,7 @@ class _GameScreenState extends State<GameScreen> {
   @override
   void initState() {
     super.initState();
-    GamesStorage().readGames().then((value) {
+    Storage().readGames().then((value) {
       setState(() {
         _games = value;
       });
@@ -50,7 +49,7 @@ class _GameScreenState extends State<GameScreen> {
           IconButton(
             onPressed: () {
               debugPrint('TODO: Import/Export files');
-              GamesStorage().writeGames(_games);
+              Storage().writeGames(_games);
             },
             icon: const Icon(Icons.import_export),
           )
