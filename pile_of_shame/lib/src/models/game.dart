@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:quiver/core.dart';
 import 'age_restrictions.dart';
 
 class Game {
@@ -16,6 +17,10 @@ class Game {
 
   /// signifies if the game is a favourite game or not
   bool isFavourite;
+
+  /// Stores user-defined notes for the game, e.g. if the game was gifted,
+  /// or if DLCs are part of the price
+  String? notes;
 
   // ######################################################################## //
   // ### Scraped data ####################################################### //
@@ -37,12 +42,13 @@ class Game {
   int? rawgGameId;
 
   Game({
-    required this.platform,
     required this.title,
-    this.isFavourite = false,
-    this.wasScraped = false,
+    required this.platform,
     this.price,
     this.ageRestriction,
+    this.isFavourite = false,
+    this.notes,
+    this.wasScraped = false,
     this.releaseDate,
     this.metacriticScore,
     this.backgroundImage,
@@ -67,6 +73,7 @@ class Game {
             ? AgeRestriction.values[json['ageRestriction']]
             : null,
         isFavourite = json['isFavourite'],
+        notes = json['notes'],
         wasScraped = json['wasScraped'],
         releaseDate = json['releaseDate'] != null
             ? DateTime.parse(json['releaseDate'])
@@ -81,6 +88,7 @@ class Game {
         'price': price,
         'ageRestriction': ageRestriction?.index,
         'isFavourite': isFavourite,
+        'notes': notes,
         'wasScraped': wasScraped,
         'releaseDate': releaseDate?.toIso8601String(),
         'metacriticScore': metacriticScore,
@@ -96,11 +104,17 @@ class Game {
             price == other.price &&
             ageRestriction == other.ageRestriction &&
             isFavourite == other.isFavourite &&
+            notes == other.notes &&
             wasScraped == other.wasScraped &&
             releaseDate == other.releaseDate &&
             metacriticScore == other.metacriticScore &&
             backgroundImage == other.backgroundImage &&
             rawgGameId == other.rawgGameId)
         : false;
+  }
+
+  @override
+  int get hashCode {
+    return hash2(title, platform);
   }
 }
