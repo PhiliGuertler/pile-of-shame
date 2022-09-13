@@ -62,9 +62,12 @@ class AddGameScreen extends StatefulWidget {
 }
 
 class _AddGameScreenState extends State<AddGameScreen> {
-  AgeRestriction? _selectedAge;
-
   final _formKey = GlobalKey<FormState>();
+
+  AgeRestriction? _selectedAge;
+  String? _selectedPlatform;
+  String? _selectedName;
+  num? _selectedPrice;
 
   @override
   Widget build(BuildContext context) {
@@ -85,8 +88,14 @@ class _AddGameScreenState extends State<AddGameScreen> {
                   hintText: 'NieR: Automata, Super Mario Odyssey, ...',
                   labelText: 'Name',
                 ),
+                onChanged: (value) {
+                  _selectedName = value;
+                },
               ),
               Autocomplete(
+                onSelected: (option) {
+                  _selectedPlatform = option;
+                },
                 fieldViewBuilder: ((context, textEditingController, focusNode,
                     onFieldSubmitted) {
                   return TextFormField(
@@ -97,6 +106,9 @@ class _AddGameScreenState extends State<AddGameScreen> {
                       hintText: 'Wii, Nintendo Switch, PC, ...',
                       labelText: 'Platform',
                     ),
+                    onChanged: (value) {
+                      _selectedPlatform = value;
+                    },
                   );
                 }),
                 optionsBuilder: ((textEditingValue) {
@@ -116,6 +128,9 @@ class _AddGameScreenState extends State<AddGameScreen> {
                   labelText: 'Preis',
                   prefixIcon: Icon(Icons.euro),
                 ),
+                onChanged: (value) {
+                  _selectedPrice = double.tryParse(value);
+                },
                 validator: (String? value) {
                   if (value == null || value.isEmpty) return null;
                   return double.tryParse(value) != null
@@ -173,8 +188,9 @@ class _AddGameScreenState extends State<AddGameScreen> {
                           // Validate returns true if the form is valid, or false otherwise.
                           if (_formKey.currentState!.validate()) {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                  content: Text('TODO: Implement this')),
+                              SnackBar(
+                                  content: Text(
+                                      '$_selectedName, $_selectedPlatform, $_selectedPrice, $_selectedAge')),
                             );
                           }
                         },
