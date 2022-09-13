@@ -94,7 +94,8 @@ class _GameScreenState extends State<GameScreen> {
               ),
             ),
             Container(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.only(
+                  right: 8.0, left: 8.0, top: 16.0, bottom: 32.0),
               child: GameListSummary(games: _games),
             ),
           ],
