@@ -52,7 +52,7 @@ class GameListItem extends StatelessWidget {
             ),
             Container(
               padding: const EdgeInsets.only(left: 8.0, top: 8.0, bottom: 8.0),
-              child: AgeRestrictionWidget(game: game),
+              child: AgeRestrictionWidget.fromGame(game: game),
             )
           ],
         )
