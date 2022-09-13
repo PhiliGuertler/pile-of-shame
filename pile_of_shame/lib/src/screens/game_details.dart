@@ -89,8 +89,8 @@ class _GameDetailsState extends State<GameDetails> {
                 children: [
                   GameListItem(game: widget.game),
                   ListView(
-                    scrollDirection: Axis.vertical,
                     shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
                     children: [
                       if (snapshot.hasData) Pair('Name', snapshot.data!.title),
                       if (snapshot.hasData)
