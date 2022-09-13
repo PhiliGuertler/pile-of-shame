@@ -49,6 +49,10 @@ class _GameDetailsState extends State<GameDetails> {
 
   @override
   Widget build(BuildContext context) {
+    final MediaQueryData queryData = MediaQuery.of(context);
+    debugPrint(
+        '${queryData.size.height.toString()} ${queryData.size.width.toString()}');
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Details'),
@@ -70,14 +74,14 @@ class _GameDetailsState extends State<GameDetails> {
               blendMode: BlendMode.dstIn,
               child: SizedBox(
                 width: MediaQuery.of(context).size.width,
-                height: 350,
+                height: queryData.size.height > 900 ? 350 : 200,
                 child:
                     (snapshot.hasData && snapshot.data!.backgroundImage != null)
                         ? FadeInImage.memoryNetwork(
                             fadeInDuration: const Duration(milliseconds: 250),
                             placeholder: kTransparentImage,
                             image: snapshot.data!.backgroundImage!,
-                            fit: BoxFit.fitWidth,
+                            fit: BoxFit.cover,
                           )
                         : Container(),
               ),
@@ -106,7 +110,7 @@ class _GameDetailsState extends State<GameDetails> {
                                     AgeRestriction.unknown)),
                       if (snapshot.hasData)
                         Pair('Favorisiert',
-                            '${snapshot.data!.isFavourite ? 'Ja' : 'Nein'}'),
+                            snapshot.data!.isFavourite ? 'Ja' : 'Nein'),
                       if (snapshot.hasData &&
                           snapshot.data!.releaseDate != null)
                         Pair(
