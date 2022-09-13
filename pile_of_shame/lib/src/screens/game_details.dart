@@ -108,6 +108,8 @@ class _GameDetailsState extends State<GameDetails> {
                             AgeRestrictions.getAgeRestrictionText(
                                 snapshot.data!.ageRestriction ??
                                     AgeRestriction.unknown)),
+                      if (snapshot.hasData && snapshot.data!.notes != null)
+                        Pair('Anmerkungen', snapshot.data!.notes!),
                       if (snapshot.hasData)
                         Pair('Favorisiert',
                             snapshot.data!.isFavourite ? 'Ja' : 'Nein'),

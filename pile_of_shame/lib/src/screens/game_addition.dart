@@ -69,6 +69,7 @@ class _AddGameScreenState extends State<AddGameScreen> {
   String? _selectedPlatform;
   String? _selectedName;
   double? _selectedPrice;
+  String? _selectedNotes;
 
   @override
   Widget build(BuildContext context) {
@@ -151,6 +152,16 @@ class _AddGameScreenState extends State<AddGameScreen> {
                 },
                 keyboardType: TextInputType.number,
               ),
+              TextFormField(
+                decoration: const InputDecoration(
+                  icon: Icon(Icons.description),
+                  labelText: 'Anmerkungen',
+                  hintText: 'Ausgeliehen, inkl. DLC, ...',
+                ),
+                onChanged: (value) {
+                  _selectedNotes = value;
+                },
+              ),
               Center(
                 child: Row(
                   children: [
@@ -194,27 +205,32 @@ class _AddGameScreenState extends State<AddGameScreen> {
                     Container(
                       padding: const EdgeInsets.all(16.0),
                       child: ElevatedButton(
-                        onPressed: () async {
+                        onPressed: () {
                           // Validate returns true if the form is valid, or false otherwise.
                           if (_formKey.currentState!.validate()) {
                             final Game game = Game(
-                                title: _selectedName!,
-                                platform: _selectedPlatform!,
-                                price: _selectedPrice,
-                                ageRestriction: _selectedAge);
-
-                            // get the list of games from storage
-                            final gameList = await Storage().readGames();
-                            gameList.add(game);
-                            await Storage().writeGames(gameList);
-
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                  content: Text(
-                                      'Spiel $_selectedName hinzugefügt.')),
+                              title: _selectedName!,
+                              platform: _selectedPlatform!,
+                              price: _selectedPrice,
+                              ageRestriction: _selectedAge,
+                              notes: _selectedNotes,
                             );
 
-                            Navigator.pop(context);
+                            // get the list of games from storage
+                            Storage().readGames().then((gameList) {
+                              gameList.add(game);
+                              Storage().writeGames(gameList).then(
+                                (value) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                        content: Text(
+                                            'Spiel $_selectedName hinzugefügt.')),
+                                  );
+
+                                  Navigator.pop(context);
+                                },
+                              );
+                            });
                           }
                         },
                         child: const Text('Hinzufügen'),
