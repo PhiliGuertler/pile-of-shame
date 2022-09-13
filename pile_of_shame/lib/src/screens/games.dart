@@ -17,14 +17,19 @@ class GameScreen extends StatefulWidget {
 class _GameScreenState extends State<GameScreen> {
   List<Game> _games = [];
 
-  @override
-  void initState() {
-    super.initState();
+  void refresh() {
+    debugPrint('Initializing State of Games-Screen');
     Storage().readGames().then((value) {
       setState(() {
         _games = value;
       });
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    refresh();
   }
 
   @override
@@ -34,11 +39,12 @@ class _GameScreenState extends State<GameScreen> {
         title: const Text('Hauptseite'),
         actions: [
           IconButton(
-              onPressed: () {
-                Navigator.push(
+              onPressed: () async {
+                await Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) => const AddGameScreen()));
+                refresh();
               },
               icon: const Icon(Icons.add_circle_outline)),
           IconButton(
@@ -60,6 +66,7 @@ class _GameScreenState extends State<GameScreen> {
           children: [
             ListView(
               shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
               children: ListTile.divideTiles(
                 context: context,
                 tiles: _games.map(
