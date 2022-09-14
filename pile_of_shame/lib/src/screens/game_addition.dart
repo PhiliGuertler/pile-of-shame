@@ -145,9 +145,8 @@ class _AddGameScreenState extends State<AddGameScreen> {
               ),
               TextFormField(
                 decoration: const InputDecoration(
-                  icon: Icon(Icons.sell),
+                  icon: Icon(Icons.euro),
                   labelText: 'Preis',
-                  prefixIcon: Icon(Icons.euro),
                 ),
                 onChanged: (value) {
                   setState(
