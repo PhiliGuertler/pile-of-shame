@@ -31,7 +31,7 @@ class GameListItem extends StatelessWidget {
                     style: headingStyle,
                   ),
                   Text(
-                    game.platform,
+                    game.platforms.join(', '),
                     style: defaultStyle,
                   ),
                 ],

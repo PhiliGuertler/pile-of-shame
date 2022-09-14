@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:quiver/core.dart';
 import 'age_restrictions.dart';
+import 'package:collection/collection.dart';
 
 class Game {
   /// the game's title
   String title;
 
   /// the platform(s) on which the game was purchased/played
-  String platform;
+  List<String> platforms;
 
   /// the amount of money that was actually payed for the game
   double? price;
@@ -43,7 +44,7 @@ class Game {
 
   Game({
     required this.title,
-    required this.platform,
+    required this.platforms,
     this.price,
     this.ageRestriction,
     this.isFavourite = false,
@@ -67,7 +68,7 @@ class Game {
 
   Game.fromJson(Map<String, dynamic> json)
       : title = json['title'],
-        platform = json['platform'],
+        platforms = List<String>.from(json['platforms'] as List),
         price = json['price'],
         ageRestriction = json['ageRestriction'] != null
             ? AgeRestriction.values[json['ageRestriction']]
@@ -84,7 +85,7 @@ class Game {
 
   Map<String, dynamic> toJson() => {
         'title': title,
-        'platform': platform,
+        'platforms': platforms,
         'price': price,
         'ageRestriction': ageRestriction?.index,
         'isFavourite': isFavourite,
@@ -98,9 +99,10 @@ class Game {
 
   @override
   bool operator ==(Object other) {
+    final equalizer = const ListEquality().equals;
     return (other is Game)
         ? (title == other.title &&
-            platform == other.platform &&
+            equalizer(platforms, other.platforms) &&
             price == other.price &&
             ageRestriction == other.ageRestriction &&
             isFavourite == other.isFavourite &&
@@ -115,6 +117,6 @@ class Game {
 
   @override
   int get hashCode {
-    return hash2(title, platform);
+    return hash2(title, platforms);
   }
 }
