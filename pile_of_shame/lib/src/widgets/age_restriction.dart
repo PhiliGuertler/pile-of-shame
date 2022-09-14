@@ -4,13 +4,13 @@ import 'package:pile_of_shame/src/models/age_restrictions.dart';
 import '../models/game.dart';
 
 class AgeRestrictionWidget extends StatelessWidget {
-  AgeRestrictionWidget({
+  const AgeRestrictionWidget({
     super.key,
     required AgeRestriction ageRestriction,
-  }) : _ageRestriction = ageRestriction {}
+  }) : _ageRestriction = ageRestriction;
 
   AgeRestrictionWidget.fromGame({super.key, required Game game})
-      : _ageRestriction = game.ageRestriction ?? AgeRestriction.unknown {}
+      : _ageRestriction = game.ageRestriction ?? AgeRestriction.unknown;
 
   final AgeRestriction _ageRestriction;
 
