@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:pile_of_shame/src/models/age_restrictions.dart';
 import 'package:pile_of_shame/src/persistance/storage.dart';
 import 'package:pile_of_shame/src/widgets/age_restriction.dart';
+import 'package:pile_of_shame/src/widgets/game_platform_autocomplete.dart';
 
 import '../models/game.dart';
-import '../widgets/autocomplete_search_options_view.dart';
 
 // TODO: Move these platforms to a (potentially growing) list in a persisted file
 final platforms = [
@@ -16,6 +16,7 @@ final platforms = [
   'Gamecube',
   'Wii',
   'Virtual Console Wii',
+  'Wii U',
   'Nintendo Switch',
   'Nintendo Switch Online',
   'Gameboy',
@@ -56,6 +57,13 @@ final platforms = [
   'Emulator (DeSMume)',
 ];
 
+class PlatformIndexPair {
+  PlatformIndexPair({required this.index, required this.label});
+
+  final int index;
+  final String label;
+}
+
 class AddGameScreen extends StatefulWidget {
   const AddGameScreen({super.key});
 
@@ -67,13 +75,47 @@ class _AddGameScreenState extends State<AddGameScreen> {
   final _formKey = GlobalKey<FormState>();
 
   AgeRestriction? _selectedAge;
-  String? _selectedPlatform;
+  final List<String> _selectedPlatforms = [];
   String? _selectedName;
   double? _selectedPrice;
   String? _selectedNotes;
 
   @override
   Widget build(BuildContext context) {
+    List<PlatformIndexPair> platformTitles = List<PlatformIndexPair>.generate(
+        _selectedPlatforms.length + 1,
+        (index) => index == 0
+            ? PlatformIndexPair(index: index, label: 'Platform*')
+            : PlatformIndexPair(index: index, label: 'Platform ${index + 1}'));
+
+    List<Widget> platformInputs = platformTitles.map(
+      (e) {
+        return GamePlatformAutocomplete(
+          title: e.label,
+          platforms: platforms,
+          onSelected: (value) {
+            setState(() {
+              if (_selectedPlatforms.length > e.index) {
+                _selectedPlatforms[e.index] = value;
+              } else {
+                _selectedPlatforms.add(value);
+              }
+            });
+          },
+          value: _selectedPlatforms.length > e.index
+              ? _selectedPlatforms[e.index]
+              : null,
+          validator: (value) {
+            if (e.index != 0) return null;
+            if (value == null || value.isEmpty) {
+              return 'Wo kann man das Spiel den spielen?';
+            }
+            return null;
+          },
+        );
+      },
+    ).toList();
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Spiel hinzufügen'),
@@ -105,58 +147,8 @@ class _AddGameScreenState extends State<AddGameScreen> {
                   return null;
                 },
               ),
-              Autocomplete<String>(
-                onSelected: (option) {
-                  setState(
-                    () {
-                      _selectedPlatform = option;
-                    },
-                  );
-                },
-                fieldViewBuilder: ((context, textEditingController, focusNode,
-                    onFieldSubmitted) {
-                  return TextFormField(
-                    controller: textEditingController,
-                    focusNode: focusNode,
-                    decoration: const InputDecoration(
-                      icon: Icon(Icons.videogame_asset),
-                      hintText: 'Wii, Nintendo Switch, PC, ...',
-                      labelText: 'Platform*',
-                    ),
-                    onChanged: (value) {
-                      setState(() {
-                        _selectedPlatform = value;
-                      });
-                    },
-                    onFieldSubmitted: (String value) {
-                      onFieldSubmitted();
-                    },
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Wo kann man das Spiel den spielen?';
-                      }
-                      return null;
-                    },
-                  );
-                }),
-                optionsBuilder: ((textEditingValue) {
-                  if (textEditingValue.text == '') {
-                    return const Iterable<String>.empty();
-                  }
-                  return platforms.where((platform) {
-                    return platform
-                        .toLowerCase()
-                        .contains(textEditingValue.text.toLowerCase());
-                  });
-                }),
-                optionsViewBuilder: (context, onSelected, options) {
-                  return AutocompleteSearchOptionsView(
-                    onSelected: onSelected,
-                    options: options,
-                    searchTerm: _selectedPlatform!,
-                    maxOptionsHeight: 200,
-                  );
-                },
+              Column(
+                children: platformInputs,
               ),
               TextFormField(
                 decoration: const InputDecoration(
@@ -240,7 +232,7 @@ class _AddGameScreenState extends State<AddGameScreen> {
                           if (_formKey.currentState!.validate()) {
                             final Game game = Game(
                               title: _selectedName!,
-                              platform: _selectedPlatform!,
+                              platforms: _selectedPlatforms,
                               price: _selectedPrice,
                               ageRestriction: _selectedAge,
                               notes: _selectedNotes,
