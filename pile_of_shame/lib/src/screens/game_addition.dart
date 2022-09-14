@@ -90,7 +90,11 @@ class _AddGameScreenState extends State<AddGameScreen> {
                   labelText: 'Name*',
                 ),
                 onChanged: (value) {
-                  _selectedName = value;
+                  setState(
+                    () {
+                      _selectedName = value;
+                    },
+                  );
                 },
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -101,7 +105,11 @@ class _AddGameScreenState extends State<AddGameScreen> {
               ),
               Autocomplete(
                 onSelected: (option) {
-                  _selectedPlatform = option;
+                  setState(
+                    () {
+                      _selectedPlatform = option;
+                    },
+                  );
                 },
                 fieldViewBuilder: ((context, textEditingController, focusNode,
                     onFieldSubmitted) {
@@ -142,7 +150,11 @@ class _AddGameScreenState extends State<AddGameScreen> {
                   prefixIcon: Icon(Icons.euro),
                 ),
                 onChanged: (value) {
-                  _selectedPrice = double.tryParse(value);
+                  setState(
+                    () {
+                      _selectedPrice = double.tryParse(value);
+                    },
+                  );
                 },
                 validator: (String? value) {
                   if (value == null || value.isEmpty) return null;
@@ -159,7 +171,11 @@ class _AddGameScreenState extends State<AddGameScreen> {
                   hintText: 'Ausgeliehen, inkl. DLC, ...',
                 ),
                 onChanged: (value) {
-                  _selectedNotes = value;
+                  setState(
+                    () {
+                      _selectedNotes = value;
+                    },
+                  );
                 },
               ),
               Center(
