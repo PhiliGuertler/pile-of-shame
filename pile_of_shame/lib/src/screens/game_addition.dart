@@ -5,6 +5,7 @@ import 'package:pile_of_shame/src/persistance/storage.dart';
 import 'package:pile_of_shame/src/widgets/age_restriction.dart';
 
 import '../models/game.dart';
+import '../widgets/autocomplete_search_options_view.dart';
 
 // TODO: Move these platforms to a (potentially growing) list in a persisted file
 final platforms = [
@@ -100,10 +101,11 @@ class _AddGameScreenState extends State<AddGameScreen> {
                   if (value == null || value.isEmpty) {
                     return 'Komm schon, gib mir einen Namen.';
                   }
+                  // TODO: Display an error if the entered name is already in use
                   return null;
                 },
               ),
-              Autocomplete(
+              Autocomplete<String>(
                 onSelected: (option) {
                   setState(
                     () {
@@ -122,7 +124,12 @@ class _AddGameScreenState extends State<AddGameScreen> {
                       labelText: 'Platform*',
                     ),
                     onChanged: (value) {
-                      _selectedPlatform = value;
+                      setState(() {
+                        _selectedPlatform = value;
+                      });
+                    },
+                    onFieldSubmitted: (String value) {
+                      onFieldSubmitted();
                     },
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -142,6 +149,14 @@ class _AddGameScreenState extends State<AddGameScreen> {
                         .contains(textEditingValue.text.toLowerCase());
                   });
                 }),
+                optionsViewBuilder: (context, onSelected, options) {
+                  return AutocompleteSearchOptionsView(
+                    onSelected: onSelected,
+                    options: options,
+                    searchTerm: _selectedPlatform!,
+                    maxOptionsHeight: 200,
+                  );
+                },
               ),
               TextFormField(
                 decoration: const InputDecoration(
