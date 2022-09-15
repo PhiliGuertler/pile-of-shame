@@ -34,7 +34,9 @@ class _GameDetailsState extends State<GameDetails> {
       mostRecentGame =
           RawgApi().searchGameByName(widget.game.title).then((value) {
         widget.game.backgroundImage = value.first.backgroundImage;
-        widget.game.releaseDate = DateTime.parse(value.first.released);
+        widget.game.releaseDate = value.first.released != null
+            ? DateTime.parse(value.first.released!)
+            : null;
         widget.game.metacriticScore = value.first.metacriticScore;
         widget.game.rawgGameId = value.first.id;
 
