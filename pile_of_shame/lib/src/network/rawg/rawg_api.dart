@@ -48,7 +48,6 @@ class RawgApi {
     if (response.statusCode == 200) {
       // find the game we wanted
       final List<dynamic> results = jsonDecode(response.body)['results'];
-      debugPrint(results.toString());
       final Iterable<RawgGame> parsedResults =
           results.map((result) => RawgGame.fromJson(result));
       return parsedResults;
