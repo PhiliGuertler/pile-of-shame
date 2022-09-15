@@ -85,7 +85,12 @@ class _GameDetailsState extends State<GameDetails> {
                             image: snapshot.data!.backgroundImage!,
                             fit: BoxFit.cover,
                           )
-                        : Container(),
+                        : FadeInImage(
+                            fadeInDuration: const Duration(milliseconds: 250),
+                            placeholder: MemoryImage(kTransparentImage),
+                            image: const AssetImage('assets/camouflage.png'),
+                            fit: BoxFit.cover,
+                          ),
               ),
             ),
             Container(
