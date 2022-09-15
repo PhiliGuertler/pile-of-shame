@@ -46,6 +46,7 @@ class _GameDetailsState extends State<GameDetails> {
     List<Game> allGames = await Storage().readGames();
     final index = allGames.indexOf(widget.game);
     if (index == -1) {
+      if (!mounted) return scrapedGame;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
@@ -55,6 +56,7 @@ class _GameDetailsState extends State<GameDetails> {
       return scrapedGame;
     }
 
+    if (!mounted) return scrapedGame;
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content:
@@ -94,6 +96,7 @@ class _GameDetailsState extends State<GameDetails> {
       final allGames = await Storage().readGames();
       final index = allGames.indexOf(widget.game);
       if (index == -1) {
+        if (!mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
@@ -103,6 +106,7 @@ class _GameDetailsState extends State<GameDetails> {
         return;
       }
       if (!allGames.remove(widget.game)) {
+        if (!mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content:
@@ -111,6 +115,7 @@ class _GameDetailsState extends State<GameDetails> {
         );
       }
       await Storage().writeGames(allGames);
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('$gameTitle gelöscht.'),
