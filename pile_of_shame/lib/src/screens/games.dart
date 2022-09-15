@@ -39,26 +39,36 @@ class _GameScreenState extends State<GameScreen> {
         title: const Text('Hauptseite'),
         actions: [
           IconButton(
-              onPressed: () async {
-                await Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const AddGameScreen()));
-                refresh();
-              },
-              icon: const Icon(Icons.add_circle_outline)),
+            onPressed: () async {
+              await Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const AddGameScreen(),
+                ),
+              );
+              refresh();
+            },
+            icon: const Icon(Icons.add_circle_outline),
+          ),
           IconButton(
-              onPressed: () {
-                debugPrint('TODO: Filter list');
-              },
-              icon: const Icon(Icons.filter_list)),
+            onPressed: () {
+              debugPrint('TODO: Filter list');
+            },
+            icon: const Icon(Icons.filter_list),
+          ),
           IconButton(
             onPressed: () {
               debugPrint('TODO: Import/Export files');
               Storage().writeGames(_games);
             },
             icon: const Icon(Icons.import_export),
-          )
+          ),
+          IconButton(
+            onPressed: () {
+              refresh();
+            },
+            icon: const Icon(Icons.refresh),
+          ),
         ],
       ),
       body: SingleChildScrollView(
@@ -71,11 +81,12 @@ class _GameScreenState extends State<GameScreen> {
                 context: context,
                 tiles: _games.map(
                   (game) => InkWell(
-                    onTap: () {
-                      Navigator.push(
+                    onTap: () async {
+                      await Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) => GameDetails(game: game)));
+                      refresh();
                     },
                     child: Container(
                       padding: const EdgeInsets.all(8.0),
