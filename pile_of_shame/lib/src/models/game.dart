@@ -56,6 +56,19 @@ class Game {
     this.rawgGameId,
   });
 
+  Game.from(Game other)
+      : title = other.title,
+        platforms = other.platforms,
+        price = other.price,
+        ageRestriction = other.ageRestriction,
+        isFavourite = other.isFavourite,
+        notes = other.notes,
+        wasScraped = other.wasScraped,
+        releaseDate = other.releaseDate,
+        metacriticScore = other.metacriticScore,
+        backgroundImage = other.backgroundImage,
+        rawgGameId = other.rawgGameId;
+
   Color getAgeRestictionColor() {
     return AgeRestrictions.getAgeRestictionColor(
         ageRestriction ?? AgeRestriction.unknown);
