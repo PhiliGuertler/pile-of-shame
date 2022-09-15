@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:pile_of_shame/src/network/rawg/rawg_api.dart';
+import 'package:pile_of_shame/src/persistance/storage.dart';
 import 'package:pile_of_shame/src/widgets/game_list_item.dart';
 import 'package:transparent_image/transparent_image.dart';
 
@@ -26,24 +27,54 @@ class GameDetails extends StatefulWidget {
 class _GameDetailsState extends State<GameDetails> {
   late Future<Game> mostRecentGame;
 
+  Future<Game> scrapeGameData(String gameTitle) async {
+    Iterable<RawgGame> scrapedGames =
+        await RawgApi().searchGameByName(gameTitle);
+    // For now, just assume the first result is the match we want
+    final RawgGame scrapy = scrapedGames.first;
+    final Game scrapedGame = Game.from(widget.game);
+    scrapedGame.backgroundImage =
+        scrapedGame.backgroundImage ?? scrapy.backgroundImage;
+    scrapedGame.releaseDate = scrapedGame.releaseDate ??
+        (scrapy.released != null ? DateTime.parse(scrapy.released!) : null);
+    scrapedGame.metacriticScore =
+        scrapedGame.metacriticScore ?? scrapy.metacriticScore;
+    scrapedGame.rawgGameId = scrapedGame.rawgGameId ?? scrapy.id;
+    scrapedGame.wasScraped = true;
+
+    // TODO: update the persisted game
+    List<Game> allGames = await Storage().readGames();
+    final index = allGames.indexOf(widget.game);
+    if (index == -1) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+              '[Scraping] Das Spiel $gameTitle konnte nicht gefunden werden.'),
+        ),
+      );
+      return scrapedGame;
+    }
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content:
+            Text('[Scraping] Zusätliche Informationen zu $gameTitle geladen.'),
+      ),
+    );
+    // override the current game
+    allGames[index] = scrapedGame;
+    await Storage().writeGames(allGames);
+
+    return scrapedGame;
+  }
+
   @override
   void initState() {
     super.initState();
+    debugPrint(widget.game.toJson().toString());
     if (!widget.game.wasScraped) {
       // Fetch game info here
-      mostRecentGame =
-          RawgApi().searchGameByName(widget.game.title).then((value) {
-        widget.game.backgroundImage = value.first.backgroundImage;
-        widget.game.releaseDate = value.first.released != null
-            ? DateTime.parse(value.first.released!)
-            : null;
-        widget.game.metacriticScore = value.first.metacriticScore;
-        widget.game.rawgGameId = value.first.id;
-
-        // TODO: This should update the persisted game object!
-        return widget.game;
-      });
-      widget.game.wasScraped = true;
+      mostRecentGame = scrapeGameData(widget.game.title);
     } else {
       mostRecentGame = Future<Game>(() => widget.game);
     }
@@ -55,9 +86,70 @@ class _GameDetailsState extends State<GameDetails> {
     debugPrint(
         '${queryData.size.height.toString()} ${queryData.size.width.toString()}');
 
+    void handleDelete() async {
+      final gameTitle = widget.game.title;
+      // close alert-dialog
+      Navigator.pop(context, 'OK');
+      // Delete the item
+      final allGames = await Storage().readGames();
+      final index = allGames.indexOf(widget.game);
+      if (index == -1) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+                '[Löschen] Das Spiel $gameTitle konnte nicht gefunden werden.'),
+          ),
+        );
+        return;
+      }
+      if (!allGames.remove(widget.game)) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content:
+                Text('Ein Fehler ist beim Löschen von $gameTitle aufgetreten.'),
+          ),
+        );
+      }
+      await Storage().writeGames(allGames);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('$gameTitle gelöscht.'),
+        ),
+      );
+
+      // go back to main page
+      Navigator.pop(context);
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Details'),
+        actions: [
+          IconButton(
+              onPressed: () {
+                showDialog<String>(
+                  context: context,
+                  builder: (BuildContext context) => AlertDialog(
+                    title: const Text('Willst du das Spiel wirklich löschen?'),
+                    content:
+                        const Text('Es kann nicht wieder hergestellt werden.'),
+                    actions: <Widget>[
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pop(context, 'Cancel');
+                        },
+                        child: const Text('Abbrechen'),
+                      ),
+                      TextButton(
+                        onPressed: handleDelete,
+                        child: const Text('Löschen'),
+                      ),
+                    ],
+                  ),
+                );
+              },
+              icon: const Icon(Icons.delete)),
+        ],
       ),
       body: SingleChildScrollView(
         child: FutureBuilder<Game>(
@@ -77,20 +169,21 @@ class _GameDetailsState extends State<GameDetails> {
               child: SizedBox(
                 width: MediaQuery.of(context).size.width,
                 height: queryData.size.height > 900 ? 350 : 200,
-                child:
-                    (snapshot.hasData && snapshot.data!.backgroundImage != null)
-                        ? FadeInImage.memoryNetwork(
-                            fadeInDuration: const Duration(milliseconds: 250),
-                            placeholder: kTransparentImage,
-                            image: snapshot.data!.backgroundImage!,
-                            fit: BoxFit.cover,
-                          )
-                        : FadeInImage(
-                            fadeInDuration: const Duration(milliseconds: 250),
-                            placeholder: MemoryImage(kTransparentImage),
-                            image: const AssetImage('assets/camouflage.png'),
-                            fit: BoxFit.cover,
-                          ),
+                child: (snapshot.hasData &&
+                        snapshot.data!.backgroundImage != null)
+                    ? FadeInImage.memoryNetwork(
+                        fadeInDuration: const Duration(milliseconds: 250),
+                        placeholder: kTransparentImage,
+                        image: snapshot.data!.backgroundImage!,
+                        fit: BoxFit.cover,
+                      )
+                    // : FadeInImage(
+                    //     fadeInDuration: const Duration(milliseconds: 250),
+                    //     placeholder: MemoryImage(kTransparentImage),
+                    //     image: const AssetImage('assets/camouflage.png'),
+                    //     fit: BoxFit.cover,
+                    //   ),
+                    : Container(),
               ),
             ),
             Container(
