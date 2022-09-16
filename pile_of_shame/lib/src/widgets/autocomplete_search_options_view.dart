@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:pile_of_shame/src/widgets/search_result_highlight.dart';
 
-class AutocompleteSearchOptionsView extends StatelessWidget {
+class AutocompleteSearchOptionsView<T extends Object> extends StatelessWidget {
   const AutocompleteSearchOptionsView({
     super.key,
     required this.onSelected,
@@ -13,9 +13,9 @@ class AutocompleteSearchOptionsView extends StatelessWidget {
 
   final String searchTerm;
 
-  final AutocompleteOnSelected<String> onSelected;
+  final AutocompleteOnSelected<T> onSelected;
 
-  final Iterable<String> options;
+  final Iterable<T> options;
   final double maxOptionsHeight;
 
   @override
@@ -31,7 +31,7 @@ class AutocompleteSearchOptionsView extends StatelessWidget {
             shrinkWrap: true,
             itemCount: options.length,
             itemBuilder: (BuildContext context, int index) {
-              final String option = options.elementAt(index);
+              final T option = options.elementAt(index);
               return InkWell(
                 onTap: () {
                   onSelected(option);
@@ -49,7 +49,7 @@ class AutocompleteSearchOptionsView extends StatelessWidget {
                     color: highlight ? Theme.of(context).focusColor : null,
                     padding: const EdgeInsets.all(16.0),
                     child: SearchResultHighlight(
-                      string: option,
+                      string: option.toString(),
                       searchTerm: searchTerm,
                     ),
                   );
