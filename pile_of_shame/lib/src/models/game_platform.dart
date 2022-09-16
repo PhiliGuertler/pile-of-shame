@@ -3,6 +3,10 @@ class GamePlatform {
   final String abbreviation;
   final int rawgId;
 
+  String toString() {
+    return '$name [$abbreviation]';
+  }
+
   const GamePlatform(
       {required this.name, required this.rawgId, required this.abbreviation});
 }
