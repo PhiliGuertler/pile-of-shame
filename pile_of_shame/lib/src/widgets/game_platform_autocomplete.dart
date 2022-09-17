@@ -6,7 +6,7 @@ import 'autocomplete_search_options_view.dart';
 typedef GamePlatformType = GamePlatform;
 
 class GamePlatformAutocomplete extends StatelessWidget {
-  GamePlatformAutocomplete(
+  const GamePlatformAutocomplete(
       {super.key,
       required this.textEditingController,
       required this.focusNode,

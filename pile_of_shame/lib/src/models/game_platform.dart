@@ -3,6 +3,7 @@ class GamePlatform {
   final String abbreviation;
   final int rawgId;
 
+  @override
   String toString() {
     return '$name [$abbreviation]';
   }
