@@ -203,7 +203,7 @@ class _GameDetailsState extends State<GameDetails> {
                     children: [
                       if (snapshot.hasData) Pair('Name', snapshot.data!.title),
                       if (snapshot.hasData)
-                        Pair('Platform', snapshot.data!.platforms.join(', ')),
+                        Pair('Plattform', snapshot.data!.platforms.join(', ')),
                       if (snapshot.hasData)
                         Pair('Preis',
                             '${snapshot.data!.price?.toStringAsFixed(2) ?? 0.toStringAsFixed(2)} €'),

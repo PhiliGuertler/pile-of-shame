@@ -16,7 +16,7 @@ class GamePlatformAutocomplete extends StatelessWidget {
       this.isRemovable = false,
       required this.platforms,
       this.validator,
-      this.title = 'Platform*'});
+      this.title = 'Plattform*'});
 
   final void Function(GamePlatformType)? onSelected;
   final void Function() onRemove;

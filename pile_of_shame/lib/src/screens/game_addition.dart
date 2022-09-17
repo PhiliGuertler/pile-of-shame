@@ -40,7 +40,7 @@ class _AddGameScreenState extends State<AddGameScreen> {
       (platformInput) {
         return GamePlatformAutocomplete(
           title:
-              'Platform${platformInput.key == 0 ? '*' : ' ${(platformInput.key + 1).toString()}'}',
+              'Plattform${platformInput.key == 0 ? '*' : ' ${(platformInput.key + 1).toString()}'}',
           textEditingController: platformInput.value.textEditingController,
           value: platformInput.value.platform,
           platforms: GamePlatforms.toList().where((element) {
@@ -192,6 +192,8 @@ class _AddGameScreenState extends State<AddGameScreen> {
                               final Game game = Game(
                                 title: _selectedName!,
                                 platforms: _selectedPlatforms
+                                    .where((selection) =>
+                                        selection.platform != null)
                                     .map((platform) =>
                                         platform.platform?.name ??
                                         'Unbekannte Platform')
