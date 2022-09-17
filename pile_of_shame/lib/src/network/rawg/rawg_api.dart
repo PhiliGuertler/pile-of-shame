@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:pile_of_shame/src/models/game_platform.dart';
 import 'package:pile_of_shame/src/network/rawg/authentication.dart';
 
 class RawgGame {
@@ -39,6 +40,27 @@ class RawgApi {
     final queryParameters = {
       'key': rawgApiKey,
       'search': gameName,
+    };
+    final response = await http.get(
+      Uri.https('api.rawg.io', '/api/games', queryParameters),
+    );
+
+    if (response.statusCode == 200) {
+      // find the game we wanted
+      final List<dynamic> results = jsonDecode(response.body)['results'];
+      final Iterable<RawgGame> parsedResults =
+          results.map((result) => RawgGame.fromJson(result));
+      return parsedResults;
+    }
+    throw Exception('Fetching game failed');
+  }
+
+  Future<Iterable<RawgGame>> searchGameByNameAndPlatform(
+      String gameName, GamePlatform platform) async {
+    final queryParameters = {
+      'key': rawgApiKey,
+      'search': gameName,
+      'platforms': '${platform.rawgId}',
     };
     final response = await http.get(
       Uri.https('api.rawg.io', '/api/games', queryParameters),
