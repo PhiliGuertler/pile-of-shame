@@ -57,7 +57,7 @@ class _AddGameScreenState extends State<AddGameScreen> {
               }
             });
           },
-          isRemovable: platformInput.key <= _selectedPlatforms.length,
+          isRemovable: platformInput.value.platform != null,
           onRemove: () {
             setState(() {
               _selectedPlatforms.removeAt(platformInput.key);
@@ -204,19 +204,15 @@ class _AddGameScreenState extends State<AddGameScreen> {
                               );
 
                               // get the list of games from storage
-                              Storage().readGames().then((gameList) {
-                                gameList.add(game);
-                                Storage().writeGames(gameList).then(
-                                  (value) {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                          content: Text(
-                                              'Spiel $_selectedName hinzugefügt.')),
-                                    );
-
-                                    Navigator.pop(context);
-                                  },
+                              Storage().addOrUpdateGame(game).then((result) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(result
+                                        ? 'Spiel $_selectedName hinzugefügt.'
+                                        : 'Spiel $_selectedName aktualisiert.'),
+                                  ),
                                 );
+                                Navigator.pop(context);
                               });
                             }
                           },
