@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:quiver/core.dart';
+import 'package:uuid/uuid.dart';
 import 'age_restrictions.dart';
-import 'package:collection/collection.dart';
 
 class Game {
+  final String uuid;
+
   /// the game's title
   String title;
 
@@ -54,10 +56,11 @@ class Game {
     this.metacriticScore,
     this.backgroundImage,
     this.rawgGameId,
-  });
+  }) : uuid = const Uuid().v4();
 
   Game.from(Game other)
-      : title = other.title,
+      : uuid = other.uuid,
+        title = other.title,
         platforms = other.platforms,
         price = other.price,
         ageRestriction = other.ageRestriction,
@@ -80,7 +83,8 @@ class Game {
   }
 
   Game.fromJson(Map<String, dynamic> json)
-      : title = json['title'],
+      : uuid = json['uuid'],
+        title = json['title'],
         platforms = List<String>.from(json['platforms'] as List),
         price = json['price'],
         ageRestriction = json['ageRestriction'] != null
@@ -97,6 +101,7 @@ class Game {
         rawgGameId = json['rawgGameId'];
 
   Map<String, dynamic> toJson() => {
+        'uuid': uuid,
         'title': title,
         'platforms': platforms,
         'price': price,
@@ -112,24 +117,11 @@ class Game {
 
   @override
   bool operator ==(Object other) {
-    final equalizer = const ListEquality().equals;
-    return (other is Game)
-        ? (title == other.title &&
-            equalizer(platforms, other.platforms) &&
-            price == other.price &&
-            ageRestriction == other.ageRestriction &&
-            isFavourite == other.isFavourite &&
-            notes == other.notes &&
-            wasScraped == other.wasScraped &&
-            releaseDate == other.releaseDate &&
-            metacriticScore == other.metacriticScore &&
-            backgroundImage == other.backgroundImage &&
-            rawgGameId == other.rawgGameId)
-        : false;
+    return (other is Game) ? (uuid == other.uuid) : false;
   }
 
   @override
   int get hashCode {
-    return hash2(title, platforms);
+    return hash2(uuid, title);
   }
 }

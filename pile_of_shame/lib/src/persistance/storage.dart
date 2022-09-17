@@ -47,36 +47,22 @@ class Storage {
     return file.writeAsString(jsonEncode(games));
   }
 
-  // ######################################################################## //
-  // ### Platforms ########################################################## //
-
-  Future<File> get _localPlatformsFile async {
-    final path = await _localPath;
-    return File('$path/platforms.json');
-  }
-
-  Future<List<String>> readPlatforms() async {
-    try {
-      // Get the file
-      final file = await _localPlatformsFile;
-      // Read it
-      final contents = await file.readAsString();
-      // decode the json contents to a List of Platforms
-      List<dynamic> decodedContents = jsonDecode(contents);
-      // generate Platform-Objects from the decoded contents
-      return decodedContents.map((entry) => entry.toString()).toList();
-    } catch (error) {
-      debugPrint(
-          'An error occured while reading the file: ${error.toString()}');
-      // return an empty list
-      return <String>[];
+  /// saves or updates a game in storage
+  /// returns true if the game was added, false if updated
+  Future<bool> addOrUpdateGame(Game game) async {
+    // find game with given game' s uuid
+    final List<Game> gameList = await readGames();
+    final int gameIndex = gameList.indexOf(game);
+    bool result = false;
+    if (gameIndex == -1) {
+      // this game does not exist in the list yet, add it
+      result = true;
+      gameList.add(game);
+    } else {
+      // this game does exist, update it in the list
+      gameList[gameIndex] = game;
     }
-  }
-
-  Future<File> writePlatforms(List<String> platforms) async {
-    // Get the file
-    final file = await _localPlatformsFile;
-    // write the games as a json
-    return file.writeAsString(jsonEncode(platforms));
+    await writeGames(gameList);
+    return result;
   }
 }

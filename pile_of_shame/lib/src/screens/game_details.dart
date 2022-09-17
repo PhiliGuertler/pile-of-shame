@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:pile_of_shame/src/models/game_platform.dart';
 import 'package:pile_of_shame/src/network/rawg/rawg_api.dart';
 import 'package:pile_of_shame/src/persistance/storage.dart';
 import 'package:pile_of_shame/src/widgets/game_list_item.dart';
@@ -7,6 +8,7 @@ import 'package:transparent_image/transparent_image.dart';
 
 import '../models/age_restrictions.dart';
 import '../models/game.dart';
+import 'edit_game_details.dart';
 
 class Pair<T1, T2> {
   final T1 a;
@@ -27,9 +29,9 @@ class GameDetails extends StatefulWidget {
 class _GameDetailsState extends State<GameDetails> {
   late Future<Game> mostRecentGame;
 
-  Future<Game> scrapeGameData(String gameTitle) async {
+  Future<Game> scrapeGameData(String gameTitle, GamePlatform platform) async {
     Iterable<RawgGame> scrapedGames =
-        await RawgApi().searchGameByName(gameTitle);
+        await RawgApi().searchGameByNameAndPlatform(gameTitle, platform);
     // For now, just assume the first result is the match we want
     final RawgGame scrapy = scrapedGames.first;
     final Game scrapedGame = Game.from(widget.game);
@@ -42,19 +44,7 @@ class _GameDetailsState extends State<GameDetails> {
     scrapedGame.rawgGameId = scrapedGame.rawgGameId ?? scrapy.id;
     scrapedGame.wasScraped = true;
 
-    // TODO: update the persisted game
-    List<Game> allGames = await Storage().readGames();
-    final index = allGames.indexOf(widget.game);
-    if (index == -1) {
-      if (!mounted) return scrapedGame;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-              '[Scraping] Das Spiel $gameTitle konnte nicht gefunden werden.'),
-        ),
-      );
-      return scrapedGame;
-    }
+    await Storage().addOrUpdateGame(scrapedGame);
 
     if (!mounted) return scrapedGame;
     ScaffoldMessenger.of(context).showSnackBar(
@@ -63,9 +53,6 @@ class _GameDetailsState extends State<GameDetails> {
             Text('[Scraping] Zusätliche Informationen zu $gameTitle geladen.'),
       ),
     );
-    // override the current game
-    allGames[index] = scrapedGame;
-    await Storage().writeGames(allGames);
 
     return scrapedGame;
   }
@@ -75,8 +62,11 @@ class _GameDetailsState extends State<GameDetails> {
     super.initState();
     debugPrint(widget.game.toJson().toString());
     if (!widget.game.wasScraped) {
+      // find the platforms for the currently selected game
+      final platforms = GamePlatforms.toList()
+          .where((element) => widget.game.platforms.contains(element.name));
       // Fetch game info here
-      mostRecentGame = scrapeGameData(widget.game.title);
+      mostRecentGame = scrapeGameData(widget.game.title, platforms.first);
     } else {
       mostRecentGame = Future<Game>(() => widget.game);
     }
@@ -174,21 +164,15 @@ class _GameDetailsState extends State<GameDetails> {
               child: SizedBox(
                 width: MediaQuery.of(context).size.width,
                 height: queryData.size.height > 900 ? 350 : 200,
-                child: (snapshot.hasData &&
-                        snapshot.data!.backgroundImage != null)
-                    ? FadeInImage.memoryNetwork(
-                        fadeInDuration: const Duration(milliseconds: 250),
-                        placeholder: kTransparentImage,
-                        image: snapshot.data!.backgroundImage!,
-                        fit: BoxFit.cover,
-                      )
-                    // : FadeInImage(
-                    //     fadeInDuration: const Duration(milliseconds: 250),
-                    //     placeholder: MemoryImage(kTransparentImage),
-                    //     image: const AssetImage('assets/camouflage.png'),
-                    //     fit: BoxFit.cover,
-                    //   ),
-                    : Container(),
+                child:
+                    (snapshot.hasData && snapshot.data!.backgroundImage != null)
+                        ? FadeInImage.memoryNetwork(
+                            fadeInDuration: const Duration(milliseconds: 250),
+                            placeholder: kTransparentImage,
+                            image: snapshot.data!.backgroundImage!,
+                            fit: BoxFit.cover,
+                          )
+                        : Container(),
               ),
             ),
             Container(
@@ -231,6 +215,7 @@ class _GameDetailsState extends State<GameDetails> {
                       if (snapshot.hasData && snapshot.data!.rawgGameId != null)
                         Pair('Scraping powered by RAWG.io',
                             'Game-ID ${snapshot.data!.rawgGameId!.toString()}'),
+                      if (snapshot.hasData) Pair('UUID', snapshot.data!.uuid),
                     ]
                         .map((item) => ListTile(
                               title: Text(item.a),
