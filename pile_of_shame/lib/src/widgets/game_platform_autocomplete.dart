@@ -6,10 +6,10 @@ import 'autocomplete_search_options_view.dart';
 typedef GamePlatformType = GamePlatform;
 
 class GamePlatformAutocomplete extends StatelessWidget {
-  const GamePlatformAutocomplete(
+  GamePlatformAutocomplete(
       {super.key,
-      required this.onChanged,
-      required this.searchValue,
+      required this.textEditingController,
+      required this.focusNode,
       this.value,
       this.onSelected,
       required this.onRemove,
@@ -20,19 +20,21 @@ class GamePlatformAutocomplete extends StatelessWidget {
 
   final void Function(GamePlatformType)? onSelected;
   final void Function() onRemove;
-  final void Function(String) onChanged;
-  final String searchValue;
   final GamePlatformType? value;
   final bool isRemovable;
   final String? Function(String?)? validator;
   final Iterable<GamePlatformType> platforms;
   final String title;
 
+  final TextEditingController textEditingController;
+  final FocusNode focusNode;
+
   @override
   Widget build(BuildContext context) {
-    // TODO: Don't use autocomplete, try text fields and custom popups instead
-    return Autocomplete<GamePlatformType>(
+    return RawAutocomplete<GamePlatformType>(
+      focusNode: focusNode,
       onSelected: onSelected,
+      textEditingController: textEditingController,
       fieldViewBuilder:
           ((context, textEditingController, focusNode, onFieldSubmitted) {
         return TextFormField(
@@ -54,13 +56,6 @@ class GamePlatformAutocomplete extends StatelessWidget {
           onFieldSubmitted: (String value) {
             onFieldSubmitted();
           },
-          onChanged: (String value) {
-            onChanged(value);
-            if (value.isEmpty && isRemovable) {
-              // notify the UI that the current input is now empty
-              onRemove();
-            }
-          },
           validator: validator,
         );
       }),
@@ -78,7 +73,7 @@ class GamePlatformAutocomplete extends StatelessWidget {
         return AutocompleteSearchOptionsView<GamePlatformType>(
           onSelected: onSelected,
           options: options,
-          searchTerm: searchValue,
+          searchTerm: textEditingController.text,
           maxOptionsHeight: 400,
         );
       },

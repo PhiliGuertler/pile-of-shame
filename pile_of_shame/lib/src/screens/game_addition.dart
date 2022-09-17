@@ -9,9 +9,12 @@ import 'package:pile_of_shame/src/widgets/game_platform_autocomplete.dart';
 import '../models/game.dart';
 
 class PlatformSearchInput {
-  PlatformSearchInput({this.searchString = '', this.platform});
+  PlatformSearchInput({this.platform})
+      : textEditingController = TextEditingController(),
+        focusNode = FocusNode();
 
-  String searchString;
+  TextEditingController textEditingController;
+  FocusNode focusNode;
   GamePlatform? platform;
 }
 
@@ -38,20 +41,17 @@ class _AddGameScreenState extends State<AddGameScreen> {
         return GamePlatformAutocomplete(
           title:
               'Platform${platformInput.key == 0 ? '*' : ' ${(platformInput.key + 1).toString()}'}',
-          onChanged: (String searchValue) {
-            setState(() {
-              _selectedPlatforms[platformInput.key].searchString = searchValue;
-            });
-          },
-          searchValue: platformInput.value.searchString,
+          textEditingController: platformInput.value.textEditingController,
           value: platformInput.value.platform,
           platforms: GamePlatforms.toList().where((element) {
             return !_selectedPlatforms.map((s) => s.platform).contains(element);
           }),
+          focusNode: platformInput.value.focusNode,
           onSelected: (GamePlatform value) {
             setState(() {
               // update the platform of this currently selected item
               _selectedPlatforms[platformInput.key].platform = value;
+              _selectedPlatforms[platformInput.key].focusNode.unfocus();
               if (_selectedPlatforms.length > platformInput.key) {
                 _selectedPlatforms.add(PlatformSearchInput());
               }
