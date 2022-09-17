@@ -45,11 +45,14 @@ class GamePlatformAutocomplete extends StatelessWidget {
             hintText: 'Wii, Nintendo Switch, PC, ...',
             labelText: title,
             suffix: (isRemovable
-                ? IconButton(
-                    icon: const Icon(Icons.close),
-                    onPressed: () {
-                      onRemove();
-                    },
+                ? Padding(
+                    padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+                    child: InkWell(
+                      child: const Icon(Icons.close, size: 15),
+                      onTap: () {
+                        onRemove();
+                      },
+                    ),
                   )
                 : null),
           ),
