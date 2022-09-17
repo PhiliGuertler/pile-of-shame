@@ -43,7 +43,8 @@ class _AddGameScreenState extends State<AddGameScreen> {
               _selectedPlatforms[platformInput.key].searchString = searchValue;
             });
           },
-          value: platformInput.value.searchString,
+          searchValue: platformInput.value.searchString,
+          value: platformInput.value.platform,
           platforms: GamePlatforms.toList().where((element) {
             return !_selectedPlatforms.map((s) => s.platform).contains(element);
           }),

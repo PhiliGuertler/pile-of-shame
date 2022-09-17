@@ -9,7 +9,8 @@ class GamePlatformAutocomplete extends StatelessWidget {
   const GamePlatformAutocomplete(
       {super.key,
       required this.onChanged,
-      required this.value,
+      required this.searchValue,
+      this.value,
       this.onSelected,
       required this.onRemove,
       this.isRemovable = false,
@@ -20,7 +21,8 @@ class GamePlatformAutocomplete extends StatelessWidget {
   final void Function(GamePlatformType)? onSelected;
   final void Function() onRemove;
   final void Function(String) onChanged;
-  final String value;
+  final String searchValue;
+  final GamePlatformType? value;
   final bool isRemovable;
   final String? Function(String?)? validator;
   final Iterable<GamePlatformType> platforms;
@@ -28,6 +30,7 @@ class GamePlatformAutocomplete extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // TODO: Don't use autocomplete, try text fields and custom popups instead
     return Autocomplete<GamePlatformType>(
       onSelected: onSelected,
       fieldViewBuilder:
@@ -41,7 +44,7 @@ class GamePlatformAutocomplete extends StatelessWidget {
             labelText: title,
             suffix: (isRemovable
                 ? IconButton(
-                    icon: const Icon(Icons.delete),
+                    icon: const Icon(Icons.close),
                     onPressed: () {
                       onRemove();
                     },
@@ -75,7 +78,7 @@ class GamePlatformAutocomplete extends StatelessWidget {
         return AutocompleteSearchOptionsView<GamePlatformType>(
           onSelected: onSelected,
           options: options,
-          searchTerm: value,
+          searchTerm: searchValue,
           maxOptionsHeight: 400,
         );
       },
