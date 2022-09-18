@@ -42,18 +42,6 @@ class _GameScreenState extends State<GameScreen> {
       appBar: AppBar(
         title: const Text('Hauptseite'),
         actions: [
-          IconButton(
-            onPressed: () async {
-              await Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const AddGameScreen(),
-                ),
-              );
-              refresh();
-            },
-            icon: const Icon(Icons.add_circle_outline),
-          ),
           PopupMenuButton<SortStrategy>(
             onSelected: (value) {
               final SortStrategy sortStrategy =
@@ -130,11 +118,59 @@ class _GameScreenState extends State<GameScreen> {
               ),
             ],
           ),
-          IconButton(
-            onPressed: () {
-              refresh();
-            },
-            icon: const Icon(Icons.refresh),
+          PopupMenuButton(
+            itemBuilder: (context) => [
+              PopupMenuItem(
+                child: ListTile(
+                  leading: const Icon(Icons.add_circle_outline),
+                  onTap: () async {
+                    await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const AddGameScreen(),
+                      ),
+                    );
+                    refresh();
+                  },
+                  title: const Text('Neues Spiel hinzufügen'),
+                ),
+              ),
+              PopupMenuItem(
+                child: ListTile(
+                  leading: const Icon(Icons.refresh),
+                  onTap: () {
+                    refresh();
+                  },
+                  title: const Text('Neu laden'),
+                ),
+              ),
+              PopupMenuItem(
+                onTap: () async {
+                  final bool wasSuccessful = await Storage().exportGames();
+                  if (wasSuccessful) {
+                    if (!mounted) return;
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Spiele erfolgreich exportiert'),
+                      ),
+                    );
+                  }
+                },
+                child: const ListTile(
+                  leading: Icon(Icons.import_export),
+                  title: Text('Spiele exportieren'),
+                ),
+              ),
+              PopupMenuItem(
+                child: ListTile(
+                  leading: const Icon(Icons.import_export),
+                  onTap: () async {
+                    refresh();
+                  },
+                  title: const Text('Spiele importieren'),
+                ),
+              ),
+            ],
           ),
         ],
       ),

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -95,5 +96,63 @@ class Storage {
       return matches.first;
     }
     throw Exception('Game with uuid $uuid does not exist.');
+  }
+
+  Future<List<Game>> importGames() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['json'],
+    );
+    if (result != null) {
+      File file = File(result.files.single.path!);
+      try {
+        final contents = await file.readAsString();
+        // decode the json contents to a List of Games
+        List<dynamic> decodedContents = jsonDecode(contents);
+        // generate Game-Objects from the decoded contents
+        List<Game> importedGames =
+            decodedContents.map((entry) => Game.fromJson(entry)).toList();
+        // Merge existing games with imported games
+        List<Game> existingGames = await readGames();
+        List<Game> mergedGames = List.from(existingGames);
+        for (var importedGame in importedGames) {
+          if (mergedGames
+              .where((element) => element.uuid == importedGame.uuid)
+              .isEmpty) {
+            mergedGames.add(importedGame);
+          }
+        }
+
+        return mergedGames;
+      } catch (error) {
+        debugPrint(
+            'An error occured while reading the file: ${error.toString()}');
+        // return an empty list
+        return <Game>[];
+      }
+    }
+    return <Game>[];
+  }
+
+  Future<bool> exportGames() async {
+    // TODO: Implement this feature! On windows, we can use FilePicker.saveFile, on Android use share_plus
+    if (Platform.isWindows || Platform.isMacOS || Platform.isLinux) {
+      String? outputFile = await FilePicker.platform.saveFile(
+        dialogTitle: 'Wähle einen Speicherort für die Export-Datei:',
+        fileName: 'games_pile-of-shame.json',
+      );
+      if (outputFile == null) {
+        // User cancelled export
+        return false;
+      }
+      // Write the file
+      File file = File(outputFile);
+      List<Game> storedGames = await readGames();
+      file.writeAsString(jsonEncode(storedGames));
+      return true;
+    } else {
+      debugPrint('TODO: Implement sharing to the phone\'s internal storage');
+    }
+    return false;
   }
 }
