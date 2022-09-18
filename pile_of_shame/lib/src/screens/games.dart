@@ -121,55 +121,59 @@ class _GameScreenState extends State<GameScreen> {
           PopupMenuButton(
             itemBuilder: (context) => [
               PopupMenuItem(
-                onTap: () async {
-                  await Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const AddGameScreen(),
-                    ),
-                  );
-                  refresh();
-                },
-                child: const ListTile(
-                  leading: Icon(Icons.add_circle_outline),
-                  title: Text('Neues Spiel hinzufügen'),
-                ),
-              ),
-              PopupMenuItem(
-                onTap: () {
-                  refresh();
-                },
-                child: const ListTile(
-                  leading: Icon(Icons.refresh),
-                  title: Text('Neu laden'),
-                ),
-              ),
-              PopupMenuItem(
-                onTap: () async {
-                  final bool wasSuccessful = await Storage().exportGames();
-                  if (wasSuccessful) {
-                    if (!mounted) return;
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Spiele erfolgreich exportiert'),
+                padding: EdgeInsets.zero,
+                child: ListTile(
+                  leading: const Icon(Icons.add_circle_outline),
+                  title: const Text('Neues Spiel hinzufügen'),
+                  onTap: () async {
+                    await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const AddGameScreen(),
                       ),
                     );
-                  }
-                },
-                child: const ListTile(
-                  leading: Icon(Icons.import_export),
-                  title: Text('Spiele exportieren'),
+                    refresh();
+                  },
                 ),
               ),
               PopupMenuItem(
-                onTap: () async {
-                  List<Game> allGames = await Storage().importGames();
-                  await Storage().writeGames(allGames);
-                  refresh();
-                },
-                child: const ListTile(
-                  leading: Icon(Icons.import_export),
-                  title: Text('Spiele importieren'),
+                padding: EdgeInsets.zero,
+                child: ListTile(
+                  leading: const Icon(Icons.refresh),
+                  title: const Text('Neu laden'),
+                  onTap: () {
+                    refresh();
+                  },
+                ),
+              ),
+              PopupMenuItem(
+                padding: EdgeInsets.zero,
+                child: ListTile(
+                  leading: const Icon(Icons.import_export),
+                  title: const Text('Spiele exportieren'),
+                  onTap: () async {
+                    final bool wasSuccessful = await Storage().exportGames();
+                    if (wasSuccessful) {
+                      if (!mounted) return;
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Spiele erfolgreich exportiert'),
+                        ),
+                      );
+                    }
+                  },
+                ),
+              ),
+              PopupMenuItem(
+                padding: EdgeInsets.zero,
+                child: ListTile(
+                  leading: const Icon(Icons.import_export),
+                  title: const Text('Spiele importieren'),
+                  onTap: () async {
+                    List<Game> allGames = await Storage().importGames();
+                    await Storage().writeGames(allGames);
+                    refresh();
+                  },
                 ),
               ),
             ],
