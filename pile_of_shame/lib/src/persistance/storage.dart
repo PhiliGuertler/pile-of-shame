@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../models/game.dart';
 
@@ -151,8 +152,10 @@ class Storage {
       file.writeAsString(jsonEncode(storedGames));
       return true;
     } else {
-      debugPrint('TODO: Implement sharing to the phone\'s internal storage');
+      File file = await _localGamesFile;
+      final result =
+          await Share.shareFilesWithResult([file.path], text: 'Pile of Shame');
+      return result.status == ShareResultStatus.success;
     }
-    return false;
   }
 }
