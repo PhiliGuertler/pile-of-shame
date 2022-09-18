@@ -1,6 +1,7 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:pile_of_shame/src/persistance/storage.dart';
 
 import '../models/age_restrictions.dart';
 import '../models/game.dart';
@@ -21,9 +22,22 @@ class EditGameDetails extends StatefulWidget {
 class _EditGameDetailsState extends State<EditGameDetails> {
   List<PlatformSearchInput> _selectedPlatforms = [];
 
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _priceController = TextEditingController();
+  final TextEditingController _notesController = TextEditingController();
+  DateTime? _releaseDate;
+  final TextEditingController _releaseDateController = TextEditingController();
+  final TextEditingController _metacriticScoreController =
+      TextEditingController();
+  final TextEditingController _backgroundImageController =
+      TextEditingController();
+  final TextEditingController _rawgGameIdController = TextEditingController();
+  AgeRestriction? _ageRestrictionController;
+
   @override
   void initState() {
     super.initState();
+    // initialize platforms
     final List<PlatformSearchInput> initialPlatforms =
         widget.game.platforms.map((platform) {
       final GamePlatform gamePlatform = GamePlatforms.byName(platform);
@@ -35,6 +49,21 @@ class _EditGameDetailsState extends State<EditGameDetails> {
     initialPlatforms.add(PlatformSearchInput());
     setState(() {
       _selectedPlatforms = initialPlatforms;
+    });
+
+    // initialize other controllers
+    setState(() {
+      _nameController.text = widget.game.title;
+      _priceController.text = widget.game.price?.toStringAsFixed(2) ?? '';
+      _notesController.text = widget.game.notes ?? '';
+      _releaseDate = widget.game.releaseDate;
+      _releaseDateController.text =
+          _releaseDate != null ? DateFormat.yMd().format(_releaseDate!) : '';
+      _metacriticScoreController.text =
+          widget.game.metacriticScore?.toString() ?? '';
+      _backgroundImageController.text = widget.game.backgroundImage ?? '';
+      _rawgGameIdController.text = widget.game.rawgGameId?.toString() ?? '';
+      _ageRestrictionController = widget.game.ageRestriction;
     });
   }
 
@@ -91,7 +120,7 @@ class _EditGameDetailsState extends State<EditGameDetails> {
                 hintText: 'NieR: Automata, Super Mario Odyssey, ...',
                 labelText: 'Name*',
               ),
-              initialValue: widget.game.title,
+              controller: _nameController,
             ),
             Column(
               children: platformInputs,
@@ -102,7 +131,7 @@ class _EditGameDetailsState extends State<EditGameDetails> {
                 labelText: 'Preis',
               ),
               keyboardType: TextInputType.number,
-              initialValue: widget.game.price?.toStringAsFixed(2),
+              controller: _priceController,
             ),
             TextFormField(
               decoration: const InputDecoration(
@@ -110,7 +139,7 @@ class _EditGameDetailsState extends State<EditGameDetails> {
                 labelText: 'Anmerkungen',
                 hintText: 'Ausgeliehen, inkl. DLC, ...',
               ),
-              initialValue: widget.game.notes,
+              controller: _notesController,
             ),
             TextFormField(
               decoration: const InputDecoration(
@@ -130,13 +159,15 @@ class _EditGameDetailsState extends State<EditGameDetails> {
                 );
                 if (picked != null) {
                   setState(() {
-                    // TODO: set the picked value
+                    // set the picked value
+                    _releaseDate = picked;
+                    _releaseDateController.text = _releaseDate != null
+                        ? DateFormat.yMd().format(_releaseDate!)
+                        : '';
                   });
                 }
               },
-              initialValue: widget.game.releaseDate != null
-                  ? DateFormat.yMd().format(widget.game.releaseDate!)
-                  : null,
+              controller: _releaseDateController,
             ),
             TextFormField(
               decoration: const InputDecoration(
@@ -144,14 +175,14 @@ class _EditGameDetailsState extends State<EditGameDetails> {
                 labelText: 'Metacritic-Score',
               ),
               keyboardType: TextInputType.number,
-              initialValue: widget.game.metacriticScore?.toString(),
+              controller: _metacriticScoreController,
             ),
             TextFormField(
               decoration: const InputDecoration(
                 icon: Icon(Icons.image),
                 labelText: 'Hintergrundbild',
               ),
-              initialValue: widget.game.backgroundImage,
+              controller: _backgroundImageController,
             ),
             // TODO: Spiel suchen und "ID (Name)" als Select hier anzeigen
             TextFormField(
@@ -159,7 +190,7 @@ class _EditGameDetailsState extends State<EditGameDetails> {
                 icon: Icon(Icons.fingerprint),
                 labelText: 'Rawg-Game-ID',
               ),
-              initialValue: widget.game.rawgGameId?.toString(),
+              controller: _rawgGameIdController,
             ),
             Center(
               child: Row(
@@ -181,7 +212,6 @@ class _EditGameDetailsState extends State<EditGameDetails> {
                         isExpanded: true,
                         itemHeight: 70,
                         buttonHeight: 160,
-                        // value: _selectedAge,
                         items: AgeRestriction.values
                             .map<DropdownMenuItem<AgeRestriction>>(
                                 (AgeRestriction ageRestriction) {
@@ -196,18 +226,42 @@ class _EditGameDetailsState extends State<EditGameDetails> {
                         }).toList(),
                         onChanged: ((AgeRestriction? value) {
                           setState(() {
-                            // _selectedAge = value;
+                            _ageRestrictionController = value;
                           });
                         }),
-                        value: widget.game.ageRestriction,
+                        value: _ageRestrictionController,
                       ),
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: ElevatedButton(
-                      onPressed: () {
-                        // TODO: Implement me
+                      onPressed: () async {
+                        // accumulate all changes in a game object
+                        Game editedGame = Game.from(widget.game);
+                        editedGame.title = _nameController.text;
+                        editedGame.platforms = _selectedPlatforms
+                            .where((selection) => selection.platform != null)
+                            .map((platform) =>
+                                platform.platform?.name ??
+                                'Unbekannte Platform')
+                            .toList();
+                        editedGame.price =
+                            double.tryParse(_priceController.text);
+                        editedGame.notes = _notesController.text;
+                        editedGame.releaseDate = _releaseDate;
+                        editedGame.metacriticScore =
+                            int.tryParse(_metacriticScoreController.text);
+                        editedGame.backgroundImage =
+                            _backgroundImageController.text;
+                        editedGame.rawgGameId =
+                            int.tryParse(_rawgGameIdController.text);
+                        editedGame.ageRestriction = _ageRestrictionController;
+
+                        // update the game in storage
+                        await Storage().addOrUpdateGame(editedGame);
+                        if (!mounted) return;
+                        Navigator.pop(context);
                       },
                       child: const Text('Speichern'),
                     ),

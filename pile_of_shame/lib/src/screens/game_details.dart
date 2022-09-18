@@ -18,9 +18,9 @@ class Pair<T1, T2> {
 }
 
 class GameDetails extends StatefulWidget {
-  const GameDetails({super.key, required this.game});
+  const GameDetails({super.key, required this.gameUuid});
 
-  final Game game;
+  final String gameUuid;
 
   @override
   State<GameDetails> createState() => _GameDetailsState();
@@ -32,19 +32,23 @@ class _GameDetailsState extends State<GameDetails> {
   Future<Game> scrapeGameData(String gameTitle, GamePlatform platform) async {
     Iterable<RawgGame> scrapedGames =
         await RawgApi().searchGameByNameAndPlatform(gameTitle, platform);
-    // For now, just assume the first result is the match we want
-    final RawgGame scrapy = scrapedGames.first;
-    final Game scrapedGame = Game.from(widget.game);
-    scrapedGame.backgroundImage =
-        scrapedGame.backgroundImage ?? scrapy.backgroundImage;
-    scrapedGame.releaseDate = scrapedGame.releaseDate ??
-        (scrapy.released != null ? DateTime.parse(scrapy.released!) : null);
-    scrapedGame.metacriticScore =
-        scrapedGame.metacriticScore ?? scrapy.metacriticScore;
-    scrapedGame.rawgGameId = scrapedGame.rawgGameId ?? scrapy.id;
-    scrapedGame.wasScraped = true;
 
-    await Storage().addOrUpdateGame(scrapedGame);
+    final initialGame = await Storage().getGameByUuid(widget.gameUuid);
+    final Game scrapedGame = Game.from(initialGame);
+    if (scrapedGames.isNotEmpty) {
+      // For now, just assume the first result is the match we want
+      final RawgGame scrapy = scrapedGames.first;
+      scrapedGame.backgroundImage =
+          scrapedGame.backgroundImage ?? scrapy.backgroundImage;
+      scrapedGame.releaseDate = scrapedGame.releaseDate ??
+          (scrapy.released != null ? DateTime.parse(scrapy.released!) : null);
+      scrapedGame.metacriticScore =
+          scrapedGame.metacriticScore ?? scrapy.metacriticScore;
+      scrapedGame.rawgGameId = scrapedGame.rawgGameId ?? scrapy.id;
+      scrapedGame.wasScraped = true;
+
+      await Storage().addOrUpdateGame(scrapedGame);
+    }
 
     if (!mounted) return scrapedGame;
     ScaffoldMessenger.of(context).showSnackBar(
@@ -57,19 +61,28 @@ class _GameDetailsState extends State<GameDetails> {
     return scrapedGame;
   }
 
+  void refreshGame() {
+    setState(() {
+      mostRecentGame = Storage().getGameByUuid(widget.gameUuid);
+    });
+  }
+
   @override
   void initState() {
     super.initState();
-    debugPrint(widget.game.toJson().toString());
-    if (!widget.game.wasScraped) {
-      // find the platforms for the currently selected game
-      final platforms = GamePlatforms.toList()
-          .where((element) => widget.game.platforms.contains(element.name));
-      // Fetch game info here
-      mostRecentGame = scrapeGameData(widget.game.title, platforms.first);
-    } else {
-      mostRecentGame = Future<Game>(() => widget.game);
-    }
+    // initialize mostRecentGame with an empty game
+    mostRecentGame =
+        Storage().getGameByUuid(widget.gameUuid).then((loadedGame) {
+      if (!loadedGame.wasScraped) {
+        // find the platforms for the currently selected game
+        final platforms = GamePlatforms.toList()
+            .where((element) => loadedGame.platforms.contains(element.name));
+        // Fetch game info here
+        return scrapeGameData(loadedGame.title, platforms.first);
+      } else {
+        return loadedGame;
+      }
+    });
   }
 
   @override
@@ -78,49 +91,12 @@ class _GameDetailsState extends State<GameDetails> {
     debugPrint(
         '${queryData.size.height.toString()} ${queryData.size.width.toString()}');
 
-    void handleDelete() async {
-      final gameTitle = widget.game.title;
-      // close alert-dialog
-      Navigator.pop(context, 'OK');
-      // Delete the item
-      final allGames = await Storage().readGames();
-      final index = allGames.indexOf(widget.game);
-      if (index == -1) {
-        if (!mounted) return;
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-                '[Löschen] Das Spiel $gameTitle konnte nicht gefunden werden.'),
-          ),
-        );
-        return;
-      }
-      if (!allGames.remove(widget.game)) {
-        if (!mounted) return;
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content:
-                Text('Ein Fehler ist beim Löschen von $gameTitle aufgetreten.'),
-          ),
-        );
-      }
-      await Storage().writeGames(allGames);
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('$gameTitle gelöscht.'),
-        ),
-      );
-
-      // go back to main page
-      Navigator.pop(context);
-    }
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Details'),
         actions: [
-          IconButton(
+          FutureBuilder<Game>(
+            builder: (context, snapshot) => IconButton(
               onPressed: () {
                 showDialog<String>(
                   context: context,
@@ -136,50 +112,93 @@ class _GameDetailsState extends State<GameDetails> {
                         child: const Text('Abbrechen'),
                       ),
                       TextButton(
-                        onPressed: handleDelete,
+                        onPressed: () async {
+                          final gameTitle = snapshot.hasData
+                              ? snapshot.data!.title
+                              : 'Unbekanntes Spiel';
+                          // close alert-dialog
+                          Navigator.pop(context, 'OK');
+                          // Delete the item
+                          bool isDeletionSuccessful =
+                              await Storage().deleteGameByUuid(widget.gameUuid);
+                          if (!isDeletionSuccessful) {
+                            if (!mounted) return;
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                    'Ein Fehler ist beim Löschen von $gameTitle aufgetreten.'),
+                              ),
+                            );
+                            return;
+                          }
+                          if (isDeletionSuccessful) {
+                            if (!mounted) return;
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content:
+                                    Text('$gameTitle erfolgreich gelöscht.'),
+                              ),
+                            );
+                          }
+                          // go back to main page
+                          if (!mounted) return;
+                          Navigator.pop(context);
+                        },
                         child: const Text('Löschen'),
                       ),
                     ],
                   ),
                 );
               },
-              icon: const Icon(Icons.delete)),
+              icon: const Icon(Icons.delete),
+            ),
+          ),
           FutureBuilder<Game>(
-            builder: (context, snapshot) => IconButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: ((context) => EditGameDetails(
-                          game:
-                              snapshot.hasData ? snapshot.data! : widget.game)),
-                    ),
-                  );
-                },
-                icon: const Icon(Icons.edit)),
+            future: mostRecentGame,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return IconButton(
+                  onPressed: () async {
+                    await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: ((context) =>
+                            EditGameDetails(game: snapshot.data!)),
+                      ),
+                    );
+                    refreshGame();
+                  },
+                  icon: const Icon(Icons.edit),
+                );
+              } else {
+                return Container();
+              }
+            },
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: FutureBuilder<Game>(
-          future: mostRecentGame,
-          builder: (context, snapshot) => Column(children: [
-            ShaderMask(
-              shaderCallback: (bounds) {
-                return const LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [Colors.black, Colors.transparent],
-                  stops: [0.6, 1.0],
-                ).createShader(
-                    Rect.fromLTRB(0, 0, bounds.width, bounds.height));
-              },
-              blendMode: BlendMode.dstIn,
-              child: SizedBox(
-                width: MediaQuery.of(context).size.width,
-                height: queryData.size.height > 900 ? 350 : 200,
-                child:
-                    (snapshot.hasData && snapshot.data!.backgroundImage != null)
+      body: FutureBuilder<Game>(
+        future: mostRecentGame,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return SingleChildScrollView(
+              child: Column(children: [
+                ShaderMask(
+                  shaderCallback: (bounds) {
+                    return const LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [Colors.black, Colors.transparent],
+                      stops: [0.6, 1.0],
+                    ).createShader(
+                        Rect.fromLTRB(0, 0, bounds.width, bounds.height));
+                  },
+                  blendMode: BlendMode.dstIn,
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    height: queryData.size.height > 900 ? 350 : 200,
+                    child: (snapshot.hasData &&
+                            snapshot.data!.backgroundImage != null)
                         ? FadeInImage.memoryNetwork(
                             fadeInDuration: const Duration(milliseconds: 250),
                             placeholder: kTransparentImage,
@@ -187,61 +206,73 @@ class _GameDetailsState extends State<GameDetails> {
                             fit: BoxFit.cover,
                           )
                         : Container(),
-              ),
-            ),
-            Container(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  GameListItem(game: widget.game),
-                  ListView(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    children: [
-                      if (snapshot.hasData) Pair('Name', snapshot.data!.title),
-                      if (snapshot.hasData)
-                        Pair('Plattform', snapshot.data!.platforms.join(', ')),
-                      if (snapshot.hasData)
-                        Pair('Preis',
-                            '${snapshot.data!.price?.toStringAsFixed(2) ?? 0.toStringAsFixed(2)} €'),
-                      if (snapshot.hasData)
-                        Pair(
-                            'Altersfreigabe',
-                            AgeRestrictions.getAgeRestrictionText(
-                                snapshot.data!.ageRestriction ??
-                                    AgeRestriction.unknown)),
-                      if (snapshot.hasData && snapshot.data!.notes != null)
-                        Pair('Anmerkungen', snapshot.data!.notes!),
-                      if (snapshot.hasData)
-                        Pair('Favorisiert',
-                            snapshot.data!.isFavourite ? 'Ja' : 'Nein'),
-                      if (snapshot.hasData &&
-                          snapshot.data!.releaseDate != null)
-                        Pair(
-                            'Erscheinungsdatum',
-                            DateFormat.yMd()
-                                .format(snapshot.data!.releaseDate!)),
-                      if (snapshot.hasData &&
-                          snapshot.data!.metacriticScore != null)
-                        Pair('Metacritic Score',
-                            '${snapshot.data!.metacriticScore!.toString()} / 100'),
-                      if (snapshot.hasData && snapshot.data!.rawgGameId != null)
-                        Pair('Scraping powered by RAWG.io',
-                            'Game-ID ${snapshot.data!.rawgGameId!.toString()}'),
-                      if (snapshot.hasData) Pair('UUID', snapshot.data!.uuid),
-                    ]
-                        .map((item) => ListTile(
-                              title: Text(item.a),
-                              subtitle: Text(item.b),
-                            ))
-                        .toList(),
                   ),
-                ],
-              ),
-            ),
-          ]),
-        ),
+                ),
+                Container(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      if (snapshot.hasData) GameListItem(game: snapshot.data!),
+                      ListView(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        children: [
+                          if (snapshot.hasData)
+                            Pair('Name', snapshot.data!.title),
+                          if (snapshot.hasData)
+                            Pair('Plattform',
+                                snapshot.data!.platforms.join(', ')),
+                          if (snapshot.hasData)
+                            Pair('Preis',
+                                '${snapshot.data!.price?.toStringAsFixed(2) ?? 0.toStringAsFixed(2)} €'),
+                          if (snapshot.hasData)
+                            Pair(
+                                'Altersfreigabe',
+                                AgeRestrictions.getAgeRestrictionText(
+                                    snapshot.data!.ageRestriction ??
+                                        AgeRestriction.unknown)),
+                          if (snapshot.hasData && snapshot.data!.notes != null)
+                            Pair('Anmerkungen', snapshot.data!.notes!),
+                          if (snapshot.hasData)
+                            Pair('Favorisiert',
+                                snapshot.data!.isFavourite ? 'Ja' : 'Nein'),
+                          if (snapshot.hasData &&
+                              snapshot.data!.releaseDate != null)
+                            Pair(
+                                'Erscheinungsdatum',
+                                DateFormat.yMd()
+                                    .format(snapshot.data!.releaseDate!)),
+                          if (snapshot.hasData &&
+                              snapshot.data!.metacriticScore != null)
+                            Pair('Metacritic Score',
+                                '${snapshot.data!.metacriticScore!.toString()} / 100'),
+                          if (snapshot.hasData &&
+                              snapshot.data!.rawgGameId != null)
+                            Pair('Scraping powered by RAWG.io',
+                                'Game-ID ${snapshot.data!.rawgGameId!.toString()}'),
+                          if (snapshot.hasData)
+                            Pair('UUID', snapshot.data!.uuid),
+                        ]
+                            .map((item) => ListTile(
+                                  title: Text(item.a),
+                                  subtitle: Text(item.b),
+                                ))
+                            .toList(),
+                      ),
+                    ],
+                  ),
+                ),
+              ]),
+            );
+          } else {
+            return Column(
+              children: [
+                Expanded(child: Center(child: CircularProgressIndicator())),
+              ],
+            );
+          }
+        },
       ),
     );
   }
