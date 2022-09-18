@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -41,6 +42,7 @@ class AnimatedHeart extends StatelessWidget {
                   (random1 * (maxWidth - iconWidth * 2) * 0.6 +
                       (maxWidth - iconWidth * 2) * 0.4),
           bottom: 8 +
+              (Platform.isAndroid ? 4 : 0) +
               up.value *
                   (random2 * (maxHeight - iconHeight - 8) * 0.4 +
                       (maxHeight - iconHeight - 8) * 0.6),
