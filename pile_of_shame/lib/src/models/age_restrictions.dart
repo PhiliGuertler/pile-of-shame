@@ -10,6 +10,9 @@ enum AgeRestriction {
 }
 
 class AgeRestrictions {
+  // private constructor, as this class is not instantiable
+  AgeRestrictions._();
+
   static Color getAgeRestictionColor(AgeRestriction ageRestriction) {
     switch (ageRestriction) {
       case AgeRestriction.usk0:
@@ -44,5 +47,9 @@ class AgeRestrictions {
       default:
         return "???";
     }
+  }
+
+  static int compareAgeRestrictions(AgeRestriction a, AgeRestriction b) {
+    return a.index.compareTo(b.index);
   }
 }

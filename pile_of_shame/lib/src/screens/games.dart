@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:pile_of_shame/src/persistance/storage.dart';
 import 'package:pile_of_shame/src/screens/game_addition.dart';
+import 'package:pile_of_shame/src/utils/game_filters.dart';
 import 'package:pile_of_shame/src/widgets/game_list_item.dart';
 
 import '../models/game.dart';
 import '../widgets/game_list_summary.dart';
+import '../widgets/popup_menu_title.dart';
 import 'game_details.dart';
 
 class GameScreen extends StatefulWidget {
@@ -17,11 +19,12 @@ class GameScreen extends StatefulWidget {
 class _GameScreenState extends State<GameScreen> {
   List<Game> _games = [];
 
+  GameFilters _filters = GameFilters();
+
   void refresh() {
-    debugPrint('Initializing State of Games-Screen');
     Storage().readGames().then((value) {
       setState(() {
-        _games = value;
+        _games = _filters.applyFilters(value);
       });
     });
   }
@@ -50,12 +53,57 @@ class _GameScreenState extends State<GameScreen> {
             },
             icon: const Icon(Icons.add_circle_outline),
           ),
-          IconButton(
-            onPressed: () {
-              debugPrint('TODO: Filter list');
-            },
-            icon: const Icon(Icons.filter_list),
-          ),
+          PopupMenuButton<SortStrategy>(
+              onSelected: (value) {
+                final SortStrategy sortStrategy =
+                    value == SortStrategy.none ? _filters.sortStrategy : value;
+                final bool isDescending = value == SortStrategy.none
+                    ? !_filters.isDescending
+                    : _filters.isDescending;
+                setState(() {
+                  _filters = GameFilters(
+                      sortStrategy: sortStrategy, isDescending: isDescending);
+                });
+                refresh();
+              },
+              icon: const Icon(Icons.filter_list),
+              itemBuilder: (context) => [
+                    const PopupMenuTitle(title: 'Sortieren nach'),
+                    CheckedPopupMenuItem<SortStrategy>(
+                      value: SortStrategy.byDateOfAddition,
+                      checked: _filters.sortStrategy ==
+                          SortStrategy.byDateOfAddition,
+                      child: const Text('Hinzufügedatum'),
+                    ),
+                    CheckedPopupMenuItem<SortStrategy>(
+                      value: SortStrategy.byAlphabet,
+                      checked: _filters.sortStrategy == SortStrategy.byAlphabet,
+                      child: const Text('Alphabet'),
+                    ),
+                    CheckedPopupMenuItem<SortStrategy>(
+                      value: SortStrategy.byAgeRestriction,
+                      checked: _filters.sortStrategy ==
+                          SortStrategy.byAgeRestriction,
+                      child: const Text('Altersbeschränkung'),
+                    ),
+                    CheckedPopupMenuItem<SortStrategy>(
+                      value: SortStrategy.byPrice,
+                      checked: _filters.sortStrategy == SortStrategy.byPrice,
+                      child: const Text('Preis'),
+                    ),
+                    CheckedPopupMenuItem<SortStrategy>(
+                      value: SortStrategy.byPlatform,
+                      checked: _filters.sortStrategy == SortStrategy.byPlatform,
+                      child: const Text('Plattform'),
+                    ),
+                    const PopupMenuDivider(),
+                    const PopupMenuTitle(title: 'Reihenfolge'),
+                    CheckedPopupMenuItem<SortStrategy>(
+                      value: SortStrategy.none,
+                      checked: !_filters.isDescending,
+                      child: const Text('aufsteigend'),
+                    ),
+                  ]),
           IconButton(
             onPressed: () {
               debugPrint('TODO: Import/Export files');
