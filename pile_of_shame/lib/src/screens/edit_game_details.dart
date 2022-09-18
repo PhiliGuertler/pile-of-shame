@@ -1,5 +1,6 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../models/age_restrictions.dart';
 import '../models/game.dart';
@@ -90,6 +91,7 @@ class _EditGameDetailsState extends State<EditGameDetails> {
                 hintText: 'NieR: Automata, Super Mario Odyssey, ...',
                 labelText: 'Name*',
               ),
+              initialValue: widget.game.title,
             ),
             Column(
               children: platformInputs,
@@ -100,6 +102,7 @@ class _EditGameDetailsState extends State<EditGameDetails> {
                 labelText: 'Preis',
               ),
               keyboardType: TextInputType.number,
+              initialValue: widget.game.price?.toStringAsFixed(2),
             ),
             TextFormField(
               decoration: const InputDecoration(
@@ -107,6 +110,7 @@ class _EditGameDetailsState extends State<EditGameDetails> {
                 labelText: 'Anmerkungen',
                 hintText: 'Ausgeliehen, inkl. DLC, ...',
               ),
+              initialValue: widget.game.notes,
             ),
             TextFormField(
               decoration: const InputDecoration(
@@ -130,6 +134,9 @@ class _EditGameDetailsState extends State<EditGameDetails> {
                   });
                 }
               },
+              initialValue: widget.game.releaseDate != null
+                  ? DateFormat.yMd().format(widget.game.releaseDate!)
+                  : null,
             ),
             TextFormField(
               decoration: const InputDecoration(
@@ -137,20 +144,22 @@ class _EditGameDetailsState extends State<EditGameDetails> {
                 labelText: 'Metacritic-Score',
               ),
               keyboardType: TextInputType.number,
+              initialValue: widget.game.metacriticScore?.toString(),
             ),
             TextFormField(
               decoration: const InputDecoration(
                 icon: Icon(Icons.image),
                 labelText: 'Hintergrundbild',
               ),
+              initialValue: widget.game.backgroundImage,
             ),
+            // TODO: Spiel suchen und "ID (Name)" als Select hier anzeigen
             TextFormField(
               decoration: const InputDecoration(
                 icon: Icon(Icons.fingerprint),
                 labelText: 'Rawg-Game-ID',
               ),
-              initialValue:
-                  'TODO: Spiel suchen und "ID (Name)" als Select hier anzeigen',
+              initialValue: widget.game.rawgGameId?.toString(),
             ),
             Center(
               child: Row(
@@ -167,6 +176,7 @@ class _EditGameDetailsState extends State<EditGameDetails> {
                           errorBorder: InputBorder.none,
                           disabledBorder: InputBorder.none,
                           focusedErrorBorder: InputBorder.none,
+                          icon: Icon(Icons.cake),
                         ),
                         isExpanded: true,
                         itemHeight: 70,
@@ -189,6 +199,7 @@ class _EditGameDetailsState extends State<EditGameDetails> {
                             // _selectedAge = value;
                           });
                         }),
+                        value: widget.game.ageRestriction,
                       ),
                     ),
                   ),
