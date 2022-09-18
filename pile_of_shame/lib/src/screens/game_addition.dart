@@ -158,6 +158,7 @@ class _AddGameScreenState extends State<AddGameScreen> {
                               errorBorder: InputBorder.none,
                               disabledBorder: InputBorder.none,
                               focusedErrorBorder: InputBorder.none,
+                              icon: Icon(Icons.cake),
                             ),
                             isExpanded: true,
                             itemHeight: 70,
