@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 
 class PopupMenuTitle<T> extends PopupMenuEntry<T> {
-  static const defaultFontWeight = FontWeight.w600;
-  static const defaultPadding = 16.0;
-
   final String title;
   final TextOverflow overflow;
 
@@ -22,15 +19,13 @@ class PopupMenuTitle<T> extends PopupMenuEntry<T> {
   /// Constructs a [TextPainter] and uses the calculated [TextPainter.height]
   /// with the [defaultPadding] to calculate the height of the widget.
   @override
-  double get height =>
-      (TextPainter(
+  double get height => (TextPainter(
         text: TextSpan(
           text: title,
         ),
         maxLines: 1,
       )..layout())
-          .height +
-      defaultPadding * 2;
+          .height;
 
   /// This menu entry isn't selectable; it represents no value.
   /// Always returns false.
@@ -50,7 +45,7 @@ class _PopupMenuTitleState extends State<PopupMenuTitle> {
     );
 
     return Padding(
-      padding: const EdgeInsets.all(PopupMenuTitle.defaultPadding),
+      padding: const EdgeInsets.only(left: 8.0, right: 8.0),
       child: Text(
         widget.title,
         overflow: widget.overflow,

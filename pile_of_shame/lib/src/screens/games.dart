@@ -7,6 +7,7 @@ import 'package:pile_of_shame/src/widgets/game_list_item.dart';
 import '../models/game.dart';
 import '../widgets/game_list_summary.dart';
 import '../widgets/popup_menu_title.dart';
+import '../widgets/selected_text_style.dart';
 import 'game_details.dart';
 
 class GameScreen extends StatefulWidget {
@@ -69,32 +70,45 @@ class _GameScreenState extends State<GameScreen> {
               icon: const Icon(Icons.filter_list),
               itemBuilder: (context) => [
                     const PopupMenuTitle(title: 'Sortieren nach'),
-                    CheckedPopupMenuItem<SortStrategy>(
+                    PopupMenuItem<SortStrategy>(
                       value: SortStrategy.byDateOfAddition,
-                      checked: _filters.sortStrategy ==
-                          SortStrategy.byDateOfAddition,
-                      child: const Text('Hinzufügedatum'),
+                      child: SelectedTextStyle(
+                        text: 'Hinzufügedatum',
+                        isSelected: _filters.sortStrategy ==
+                            SortStrategy.byDateOfAddition,
+                      ),
                     ),
-                    CheckedPopupMenuItem<SortStrategy>(
+                    PopupMenuItem<SortStrategy>(
                       value: SortStrategy.byAlphabet,
-                      checked: _filters.sortStrategy == SortStrategy.byAlphabet,
-                      child: const Text('Alphabet'),
+                      child: SelectedTextStyle(
+                        text: 'Alphabet',
+                        isSelected:
+                            _filters.sortStrategy == SortStrategy.byAlphabet,
+                      ),
                     ),
-                    CheckedPopupMenuItem<SortStrategy>(
+                    PopupMenuItem<SortStrategy>(
                       value: SortStrategy.byAgeRestriction,
-                      checked: _filters.sortStrategy ==
-                          SortStrategy.byAgeRestriction,
-                      child: const Text('Altersbeschränkung'),
+                      child: SelectedTextStyle(
+                        text: 'Altersbeschränkung',
+                        isSelected: _filters.sortStrategy ==
+                            SortStrategy.byAgeRestriction,
+                      ),
                     ),
-                    CheckedPopupMenuItem<SortStrategy>(
+                    PopupMenuItem<SortStrategy>(
                       value: SortStrategy.byPrice,
-                      checked: _filters.sortStrategy == SortStrategy.byPrice,
-                      child: const Text('Preis'),
+                      child: SelectedTextStyle(
+                        text: 'Preis',
+                        isSelected:
+                            _filters.sortStrategy == SortStrategy.byPrice,
+                      ),
                     ),
-                    CheckedPopupMenuItem<SortStrategy>(
+                    PopupMenuItem<SortStrategy>(
                       value: SortStrategy.byPlatform,
-                      checked: _filters.sortStrategy == SortStrategy.byPlatform,
-                      child: const Text('Plattform'),
+                      child: SelectedTextStyle(
+                        text: 'Plattform',
+                        isSelected:
+                            _filters.sortStrategy == SortStrategy.byPlatform,
+                      ),
                     ),
                     const PopupMenuDivider(),
                     const PopupMenuTitle(title: 'Reihenfolge'),
