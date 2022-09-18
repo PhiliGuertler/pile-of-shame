@@ -162,12 +162,14 @@ class _GameScreenState extends State<GameScreen> {
                 ),
               ),
               PopupMenuItem(
-                child: ListTile(
-                  leading: const Icon(Icons.import_export),
-                  onTap: () async {
-                    refresh();
-                  },
-                  title: const Text('Spiele importieren'),
+                onTap: () async {
+                  List<Game> allGames = await Storage().importGames();
+                  await Storage().writeGames(allGames);
+                  refresh();
+                },
+                child: const ListTile(
+                  leading: Icon(Icons.import_export),
+                  title: Text('Spiele importieren'),
                 ),
               ),
             ],
