@@ -159,11 +159,8 @@ class _GameScreenState extends State<GameScreen> {
                                   GameDetails(gameUuid: game.uuid)));
                       refresh();
                     },
-                    child: Container(
-                      padding: const EdgeInsets.all(8.0),
-                      child: GameListItem(
-                        game: game,
-                      ),
+                    child: GameListItem(
+                      game: game,
                     ),
                   ),
                 ),

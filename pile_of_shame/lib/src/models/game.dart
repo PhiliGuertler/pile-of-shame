@@ -127,7 +127,7 @@ class Game {
 
   Map<String, dynamic> toJson() => {
         'uuid': uuid,
-        'gameState': gameState?.index ?? GameState.currentlyPlaying.index,
+        'gameState': gameState.index,
         'title': title,
         'platforms': platforms,
         'price': price,

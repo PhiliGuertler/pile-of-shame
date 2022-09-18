@@ -33,17 +33,12 @@ class PopupMenuTitle<T> extends PopupMenuEntry<T> {
   bool represents(void value) => false;
 
   @override
-  _PopupMenuTitleState createState() => _PopupMenuTitleState();
+  PopupMenuTitleState createState() => PopupMenuTitleState();
 }
 
-class _PopupMenuTitleState extends State<PopupMenuTitle> {
+class PopupMenuTitleState extends State<PopupMenuTitle> {
   @override
   Widget build(BuildContext context) {
-    assert(
-      Theme.of(context) != null,
-      'Cannot find theme! Specify a custom TextStyle.',
-    );
-
     return Padding(
       padding: const EdgeInsets.only(left: 8.0, right: 8.0),
       child: Text(

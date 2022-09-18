@@ -209,13 +209,13 @@ class _GameDetailsState extends State<GameDetails> {
                         : Container(),
                   ),
                 ),
-                Container(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      if (snapshot.hasData) GameListItem(game: snapshot.data!),
-                      ListView(
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    if (snapshot.hasData) GameListItem(game: snapshot.data!),
+                    Container(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ListView(
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
                         children: [
@@ -267,14 +267,14 @@ class _GameDetailsState extends State<GameDetails> {
                                 ))
                             .toList(),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ]),
             );
           } else {
             return Column(
-              children: [
+              children: const [
                 Expanded(child: Center(child: CircularProgressIndicator())),
               ],
             );
