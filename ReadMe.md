@@ -11,14 +11,16 @@ It will result in an application that simply displays information about games th
 - Deleting a game is working.
 - Scraping data for single games using RAWG.io is working.
 - Saving scraped data for games is implemented and working.
+- Editing Game-Info (and subsequent persisting) is implemented
+- Sorting games by name, platform, price, age-restriction, release-date, favourite is implemented
 
 ## In Progress
-- Editing Game-Info (and subsequent persisting) has to be implemented
 
 ## TODOs
 - Filtering games by platform, series, age-restriction has to be implemented
-- Sorting games by name, platform, price, age-restriction, release-date, favourite has to be implemented
 - Saving platforms entered by the user in a json file and retrieving them from there has to be implemented. The list/file should be initialized with a bunch of known platforms (see game_addition.dart)
+- Exporting/Importing stored games as a json to a location of the user's choosing has to be implemented
+- Storing games-list in google drive might be an option as well
 
 ## Known issues
 - Sometimes the app crashes at special keyboard-inputs like the arrow-keys or backspace when adding a game (sporadically)
