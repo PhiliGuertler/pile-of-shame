@@ -2,7 +2,7 @@
     package="com.example.pile_of_shame">
     <uses-permission android:name="android.permission.INTERNET" />
    <application
-        android:label="pile_of_shame"
+        android:label="Pile of Shame"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
