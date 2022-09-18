@@ -1,14 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:pile_of_shame/src/models/game_platform.dart';
 import 'package:pile_of_shame/src/models/game_status.dart';
+import 'package:pile_of_shame/src/widgets/animated_heart/animated_favourite_button.dart';
 import '../models/game.dart';
+import '../persistance/storage.dart';
 import './age_restriction.dart';
 
-class GameListItem extends StatelessWidget {
+class GameListItem extends StatefulWidget {
   const GameListItem({super.key, required this.game});
 
   final Game game;
 
+  @override
+  State<GameListItem> createState() => _GameListItemState();
+}
+
+class _GameListItemState extends State<GameListItem> {
   @override
   Widget build(BuildContext context) {
     TextStyle headingStyle = const TextStyle(
@@ -18,7 +25,7 @@ class GameListItem extends StatelessWidget {
       fontSize: 16,
     );
 
-    final mainPlatform = GamePlatforms.byName(game.platforms.first);
+    final mainPlatform = GamePlatforms.byName(widget.game.platforms.first);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -42,13 +49,13 @@ class GameListItem extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      game.title,
+                      widget.game.title,
                       style: headingStyle,
                     ),
                     Padding(
                       padding: const EdgeInsets.only(bottom: 8.0),
                       child: Text(
-                        game.platforms.join(', '),
+                        widget.game.platforms.join(', '),
                         style: defaultStyle,
                       ),
                     ),
@@ -70,7 +77,7 @@ class GameListItem extends StatelessWidget {
                       ),
                       padding: const EdgeInsets.all(4.0),
                       child: Text(
-                        GameStates.gameStateToString(game.gameState),
+                        GameStates.gameStateToString(widget.game.gameState),
                         style: TextStyle(
                           color: mainPlatform.color.computeLuminance() > 0.5
                               ? Colors.black
@@ -85,12 +92,17 @@ class GameListItem extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  if (game.isFavourite)
-                    const Icon(Icons.favorite, color: Colors.red),
-                  if (!game.isFavourite) const Icon(Icons.favorite_outline),
-                  if (game.price != null)
+                  AnimatedFavouriteButton(
+                      isFilled: widget.game.isFavourite,
+                      onPressed: () {
+                        setState(() {
+                          widget.game.isFavourite = !widget.game.isFavourite;
+                          Storage().addOrUpdateGame(widget.game);
+                        });
+                      }),
+                  if (widget.game.price != null)
                     Text(
-                      '${game.price!.toStringAsFixed(2)} €',
+                      '${widget.game.price!.toStringAsFixed(2)} €',
                       style: defaultStyle,
                     ),
                 ],
@@ -98,7 +110,7 @@ class GameListItem extends StatelessWidget {
               Container(
                 padding:
                     const EdgeInsets.only(left: 8.0, top: 8.0, bottom: 8.0),
-                child: AgeRestrictionWidget.fromGame(game: game),
+                child: AgeRestrictionWidget.fromGame(game: widget.game),
               )
             ],
           ),

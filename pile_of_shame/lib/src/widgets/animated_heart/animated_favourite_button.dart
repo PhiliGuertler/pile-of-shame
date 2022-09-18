@@ -1,8 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-
-import '../../screens/example_animation.dart';
+import 'package:pile_of_shame/src/widgets/animated_heart/animated_heart.dart';
 
 class AnimatedFavouriteButton extends StatefulWidget {
   const AnimatedFavouriteButton(
@@ -25,6 +24,9 @@ class _AnimatedFavouriteButtonState extends State<AnimatedFavouriteButton>
     super.initState();
     controller =
         AnimationController(vsync: this, duration: const Duration(seconds: 1));
+    if (!widget.isFilled) {
+      controller.value = controller.upperBound;
+    }
   }
 
   @override
@@ -35,40 +37,48 @@ class _AnimatedFavouriteButtonState extends State<AnimatedFavouriteButton>
 
   @override
   Widget build(BuildContext context) {
-    return Center(
+    const double maxWidth = 80;
+    const double maxHeight = 80;
+
+    return UnconstrainedBox(
       child: SizedBox(
-        width: 300,
-        height: 300,
+        width: 80,
+        height: 80,
         child: Stack(
+          alignment: Alignment.bottomCenter,
           children: [
-            HeartAnimation(
+            AnimatedHeart(
               random1: Random().nextDouble(),
               random2: Random().nextDouble(),
+              maxWidth: maxWidth,
+              maxHeight: maxHeight,
               controller: controller,
             ),
-            HeartAnimation(
+            AnimatedHeart(
               random1: Random().nextDouble(),
               random2: Random().nextDouble(),
+              maxWidth: maxWidth,
+              maxHeight: maxHeight,
               controller: controller,
             ),
-            HeartAnimation(
+            AnimatedHeart(
               random1: Random().nextDouble(),
               random2: Random().nextDouble(),
+              maxWidth: maxWidth,
+              maxHeight: maxHeight,
               controller: controller,
             ),
-            Center(
-              child: IconButton(
-                icon: Icon(
-                    widget.isFilled ? Icons.favorite : Icons.favorite_outline,
-                    color: widget.isFilled ? Colors.red : null),
-                onPressed: () {
-                  controller.reset();
-                  controller.forward();
-                  // force a re-render to re-compute random numbers
-                  setState(() {});
-                  widget.onPressed();
-                },
-              ),
+            IconButton(
+              icon: Icon(
+                  widget.isFilled ? Icons.favorite : Icons.favorite_outline,
+                  color: widget.isFilled ? Colors.red : null),
+              onPressed: () {
+                controller.reset();
+                controller.forward();
+                // force a re-render to re-compute random numbers
+                setState(() {});
+                widget.onPressed();
+              },
             ),
           ],
         ),
