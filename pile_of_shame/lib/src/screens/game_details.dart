@@ -144,16 +144,20 @@ class _GameDetailsState extends State<GameDetails> {
                 );
               },
               icon: const Icon(Icons.delete)),
-          IconButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: ((context) => const EditGameDetails()),
-                  ),
-                );
-              },
-              icon: const Icon(Icons.edit)),
+          FutureBuilder<Game>(
+            builder: (context, snapshot) => IconButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: ((context) => EditGameDetails(
+                          game:
+                              snapshot.hasData ? snapshot.data! : widget.game)),
+                    ),
+                  );
+                },
+                icon: const Icon(Icons.edit)),
+          ),
         ],
       ),
       body: SingleChildScrollView(

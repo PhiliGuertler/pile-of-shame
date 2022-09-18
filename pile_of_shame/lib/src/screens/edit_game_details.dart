@@ -2,20 +2,40 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 
 import '../models/age_restrictions.dart';
+import '../models/game.dart';
 import '../models/game_platform.dart';
 import '../widgets/age_restriction.dart';
 import '../widgets/game_platform_autocomplete.dart';
 import 'game_addition.dart';
 
 class EditGameDetails extends StatefulWidget {
-  const EditGameDetails({super.key});
+  const EditGameDetails({super.key, required this.game});
+
+  final Game game;
 
   @override
   State<EditGameDetails> createState() => _EditGameDetailsState();
 }
 
 class _EditGameDetailsState extends State<EditGameDetails> {
-  final List<PlatformSearchInput> _selectedPlatforms = [PlatformSearchInput()];
+  List<PlatformSearchInput> _selectedPlatforms = [];
+
+  @override
+  void initState() {
+    super.initState();
+    final List<PlatformSearchInput> initialPlatforms =
+        widget.game.platforms.map((platform) {
+      final GamePlatform gamePlatform = GamePlatforms.byName(platform);
+      final input = PlatformSearchInput(platform: gamePlatform);
+      input.textEditingController.text =
+          '${gamePlatform.name} [${gamePlatform.abbreviation}]';
+      return input;
+    }).toList();
+    initialPlatforms.add(PlatformSearchInput());
+    setState(() {
+      _selectedPlatforms = initialPlatforms;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
