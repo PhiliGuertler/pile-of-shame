@@ -65,4 +65,35 @@ class Storage {
     await writeGames(gameList);
     return result;
   }
+
+  Future<bool> deleteGame(Game game) async {
+    final List<Game> gameList = await readGames();
+    final index = gameList.indexOf(game);
+    if (index == -1) {
+      return false;
+    }
+    gameList.removeAt(index);
+    await writeGames(gameList);
+    return true;
+  }
+
+  Future<bool> deleteGameByUuid(String uuid) async {
+    final List<Game> gameList = await readGames();
+    final index = gameList.indexWhere((element) => element.uuid == uuid);
+    if (index == -1) {
+      return false;
+    }
+    gameList.removeAt(index);
+    await writeGames(gameList);
+    return true;
+  }
+
+  Future<Game> getGameByUuid(String uuid) async {
+    final List<Game> gameList = await readGames();
+    final matches = gameList.where((element) => element.uuid == uuid);
+    if (matches.length == 1) {
+      return matches.first;
+    }
+    throw Exception('Game with uuid $uuid does not exist.');
+  }
 }
