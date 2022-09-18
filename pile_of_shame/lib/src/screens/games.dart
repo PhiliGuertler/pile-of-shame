@@ -121,27 +121,27 @@ class _GameScreenState extends State<GameScreen> {
           PopupMenuButton(
             itemBuilder: (context) => [
               PopupMenuItem(
-                child: ListTile(
-                  leading: const Icon(Icons.add_circle_outline),
-                  onTap: () async {
-                    await Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const AddGameScreen(),
-                      ),
-                    );
-                    refresh();
-                  },
-                  title: const Text('Neues Spiel hinzufügen'),
+                onTap: () async {
+                  await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const AddGameScreen(),
+                    ),
+                  );
+                  refresh();
+                },
+                child: const ListTile(
+                  leading: Icon(Icons.add_circle_outline),
+                  title: Text('Neues Spiel hinzufügen'),
                 ),
               ),
               PopupMenuItem(
-                child: ListTile(
-                  leading: const Icon(Icons.refresh),
-                  onTap: () {
-                    refresh();
-                  },
-                  title: const Text('Neu laden'),
+                onTap: () {
+                  refresh();
+                },
+                child: const ListTile(
+                  leading: Icon(Icons.refresh),
+                  title: Text('Neu laden'),
                 ),
               ),
               PopupMenuItem(
