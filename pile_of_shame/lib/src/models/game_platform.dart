@@ -16,6 +16,16 @@ class GamePlatforms {
   // private constructor as this class is not meant to be instantiated
   GamePlatforms._();
 
+  /// finds and returns a GamePlatform by its name
+  static GamePlatform byName(String name) {
+    List<GamePlatform> allPlatforms = GamePlatforms.toList();
+    final matches = allPlatforms.where((element) => element.name == name);
+    if (matches.length == 1) {
+      return matches.first;
+    }
+    throw Exception('Platform $name does not exist');
+  }
+
   // ######################################################################## //
   // ### PC ################################################################# //
   // ######################################################################## //
