@@ -2,6 +2,7 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:pile_of_shame/src/models/age_restrictions.dart';
 import 'package:pile_of_shame/src/models/game_platform.dart';
+import 'package:pile_of_shame/src/models/game_status.dart';
 import 'package:pile_of_shame/src/persistance/storage.dart';
 import 'package:pile_of_shame/src/widgets/age_restriction.dart';
 import 'package:pile_of_shame/src/widgets/game_platform_autocomplete.dart';
@@ -29,6 +30,7 @@ class _AddGameScreenState extends State<AddGameScreen> {
   final _formKey = GlobalKey<FormState>();
 
   AgeRestriction? _selectedAge;
+  GameState? _selectedState;
   final List<PlatformSearchInput> _selectedPlatforms = [PlatformSearchInput()];
   String? _selectedName;
   double? _selectedPrice;
@@ -103,6 +105,29 @@ class _AddGameScreenState extends State<AddGameScreen> {
                       return 'Komm schon, gib mir einen Namen.';
                     }
                     // TODO: Display an error if the entered name is already in use
+                    return null;
+                  },
+                ),
+                DropdownButtonFormField(
+                  decoration: const InputDecoration(
+                      label: Text('Status*'),
+                      icon: Icon(Icons.library_add_check)),
+                  items: GameState.values
+                      .map<DropdownMenuItem<GameState>>((state) {
+                    return DropdownMenuItem<GameState>(
+                      value: state,
+                      child: Text(GameStates.gameStateToString(state)),
+                    );
+                  }).toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      _selectedState = value;
+                    });
+                  },
+                  validator: (value) {
+                    if (value == null) {
+                      return 'Ohne Status kommen wir nicht weiter.';
+                    }
                     return null;
                   },
                 ),
@@ -192,6 +217,7 @@ class _AddGameScreenState extends State<AddGameScreen> {
                             if (_formKey.currentState!.validate()) {
                               final Game game = Game(
                                 title: _selectedName!,
+                                gameState: _selectedState!,
                                 platforms: _selectedPlatforms
                                     .where((selection) =>
                                         selection.platform != null)

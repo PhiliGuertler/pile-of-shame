@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pile_of_shame/src/models/game_status.dart';
 import 'package:quiver/core.dart';
 import 'package:uuid/uuid.dart';
 import 'age_restrictions.dart';
@@ -11,6 +12,9 @@ class Game {
 
   /// the platform(s) on which the game was purchased/played
   List<String> platforms;
+
+  /// the game's current state of playing
+  GameState gameState;
 
   /// the amount of money that was actually payed for the game
   double? price;
@@ -47,6 +51,7 @@ class Game {
   Game({
     required this.title,
     required this.platforms,
+    required this.gameState,
     this.price,
     this.ageRestriction,
     this.isFavourite = false,
@@ -58,8 +63,25 @@ class Game {
     this.rawgGameId,
   }) : uuid = const Uuid().v4();
 
+  Game.withUuid({
+    required this.uuid,
+    required this.title,
+    required this.platforms,
+    required this.gameState,
+    this.price,
+    this.ageRestriction,
+    this.isFavourite = false,
+    this.notes,
+    this.wasScraped = false,
+    this.releaseDate,
+    this.metacriticScore,
+    this.backgroundImage,
+    this.rawgGameId,
+  });
+
   Game.from(Game other)
       : uuid = other.uuid,
+        gameState = other.gameState,
         title = other.title,
         platforms = other.platforms,
         price = other.price,
@@ -84,6 +106,9 @@ class Game {
 
   Game.fromJson(Map<String, dynamic> json)
       : uuid = json['uuid'],
+        gameState = json['gameState'] != null
+            ? GameState.values[json['gameState']]
+            : GameState.currentlyPlaying,
         title = json['title'],
         platforms = List<String>.from(json['platforms'] as List),
         price = json['price'],
@@ -102,6 +127,7 @@ class Game {
 
   Map<String, dynamic> toJson() => {
         'uuid': uuid,
+        'gameState': gameState?.index ?? GameState.currentlyPlaying.index,
         'title': title,
         'platforms': platforms,
         'price': price,

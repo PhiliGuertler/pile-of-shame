@@ -21,6 +21,7 @@ It will result in an application that simply displays information about games th
 - Saving platforms entered by the user in a json file and retrieving them from there has to be implemented. The list/file should be initialized with a bunch of known platforms (see game_addition.dart)
 - Exporting/Importing stored games as a json to a location of the user's choosing has to be implemented
 - Storing games-list in google drive might be an option as well
+- Add functionality to add game to favourites.
 
 ## Known issues
 - Sometimes the app crashes at special keyboard-inputs like the arrow-keys or backspace when adding a game (sporadically)

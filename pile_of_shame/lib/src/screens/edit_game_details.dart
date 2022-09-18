@@ -6,6 +6,7 @@ import 'package:pile_of_shame/src/persistance/storage.dart';
 import '../models/age_restrictions.dart';
 import '../models/game.dart';
 import '../models/game_platform.dart';
+import '../models/game_status.dart';
 import '../widgets/age_restriction.dart';
 import '../widgets/game_platform_autocomplete.dart';
 import 'game_addition.dart';
@@ -33,6 +34,7 @@ class _EditGameDetailsState extends State<EditGameDetails> {
       TextEditingController();
   final TextEditingController _rawgGameIdController = TextEditingController();
   AgeRestriction? _ageRestrictionController;
+  GameState? _selectedGameState;
 
   @override
   void initState() {
@@ -64,6 +66,7 @@ class _EditGameDetailsState extends State<EditGameDetails> {
       _backgroundImageController.text = widget.game.backgroundImage ?? '';
       _rawgGameIdController.text = widget.game.rawgGameId?.toString() ?? '';
       _ageRestrictionController = widget.game.ageRestriction;
+      _selectedGameState = widget.game.gameState;
     });
   }
 
@@ -121,6 +124,28 @@ class _EditGameDetailsState extends State<EditGameDetails> {
                 labelText: 'Name*',
               ),
               controller: _nameController,
+            ),
+            DropdownButtonFormField(
+              decoration: const InputDecoration(
+                  label: Text('Status*'), icon: Icon(Icons.library_add_check)),
+              items: GameState.values.map<DropdownMenuItem<GameState>>((state) {
+                return DropdownMenuItem<GameState>(
+                  value: state,
+                  child: Text(GameStates.gameStateToString(state)),
+                );
+              }).toList(),
+              onChanged: (value) {
+                setState(() {
+                  _selectedGameState = value;
+                });
+              },
+              validator: (value) {
+                if (value == null) {
+                  return 'Ohne Status kommen wir nicht weiter.';
+                }
+                return null;
+              },
+              value: _selectedGameState,
             ),
             Column(
               children: platformInputs,
@@ -240,6 +265,9 @@ class _EditGameDetailsState extends State<EditGameDetails> {
                         // accumulate all changes in a game object
                         Game editedGame = Game.from(widget.game);
                         editedGame.title = _nameController.text;
+                        if (_selectedGameState != null) {
+                          editedGame.gameState = _selectedGameState!;
+                        }
                         editedGame.platforms = _selectedPlatforms
                             .where((selection) => selection.platform != null)
                             .map((platform) =>

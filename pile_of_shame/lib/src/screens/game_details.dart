@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:pile_of_shame/src/models/game_platform.dart';
+import 'package:pile_of_shame/src/models/game_status.dart';
 import 'package:pile_of_shame/src/network/rawg/rawg_api.dart';
 import 'package:pile_of_shame/src/persistance/storage.dart';
 import 'package:pile_of_shame/src/widgets/game_list_item.dart';
@@ -220,6 +221,12 @@ class _GameDetailsState extends State<GameDetails> {
                         children: [
                           if (snapshot.hasData)
                             Pair('Name', snapshot.data!.title),
+                          if (snapshot.hasData)
+                            Pair(
+                              'Status',
+                              GameStates.gameStateToString(
+                                  snapshot.data!.gameState),
+                            ),
                           if (snapshot.hasData)
                             Pair('Plattform',
                                 snapshot.data!.platforms.join(', ')),
