@@ -118,6 +118,14 @@ class _GameScreenState extends State<GameScreen> {
                             _filters.sortStrategy == SortStrategy.byFavourite,
                       ),
                     ),
+                    PopupMenuItem<SortStrategy>(
+                      value: SortStrategy.byStatus,
+                      child: SelectedTextStyle(
+                        text: 'Status',
+                        isSelected:
+                            _filters.sortStrategy == SortStrategy.byStatus,
+                      ),
+                    ),
                     const PopupMenuDivider(),
                     const PopupMenuTitle(title: 'Reihenfolge'),
                     CheckedPopupMenuItem<SortStrategy>(

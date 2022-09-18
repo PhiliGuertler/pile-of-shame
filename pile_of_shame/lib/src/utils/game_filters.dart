@@ -13,6 +13,7 @@ enum SortStrategy {
   byPrice,
   byPlatform,
   byFavourite,
+  byStatus,
 }
 
 class GameFilters {
@@ -118,6 +119,19 @@ class GameFilters {
     return gamesList;
   }
 
+  List<Game> _sortByStatus(List<Game> gamesList) {
+    gamesList.sort(
+      (a, b) {
+        if (!isDescending) {
+          return a.gameState.index.compareTo(b.gameState.index);
+        } else {
+          return b.gameState.index.compareTo(a.gameState.index);
+        }
+      },
+    );
+    return gamesList;
+  }
+
   List<Game> applyFilters(List<Game> gamesList) {
     switch (sortStrategy) {
       case SortStrategy.byDateOfAddition:
@@ -132,6 +146,8 @@ class GameFilters {
         return _sortByPlatform(gamesList);
       case SortStrategy.byFavourite:
         return _sortByFavourite(gamesList);
+      case SortStrategy.byStatus:
+        return _sortByStatus(gamesList);
       default:
         return gamesList;
     }
