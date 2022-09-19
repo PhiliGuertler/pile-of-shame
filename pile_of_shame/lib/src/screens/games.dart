@@ -39,8 +39,21 @@ class _GameScreenState extends State<GameScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          await Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const AddGameScreen(),
+            ),
+          );
+          refresh();
+        },
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        child: const Icon(Icons.add),
+      ),
       appBar: AppBar(
-        title: const Text('Hauptseite'),
+        title: const Text('Alle Spiele'),
         actions: [
           PopupMenuButton<SortStrategy>(
             onSelected: (value) {
@@ -122,58 +135,45 @@ class _GameScreenState extends State<GameScreen> {
             itemBuilder: (context) => [
               PopupMenuItem(
                 padding: EdgeInsets.zero,
-                child: ListTile(
-                  leading: const Icon(Icons.add_circle_outline),
-                  title: const Text('Neues Spiel hinzufügen'),
-                  onTap: () async {
-                    await Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const AddGameScreen(),
+                onTap: () {
+                  refresh();
+                },
+                value: 0,
+                child: const ListTile(
+                  leading: Icon(Icons.refresh),
+                  title: Text('Neu laden'),
+                ),
+              ),
+              PopupMenuItem(
+                padding: EdgeInsets.zero,
+                onTap: () async {
+                  final bool wasSuccessful = await Storage().exportGames();
+                  if (wasSuccessful) {
+                    if (!mounted) return;
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Spiele erfolgreich exportiert'),
                       ),
                     );
-                    refresh();
-                  },
+                  }
+                },
+                value: 1,
+                child: const ListTile(
+                  leading: Icon(Icons.import_export),
+                  title: Text('Spiele exportieren'),
                 ),
               ),
               PopupMenuItem(
                 padding: EdgeInsets.zero,
-                child: ListTile(
-                  leading: const Icon(Icons.refresh),
-                  title: const Text('Neu laden'),
-                  onTap: () {
-                    refresh();
-                  },
-                ),
-              ),
-              PopupMenuItem(
-                padding: EdgeInsets.zero,
-                child: ListTile(
-                  leading: const Icon(Icons.import_export),
-                  title: const Text('Spiele exportieren'),
-                  onTap: () async {
-                    final bool wasSuccessful = await Storage().exportGames();
-                    if (wasSuccessful) {
-                      if (!mounted) return;
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Spiele erfolgreich exportiert'),
-                        ),
-                      );
-                    }
-                  },
-                ),
-              ),
-              PopupMenuItem(
-                padding: EdgeInsets.zero,
-                child: ListTile(
-                  leading: const Icon(Icons.import_export),
-                  title: const Text('Spiele importieren'),
-                  onTap: () async {
-                    List<Game> allGames = await Storage().importGames();
-                    await Storage().writeGames(allGames);
-                    refresh();
-                  },
+                onTap: () async {
+                  List<Game> allGames = await Storage().importGames();
+                  await Storage().writeGames(allGames);
+                  refresh();
+                },
+                value: 2,
+                child: const ListTile(
+                  leading: Icon(Icons.import_export),
+                  title: Text('Spiele importieren'),
                 ),
               ),
             ],
@@ -213,7 +213,7 @@ class _GameScreenState extends State<GameScreen> {
             ),
             Container(
               padding: const EdgeInsets.only(
-                  right: 8.0, left: 8.0, top: 16.0, bottom: 32.0),
+                  right: 8.0, left: 8.0, top: 16.0, bottom: 100.0),
               child: GameListSummary(games: _games),
             ),
           ],
