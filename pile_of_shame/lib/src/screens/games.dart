@@ -68,7 +68,7 @@ class _GameScreenState extends State<GameScreen> {
               });
               refresh();
             },
-            icon: const Icon(Icons.filter_list),
+            icon: const Icon(Icons.sort),
             itemBuilder: (context) => [
               const PopupMenuTitle(title: 'Sortieren nach'),
               PopupMenuItem<SortStrategy>(
