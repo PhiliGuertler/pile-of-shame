@@ -216,7 +216,7 @@ class _AddGameScreenState extends State<AddGameScreen> {
                             // Validate returns true if the form is valid, or false otherwise.
                             if (_formKey.currentState!.validate()) {
                               final Game game = Game(
-                                title: _selectedName!,
+                                title: _selectedName!.trim(),
                                 gameState: _selectedState!,
                                 platforms: _selectedPlatforms
                                     .where((selection) =>
@@ -227,7 +227,7 @@ class _AddGameScreenState extends State<AddGameScreen> {
                                     .toList(),
                                 price: _selectedPrice,
                                 ageRestriction: _selectedAge,
-                                notes: _selectedNotes,
+                                notes: _selectedNotes?.trim(),
                               );
 
                               // get the list of games from storage
