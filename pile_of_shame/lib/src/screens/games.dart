@@ -236,6 +236,44 @@ class _GameScreenState extends State<GameScreen> {
                       ],
                     ),
                   ),
+                  PopupMenuItem(
+                    padding: EdgeInsets.zero,
+                    child: PopupMenuButton<int>(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Text(_filters.isFavouriteFilter != null
+                                  ? (_filters.isFavouriteFilter!
+                                      ? 'Favorisiert'
+                                      : 'Nicht Favorisiert')
+                                  : 'Favorisierung wählen...'),
+                            ),
+                            const Icon(Icons.arrow_right, size: 30.0),
+                          ],
+                        ),
+                      ),
+                      onSelected: (int value) {
+                        if (value == 0) {
+                          _filters.isFavouriteFilter = null;
+                        } else {
+                          _filters.isFavouriteFilter = value == 1;
+                        }
+                        refresh();
+                        Navigator.pop(context);
+                      },
+                      itemBuilder: (context) => [
+                        const PopupMenuItem(
+                            value: 0, child: Text('Filter entfernen')),
+                        const PopupMenuDivider(),
+                        const PopupMenuItem(
+                            value: 1, child: Text('Favorisiert')),
+                        const PopupMenuItem(
+                            value: 2, child: Text('Nicht Favorisiert')),
+                      ],
+                    ),
+                  ),
                 ]),
           ),
           PopupMenuButton<SortStrategy>(
