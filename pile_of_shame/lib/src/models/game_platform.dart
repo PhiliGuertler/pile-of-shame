@@ -255,15 +255,15 @@ class GamePlatforms {
       pcEpic,
       pcTwitch,
       pcXBox,
-      vrSteam,
+      // vrSteam,
       // Sony
       playstation1,
       playstation2,
       playstation3,
       playstation4,
-      playstation4PSPlus,
+      // playstation4PSPlus,
       playstation5,
-      playstation5PSPlus,
+      // playstation5PSPlus,
       playstationPortable,
       playstationVita,
       playstationVR,
@@ -279,17 +279,17 @@ class GamePlatforms {
       nintendo64,
       nintendoGameCube,
       nintendoWii,
-      virtualConsoleWii,
+      // virtualConsoleWii,
       nintendoWiiU,
       nintendoSwitch,
-      nintendoSwitchOnline,
+      // nintendoSwitchOnline,
       gameBoy,
       gameBoyColor,
       gameBoyAdvance,
       nintendoDS,
-      nintendoDSi,
+      // nintendoDSi,
       nintendo3DS,
-      virtualConsole3DS
+      // virtualConsole3DS
     ];
   }
 }

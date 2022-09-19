@@ -78,8 +78,9 @@ class _GameDetailsState extends State<GameDetails> {
         // find the platforms for the currently selected game
         final platforms = GamePlatforms.toList()
             .where((element) => loadedGame.platforms.contains(element.name));
-        // Fetch game info here
-        return scrapeGameData(loadedGame.title, platforms.first);
+        // FIXME: DISABLED FOR NOW Fetch game info here
+        // return scrapeGameData(loadedGame.title, platforms.first);
+        return loadedGame;
       } else {
         return loadedGame;
       }
