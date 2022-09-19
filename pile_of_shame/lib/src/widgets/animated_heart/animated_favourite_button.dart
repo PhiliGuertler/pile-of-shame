@@ -24,9 +24,7 @@ class _AnimatedFavouriteButtonState extends State<AnimatedFavouriteButton>
     super.initState();
     controller =
         AnimationController(vsync: this, duration: const Duration(seconds: 1));
-    if (!widget.isFilled) {
-      controller.value = controller.upperBound;
-    }
+    controller.value = controller.upperBound;
   }
 
   @override
@@ -45,7 +43,7 @@ class _AnimatedFavouriteButtonState extends State<AnimatedFavouriteButton>
         width: 80,
         height: 80,
         child: Stack(
-          alignment: Alignment.bottomCenter,
+          alignment: Alignment.center,
           children: [
             AnimatedHeart(
               random1: Random().nextDouble(),

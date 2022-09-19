@@ -19,10 +19,10 @@ class _GameListItemState extends State<GameListItem> {
   @override
   Widget build(BuildContext context) {
     TextStyle headingStyle = const TextStyle(
-      fontSize: 24,
+      fontSize: 20,
     );
     TextStyle defaultStyle = const TextStyle(
-      fontSize: 16,
+      fontSize: 15,
     );
 
     final mainPlatform = GamePlatforms.byName(widget.game.platforms.first);
@@ -31,7 +31,7 @@ class _GameListItemState extends State<GameListItem> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.only(right: 8.0, top: 8.0, bottom: 8.0),
           decoration: BoxDecoration(
             gradient: RadialGradient(
                 center: const Alignment(-1.0, 15.0),
@@ -44,6 +44,14 @@ class _GameListItemState extends State<GameListItem> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+              AnimatedFavouriteButton(
+                  isFilled: widget.game.isFavourite,
+                  onPressed: () {
+                    setState(() {
+                      widget.game.isFavourite = !widget.game.isFavourite;
+                      Storage().addOrUpdateGame(widget.game);
+                    });
+                  }),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -92,14 +100,11 @@ class _GameListItemState extends State<GameListItem> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  AnimatedFavouriteButton(
-                      isFilled: widget.game.isFavourite,
-                      onPressed: () {
-                        setState(() {
-                          widget.game.isFavourite = !widget.game.isFavourite;
-                          Storage().addOrUpdateGame(widget.game);
-                        });
-                      }),
+                  Container(
+                    padding:
+                        const EdgeInsets.only(left: 8.0, top: 8.0, bottom: 8.0),
+                    child: AgeRestrictionWidget.fromGame(game: widget.game),
+                  ),
                   if (widget.game.price != null)
                     Text(
                       '${widget.game.price!.toStringAsFixed(2)} €',
@@ -107,11 +112,6 @@ class _GameListItemState extends State<GameListItem> {
                     ),
                 ],
               ),
-              Container(
-                padding:
-                    const EdgeInsets.only(left: 8.0, top: 8.0, bottom: 8.0),
-                child: AgeRestrictionWidget.fromGame(game: widget.game),
-              )
             ],
           ),
         )

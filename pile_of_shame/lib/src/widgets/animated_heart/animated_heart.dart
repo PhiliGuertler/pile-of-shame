@@ -41,7 +41,7 @@ class AnimatedHeart extends StatelessWidget {
                   (1 - up.value) *
                   (random1 * (maxWidth - iconWidth * 2) * 0.6 +
                       (maxWidth - iconWidth * 2) * 0.4),
-          bottom: 8 +
+          bottom: ((maxHeight - iconHeight) * 0.5) +
               (Platform.isAndroid ? 4 : 0) +
               up.value *
                   (random2 * (maxHeight - iconHeight - 8) * 0.4 +
