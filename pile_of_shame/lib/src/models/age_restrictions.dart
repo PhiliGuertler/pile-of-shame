@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 enum AgeRestriction {
+  none,
   unknown,
   usk0,
   usk6,

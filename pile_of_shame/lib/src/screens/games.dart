@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pile_of_shame/src/models/age_restrictions.dart';
 import 'package:pile_of_shame/src/models/game_platform.dart';
 import 'package:pile_of_shame/src/persistance/storage.dart';
 import 'package:pile_of_shame/src/screens/game_addition.dart';
@@ -102,6 +103,70 @@ class _GameScreenState extends State<GameScreen> {
                               ),
                             )
                             .toList(),
+                      ],
+                    ),
+                  ),
+                  PopupMenuItem(
+                    padding: EdgeInsets.zero,
+                    child: PopupMenuButton<AgeRestriction>(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Text(_filters.ageRestrictionFilter != null
+                                  ? 'USK ${AgeRestrictions.getAgeRestrictionText(_filters.ageRestrictionFilter!)}'
+                                  : 'Altersbeschränkung wählen...'),
+                            ),
+                            const Icon(Icons.arrow_right, size: 30.0),
+                          ],
+                        ),
+                      ),
+                      onSelected: (value) {
+                        if (value == AgeRestriction.none) {
+                          _filters.ageRestrictionFilter = null;
+                        } else {
+                          _filters.ageRestrictionFilter = value;
+                        }
+                        refresh();
+                        Navigator.pop(context);
+                      },
+                      itemBuilder: (context) => [
+                        const PopupMenuItem(
+                          value: AgeRestriction.none,
+                          child: Text('Filter entfernen'),
+                        ),
+                        const PopupMenuDivider(),
+                        PopupMenuItem(
+                          value: AgeRestriction.unknown,
+                          child: Text(
+                              'USK ${AgeRestrictions.getAgeRestrictionText(AgeRestriction.unknown)}'),
+                        ),
+                        PopupMenuItem(
+                          value: AgeRestriction.usk0,
+                          child: Text(
+                              'USK ${AgeRestrictions.getAgeRestrictionText(AgeRestriction.usk0)}'),
+                        ),
+                        PopupMenuItem(
+                          value: AgeRestriction.usk6,
+                          child: Text(
+                              'USK ${AgeRestrictions.getAgeRestrictionText(AgeRestriction.usk6)}'),
+                        ),
+                        PopupMenuItem(
+                          value: AgeRestriction.usk12,
+                          child: Text(
+                              'USK ${AgeRestrictions.getAgeRestrictionText(AgeRestriction.usk12)}'),
+                        ),
+                        PopupMenuItem(
+                          value: AgeRestriction.usk16,
+                          child: Text(
+                              'USK ${AgeRestrictions.getAgeRestrictionText(AgeRestriction.usk16)}'),
+                        ),
+                        PopupMenuItem(
+                          value: AgeRestriction.usk18,
+                          child: Text(
+                              'USK ${AgeRestrictions.getAgeRestrictionText(AgeRestriction.usk18)}'),
+                        ),
                       ],
                     ),
                   ),
