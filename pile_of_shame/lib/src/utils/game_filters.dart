@@ -1,6 +1,7 @@
 import 'dart:core';
 
 import 'package:pile_of_shame/src/models/age_restrictions.dart';
+import 'package:pile_of_shame/src/models/game_status.dart';
 
 import '../models/game.dart';
 import '../models/game_platform.dart';
@@ -17,12 +18,28 @@ enum SortStrategy {
 }
 
 class GameFilters {
-  GameFilters(
-      {this.sortStrategy = SortStrategy.byDateOfAddition,
-      this.isDescending = false});
+  GameFilters({
+    this.sortStrategy = SortStrategy.byDateOfAddition,
+    this.isDescending = false,
+    this.platformFilter,
+    this.ageRestrictionFilter,
+    this.isFavouriteFilter,
+    this.gameStateFilter,
+  });
 
-  final SortStrategy sortStrategy;
-  final bool isDescending;
+  // Sorting
+  SortStrategy sortStrategy;
+  bool isDescending;
+
+  // Filtering
+  GamePlatform? platformFilter;
+  AgeRestriction? ageRestrictionFilter;
+  bool? isFavouriteFilter;
+  GameState? gameStateFilter;
+
+  // ######################################################################## //
+  // ### Sorting functions ################################################## //
+  // ######################################################################## //
 
   List<Game> _sortByDateOfAddition(List<Game> gamesList) {
     // TODO: This probably needs a more sophisticated implementation.
@@ -132,7 +149,38 @@ class GameFilters {
     return gamesList;
   }
 
-  List<Game> applyFilters(List<Game> gamesList) {
+  // ######################################################################## //
+  // ### Filtering functions ################################################ //
+  // ######################################################################## //
+
+  List<Game> _filterByPlatform(List<Game> gamesList, GamePlatform platform) {
+    return gamesList.where((game) {
+      return game.platforms
+          .where((element) => element == platform.name)
+          .isNotEmpty;
+    }).toList();
+  }
+
+  List<Game> _filterByStatus(List<Game> gamesList, GameState state) {
+    return gamesList.where((game) {
+      return game.gameState == state;
+    }).toList();
+  }
+
+  List<Game> _filterByAgeRestriction(
+      List<Game> gamesList, AgeRestriction ageRestriction) {
+    return gamesList.where((game) {
+      return game.ageRestriction == ageRestriction;
+    }).toList();
+  }
+
+  List<Game> _filterByFavourite(List<Game> gamesList, bool isFavourite) {
+    return gamesList.where((game) {
+      return game.isFavourite == isFavourite;
+    }).toList();
+  }
+
+  List<Game> _applySortStrategy(List<Game> gamesList) {
     switch (sortStrategy) {
       case SortStrategy.byDateOfAddition:
         return _sortByDateOfAddition(gamesList);
@@ -151,5 +199,24 @@ class GameFilters {
       default:
         return gamesList;
     }
+  }
+
+  List<Game> filter(List<Game> gamesList) {
+    List<Game> sortedGames = _applySortStrategy(gamesList);
+
+    if (platformFilter != null) {
+      sortedGames = _filterByPlatform(sortedGames, platformFilter!);
+    }
+    if (ageRestrictionFilter != null) {
+      sortedGames = _filterByAgeRestriction(sortedGames, ageRestrictionFilter!);
+    }
+    if (isFavouriteFilter != null) {
+      sortedGames = _filterByFavourite(sortedGames, isFavouriteFilter!);
+    }
+    if (gameStateFilter != null) {
+      sortedGames = _filterByStatus(sortedGames, gameStateFilter!);
+    }
+
+    return sortedGames;
   }
 }
