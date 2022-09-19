@@ -5,6 +5,7 @@ import 'package:pile_of_shame/src/widgets/animated_heart/animated_favourite_butt
 import '../models/game.dart';
 import '../persistance/storage.dart';
 import './age_restriction.dart';
+import 'game_status_view.dart';
 
 class GameListItem extends StatefulWidget {
   const GameListItem({super.key, required this.game});
@@ -67,32 +68,8 @@ class _GameListItemState extends State<GameListItem> {
                         style: defaultStyle,
                       ),
                     ),
-                    Container(
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.topRight,
-                          end: Alignment.bottomLeft,
-                          stops: const [
-                            0.0,
-                            1.0,
-                          ],
-                          colors: [
-                            mainPlatform.color.withOpacity(0.8),
-                            mainPlatform.color.withOpacity(0.4),
-                          ],
-                        ),
-                        borderRadius: BorderRadius.circular(8.0),
-                      ),
-                      padding: const EdgeInsets.all(4.0),
-                      child: Text(
-                        GameStates.gameStateToString(widget.game.gameState),
-                        style: TextStyle(
-                          color: mainPlatform.color.computeLuminance() > 0.5
-                              ? Colors.black
-                              : Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
+                    GameStatusView(
+                      gameState: widget.game.gameState,
                     ),
                   ],
                 ),
