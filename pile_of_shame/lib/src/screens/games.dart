@@ -7,6 +7,7 @@ import 'package:pile_of_shame/src/utils/game_filters.dart';
 import 'package:pile_of_shame/src/widgets/game_list_item.dart';
 
 import '../models/game.dart';
+import '../models/game_status.dart';
 import '../widgets/game_list_summary.dart';
 import '../widgets/popup_menu_title.dart';
 import '../widgets/selected_text_style.dart';
@@ -76,7 +77,7 @@ class _GameScreenState extends State<GameScreen> {
                           ],
                         ),
                       ),
-                      onSelected: (value) {
+                      onSelected: (GamePlatform value) {
                         if (value.name == 'None') {
                           _filters.platformFilter = null;
                         } else {
@@ -122,7 +123,7 @@ class _GameScreenState extends State<GameScreen> {
                           ],
                         ),
                       ),
-                      onSelected: (value) {
+                      onSelected: (AgeRestriction value) {
                         if (value == AgeRestriction.none) {
                           _filters.ageRestrictionFilter = null;
                         } else {
@@ -166,6 +167,71 @@ class _GameScreenState extends State<GameScreen> {
                           value: AgeRestriction.usk18,
                           child: Text(
                               'USK ${AgeRestrictions.getAgeRestrictionText(AgeRestriction.usk18)}'),
+                        ),
+                      ],
+                    ),
+                  ),
+                  PopupMenuItem(
+                    padding: EdgeInsets.zero,
+                    child: PopupMenuButton<GameState>(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Text(_filters.gameStateFilter != null
+                                  ? GameStates.gameStateToString(
+                                      _filters.gameStateFilter!)
+                                  : 'Spiel-Status wählen...'),
+                            ),
+                            const Icon(Icons.arrow_right, size: 30.0),
+                          ],
+                        ),
+                      ),
+                      onSelected: (GameState value) {
+                        if (value == GameState.none) {
+                          _filters.gameStateFilter = null;
+                        } else {
+                          _filters.gameStateFilter = value;
+                        }
+                        refresh();
+                        Navigator.pop(context);
+                      },
+                      itemBuilder: (context) => [
+                        const PopupMenuItem(
+                          value: GameState.none,
+                          child: Text('Filter entfernen'),
+                        ),
+                        const PopupMenuDivider(),
+                        PopupMenuItem(
+                          value: GameState.currentlyPlaying,
+                          child: Text(GameStates.gameStateToString(
+                              GameState.currentlyPlaying)),
+                        ),
+                        PopupMenuItem(
+                          value: GameState.onPileOfShame,
+                          child: Text(GameStates.gameStateToString(
+                              GameState.onPileOfShame)),
+                        ),
+                        PopupMenuItem(
+                          value: GameState.onWishList,
+                          child: Text(GameStates.gameStateToString(
+                              GameState.onWishList)),
+                        ),
+                        PopupMenuItem(
+                          value: GameState.completed100Percent,
+                          child: Text(GameStates.gameStateToString(
+                              GameState.completed100Percent)),
+                        ),
+                        PopupMenuItem(
+                          value: GameState.completed,
+                          child: Text(GameStates.gameStateToString(
+                              GameState.completed)),
+                        ),
+                        PopupMenuItem(
+                          value: GameState.cancelled,
+                          child: Text(GameStates.gameStateToString(
+                              GameState.cancelled)),
                         ),
                       ],
                     ),

@@ -1,4 +1,5 @@
 enum GameState {
+  none,
   currentlyPlaying,
   onPileOfShame,
   completed100Percent,
