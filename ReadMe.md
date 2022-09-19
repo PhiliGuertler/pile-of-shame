@@ -14,15 +14,13 @@ It will result in an application that simply displays information about games th
 - Editing Game-Info (and subsequent persisting) is implemented
 - Sorting games by name, platform, price, age-restriction, release-date, favourite is implemented
 - Favourite-functionality is implemented with a fancy animation.
+- Exporting/Importing stored games as a json to a location of the user's choosing is implemented
+- Filtering games by platform, age-restriction, state and favourites is implemented
 
 ## In Progress
 
 ## TODOs
-- Filtering games by platform, series, age-restriction has to be implemented
 - Saving platforms entered by the user in a json file and retrieving them from there has to be implemented. The list/file should be initialized with a bunch of known platforms (see game_addition.dart)
-- Exporting/Importing stored games as a json to a location of the user's choosing has to be implemented
-- Storing games-list in google drive might be an option as well
-
 
 ## Known issues
-- Sometimes the app crashes at special keyboard-inputs like the arrow-keys or backspace when adding a game (sporadically)
+- Sometimes the app crashes at special keyboard-inputs like the arrow-keys or backspace when adding a game during debugging (sporadically)
