@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pile_of_shame/src/models/game_platform.dart';
 import 'package:pile_of_shame/src/persistance/storage.dart';
 import 'package:pile_of_shame/src/screens/game_addition.dart';
 import 'package:pile_of_shame/src/utils/game_filters.dart';
@@ -24,8 +25,9 @@ class _GameScreenState extends State<GameScreen> {
 
   void refresh() {
     Storage().readGames().then((value) {
+      List<Game> filteredGames = _filters.filter(value);
       setState(() {
-        _games = _filters.applyFilters(value);
+        _games = filteredGames;
       });
     });
   }
@@ -55,6 +57,56 @@ class _GameScreenState extends State<GameScreen> {
       appBar: AppBar(
         title: const Text('Alle Spiele'),
         actions: [
+          PopupMenuButton(
+            icon: const Icon(Icons.filter_list),
+            itemBuilder: ((context) => [
+                  PopupMenuItem(
+                    padding: EdgeInsets.zero,
+                    child: PopupMenuButton<GamePlatform>(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Text(_filters.platformFilter?.name ??
+                                  'Platform wählen...'),
+                            ),
+                            const Icon(Icons.arrow_right, size: 30.0),
+                          ],
+                        ),
+                      ),
+                      onSelected: (value) {
+                        if (value.name == 'None') {
+                          _filters.platformFilter = null;
+                        } else {
+                          _filters.platformFilter = value;
+                        }
+                        refresh();
+                        Navigator.pop(context);
+                      },
+                      itemBuilder: (context) => [
+                        const PopupMenuItem(
+                          value: GamePlatform(
+                              name: 'None',
+                              abbreviation: 'None',
+                              color: Colors.black,
+                              rawgId: -1),
+                          child: Text('Filter entfernen'),
+                        ),
+                        const PopupMenuDivider(),
+                        ...GamePlatforms.toList()
+                            .map(
+                              (platform) => PopupMenuItem(
+                                value: platform,
+                                child: Text(platform.name),
+                              ),
+                            )
+                            .toList(),
+                      ],
+                    ),
+                  ),
+                ]),
+          ),
           PopupMenuButton<SortStrategy>(
             onSelected: (value) {
               final SortStrategy sortStrategy =
