@@ -28,7 +28,7 @@ class IGDBApi {
 
   Map<String, String> _httpHeader() {
     if (_token == null) {
-      throw new Exception("Token is not set!");
+      throw Exception("Token is not set!");
     }
     return {
       "Client-ID": igdbClientId,
