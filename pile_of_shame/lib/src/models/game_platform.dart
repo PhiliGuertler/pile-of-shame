@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:quiver/core.dart';
 
 class GamePlatform {
   final String name;
@@ -16,6 +17,18 @@ class GamePlatform {
       required this.rawgId,
       required this.abbreviation,
       required this.color});
+
+  @override
+  bool operator ==(Object other) {
+    return (other is GamePlatform)
+        ? (name == other.name && abbreviation == other.abbreviation)
+        : false;
+  }
+
+  @override
+  int get hashCode {
+    return hash2(name, abbreviation);
+  }
 }
 
 class GamePlatforms {
