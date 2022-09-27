@@ -114,192 +114,196 @@ class _EditGameDetailsState extends State<EditGameDetails> {
       appBar: AppBar(title: const Text('Bearbeiten')),
       body: Container(
         padding: const EdgeInsets.all(8.0),
-        child: Form(
-            child: Column(
-          children: [
-            TextFormField(
-              decoration: const InputDecoration(
-                icon: Icon(Icons.sports_esports),
-                hintText: 'NieR: Automata, Super Mario Odyssey, ...',
-                labelText: 'Name*',
+        child: SingleChildScrollView(
+          child: Form(
+              child: Column(
+            children: [
+              TextFormField(
+                decoration: const InputDecoration(
+                  icon: Icon(Icons.sports_esports),
+                  hintText: 'NieR: Automata, Super Mario Odyssey, ...',
+                  labelText: 'Name*',
+                ),
+                controller: _nameController,
               ),
-              controller: _nameController,
-            ),
-            DropdownButtonFormField(
-              decoration: const InputDecoration(
-                  label: Text('Status*'), icon: Icon(Icons.library_add_check)),
-              items: GameState.values.map<DropdownMenuItem<GameState>>((state) {
-                return DropdownMenuItem<GameState>(
-                  value: state,
-                  child: Text(GameStates.gameStateToString(state)),
-                );
-              }).toList(),
-              onChanged: (value) {
-                setState(() {
-                  _selectedGameState = value;
-                });
-              },
-              validator: (value) {
-                if (value == null) {
-                  return 'Ohne Status kommen wir nicht weiter.';
-                }
-                return null;
-              },
-              value: _selectedGameState,
-            ),
-            Column(
-              children: platformInputs,
-            ),
-            TextFormField(
-              decoration: const InputDecoration(
-                icon: Icon(Icons.euro),
-                labelText: 'Preis',
-              ),
-              keyboardType: TextInputType.number,
-              controller: _priceController,
-            ),
-            TextFormField(
-              decoration: const InputDecoration(
-                icon: Icon(Icons.description),
-                labelText: 'Anmerkungen',
-                hintText: 'Ausgeliehen, inkl. DLC, ...',
-              ),
-              controller: _notesController,
-            ),
-            TextFormField(
-              decoration: const InputDecoration(
-                icon: Icon(Icons.calendar_month),
-                labelText: 'Erscheinungsdatum',
-              ),
-              onTap: () async {
-                // Below line stops keyboard from appearing
-                FocusScope.of(context).requestFocus(FocusNode());
-
-                // show date-picker
-                DateTime? picked = await showDatePicker(
-                  context: context,
-                  initialDate: DateTime.now(),
-                  firstDate: DateTime(1970, 1, 1),
-                  lastDate: DateTime.now().add(const Duration(days: 5 * 365)),
-                );
-                if (picked != null) {
+              DropdownButtonFormField(
+                decoration: const InputDecoration(
+                    label: Text('Status*'),
+                    icon: Icon(Icons.library_add_check)),
+                items:
+                    GameState.values.map<DropdownMenuItem<GameState>>((state) {
+                  return DropdownMenuItem<GameState>(
+                    value: state,
+                    child: Text(GameStates.gameStateToString(state)),
+                  );
+                }).toList(),
+                onChanged: (value) {
                   setState(() {
-                    // set the picked value
-                    _releaseDate = picked;
-                    _releaseDateController.text = _releaseDate != null
-                        ? DateFormat.yMd().format(_releaseDate!)
-                        : '';
+                    _selectedGameState = value;
                   });
-                }
-              },
-              controller: _releaseDateController,
-            ),
-            TextFormField(
-              decoration: const InputDecoration(
-                icon: Icon(Icons.emoji_events),
-                labelText: 'Metacritic-Score',
+                },
+                validator: (value) {
+                  if (value == null) {
+                    return 'Ohne Status kommen wir nicht weiter.';
+                  }
+                  return null;
+                },
+                value: _selectedGameState,
               ),
-              keyboardType: TextInputType.number,
-              controller: _metacriticScoreController,
-            ),
-            TextFormField(
-              decoration: const InputDecoration(
-                icon: Icon(Icons.image),
-                labelText: 'Hintergrundbild',
+              Column(
+                children: platformInputs,
               ),
-              controller: _backgroundImageController,
-            ),
-            // TODO: Spiel suchen und "ID (Name)" als Select hier anzeigen
-            TextFormField(
-              decoration: const InputDecoration(
-                icon: Icon(Icons.fingerprint),
-                labelText: 'Rawg-Game-ID',
+              TextFormField(
+                decoration: const InputDecoration(
+                  icon: Icon(Icons.euro),
+                  labelText: 'Preis',
+                ),
+                keyboardType: TextInputType.number,
+                controller: _priceController,
               ),
-              controller: _rawgGameIdController,
-            ),
-            Center(
-              child: Row(
-                children: [
-                  Expanded(
-                    child: SizedBox(
-                      height: 160,
-                      child: DropdownButtonFormField2<AgeRestriction>(
-                        decoration: const InputDecoration(
-                          labelText: 'Altersfreigabe',
-                          enabledBorder: InputBorder.none,
-                          border: InputBorder.none,
-                          focusedBorder: InputBorder.none,
-                          errorBorder: InputBorder.none,
-                          disabledBorder: InputBorder.none,
-                          focusedErrorBorder: InputBorder.none,
-                          icon: Icon(Icons.cake),
-                        ),
-                        isExpanded: true,
-                        itemHeight: 70,
-                        buttonHeight: 160,
-                        items: AgeRestriction.values
-                            .sublist(1)
-                            .map<DropdownMenuItem<AgeRestriction>>(
-                                (AgeRestriction ageRestriction) {
-                          return DropdownMenuItem<AgeRestriction>(
-                            value: ageRestriction,
-                            child: Center(
-                              child: AgeRestrictionWidget(
-                                ageRestriction: ageRestriction,
+              TextFormField(
+                decoration: const InputDecoration(
+                  icon: Icon(Icons.description),
+                  labelText: 'Anmerkungen',
+                  hintText: 'Ausgeliehen, inkl. DLC, ...',
+                ),
+                controller: _notesController,
+              ),
+              TextFormField(
+                decoration: const InputDecoration(
+                  icon: Icon(Icons.calendar_month),
+                  labelText: 'Erscheinungsdatum',
+                ),
+                onTap: () async {
+                  // Below line stops keyboard from appearing
+                  FocusScope.of(context).requestFocus(FocusNode());
+
+                  // show date-picker
+                  DateTime? picked = await showDatePicker(
+                    context: context,
+                    initialDate: DateTime.now(),
+                    firstDate: DateTime(1970, 1, 1),
+                    lastDate: DateTime.now().add(const Duration(days: 5 * 365)),
+                  );
+                  if (picked != null) {
+                    setState(() {
+                      // set the picked value
+                      _releaseDate = picked;
+                      _releaseDateController.text = _releaseDate != null
+                          ? DateFormat.yMd().format(_releaseDate!)
+                          : '';
+                    });
+                  }
+                },
+                controller: _releaseDateController,
+              ),
+              TextFormField(
+                decoration: const InputDecoration(
+                  icon: Icon(Icons.emoji_events),
+                  labelText: 'Metacritic-Score',
+                ),
+                keyboardType: TextInputType.number,
+                controller: _metacriticScoreController,
+              ),
+              TextFormField(
+                decoration: const InputDecoration(
+                  icon: Icon(Icons.image),
+                  labelText: 'Hintergrundbild',
+                ),
+                controller: _backgroundImageController,
+              ),
+              // TODO: Spiel suchen und "ID (Name)" als Select hier anzeigen
+              TextFormField(
+                decoration: const InputDecoration(
+                  icon: Icon(Icons.fingerprint),
+                  labelText: 'Rawg-Game-ID',
+                ),
+                controller: _rawgGameIdController,
+              ),
+              Center(
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: SizedBox(
+                        height: 160,
+                        child: DropdownButtonFormField2<AgeRestriction>(
+                          decoration: const InputDecoration(
+                            labelText: 'Altersfreigabe',
+                            enabledBorder: InputBorder.none,
+                            border: InputBorder.none,
+                            focusedBorder: InputBorder.none,
+                            errorBorder: InputBorder.none,
+                            disabledBorder: InputBorder.none,
+                            focusedErrorBorder: InputBorder.none,
+                            icon: Icon(Icons.cake),
+                          ),
+                          isExpanded: true,
+                          itemHeight: 70,
+                          buttonHeight: 160,
+                          items: AgeRestriction.values
+                              .sublist(1)
+                              .map<DropdownMenuItem<AgeRestriction>>(
+                                  (AgeRestriction ageRestriction) {
+                            return DropdownMenuItem<AgeRestriction>(
+                              value: ageRestriction,
+                              child: Center(
+                                child: AgeRestrictionWidget(
+                                  ageRestriction: ageRestriction,
+                                ),
                               ),
-                            ),
-                          );
-                        }).toList(),
-                        onChanged: ((AgeRestriction? value) {
-                          setState(() {
-                            _ageRestrictionController = value;
-                          });
-                        }),
-                        value: _ageRestrictionController,
+                            );
+                          }).toList(),
+                          onChanged: ((AgeRestriction? value) {
+                            setState(() {
+                              _ageRestrictionController = value;
+                            });
+                          }),
+                          value: _ageRestrictionController,
+                        ),
                       ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: ElevatedButton(
-                      onPressed: () async {
-                        // accumulate all changes in a game object
-                        Game editedGame = Game.from(widget.game);
-                        editedGame.title = _nameController.text;
-                        if (_selectedGameState != null) {
-                          editedGame.gameState = _selectedGameState!;
-                        }
-                        editedGame.platforms = _selectedPlatforms
-                            .where((selection) => selection.platform != null)
-                            .map((platform) =>
-                                platform.platform?.name ??
-                                'Unbekannte Platform')
-                            .toList();
-                        editedGame.price =
-                            double.tryParse(_priceController.text);
-                        editedGame.notes = _notesController.text;
-                        editedGame.releaseDate = _releaseDate;
-                        editedGame.metacriticScore =
-                            int.tryParse(_metacriticScoreController.text);
-                        editedGame.backgroundImage =
-                            _backgroundImageController.text;
-                        editedGame.rawgGameId =
-                            int.tryParse(_rawgGameIdController.text);
-                        editedGame.ageRestriction = _ageRestrictionController;
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          // accumulate all changes in a game object
+                          Game editedGame = Game.from(widget.game);
+                          editedGame.title = _nameController.text;
+                          if (_selectedGameState != null) {
+                            editedGame.gameState = _selectedGameState!;
+                          }
+                          editedGame.platforms = _selectedPlatforms
+                              .where((selection) => selection.platform != null)
+                              .map((platform) =>
+                                  platform.platform?.name ??
+                                  'Unbekannte Platform')
+                              .toList();
+                          editedGame.price =
+                              double.tryParse(_priceController.text);
+                          editedGame.notes = _notesController.text;
+                          editedGame.releaseDate = _releaseDate;
+                          editedGame.metacriticScore =
+                              int.tryParse(_metacriticScoreController.text);
+                          editedGame.backgroundImage =
+                              _backgroundImageController.text;
+                          editedGame.rawgGameId =
+                              int.tryParse(_rawgGameIdController.text);
+                          editedGame.ageRestriction = _ageRestrictionController;
 
-                        // update the game in storage
-                        await Storage().addOrUpdateGame(editedGame);
-                        if (!mounted) return;
-                        Navigator.pop(context);
-                      },
-                      child: const Text('Speichern'),
+                          // update the game in storage
+                          await Storage().addOrUpdateGame(editedGame);
+                          if (!mounted) return;
+                          Navigator.pop(context);
+                        },
+                        child: const Text('Speichern'),
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
-        )),
+            ],
+          )),
+        ),
       ),
     );
   }
