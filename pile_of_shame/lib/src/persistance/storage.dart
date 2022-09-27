@@ -136,7 +136,6 @@ class Storage {
   }
 
   Future<bool> exportGames() async {
-    // TODO: Implement this feature! On windows, we can use FilePicker.saveFile, on Android use share_plus
     if (Platform.isWindows || Platform.isMacOS || Platform.isLinux) {
       String? outputFile = await FilePicker.platform.saveFile(
         dialogTitle: 'Wähle einen Speicherort für die Export-Datei:',
