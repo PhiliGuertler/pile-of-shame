@@ -238,6 +238,7 @@ class _EditGameDetailsState extends State<EditGameDetails> {
                         itemHeight: 70,
                         buttonHeight: 160,
                         items: AgeRestriction.values
+                            .sublist(1)
                             .map<DropdownMenuItem<AgeRestriction>>(
                                 (AgeRestriction ageRestriction) {
                           return DropdownMenuItem<AgeRestriction>(

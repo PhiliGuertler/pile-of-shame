@@ -190,6 +190,7 @@ class _AddGameScreenState extends State<AddGameScreen> {
                             buttonHeight: 160,
                             value: _selectedAge,
                             items: AgeRestriction.values
+                                .sublist(1)
                                 .map<DropdownMenuItem<AgeRestriction>>(
                                     (AgeRestriction ageRestriction) {
                               return DropdownMenuItem<AgeRestriction>(
