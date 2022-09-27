@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:pile_of_shame/src/models/game_platform.dart';
 import 'package:pile_of_shame/src/models/game_status.dart';
+import 'package:pile_of_shame/src/network/igdb/models/igdb_game.dart';
 import 'package:pile_of_shame/src/network/rawg/rawg_api.dart';
 import 'package:pile_of_shame/src/persistance/storage.dart';
+import 'package:pile_of_shame/src/scrapers/igdb_scraper.dart';
 import 'package:pile_of_shame/src/widgets/game_list_item.dart';
 import 'package:transparent_image/transparent_image.dart';
 
@@ -177,6 +179,49 @@ class _GameDetailsState extends State<GameDetails> {
               }
             },
           ),
+          FutureBuilder<Game>(
+            future: mostRecentGame,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return IconButton(
+                  onPressed: () async {
+                    IGDBScraper scraper = IGDBScraper();
+                    List<IGDBGame> games =
+                        await scraper.scrapeGameInfos(snapshot.data!);
+                    debugPrint(games.toString());
+                    if (games.isNotEmpty) {
+                      IGDBGame scrapingResult = games.first;
+                      Game modifiedGame = Game.from(snapshot.data!);
+                      const String coverSize = "cover_big";
+                      const String backgroundSize = "screenshot_huge";
+                      if (scrapingResult.cover != null) {
+                        modifiedGame.coverImage =
+                            "https://images.igdb.com/igdb/image/upload/t_$coverSize/${scrapingResult.cover!.imageId}.jpg";
+                      }
+                      if (scrapingResult.screenshots != null &&
+                          scrapingResult.screenshots!.isNotEmpty) {
+                        modifiedGame.backgroundImage =
+                            "https://images.igdb.com/igdb/image/upload/t_$backgroundSize/${scrapingResult.screenshots!.first.imageId}.jpg";
+                      }
+                      if (scrapingResult.firstReleaseDate != null) {
+                        modifiedGame.releaseDate =
+                            scrapingResult.firstReleaseDate;
+                      }
+                      modifiedGame.wasScraped = true;
+                      await Storage().addOrUpdateGame(modifiedGame);
+                      refreshGame();
+                    } else {
+                      // TODO: prompt the user to select one of the game results, if there are more than one.
+                      // TODO: prompt the user if no scraping result was found
+                    }
+                  },
+                  icon: const Icon(Icons.cloud_download),
+                );
+              } else {
+                return Container();
+              }
+            },
+          ),
         ],
       ),
       body: FutureBuilder<Game>(
@@ -213,7 +258,13 @@ class _GameDetailsState extends State<GameDetails> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    if (snapshot.hasData) GameListItem(game: snapshot.data!),
+                    if (snapshot.hasData)
+                      GameListItem(
+                        game: snapshot.data!,
+                        coverOffsetY: -50,
+                        coverScale: 2.0,
+                        isCoverOptimized: true,
+                      ),
                     Container(
                       padding: const EdgeInsets.all(8.0),
                       child: ListView(
