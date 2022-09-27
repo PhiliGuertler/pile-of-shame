@@ -45,6 +45,9 @@ class Game {
   /// background image for the game
   String? backgroundImage;
 
+  /// cover image of the game
+  String? coverImage;
+
   /// the game's id in RAWG.io's database
   int? rawgGameId;
 
@@ -60,6 +63,7 @@ class Game {
     this.releaseDate,
     this.metacriticScore,
     this.backgroundImage,
+    this.coverImage,
     this.rawgGameId,
   }) : uuid = const Uuid().v4();
 
@@ -76,6 +80,7 @@ class Game {
     this.releaseDate,
     this.metacriticScore,
     this.backgroundImage,
+    this.coverImage,
     this.rawgGameId,
   });
 
@@ -92,6 +97,7 @@ class Game {
         releaseDate = other.releaseDate,
         metacriticScore = other.metacriticScore,
         backgroundImage = other.backgroundImage,
+        coverImage = other.coverImage,
         rawgGameId = other.rawgGameId;
 
   Color getAgeRestictionColor() {
@@ -123,6 +129,7 @@ class Game {
             : null,
         metacriticScore = json['metacriticScore'],
         backgroundImage = json['backgroundImage'],
+        coverImage = json['coverImage'],
         rawgGameId = json['rawgGameId'];
 
   Map<String, dynamic> toJson() => {
@@ -138,6 +145,7 @@ class Game {
         'releaseDate': releaseDate?.toIso8601String(),
         'metacriticScore': metacriticScore,
         'backgroundImage': backgroundImage,
+        'coverImage': coverImage,
         'rawgGameId': rawgGameId,
       };
 
