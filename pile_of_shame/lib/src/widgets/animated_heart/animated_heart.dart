@@ -29,23 +29,28 @@ class AnimatedHeart extends StatelessWidget {
   final double iconWidth = 24;
   final double iconHeight = 24;
 
+  double computeXOffset(double upValue, double moveValue) {
+    return (random2 - 0.5).sign *
+        sin(moveValue * random2 * 15) *
+        (1 - upValue) *
+        (random1 * (maxWidth - iconWidth * 2) * 0.6 +
+            (maxWidth - iconWidth * 2) * 0.4);
+  }
+
+  double computeYOffset(double upValue, double moveValue) {
+    return -upValue *
+        (random2 * (maxHeight - iconHeight - 8) * 0.4 +
+            (maxHeight - iconHeight - 8) * 0.6);
+  }
+
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
       animation: controller,
       builder: (context, child) {
-        return Positioned(
-          left: ((maxWidth - iconWidth) * 0.5) -
-              (random2 - 0.5).sign *
-                  sin(move.value * random2 * 15) *
-                  (1 - up.value) *
-                  (random1 * (maxWidth - iconWidth * 2) * 0.6 +
-                      (maxWidth - iconWidth * 2) * 0.4),
-          bottom: ((maxHeight - iconHeight) * 0.5) +
-              (Platform.isAndroid ? 4 : 0) +
-              up.value *
-                  (random2 * (maxHeight - iconHeight - 8) * 0.4 +
-                      (maxHeight - iconHeight - 8) * 0.6),
+        return Transform.translate(
+          offset: Offset(computeXOffset(up.value, move.value),
+              computeYOffset(up.value, move.value)),
           child: Transform.scale(
             scale: 1 - up.value,
             child: const Icon(

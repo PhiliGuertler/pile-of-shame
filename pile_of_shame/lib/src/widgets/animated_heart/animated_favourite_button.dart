@@ -36,51 +36,53 @@ class _AnimatedFavouriteButtonState extends State<AnimatedFavouriteButton>
   @override
   Widget build(BuildContext context) {
     const double maxWidth = 80;
-    const double maxHeight = 80;
+    const double maxHeight = 120;
 
-    return UnconstrainedBox(
-      child: SizedBox(
-        width: 80,
-        height: 80,
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
-            AnimatedHeart(
-              random1: Random().nextDouble(),
-              random2: Random().nextDouble(),
-              maxWidth: maxWidth,
-              maxHeight: maxHeight,
-              controller: controller,
-            ),
-            AnimatedHeart(
-              random1: Random().nextDouble(),
-              random2: Random().nextDouble(),
-              maxWidth: maxWidth,
-              maxHeight: maxHeight,
-              controller: controller,
-            ),
-            AnimatedHeart(
-              random1: Random().nextDouble(),
-              random2: Random().nextDouble(),
-              maxWidth: maxWidth,
-              maxHeight: maxHeight,
-              controller: controller,
-            ),
-            IconButton(
-              icon: Icon(
-                  widget.isFilled ? Icons.favorite : Icons.favorite_outline,
-                  color: widget.isFilled ? Colors.red : null),
-              onPressed: () {
-                controller.reset();
-                controller.forward();
-                // force a re-render to re-compute random numbers
-                setState(() {});
-                widget.onPressed();
-              },
-            ),
-          ],
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        Center(
+          child: AnimatedHeart(
+            random1: Random().nextDouble(),
+            random2: Random().nextDouble(),
+            maxWidth: maxWidth,
+            maxHeight: maxHeight,
+            controller: controller,
+          ),
         ),
-      ),
+        Center(
+          child: AnimatedHeart(
+            random1: Random().nextDouble(),
+            random2: Random().nextDouble(),
+            maxWidth: maxWidth,
+            maxHeight: maxHeight,
+            controller: controller,
+          ),
+        ),
+        Center(
+          child: AnimatedHeart(
+            random1: Random().nextDouble(),
+            random2: Random().nextDouble(),
+            maxWidth: maxWidth,
+            maxHeight: maxHeight,
+            controller: controller,
+          ),
+        ),
+        Center(
+          child: IconButton(
+            icon: Icon(
+                widget.isFilled ? Icons.favorite : Icons.favorite_outline,
+                color: widget.isFilled ? Colors.red : null),
+            onPressed: () {
+              controller.reset();
+              controller.forward();
+              // force a re-render to re-compute random numbers
+              setState(() {});
+              widget.onPressed();
+            },
+          ),
+        ),
+      ],
     );
   }
 }
