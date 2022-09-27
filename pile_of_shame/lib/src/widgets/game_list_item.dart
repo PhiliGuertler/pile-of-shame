@@ -1,15 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:pile_of_shame/src/models/game_platform.dart';
 import 'package:pile_of_shame/src/widgets/animated_heart/animated_favourite_button.dart';
+import 'package:transparent_image/transparent_image.dart';
 import '../models/game.dart';
 import '../persistance/storage.dart';
 import './age_restriction.dart';
 import 'game_status_view.dart';
 
 class GameListItem extends StatefulWidget {
-  const GameListItem({super.key, required this.game});
+  const GameListItem(
+      {super.key,
+      required this.game,
+      this.coverOffsetY = 0,
+      this.coverScale = 1.0});
 
   final Game game;
+  final double coverOffsetY;
+  final double coverScale;
 
   @override
   State<GameListItem> createState() => _GameListItemState();
@@ -44,14 +51,43 @@ class _GameListItemState extends State<GameListItem> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+              if (widget.game.coverImage != null)
+                Padding(
+                  padding: const EdgeInsets.only(right: 8.0, left: 8.0),
+                  child: Transform.translate(
+                    offset: Offset(80 * (widget.coverScale - 1.0) * 0.5,
+                        widget.coverOffsetY),
+                    child: Transform.scale(
+                      scale: widget.coverScale,
+                      child: SizedBox(
+                        width: 80,
+                        child: Hero(
+                          tag: widget.game.title,
+                          child: Material(
+                            child: FadeInImage.memoryNetwork(
+                              fadeInDuration: const Duration(milliseconds: 250),
+                              placeholder: kTransparentImage,
+                              image: widget.game.coverImage!,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              Padding(
+                  padding:
+                      EdgeInsets.only(left: 80 * (widget.coverScale - 1.0))),
               AnimatedFavouriteButton(
-                  isFilled: widget.game.isFavourite,
-                  onPressed: () {
-                    setState(() {
-                      widget.game.isFavourite = !widget.game.isFavourite;
-                      Storage().addOrUpdateGame(widget.game);
-                    });
-                  }),
+                isFilled: widget.game.isFavourite,
+                onPressed: () {
+                  setState(() {
+                    widget.game.isFavourite = !widget.game.isFavourite;
+                    Storage().addOrUpdateGame(widget.game);
+                  });
+                },
+              ),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

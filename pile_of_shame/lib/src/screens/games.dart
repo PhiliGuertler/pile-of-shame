@@ -44,6 +44,7 @@ class _GameScreenState extends State<GameScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
+        heroTag: "add_game_fab",
         onPressed: () async {
           await Navigator.push(
             context,
