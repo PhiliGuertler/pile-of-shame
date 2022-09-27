@@ -10,7 +10,7 @@ class IGDBScraper {
     final api = IGDBApi();
     final igdbPlatforms = await api.getPlatforms();
 
-    Map<GamePlatform, IGDBPlatform> map = Map();
+    Map<GamePlatform, IGDBPlatform> map = {};
     GamePlatforms.toList().forEach((platform) {
       // find the platform in igdb-platforms
       final matches = igdbPlatforms.where((igdbPlatform) {
