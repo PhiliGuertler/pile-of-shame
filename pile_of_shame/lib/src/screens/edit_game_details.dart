@@ -112,9 +112,9 @@ class _EditGameDetailsState extends State<EditGameDetails> {
 
     return Scaffold(
       appBar: AppBar(title: const Text('Bearbeiten')),
-      body: Container(
-        padding: const EdgeInsets.all(8.0),
-        child: SingleChildScrollView(
+      body: SingleChildScrollView(
+        child: Container(
+          padding: const EdgeInsets.all(8.0),
           child: Form(
               child: Column(
             children: [
