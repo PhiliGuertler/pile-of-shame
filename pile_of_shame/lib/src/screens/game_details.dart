@@ -185,10 +185,16 @@ class _GameDetailsState extends State<GameDetails> {
               if (snapshot.hasData) {
                 return IconButton(
                   onPressed: () async {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text("Lade Informationen via IGDB"),
+                      ),
+                    );
                     IGDBScraper scraper = IGDBScraper();
                     List<IGDBGame> games =
                         await scraper.scrapeGameInfos(snapshot.data!);
                     debugPrint(games.toString());
+                    // TODO: prompt the user to select one of the game results, if there are more than one.
                     if (games.isNotEmpty) {
                       IGDBGame scrapingResult = games.first;
                       Game modifiedGame = Game.from(snapshot.data!);
@@ -209,10 +215,21 @@ class _GameDetailsState extends State<GameDetails> {
                       }
                       modifiedGame.wasScraped = true;
                       await Storage().addOrUpdateGame(modifiedGame);
+                      if (!mounted) return;
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text("Informationen aktualisiert."),
+                        ),
+                      );
                       refreshGame();
                     } else {
-                      // TODO: prompt the user to select one of the game results, if there are more than one.
-                      // TODO: prompt the user if no scraping result was found
+                      if (!mounted) return;
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                              "Keine Informationen zu ${snapshot.data!.title} gefunden."),
+                        ),
+                      );
                     }
                   },
                   icon: const Icon(Icons.cloud_download),
