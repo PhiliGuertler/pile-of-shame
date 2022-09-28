@@ -183,19 +183,19 @@ class GameFilters {
   List<Game> _applySortStrategy(List<Game> gamesList) {
     switch (sortStrategy) {
       case SortStrategy.byDateOfAddition:
-        return _sortByDateOfAddition(gamesList);
+        return _sortByDateOfAddition(_sortByAlphabet(gamesList));
       case SortStrategy.byAlphabet:
         return _sortByAlphabet(gamesList);
       case SortStrategy.byAgeRestriction:
-        return _sortByAgeRestriction(gamesList);
+        return _sortByAgeRestriction(_sortByAlphabet(gamesList));
       case SortStrategy.byPrice:
-        return _sortByPrice(gamesList);
+        return _sortByPrice(_sortByAlphabet(gamesList));
       case SortStrategy.byPlatform:
-        return _sortByPlatform(gamesList);
+        return _sortByPlatform(_sortByAlphabet(gamesList));
       case SortStrategy.byFavourite:
-        return _sortByFavourite(gamesList);
+        return _sortByFavourite(_sortByAlphabet(gamesList));
       case SortStrategy.byStatus:
-        return _sortByStatus(gamesList);
+        return _sortByStatus(_sortByAlphabet(gamesList));
       default:
         return gamesList;
     }
