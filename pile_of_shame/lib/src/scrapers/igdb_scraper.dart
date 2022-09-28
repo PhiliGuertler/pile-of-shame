@@ -1,43 +1,11 @@
 import 'package:flutter/foundation.dart';
 import 'package:pile_of_shame/src/models/game.dart';
-import 'package:pile_of_shame/src/models/game_platform.dart';
 import 'package:pile_of_shame/src/network/igdb/igdb_api.dart';
 import 'package:pile_of_shame/src/network/igdb/models/igdb_game.dart';
-import 'package:pile_of_shame/src/network/igdb/models/igdb_platform.dart';
 
 class IGDBScraper {
-  Future<Map<GamePlatform, IGDBPlatform>> mapIGDBPlatforms() async {
-    final api = IGDBApi();
-    final igdbPlatforms = await api.getPlatforms();
-
-    Map<GamePlatform, IGDBPlatform> map = {};
-    GamePlatforms.toList().forEach((platform) {
-      // find the platform in igdb-platforms
-      final matches = igdbPlatforms.where((igdbPlatform) {
-        return platform.name.toLowerCase() == igdbPlatform.name.toLowerCase() ||
-            platform.abbreviation.toLowerCase() ==
-                igdbPlatform.abbreviation?.toLowerCase();
-      });
-
-      if (matches.length == 1) {
-        map[platform] = matches.first;
-      } else {
-        debugPrint(platform.name);
-      }
-    });
-
-    return map;
-  }
-
   Future<List<IGDBGame>> scrapeGameInfos(Game game) async {
     final api = IGDBApi();
-    // fetch all platforms of IGDB first and link them to the platforms of the application
-    // final platforms = await mapIGDBPlatforms();
-
-    // TODO: everything above should be performed upon initialization
-    // Fetch game data from igdb
-    // final gameResults = await api.getGameByNameAndPlatform(
-    //     game.title, platforms[game.platforms.first]?.id);
     final gameResults = await api.getGameByNameAndPlatform(game.title, null);
 
     if (gameResults.isEmpty) {
@@ -45,5 +13,41 @@ class IGDBScraper {
     }
 
     return gameResults;
+  }
+
+  Future<Game> scrapeAndUpdateGame(Game game) async {
+    List<IGDBGame> games = await scrapeGameInfos(game);
+    debugPrint(games.toString());
+    // TODO: prompt the user to select one of the game results, if there are more than one.
+    if (games.isNotEmpty) {
+      IGDBGame scrapingResult = games.first;
+      Game modifiedGame = Game.from(game);
+      const String coverSize = "cover_big";
+      const String backgroundSize = "screenshot_huge";
+
+      // Set cover-image
+      if (scrapingResult.cover != null) {
+        modifiedGame.coverImage =
+            "https://images.igdb.com/igdb/image/upload/t_$coverSize/${scrapingResult.cover!.imageId}.jpg";
+      }
+      // Set background-image
+      if (scrapingResult.screenshots != null &&
+          scrapingResult.screenshots!.isNotEmpty) {
+        modifiedGame.backgroundImage =
+            "https://images.igdb.com/igdb/image/upload/t_$backgroundSize/${scrapingResult.screenshots!.first.imageId}.jpg";
+      }
+      // Set release-date
+      if (scrapingResult.firstReleaseDate != null) {
+        modifiedGame.releaseDate = scrapingResult.firstReleaseDate;
+      }
+      // Set external-Game-id
+      modifiedGame.externalGameId = scrapingResult.id;
+      // Set scraped-flag
+      modifiedGame.wasScraped = true;
+      // Done, return the game
+      return modifiedGame;
+    } else {
+      throw Exception("Keine Informationen zu ${game.title} gefunden.");
+    }
   }
 }

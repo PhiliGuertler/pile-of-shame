@@ -153,45 +153,27 @@ class _GameDetailsState extends State<GameDetails> {
                         content: Text("Lade Informationen via IGDB"),
                       ),
                     );
+
                     IGDBScraper scraper = IGDBScraper();
-                    List<IGDBGame> games =
-                        await scraper.scrapeGameInfos(snapshot.data!);
-                    debugPrint(games.toString());
-                    // TODO: prompt the user to select one of the game results, if there are more than one.
-                    if (games.isNotEmpty) {
-                      IGDBGame scrapingResult = games.first;
-                      Game modifiedGame = Game.from(snapshot.data!);
-                      const String coverSize = "cover_big";
-                      const String backgroundSize = "screenshot_huge";
-                      if (scrapingResult.cover != null) {
-                        modifiedGame.coverImage =
-                            "https://images.igdb.com/igdb/image/upload/t_$coverSize/${scrapingResult.cover!.imageId}.jpg";
-                      }
-                      if (scrapingResult.screenshots != null &&
-                          scrapingResult.screenshots!.isNotEmpty) {
-                        modifiedGame.backgroundImage =
-                            "https://images.igdb.com/igdb/image/upload/t_$backgroundSize/${scrapingResult.screenshots!.first.imageId}.jpg";
-                      }
-                      if (scrapingResult.firstReleaseDate != null) {
-                        modifiedGame.releaseDate =
-                            scrapingResult.firstReleaseDate;
-                      }
-                      modifiedGame.externalGameId = scrapingResult.id;
-                      modifiedGame.wasScraped = true;
-                      await Storage().addOrUpdateGame(modifiedGame);
+                    try {
+                      // This throws an error, if no game infos were found
+                      Game scrapedGame =
+                          await scraper.scrapeAndUpdateGame(snapshot.data!);
+                      // update the game in storage and display a message
+                      await Storage().addOrUpdateGame(scrapedGame);
                       if (!mounted) return;
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                           content: Text("Informationen aktualisiert."),
                         ),
                       );
+                      // refresh display
                       refreshGame();
-                    } else {
+                    } catch (e) {
                       if (!mounted) return;
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content: Text(
-                              "Keine Informationen zu ${snapshot.data!.title} gefunden."),
+                          content: Text(e.toString()),
                         ),
                       );
                     }
