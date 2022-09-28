@@ -176,6 +176,7 @@ class _GameDetailsState extends State<GameDetails> {
                         modifiedGame.releaseDate =
                             scrapingResult.firstReleaseDate;
                       }
+                      modifiedGame.externalGameId = scrapingResult.id;
                       modifiedGame.wasScraped = true;
                       await Storage().addOrUpdateGame(modifiedGame);
                       if (!mounted) return;
