@@ -183,7 +183,7 @@ class GameFilters {
   List<Game> _applySortStrategy(List<Game> gamesList) {
     switch (sortStrategy) {
       case SortStrategy.byDateOfAddition:
-        return _sortByDateOfAddition(_sortByAlphabet(gamesList));
+        return _sortByDateOfAddition(gamesList);
       case SortStrategy.byAlphabet:
         return _sortByAlphabet(gamesList);
       case SortStrategy.byAgeRestriction:
