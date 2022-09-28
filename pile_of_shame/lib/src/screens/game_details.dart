@@ -286,9 +286,17 @@ class _GameDetailsState extends State<GameDetails> {
                             Pair('Metacritic Score',
                                 '${snapshot.data!.metacriticScore!.toString()} / 100'),
                           if (snapshot.hasData &&
-                              snapshot.data!.rawgGameId != null)
-                            Pair('Scraping powered by RAWG.io',
-                                'Game-ID ${snapshot.data!.rawgGameId!.toString()}'),
+                              snapshot.data!.externalGameId != null)
+                            Pair('Externe Game-ID',
+                                snapshot.data!.externalGameId!.toString()),
+                          if (snapshot.hasData &&
+                              snapshot.data!.coverImage != null)
+                            Pair('Coverbild-URL',
+                                snapshot.data!.coverImage!.toString()),
+                          if (snapshot.hasData &&
+                              snapshot.data!.backgroundImage != null)
+                            Pair('Hintergrundbild-URL',
+                                snapshot.data!.backgroundImage!.toString()),
                           if (snapshot.hasData)
                             Pair('UUID', snapshot.data!.uuid),
                         ]

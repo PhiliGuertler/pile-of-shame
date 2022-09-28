@@ -48,8 +48,8 @@ class Game {
   /// cover image of the game
   String? coverImage;
 
-  /// the game's id in RAWG.io's database
-  int? rawgGameId;
+  /// the game's id in an external database like RAWG.io or IGDB
+  int? externalGameId;
 
   Game({
     required this.title,
@@ -64,7 +64,7 @@ class Game {
     this.metacriticScore,
     this.backgroundImage,
     this.coverImage,
-    this.rawgGameId,
+    this.externalGameId,
   }) : uuid = const Uuid().v4();
 
   Game.withUuid({
@@ -81,7 +81,7 @@ class Game {
     this.metacriticScore,
     this.backgroundImage,
     this.coverImage,
-    this.rawgGameId,
+    this.externalGameId,
   });
 
   Game.from(Game other)
@@ -98,7 +98,7 @@ class Game {
         metacriticScore = other.metacriticScore,
         backgroundImage = other.backgroundImage,
         coverImage = other.coverImage,
-        rawgGameId = other.rawgGameId;
+        externalGameId = other.externalGameId;
 
   Color getAgeRestictionColor() {
     return AgeRestrictions.getAgeRestictionColor(
@@ -130,7 +130,7 @@ class Game {
         metacriticScore = json['metacriticScore'],
         backgroundImage = json['backgroundImage'],
         coverImage = json['coverImage'],
-        rawgGameId = json['rawgGameId'];
+        externalGameId = json['externalGameId'] ?? json['rawgGameId'];
 
   Map<String, dynamic> toJson() => {
         'uuid': uuid,
@@ -146,7 +146,7 @@ class Game {
         'metacriticScore': metacriticScore,
         'backgroundImage': backgroundImage,
         'coverImage': coverImage,
-        'rawgGameId': rawgGameId,
+        'externalGameId': externalGameId,
       };
 
   @override

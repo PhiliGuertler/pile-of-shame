@@ -21,6 +21,9 @@ It will result in an application that simply displays information about games th
 
 ## TODOs
 - Saving platforms entered by the user in a json file and retrieving them from there has to be implemented. The list/file should be initialized with a bunch of known platforms (see game_addition.dart)
+- Add the functionality to select the game-data from a list of suggestions when searching for the game on igdb instead of returning the first hit
+- Add the functionality to run game-data scraping from all games at once
 
 ## Known issues
 - Sometimes the app crashes at special keyboard-inputs like the arrow-keys or backspace when adding a game during debugging (sporadically)
+- Focus on Editing and Adding games is weird when new platforms get added on the fly. Maybe this can be fixed by adding platforms using an add-button.

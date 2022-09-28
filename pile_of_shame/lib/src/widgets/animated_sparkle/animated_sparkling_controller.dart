@@ -39,7 +39,7 @@ class _AnimatedSparklingControllerState
   void initState() {
     super.initState();
     controller =
-        AnimationController(vsync: this, duration: Duration(seconds: 1));
+        AnimationController(vsync: this, duration: const Duration(seconds: 1));
     controller.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
         // prepare the next animation cycle

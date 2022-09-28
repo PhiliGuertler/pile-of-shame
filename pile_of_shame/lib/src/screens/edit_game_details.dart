@@ -30,9 +30,11 @@ class _EditGameDetailsState extends State<EditGameDetails> {
   final TextEditingController _releaseDateController = TextEditingController();
   final TextEditingController _metacriticScoreController =
       TextEditingController();
+  final TextEditingController _coverImageController = TextEditingController();
   final TextEditingController _backgroundImageController =
       TextEditingController();
-  final TextEditingController _rawgGameIdController = TextEditingController();
+  final TextEditingController _externalGameIdController =
+      TextEditingController();
   AgeRestriction? _ageRestrictionController;
   GameState? _selectedGameState;
 
@@ -63,8 +65,10 @@ class _EditGameDetailsState extends State<EditGameDetails> {
           _releaseDate != null ? DateFormat.yMd().format(_releaseDate!) : '';
       _metacriticScoreController.text =
           widget.game.metacriticScore?.toString() ?? '';
+      _coverImageController.text = widget.game.coverImage ?? '';
       _backgroundImageController.text = widget.game.backgroundImage ?? '';
-      _rawgGameIdController.text = widget.game.rawgGameId?.toString() ?? '';
+      _externalGameIdController.text =
+          widget.game.externalGameId?.toString() ?? '';
       _ageRestrictionController = widget.game.ageRestriction;
       _selectedGameState = widget.game.gameState;
     });
@@ -208,6 +212,13 @@ class _EditGameDetailsState extends State<EditGameDetails> {
               TextFormField(
                 decoration: const InputDecoration(
                   icon: Icon(Icons.image),
+                  labelText: 'Coverbild',
+                ),
+                controller: _coverImageController,
+              ),
+              TextFormField(
+                decoration: const InputDecoration(
+                  icon: Icon(Icons.image),
                   labelText: 'Hintergrundbild',
                 ),
                 controller: _backgroundImageController,
@@ -216,9 +227,9 @@ class _EditGameDetailsState extends State<EditGameDetails> {
               TextFormField(
                 decoration: const InputDecoration(
                   icon: Icon(Icons.fingerprint),
-                  labelText: 'Rawg-Game-ID',
+                  labelText: 'Externe Game-ID',
                 ),
-                controller: _rawgGameIdController,
+                controller: _externalGameIdController,
               ),
               Center(
                 child: Row(
@@ -285,9 +296,11 @@ class _EditGameDetailsState extends State<EditGameDetails> {
                           editedGame.metacriticScore =
                               int.tryParse(_metacriticScoreController.text);
                           editedGame.backgroundImage =
-                              _backgroundImageController.text;
-                          editedGame.rawgGameId =
-                              int.tryParse(_rawgGameIdController.text);
+                              _backgroundImageController.text.isNotEmpty
+                                  ? _backgroundImageController.text
+                                  : null;
+                          editedGame.externalGameId =
+                              int.tryParse(_externalGameIdController.text);
                           editedGame.ageRestriction = _ageRestrictionController;
 
                           // update the game in storage
