@@ -142,7 +142,36 @@ class IGDBApi {
     const String gamesEndpoint = "v4/games";
     Uri url = Uri.https(baseUrl, gamesEndpoint);
 
-    final nameTokens = gameName.split(RegExp(r'[\s\.:,\!\?]'));
+    // try searching for the game first
+    IGDBFilters searchFilters = IGDBFilters(
+      fields: [
+        "alternative_names",
+        "artworks.*",
+        "cover.*",
+        "first_release_date",
+        "name",
+        "platforms",
+        "screenshots.*",
+        "slug",
+        "version_parent",
+      ],
+      search: gameName,
+    );
+
+    final response =
+        await _performRequest(url: url, body: searchFilters.toString());
+    if (response.statusCode == 200) {
+      final List<dynamic> results = jsonDecode(response.body);
+      final List<IGDBGame> parsedResults =
+          results.map((e) => IGDBGame.fromJson(e)).toList();
+      if (parsedResults.isNotEmpty) {
+        return parsedResults;
+      }
+    }
+
+    // the game was not found using the search-request (maybe it's in a different language)
+    // retry by searching through alternative_names
+    final nameTokens = gameName.split(RegExp(r'[\s:]'));
     List<int> indexGeneration =
         List<int>.generate(nameTokens.length - 1, (i) => i);
     List<String> nameSearch = [];
@@ -180,21 +209,20 @@ class IGDBApi {
         "slug",
         "version_parent",
       ],
-      // search: gameName,
       conditions: conditions.join(" | "),
     );
 
     String body = filters.toString();
 
-    final response = await _performRequest(url: url, body: body);
+    final response2 = await _performRequest(url: url, body: body);
 
     if (response.statusCode == 200) {
-      final List<dynamic> results = jsonDecode(response.body);
+      final List<dynamic> results = jsonDecode(response2.body);
       final List<IGDBGame> parsedResults =
           results.map((e) => IGDBGame.fromJson(e)).toList();
       return parsedResults;
     }
-    throw Exception(response.body.toString());
+    throw Exception(response2.body.toString());
   }
 
   Future<List<IGDBImage>> getCoversById(List<int> coverIds) async {
