@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:pile_of_shame/src/models/game_platform.dart';
 import 'package:pile_of_shame/src/models/game_status.dart';
 import 'package:pile_of_shame/src/network/igdb/models/igdb_game.dart';
-import 'package:pile_of_shame/src/network/rawg/rawg_api.dart';
 import 'package:pile_of_shame/src/persistance/storage.dart';
 import 'package:pile_of_shame/src/scrapers/igdb_scraper.dart';
 import 'package:pile_of_shame/src/widgets/game_displays/game_details_header.dart';
@@ -32,38 +30,6 @@ class GameDetails extends StatefulWidget {
 class _GameDetailsState extends State<GameDetails> {
   late Future<Game> mostRecentGame;
 
-  Future<Game> scrapeGameData(String gameTitle, GamePlatform platform) async {
-    Iterable<RawgGame> scrapedGames =
-        await RawgApi().searchGameByNameAndPlatform(gameTitle, platform);
-
-    final initialGame = await Storage().getGameByUuid(widget.gameUuid);
-    final Game scrapedGame = Game.from(initialGame);
-    if (scrapedGames.isNotEmpty) {
-      // For now, just assume the first result is the match we want
-      final RawgGame scrapy = scrapedGames.first;
-      scrapedGame.backgroundImage =
-          scrapedGame.backgroundImage ?? scrapy.backgroundImage;
-      scrapedGame.releaseDate = scrapedGame.releaseDate ??
-          (scrapy.released != null ? DateTime.parse(scrapy.released!) : null);
-      scrapedGame.metacriticScore =
-          scrapedGame.metacriticScore ?? scrapy.metacriticScore;
-      scrapedGame.rawgGameId = scrapedGame.rawgGameId ?? scrapy.id;
-      scrapedGame.wasScraped = true;
-
-      await Storage().addOrUpdateGame(scrapedGame);
-    }
-
-    if (!mounted) return scrapedGame;
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content:
-            Text('[Scraping] Zusätliche Informationen zu $gameTitle geladen.'),
-      ),
-    );
-
-    return scrapedGame;
-  }
-
   void refreshGame() {
     setState(() {
       mostRecentGame = Storage().getGameByUuid(widget.gameUuid);
@@ -78,10 +44,7 @@ class _GameDetailsState extends State<GameDetails> {
         Storage().getGameByUuid(widget.gameUuid).then((loadedGame) {
       if (!loadedGame.wasScraped) {
         // find the platforms for the currently selected game
-        final platforms = GamePlatforms.toList()
-            .where((element) => loadedGame.platforms.contains(element.name));
-        // FIXME: DISABLED FOR NOW Fetch game info here
-        // return scrapeGameData(loadedGame.title, platforms.first);
+        // TODO: Perform scraping here
         return loadedGame;
       } else {
         return loadedGame;
