@@ -1,33 +1,31 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:pile_of_shame/src/widgets/animated_sparkle/star_painter.dart';
 
-class AnimatedSparkle extends StatelessWidget {
-  AnimatedSparkle({super.key, required this.controller, this.colorHue = 0})
-      : animation = Tween<double>(begin: 0.0, end: 1.0).animate(
-          CurvedAnimation(
-            parent: controller,
-            curve: const Interval(0.0, 1.0, curve: Curves.ease),
-          ),
-        );
+import 'random_star.dart';
 
-  final AnimationController controller;
-  final Animation<double> animation;
-  final double colorHue;
+class AnimatedSparkle extends StatelessWidget {
+  const AnimatedSparkle({super.key, this.star});
+
+  final RandomStar? star;
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: controller,
-      builder: (context, child) {
-        return CustomPaint(
-          painter: StarPainter(
-            sizeFactor: animation.value,
-            colorHue: colorHue,
+    return SizedBox(
+      width: star?.size.width ?? 0,
+      height: star?.size.height ?? 0,
+      child: Transform.translate(
+        offset: star?.offset ?? Offset.zero,
+        child: Transform.rotate(
+          angle: star?.rotationAngle ?? 0,
+          child: CustomPaint(
+            painter: StarPainter(
+              sizeFactor: star?.animation.value ?? 0,
+              colorHue: star?.colorHue ?? 0,
+              maxOvershot: 15,
+            ),
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 }

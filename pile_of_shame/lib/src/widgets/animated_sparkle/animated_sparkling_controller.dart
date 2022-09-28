@@ -1,12 +1,16 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:pile_of_shame/src/widgets/animated_sparkle/animated_sparkle.dart';
 
+import 'random_star.dart';
+
 class AnimatedSparklingController extends StatefulWidget {
-  const AnimatedSparklingController({super.key});
+  const AnimatedSparklingController(
+      {super.key, this.child, this.numSparks = 5});
+
+  final Widget? child;
+  final int numSparks;
 
   @override
   State<AnimatedSparklingController> createState() =>
@@ -17,7 +21,19 @@ class _AnimatedSparklingControllerState
     extends State<AnimatedSparklingController> with TickerProviderStateMixin {
   late AnimationController controller;
 
-  double colorHue = 0;
+  List<RandomStar> stars = [];
+
+  GlobalKey childKey = GlobalKey();
+
+  Size getChildSize() {
+    final BuildContext? keyContext = childKey.currentContext;
+    Size childSize = const Size(1, 1);
+    if (keyContext != null) {
+      final RenderBox box = keyContext.findRenderObject() as RenderBox;
+      childSize = box.size;
+    }
+    return childSize;
+  }
 
   @override
   void initState() {
@@ -29,9 +45,14 @@ class _AnimatedSparklingControllerState
         // prepare the next animation cycle
         final randomStart = Random().nextInt(300);
         controller.duration = Duration(milliseconds: randomStart + 150);
+
+        Size childSize = getChildSize();
         setState(() {
-          colorHue = Random().nextDouble();
-          debugPrint("$colorHue");
+          stars.clear();
+          for (int i = 0; i < widget.numSparks; ++i) {
+            stars.add(RandomStar(controller,
+                maxWidth: childSize.width, maxHeight: childSize.height));
+          }
         });
       }
       if (status == AnimationStatus.completed) {
@@ -40,7 +61,13 @@ class _AnimatedSparklingControllerState
         controller.forward();
       }
     });
-
+    Size childSize = getChildSize();
+    for (int i = 0; i < widget.numSparks; ++i) {
+      stars.add(
+        RandomStar(controller,
+            maxWidth: childSize.width, maxHeight: childSize.height),
+      );
+    }
     controller.forward();
   }
 
@@ -52,9 +79,21 @@ class _AnimatedSparklingControllerState
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedSparkle(
-      controller: controller,
-      colorHue: colorHue,
+    return FittedBox(
+      child: AnimatedBuilder(
+        animation: controller,
+        builder: (context, child) => Stack(
+          children: [
+            if (widget.child != null)
+              Container(key: childKey, child: widget.child!),
+            ...stars.map<Widget>(
+              (e) => AnimatedSparkle(
+                star: e,
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
