@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pile_of_shame/src/models/game_status.dart';
+import 'package:pile_of_shame/src/widgets/animated_sparkle/animated_sparkling_controller.dart';
 
 class GameStatusView extends StatelessWidget {
   const GameStatusView({super.key, required this.gameState});
@@ -45,7 +46,7 @@ class GameStatusView extends StatelessWidget {
   Widget build(BuildContext context) {
     final double progress = gameStateToProgress(gameState);
 
-    return Container(
+    Widget content = Container(
       width: 180,
       height: 25,
       alignment: Alignment.center,
@@ -72,5 +73,14 @@ class GameStatusView extends StatelessWidget {
         style: const TextStyle(fontWeight: FontWeight.bold),
       ),
     );
+
+    if (gameState == GameState.completed100Percent) {
+      return AnimatedSparklingController(
+        numSparks: 5,
+        child: content,
+      );
+    }
+
+    return content;
   }
 }

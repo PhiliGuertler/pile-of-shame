@@ -38,34 +38,37 @@ class _AnimatedSparklingControllerState
   @override
   void initState() {
     super.initState();
-    controller = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 300));
+    controller =
+        AnimationController(vsync: this, duration: Duration(seconds: 1));
     controller.addStatusListener((status) {
-      if (status == AnimationStatus.dismissed) {
+      if (status == AnimationStatus.completed) {
         // prepare the next animation cycle
-        final randomStart = Random().nextInt(300);
-        controller.duration = Duration(milliseconds: randomStart + 150);
+        final randomStart = Random().nextInt(200);
+        controller.duration = Duration(milliseconds: randomStart + 900);
 
         Size childSize = getChildSize();
         setState(() {
           stars.clear();
           for (int i = 0; i < widget.numSparks; ++i) {
             stars.add(RandomStar(controller,
-                maxWidth: childSize.width, maxHeight: childSize.height));
+                maxWidth: childSize.width,
+                maxHeight: childSize.height,
+                startOffset: i / widget.numSparks,
+                endOffset: (i + 1) / widget.numSparks));
           }
+          controller.reset();
+          controller.forward();
         });
-      }
-      if (status == AnimationStatus.completed) {
-        controller.reverse();
-      } else if (status == AnimationStatus.dismissed) {
-        controller.forward();
       }
     });
     Size childSize = getChildSize();
     for (int i = 0; i < widget.numSparks; ++i) {
       stars.add(
-        RandomStar(controller,
-            maxWidth: childSize.width, maxHeight: childSize.height),
+        RandomStar(
+          controller,
+          maxWidth: childSize.width,
+          maxHeight: childSize.height,
+        ),
       );
     }
     controller.forward();

@@ -3,9 +3,13 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 class RandomStar {
-  RandomStar(AnimationController controller,
-      {double maxWidth = 1, double maxHeight = 1})
-      : colorHue = 0,
+  RandomStar(
+    AnimationController controller, {
+    double maxWidth = 1,
+    double maxHeight = 1,
+    double startOffset = 0,
+    double endOffset = 1,
+  })  : colorHue = 0,
         size = const Size(0, 0),
         offset = const Offset(0, 0),
         animation = Tween<double>(begin: 0.0, end: 1.0).animate(
@@ -19,8 +23,7 @@ class RandomStar {
     final double randomSize = Random().nextDouble() * 5 + 5;
     final double randomOffsetX = Random().nextDouble() * 1.1 - 0.05;
     final double randomOffsetY = Random().nextDouble() * 1.1 - 0.05;
-    final double randomAnimation1 = Random().nextDouble();
-    final double randomAnimation2 = Random().nextDouble();
+    final double randomAnimationOffset = Random().nextDouble();
     final double randomRotation = Random().nextDouble();
 
     colorHue = randomColorHueValue;
@@ -29,13 +32,12 @@ class RandomStar {
       randomOffsetX * maxWidth - randomSize * 0.5,
       randomOffsetY * maxHeight - randomSize * 0.5,
     );
-    final double minAnimationValue = min(randomAnimation1, randomAnimation2);
-    final double maxAnimationValue = max(randomAnimation1, randomAnimation2);
-    animation = Tween<double>(begin: 0.0, end: 1.0).animate(
+    animation = Tween<double>(begin: 0.0, end: pi).animate(
       CurvedAnimation(
         parent: controller,
-        curve:
-            Interval(minAnimationValue, maxAnimationValue, curve: Curves.ease),
+        curve: Interval(max(0, startOffset - randomAnimationOffset),
+            min(1, endOffset + randomAnimationOffset),
+            curve: Curves.easeInOut),
       ),
     );
     rotationAngle = randomRotation * pi * 0.5;
