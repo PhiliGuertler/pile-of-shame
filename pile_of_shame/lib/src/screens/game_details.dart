@@ -6,7 +6,7 @@ import 'package:pile_of_shame/src/network/igdb/models/igdb_game.dart';
 import 'package:pile_of_shame/src/network/rawg/rawg_api.dart';
 import 'package:pile_of_shame/src/persistance/storage.dart';
 import 'package:pile_of_shame/src/scrapers/igdb_scraper.dart';
-import 'package:pile_of_shame/src/widgets/game_list_item.dart';
+import 'package:pile_of_shame/src/widgets/game_displays/game_details_header.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 import '../models/age_restrictions.dart';
@@ -276,11 +276,10 @@ class _GameDetailsState extends State<GameDetails> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     if (snapshot.hasData)
-                      GameListItem(
+                      GameDetailsHeader(
                         game: snapshot.data!,
                         coverOffsetY: -50,
                         coverScale: 2.0,
-                        isCoverOptimized: true,
                       ),
                     Container(
                       padding: const EdgeInsets.all(8.0),

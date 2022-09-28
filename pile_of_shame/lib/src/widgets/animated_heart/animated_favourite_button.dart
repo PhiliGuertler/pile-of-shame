@@ -41,46 +41,37 @@ class _AnimatedFavouriteButtonState extends State<AnimatedFavouriteButton>
     return Stack(
       alignment: Alignment.center,
       children: [
-        Center(
-          child: AnimatedHeart(
-            random1: Random().nextDouble(),
-            random2: Random().nextDouble(),
-            maxWidth: maxWidth,
-            maxHeight: maxHeight,
-            controller: controller,
-          ),
+        AnimatedHeart(
+          random1: Random().nextDouble(),
+          random2: Random().nextDouble(),
+          maxWidth: maxWidth,
+          maxHeight: maxHeight,
+          controller: controller,
         ),
-        Center(
-          child: AnimatedHeart(
-            random1: Random().nextDouble(),
-            random2: Random().nextDouble(),
-            maxWidth: maxWidth,
-            maxHeight: maxHeight,
-            controller: controller,
-          ),
+        AnimatedHeart(
+          random1: Random().nextDouble(),
+          random2: Random().nextDouble(),
+          maxWidth: maxWidth,
+          maxHeight: maxHeight,
+          controller: controller,
         ),
-        Center(
-          child: AnimatedHeart(
-            random1: Random().nextDouble(),
-            random2: Random().nextDouble(),
-            maxWidth: maxWidth,
-            maxHeight: maxHeight,
-            controller: controller,
-          ),
+        AnimatedHeart(
+          random1: Random().nextDouble(),
+          random2: Random().nextDouble(),
+          maxWidth: maxWidth,
+          maxHeight: maxHeight,
+          controller: controller,
         ),
-        Center(
-          child: IconButton(
-            icon: Icon(
-                widget.isFilled ? Icons.favorite : Icons.favorite_outline,
-                color: widget.isFilled ? Colors.red : null),
-            onPressed: () {
-              controller.reset();
-              controller.forward();
-              // force a re-render to re-compute random numbers
-              setState(() {});
-              widget.onPressed();
-            },
-          ),
+        IconButton(
+          icon: Icon(widget.isFilled ? Icons.favorite : Icons.favorite_outline,
+              color: widget.isFilled ? Colors.red : null),
+          onPressed: () {
+            controller.reset();
+            controller.forward();
+            // force a re-render to re-compute random numbers
+            setState(() {});
+            widget.onPressed();
+          },
         ),
       ],
     );

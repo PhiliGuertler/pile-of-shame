@@ -4,7 +4,7 @@ import 'package:pile_of_shame/src/models/game_platform.dart';
 import 'package:pile_of_shame/src/persistance/storage.dart';
 import 'package:pile_of_shame/src/screens/game_addition.dart';
 import 'package:pile_of_shame/src/utils/game_filters.dart';
-import 'package:pile_of_shame/src/widgets/game_list_item.dart';
+import 'package:pile_of_shame/src/widgets/game_displays/game_list_item.dart';
 
 import '../models/game.dart';
 import '../models/game_status.dart';
