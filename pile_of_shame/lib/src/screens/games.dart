@@ -402,44 +402,40 @@ class _GameScreenState extends State<GameScreen> {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            ListView(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              children: ListTile.divideTiles(
-                context: context,
-                tiles: _games.map(
-                  (game) => InkWell(
-                    onTap: () async {
-                      await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  GameDetails(gameUuid: game.uuid)));
-                      refresh();
-                    },
-                    child: GameListItem(
-                      game: game,
-                    ),
-                  ),
-                ),
-              ).toList(),
-            ),
-            Container(
+      body: ListView.builder(
+        shrinkWrap: true,
+        itemCount: _games.length + 2,
+        itemBuilder: (context, index) {
+          if (index < _games.length) {
+            final game = _games[index];
+            return InkWell(
+              onTap: () async {
+                await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            GameDetails(gameUuid: game.uuid)));
+                refresh();
+              },
+              child: GameListItem(
+                game: game,
+              ),
+            );
+          } else if (index == _games.length) {
+            return Container(
               padding: const EdgeInsets.only(left: 8.0, right: 8.0),
               child: const Divider(
                 thickness: 3,
               ),
-            ),
-            Container(
+            );
+          } else {
+            return Container(
               padding: const EdgeInsets.only(
                   right: 8.0, left: 8.0, top: 16.0, bottom: 100.0),
               child: GameListSummary(games: _games),
-            ),
-          ],
-        ),
+            );
+          }
+        },
       ),
     );
   }
