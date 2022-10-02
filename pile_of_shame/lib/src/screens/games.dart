@@ -4,6 +4,7 @@ import 'package:pile_of_shame/src/models/game_platform.dart';
 import 'package:pile_of_shame/src/persistance/storage.dart';
 import 'package:pile_of_shame/src/scrapers/igdb_scraper.dart';
 import 'package:pile_of_shame/src/screens/game_addition.dart';
+import 'package:pile_of_shame/src/utils/adjustable_scroll_controller.dart';
 import 'package:pile_of_shame/src/utils/game_filters.dart';
 import 'package:pile_of_shame/src/widgets/game_displays/game_list_item.dart';
 
@@ -443,6 +444,7 @@ class _GameScreenState extends State<GameScreen> {
               ],
             ),
             body: ListView.builder(
+              controller: AdjustableScrollController(),
               shrinkWrap: true,
               itemCount: _games.length + 2,
               itemBuilder: (context, index) {
