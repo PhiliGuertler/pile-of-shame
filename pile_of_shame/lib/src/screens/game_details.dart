@@ -200,19 +200,21 @@ class _GameDetailsState extends State<GameDetails> {
                         Rect.fromLTRB(0, 0, bounds.width, bounds.height));
                   },
                   blendMode: BlendMode.dstIn,
-                  child: SizedBox(
-                    width: MediaQuery.of(context).size.width,
-                    height: queryData.size.height > 900 ? 350 : 200,
-                    child: (snapshot.hasData &&
-                            snapshot.data!.backgroundImage != null)
-                        ? FadeInImage.memoryNetwork(
-                            fadeInDuration: const Duration(milliseconds: 250),
-                            placeholder: kTransparentImage,
-                            image: snapshot.data!.backgroundImage!,
-                            fit: BoxFit.cover,
-                          )
-                        : Container(),
-                  ),
+                  child: Builder(builder: (context) {
+                    return SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      height: queryData.size.height > 900 ? 350 : 200,
+                      child: (snapshot.hasData &&
+                              snapshot.data!.backgroundImage != null)
+                          ? FadeInImage.memoryNetwork(
+                              fadeInDuration: const Duration(milliseconds: 250),
+                              placeholder: kTransparentImage,
+                              image: snapshot.data!.backgroundImage!,
+                              fit: BoxFit.cover,
+                            )
+                          : Container(),
+                    );
+                  }),
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
