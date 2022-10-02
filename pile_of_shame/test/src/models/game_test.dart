@@ -33,11 +33,12 @@ void main() {
           'ageRestriction': AgeRestriction.usk12.index,
           'backgroundImage': 'https://some.url',
           'isFavourite': false,
-          'metacriticScore': 99,
+          'onlineScore': 99,
           'price': 91.64,
           'externalGameId': 1234,
           'releaseDate': '1999-01-02T00:00:00.000',
           'notes': 'These are some noteworthy notes',
+          'coverImage': null,
         },
       );
     });
