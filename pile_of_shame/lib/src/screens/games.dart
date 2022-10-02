@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pile_of_shame/src/models/age_restrictions.dart';
 import 'package:pile_of_shame/src/models/game_platform.dart';
 import 'package:pile_of_shame/src/persistance/storage.dart';
+import 'package:pile_of_shame/src/scrapers/igdb_scraper.dart';
 import 'package:pile_of_shame/src/screens/game_addition.dart';
 import 'package:pile_of_shame/src/utils/game_filters.dart';
 import 'package:pile_of_shame/src/widgets/game_displays/game_list_item.dart';
@@ -10,6 +11,7 @@ import '../models/game.dart';
 import '../models/game_status.dart';
 import '../widgets/game_list_summary.dart';
 import '../widgets/popup_menu_title.dart';
+import '../widgets/scraping_progress_view.dart';
 import '../widgets/selected_text_style.dart';
 import 'game_details.dart';
 
@@ -24,6 +26,8 @@ class _GameScreenState extends State<GameScreen> {
   List<Game> _games = [];
 
   GameFilters _filters = GameFilters();
+
+  Stream<int>? _scrapingProgress;
 
   void refresh() {
     Storage().readGames().then((value) {
@@ -369,6 +373,28 @@ class _GameScreenState extends State<GameScreen> {
               PopupMenuItem(
                 padding: EdgeInsets.zero,
                 onTap: () async {
+                  final scraper = IGDBScraper();
+                  setState(() {
+                    _scrapingProgress =
+                        scraper.scrapeGameList(_games).asBroadcastStream();
+                    _scrapingProgress!.listen((event) {
+                      if (event == _games.length) {
+                        // update the list and reset the stream
+                        refresh();
+                        _scrapingProgress = Stream.value(-1);
+                      }
+                    });
+                  });
+                },
+                value: 0,
+                child: const ListTile(
+                  leading: Icon(Icons.refresh),
+                  title: Text('Infos von IGDB laden'),
+                ),
+              ),
+              PopupMenuItem(
+                padding: EdgeInsets.zero,
+                onTap: () async {
                   final bool wasSuccessful = await Storage().exportGames();
                   if (wasSuccessful) {
                     if (!mounted) return;
@@ -402,40 +428,72 @@ class _GameScreenState extends State<GameScreen> {
           ),
         ],
       ),
-      body: ListView.builder(
-        shrinkWrap: true,
-        itemCount: _games.length + 2,
-        itemBuilder: (context, index) {
-          if (index < _games.length) {
-            final game = _games[index];
-            return InkWell(
-              onTap: () async {
-                await Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            GameDetails(gameUuid: game.uuid)));
-                refresh();
-              },
-              child: GameListItem(
-                game: game,
-              ),
-            );
-          } else if (index == _games.length) {
-            return Container(
-              padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-              child: const Divider(
-                thickness: 3,
-              ),
-            );
-          } else {
-            return Container(
-              padding: const EdgeInsets.only(
-                  right: 8.0, left: 8.0, top: 16.0, bottom: 100.0),
-              child: GameListSummary(games: _games),
-            );
-          }
-        },
+      body: StreamBuilder<int>(
+        stream: _scrapingProgress,
+        initialData: -1,
+        builder: (context, snapshot) => ListView.builder(
+          shrinkWrap: true,
+          itemCount: _games.length +
+              2 +
+              ((snapshot.hasData &&
+                      snapshot.data! < _games.length &&
+                      snapshot.data! > -1)
+                  ? 1
+                  : 0),
+          itemBuilder: (context, index) {
+            int transformedIndex = index;
+            if (snapshot.hasData &&
+                snapshot.data! < _games.length &&
+                snapshot.data! > -1) {
+              // Display the progress
+              if (index == 0) {
+                return ScrapingProgressView(
+                  currentItem: snapshot.data!,
+                  totalItems: _games.length,
+                  currentItemName: _games[snapshot.data!].title,
+                );
+              }
+              transformedIndex--;
+            }
+            // if (snapshot.hasData && snapshot.data! == _games.length) {
+            // reset the scraping stream once _games.length has been reached
+            // setState(() {
+            //   _scrapingProgress = Stream.value(-1);
+            // });
+            // refresh();
+            // }
+
+            if (transformedIndex < _games.length) {
+              final game = _games[transformedIndex];
+              return InkWell(
+                onTap: () async {
+                  await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              GameDetails(gameUuid: game.uuid)));
+                  refresh();
+                },
+                child: GameListItem(
+                  game: game,
+                ),
+              );
+            } else if (transformedIndex == _games.length) {
+              return Container(
+                padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+                child: const Divider(
+                  thickness: 3,
+                ),
+              );
+            } else {
+              return Container(
+                padding: const EdgeInsets.only(
+                    right: 8.0, left: 8.0, top: 16.0, bottom: 100.0),
+                child: GameListSummary(games: _games),
+              );
+            }
+          },
+        ),
       ),
     );
   }

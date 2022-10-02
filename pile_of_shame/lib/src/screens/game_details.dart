@@ -42,7 +42,7 @@ class _GameDetailsState extends State<GameDetails> {
     // initialize mostRecentGame with an empty game
     mostRecentGame =
         Storage().getGameByUuid(widget.gameUuid).then((loadedGame) {
-      if (!loadedGame.wasScraped) {
+      if (loadedGame.externalGameId == null) {
         // find the platforms for the currently selected game
         // TODO: Perform scraping here
         return loadedGame;
@@ -55,9 +55,6 @@ class _GameDetailsState extends State<GameDetails> {
   @override
   Widget build(BuildContext context) {
     final MediaQueryData queryData = MediaQuery.of(context);
-    debugPrint(
-        '${queryData.size.height.toString()} ${queryData.size.width.toString()}');
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Details'),

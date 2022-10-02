@@ -137,8 +137,43 @@ class IGDBApi {
     throw Exception(response.body.toString());
   }
 
-  Future<List<IGDBGame>> getGameByNameAndPlatform(
-      String gameName, int? platformId) async {
+  Future<List<IGDBGame>> getGameByExactName(String gameName) async {
+    const String gamesEndpoint = "v4/games";
+    Uri url = Uri.https(baseUrl, gamesEndpoint);
+
+    final conditions =
+        IGDBFilterUtils.generateGameNameCondition(gameName, true);
+
+    // try searching for the game first
+    IGDBFilters searchFilters = IGDBFilters(
+      fields: [
+        "alternative_names",
+        "artworks.*",
+        "cover.*",
+        "first_release_date",
+        "name",
+        "platforms",
+        "screenshots.*",
+        "slug",
+        "version_parent",
+      ],
+      conditions: conditions.join(" | "),
+    );
+
+    final response =
+        await _performRequest(url: url, body: searchFilters.toString());
+    if (response.statusCode == 200) {
+      final List<dynamic> results = jsonDecode(response.body);
+      final List<IGDBGame> parsedResults =
+          results.map((e) => IGDBGame.fromJson(e)).toList();
+      if (parsedResults.isNotEmpty) {
+        return parsedResults;
+      }
+    }
+    return [];
+  }
+
+  Future<List<IGDBGame>> getGameBySearchName(String gameName) async {
     const String gamesEndpoint = "v4/games";
     Uri url = Uri.https(baseUrl, gamesEndpoint);
 
@@ -169,61 +204,97 @@ class IGDBApi {
       }
     }
 
-    // the game was not found using the search-request (maybe it's in a different language)
-    // retry by searching through alternative_names
-    final nameTokens = gameName.split(RegExp(r'[\s:]'));
-    List<int> indexGeneration =
-        List<int>.generate(nameTokens.length - 1, (i) => i);
-    List<String> nameSearch = [];
-    List<String> alternativeNameSearch = [];
-    for (var index in indexGeneration) {
-      String before = nameTokens.sublist(0, index + 1).join(" ");
-      String after = nameTokens.sublist(index + 1).join(" ");
-      String sum = "$before: $after";
-      nameSearch.add("name ~ *\"$sum\"*");
-      alternativeNameSearch.add("alternative_names.name ~ *\"$sum\"*");
-    }
-
-    List<String> conditions = [];
-    String regularNameCondition =
-        "name ~ *\"${gameName.toLowerCase()}\"*${nameSearch.isNotEmpty ? " | " : ""}${nameSearch.join(" | ")}";
-    conditions.add(regularNameCondition);
-    String alternativeNameCondition =
-        "alternative_names.name ~ *\"${gameName.toLowerCase()}\"*${alternativeNameSearch.isNotEmpty ? " | " : ""}${alternativeNameSearch.join(" | ")}";
-    conditions.add(alternativeNameCondition);
-    String? platformCondition =
-        platformId != null ? "platform = $platformId" : null;
-    if (platformCondition != null) {
-      conditions.add(platformCondition);
-    }
-
-    IGDBFilters filters = IGDBFilters(
-      fields: [
-        "alternative_names",
-        "artworks.*",
-        "cover.*",
-        "first_release_date",
-        "name",
-        "platforms",
-        "screenshots.*",
-        "slug",
-        "version_parent",
-      ],
-      conditions: conditions.join(" | "),
-    );
-
-    String body = filters.toString();
-
-    final response2 = await _performRequest(url: url, body: body);
-
-    if (response.statusCode == 200) {
-      final List<dynamic> results = jsonDecode(response2.body);
-      final List<IGDBGame> parsedResults =
-          results.map((e) => IGDBGame.fromJson(e)).toList();
-      return parsedResults;
-    }
-    throw Exception(response2.body.toString());
+    // fallback to exact name, as that also searches for other languages
+    return getGameByExactName(gameName);
   }
+
+  // Future<List<IGDBGame>> getGameByNameAndPlatform(
+  //     String gameName, int? platformId) async {
+  //   const String gamesEndpoint = "v4/games";
+  //   Uri url = Uri.https(baseUrl, gamesEndpoint);
+
+  //   // try searching for the game first
+  //   IGDBFilters searchFilters = IGDBFilters(
+  //     fields: [
+  //       "alternative_names",
+  //       "artworks.*",
+  //       "cover.*",
+  //       "first_release_date",
+  //       "name",
+  //       "platforms",
+  //       "screenshots.*",
+  //       "slug",
+  //       "version_parent",
+  //     ],
+  //     search: gameName,
+  //   );
+
+  //   final response =
+  //       await _performRequest(url: url, body: searchFilters.toString());
+  //   if (response.statusCode == 200) {
+  //     final List<dynamic> results = jsonDecode(response.body);
+  //     final List<IGDBGame> parsedResults =
+  //         results.map((e) => IGDBGame.fromJson(e)).toList();
+  //     if (parsedResults.isNotEmpty) {
+  //       return parsedResults;
+  //     }
+  //   }
+
+  //   // the game was not found using the search-request (maybe it's in a different language)
+  //   // retry by searching through alternative_names
+  //   final nameTokens = gameName.split(RegExp(r'[\s:]'));
+  //   List<int> indexGeneration =
+  //       List<int>.generate(nameTokens.length - 1, (i) => i);
+  //   List<String> nameSearch = [];
+  //   List<String> alternativeNameSearch = [];
+  //   for (var index in indexGeneration) {
+  //     String before = nameTokens.sublist(0, index + 1).join(" ");
+  //     String after = nameTokens.sublist(index + 1).join(" ");
+  //     String sum = "$before: $after";
+  //     nameSearch.add("name ~ *\"$sum\"*");
+  //     alternativeNameSearch.add("alternative_names.name ~ *\"$sum\"*");
+  //   }
+
+  //   List<String> conditions = [];
+  //   String regularNameCondition =
+  //       "name ~ *\"${gameName.toLowerCase()}\"*${nameSearch.isNotEmpty ? " | " : ""}${nameSearch.join(" | ")}";
+  //   conditions.add(regularNameCondition);
+  //   String alternativeNameCondition =
+  //       "alternative_names.name ~ *\"${gameName.toLowerCase()}\"*${alternativeNameSearch.isNotEmpty ? " | " : ""}${alternativeNameSearch.join(" | ")}";
+  //   conditions.add(alternativeNameCondition);
+  //   String? platformCondition =
+  //       platformId != null ? "platform = $platformId" : null;
+  //   if (platformCondition != null) {
+  //     conditions.add(platformCondition);
+  //   }
+
+  //   IGDBFilters filters = IGDBFilters(
+  //     fields: [
+  //       "alternative_names",
+  //       "artworks.*",
+  //       "cover.*",
+  //       "first_release_date",
+  //       "name",
+  //       "platforms",
+  //       "screenshots.*",
+  //       "slug",
+  //       "version_parent",
+  //     ],
+  //     conditions: conditions.join(" | "),
+  //   );
+
+  //   String body = filters.toString();
+
+  //   final response2 = await _performRequest(url: url, body: body);
+
+  //   if (response.statusCode == 200) {
+  //     final List<dynamic> results = jsonDecode(response2.body);
+  //     final List<IGDBGame> parsedResults =
+  //         results.map((e) => IGDBGame.fromJson(e)).toList();
+  //     return parsedResults;
+  //   }
+  //   throw Exception(response2.body.toString());
+  // }
 
   Future<List<IGDBImage>> getCoversById(List<int> coverIds) async {
     const String coverEndpoint = "v4/covers";

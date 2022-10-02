@@ -3,21 +3,42 @@ import 'package:pile_of_shame/src/models/game.dart';
 import 'package:pile_of_shame/src/network/igdb/igdb_api.dart';
 import 'package:pile_of_shame/src/network/igdb/models/igdb_game.dart';
 
+import '../persistance/storage.dart';
+
 class IGDBScraper {
+  Stream<int> scrapeGameList(List<Game> games) async* {
+    for (int i = 0; i < games.length; ++i) {
+      yield i;
+      try {
+        Game scrapedGame = await scrapeAndUpdateGame(games[i]);
+        await Storage().addOrUpdateGame(scrapedGame);
+      } catch (error) {
+        // Ignore the error for now and continue with the next game
+        debugPrint(error.toString());
+      }
+    }
+    yield games.length;
+  }
+
   Future<List<IGDBGame>> scrapeGameInfos(Game game) async {
     final api = IGDBApi();
-    final gameResults = await api.getGameByNameAndPlatform(game.title, null);
+    if (game.externalGameId != null) {
+      // this game has an external identifier set, which means it has already been scraped before.
+      // TODO: use that identifier
+      // Skip that game for now
+      return [];
+    } else {
+      final gameResults = await api.getGameByExactName(game.title);
+      if (gameResults.isEmpty) {
+        debugPrint("No matches found during scraping");
+      }
 
-    if (gameResults.isEmpty) {
-      debugPrint("No matches found during scraping");
+      return gameResults;
     }
-
-    return gameResults;
   }
 
   Future<Game> scrapeAndUpdateGame(Game game) async {
     List<IGDBGame> games = await scrapeGameInfos(game);
-    debugPrint(games.toString());
     // TODO: prompt the user to select one of the game results, if there are more than one.
     if (games.isNotEmpty) {
       IGDBGame scrapingResult = games.first;
@@ -42,12 +63,9 @@ class IGDBScraper {
       }
       // Set external-Game-id
       modifiedGame.externalGameId = scrapingResult.id;
-      // Set scraped-flag
-      modifiedGame.wasScraped = true;
       // Done, return the game
       return modifiedGame;
-    } else {
-      throw Exception("Keine Informationen zu ${game.title} gefunden.");
     }
+    return game;
   }
 }

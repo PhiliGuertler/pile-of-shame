@@ -33,9 +33,6 @@ class Game {
   // ### Scraped data ####################################################### //
   // ######################################################################## //
 
-  /// if true, this game's additional infos were scraped via RAWG.io
-  bool wasScraped;
-
   /// release date of the game
   DateTime? releaseDate;
 
@@ -59,7 +56,6 @@ class Game {
     this.ageRestriction,
     this.isFavourite = false,
     this.notes,
-    this.wasScraped = false,
     this.releaseDate,
     this.metacriticScore,
     this.backgroundImage,
@@ -76,7 +72,6 @@ class Game {
     this.ageRestriction,
     this.isFavourite = false,
     this.notes,
-    this.wasScraped = false,
     this.releaseDate,
     this.metacriticScore,
     this.backgroundImage,
@@ -93,7 +88,6 @@ class Game {
         ageRestriction = other.ageRestriction,
         isFavourite = other.isFavourite,
         notes = other.notes,
-        wasScraped = other.wasScraped,
         releaseDate = other.releaseDate,
         metacriticScore = other.metacriticScore,
         backgroundImage = other.backgroundImage,
@@ -123,7 +117,6 @@ class Game {
             : null,
         isFavourite = json['isFavourite'],
         notes = json['notes'],
-        wasScraped = json['wasScraped'],
         releaseDate = json['releaseDate'] != null
             ? DateTime.parse(json['releaseDate'])
             : null,
@@ -141,7 +134,6 @@ class Game {
         'ageRestriction': ageRestriction?.index,
         'isFavourite': isFavourite,
         'notes': notes,
-        'wasScraped': wasScraped,
         'releaseDate': releaseDate?.toIso8601String(),
         'metacriticScore': metacriticScore,
         'backgroundImage': backgroundImage,

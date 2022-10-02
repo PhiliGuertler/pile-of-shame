@@ -18,7 +18,6 @@ void main() {
         price: 91.64,
         externalGameId: 1234,
         releaseDate: DateTime.parse('1999-01-02'),
-        wasScraped: true,
         notes: 'These are some noteworthy notes',
       );
 
@@ -36,9 +35,8 @@ void main() {
           'isFavourite': false,
           'metacriticScore': 99,
           'price': 91.64,
-          'rawgGameId': 1234,
+          'externalGameId': 1234,
           'releaseDate': '1999-01-02T00:00:00.000',
-          'wasScraped': true,
           'notes': 'These are some noteworthy notes',
         },
       );
@@ -54,9 +52,8 @@ void main() {
         'isFavourite': false,
         'metacriticScore': 99,
         'price': 91.64,
-        'rawgGameId': 1234,
+        'externalGameId': 1234,
         'releaseDate': '1999-01-02T00:00:00.000',
-        'wasScraped': true,
         'notes': 'These are some noteworthy notes',
       };
 
@@ -72,7 +69,6 @@ void main() {
         price: 91.64,
         externalGameId: 1234,
         releaseDate: DateTime.parse('1999-01-02'),
-        wasScraped: true,
         notes: 'These are some noteworthy notes',
       );
 
