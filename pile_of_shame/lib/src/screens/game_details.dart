@@ -272,9 +272,9 @@ class _GameDetailsState extends State<GameDetails> {
                                   DateFormat.yMd()
                                       .format(snapshot.data!.releaseDate!)),
                             if (snapshot.hasData &&
-                                snapshot.data!.metacriticScore != null)
-                              Pair('Metacritic Score',
-                                  '${snapshot.data!.metacriticScore!.toString()} / 100'),
+                                snapshot.data!.onlineScore != null)
+                              Pair('Online Score',
+                                  '${snapshot.data!.onlineScore!.toString()} / 100'),
                             if (snapshot.hasData &&
                                 snapshot.data!.externalGameId != null)
                               Pair('Externe Game-ID',

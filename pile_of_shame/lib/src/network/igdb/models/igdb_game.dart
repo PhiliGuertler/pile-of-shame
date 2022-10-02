@@ -9,20 +9,23 @@ class IGDBGame {
   final List<int>? platformIds;
   final List<IGDBImage>? screenshots;
   final String? slug;
+  final double? rating;
 
   IGDBGame({
     required this.id,
-    required this.alternativeNameIds,
-    required this.cover,
-    required this.firstReleaseDate,
-    required this.name,
-    required this.platformIds,
-    required this.screenshots,
-    required this.slug,
+    this.alternativeNameIds,
+    this.cover,
+    this.firstReleaseDate,
+    this.name,
+    this.platformIds,
+    this.screenshots,
+    this.slug,
+    this.rating,
   });
 
   IGDBGame.fromJson(Map<String, dynamic> json)
       : id = json["id"],
+        rating = json["rating"],
         alternativeNameIds = json["alternative_names"] != null
             ? List<int>.from(json["alternative_names"] as List)
             : null,

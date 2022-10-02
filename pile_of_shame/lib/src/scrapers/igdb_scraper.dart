@@ -73,6 +73,10 @@ class IGDBScraper {
         modifiedGame.backgroundImage =
             "https://images.igdb.com/igdb/image/upload/t_$backgroundSize/${scrapingResult.screenshots!.first.imageId}.jpg";
       }
+      // Set online rating
+      if (scrapingResult.rating != null) {
+        modifiedGame.onlineScore = scrapingResult.rating!.toInt();
+      }
       // Set release-date
       if (scrapingResult.firstReleaseDate != null) {
         modifiedGame.releaseDate = scrapingResult.firstReleaseDate;

@@ -64,7 +64,7 @@ class _EditGameDetailsState extends State<EditGameDetails> {
       _releaseDateController.text =
           _releaseDate != null ? DateFormat.yMd().format(_releaseDate!) : '';
       _metacriticScoreController.text =
-          widget.game.metacriticScore?.toString() ?? '';
+          widget.game.onlineScore?.toString() ?? '';
       _coverImageController.text = widget.game.coverImage ?? '';
       _backgroundImageController.text = widget.game.backgroundImage ?? '';
       _externalGameIdController.text =
@@ -204,7 +204,7 @@ class _EditGameDetailsState extends State<EditGameDetails> {
               TextFormField(
                 decoration: const InputDecoration(
                   icon: Icon(Icons.emoji_events),
-                  labelText: 'Metacritic-Score',
+                  labelText: 'Online Score',
                 ),
                 keyboardType: TextInputType.number,
                 controller: _metacriticScoreController,
@@ -293,7 +293,7 @@ class _EditGameDetailsState extends State<EditGameDetails> {
                               double.tryParse(_priceController.text);
                           editedGame.notes = _notesController.text;
                           editedGame.releaseDate = _releaseDate;
-                          editedGame.metacriticScore =
+                          editedGame.onlineScore =
                               int.tryParse(_metacriticScoreController.text);
                           editedGame.backgroundImage =
                               _backgroundImageController.text.isNotEmpty

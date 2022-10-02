@@ -37,7 +37,7 @@ class Game {
   DateTime? releaseDate;
 
   /// the metacritic score (critics) at the time of scraping
-  int? metacriticScore;
+  int? onlineScore;
 
   /// background image for the game
   String? backgroundImage;
@@ -57,7 +57,7 @@ class Game {
     this.isFavourite = false,
     this.notes,
     this.releaseDate,
-    this.metacriticScore,
+    this.onlineScore,
     this.backgroundImage,
     this.coverImage,
     this.externalGameId,
@@ -73,7 +73,7 @@ class Game {
     this.isFavourite = false,
     this.notes,
     this.releaseDate,
-    this.metacriticScore,
+    this.onlineScore,
     this.backgroundImage,
     this.coverImage,
     this.externalGameId,
@@ -89,7 +89,7 @@ class Game {
         isFavourite = other.isFavourite,
         notes = other.notes,
         releaseDate = other.releaseDate,
-        metacriticScore = other.metacriticScore,
+        onlineScore = other.onlineScore,
         backgroundImage = other.backgroundImage,
         coverImage = other.coverImage,
         externalGameId = other.externalGameId;
@@ -120,7 +120,7 @@ class Game {
         releaseDate = json['releaseDate'] != null
             ? DateTime.parse(json['releaseDate'])
             : null,
-        metacriticScore = json['metacriticScore'],
+        onlineScore = json['onlineScore'] ?? json['metacriticScore'],
         backgroundImage = json['backgroundImage'],
         coverImage = json['coverImage'],
         externalGameId = json['externalGameId'] ?? json['rawgGameId'];
@@ -135,7 +135,7 @@ class Game {
         'isFavourite': isFavourite,
         'notes': notes?.trim(),
         'releaseDate': releaseDate?.toIso8601String(),
-        'metacriticScore': metacriticScore,
+        'onlineScore': onlineScore,
         'backgroundImage': backgroundImage,
         'coverImage': coverImage,
         'externalGameId': externalGameId,
