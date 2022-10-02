@@ -27,3 +27,4 @@ It will result in an application that simply displays information about games th
 ## Known issues
 - Sometimes the app crashes at special keyboard-inputs like the arrow-keys or backspace when adding a game during debugging (sporadically)
 - Focus on Editing and Adding games is weird when new platforms get added on the fly. Maybe this can be fixed by adding platforms using an add-button.
+- Fade-In-Images sometimes throw an error because they access null values in the game-details. Refreshing a game in its details causes this error sometimes aswell.
