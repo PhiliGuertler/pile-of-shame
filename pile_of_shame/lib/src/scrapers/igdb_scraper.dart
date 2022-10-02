@@ -48,7 +48,7 @@ class IGDBScraper {
       IGDBGame scrapingResult = games.first;
       Game modifiedGame = Game.from(game);
       const String coverSize = "cover_big";
-      const String backgroundSize = "screenshot_huge";
+      const String backgroundSize = "screenshot_big";
 
       // Set cover-image
       if (scrapingResult.cover != null) {

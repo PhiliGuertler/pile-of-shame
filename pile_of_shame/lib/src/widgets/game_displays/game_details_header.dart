@@ -28,6 +28,7 @@ class _GameDetailsHeaderState extends State<GameDetailsHeader> {
     final mainPlatform = GamePlatforms.byName(widget.game.platforms.first);
 
     const double imageWidth = 80.0;
+    const double imageHeight = imageWidth * 4 / 3;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -76,13 +77,14 @@ class _GameDetailsHeaderState extends State<GameDetailsHeader> {
                           color: mainPlatform.color.withOpacity(0.9),
                         ),
                         width: imageWidth,
+                        height: imageHeight,
                         child: Hero(
                           tag: widget.game.title,
                           child: Material(
-                            child: FadeInImage.memoryNetwork(
+                            child: FadeInImage(
                               fadeInDuration: const Duration(milliseconds: 250),
-                              placeholder: kTransparentImage,
-                              image: widget.game.coverImage!,
+                              placeholder: MemoryImage(kTransparentImage),
+                              image: NetworkImage(widget.game.coverImage!),
                               fit: BoxFit.cover,
                             ),
                           ),

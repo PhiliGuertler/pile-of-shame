@@ -453,8 +453,9 @@ class _GameScreenState extends State<GameScreen> {
                       await Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) =>
-                                  GameDetails(gameUuid: game.uuid)));
+                              builder: (context) => GameDetails(
+                                    originalGame: game,
+                                  )));
                       refresh();
                     },
                     child: GameListItem(

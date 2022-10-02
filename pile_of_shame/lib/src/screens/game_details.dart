@@ -18,9 +18,9 @@ class Pair<T1, T2> {
 }
 
 class GameDetails extends StatefulWidget {
-  const GameDetails({super.key, required this.gameUuid});
+  const GameDetails({super.key, required this.originalGame});
 
-  final String gameUuid;
+  final Game originalGame;
 
   @override
   State<GameDetails> createState() => _GameDetailsState();
@@ -28,27 +28,23 @@ class GameDetails extends StatefulWidget {
 
 class _GameDetailsState extends State<GameDetails> {
   late Future<Game> mostRecentGame;
+  bool isScraping = false;
 
   void refreshGame() {
     setState(() {
-      mostRecentGame = Storage().getGameByUuid(widget.gameUuid);
+      mostRecentGame = Storage().getGameByUuid(widget.originalGame.uuid);
+    });
+    mostRecentGame.then((value) {
+      setState(() {
+        isScraping = false;
+      });
     });
   }
 
   @override
   void initState() {
     super.initState();
-    // initialize mostRecentGame with an empty game
-    mostRecentGame =
-        Storage().getGameByUuid(widget.gameUuid).then((loadedGame) {
-      if (loadedGame.externalGameId == null) {
-        // find the platforms for the currently selected game
-        // TODO: Perform scraping here
-        return loadedGame;
-      } else {
-        return loadedGame;
-      }
-    });
+    mostRecentGame = Future.value(widget.originalGame);
   }
 
   @override
@@ -82,14 +78,15 @@ class _GameDetailsState extends State<GameDetails> {
                           // close alert-dialog
                           Navigator.pop(context, 'OK');
                           // Delete the item
-                          bool isDeletionSuccessful =
-                              await Storage().deleteGameByUuid(widget.gameUuid);
+                          bool isDeletionSuccessful = await Storage()
+                              .deleteGameByUuid(widget.originalGame.uuid);
                           if (!isDeletionSuccessful) {
                             if (!mounted) return;
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text(
-                                    'Ein Fehler ist beim Löschen von $gameTitle aufgetreten.'),
+                                  'Ein Fehler ist beim Löschen von $gameTitle aufgetreten.',
+                                ),
                               ),
                             );
                             return;
@@ -144,6 +141,9 @@ class _GameDetailsState extends State<GameDetails> {
               if (snapshot.hasData) {
                 return IconButton(
                   onPressed: () async {
+                    setState(() {
+                      isScraping = true;
+                    });
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                         content: Text("Lade Informationen via IGDB"),
@@ -184,24 +184,25 @@ class _GameDetailsState extends State<GameDetails> {
           ),
         ],
       ),
-      body: FutureBuilder<Game>(
-        future: mostRecentGame,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return SingleChildScrollView(
-              child: Column(children: [
-                ShaderMask(
-                  shaderCallback: (bounds) {
-                    return const LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [Colors.black, Colors.transparent],
-                      stops: [0.6, 1.0],
-                    ).createShader(
-                        Rect.fromLTRB(0, 0, bounds.width, bounds.height));
-                  },
-                  blendMode: BlendMode.dstIn,
-                  child: Builder(builder: (context) {
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            if (isScraping) const LinearProgressIndicator(),
+            ShaderMask(
+              shaderCallback: (bounds) {
+                return const LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [Colors.black, Colors.transparent],
+                  stops: [0.6, 1.0],
+                ).createShader(
+                    Rect.fromLTRB(0, 0, bounds.width, bounds.height));
+              },
+              blendMode: BlendMode.dstIn,
+              child: FutureBuilder<Game>(
+                future: mostRecentGame,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
                     return SizedBox(
                       width: MediaQuery.of(context).size.width,
                       height: queryData.size.height > 900 ? 350 : 200,
@@ -215,92 +216,95 @@ class _GameDetailsState extends State<GameDetails> {
                             )
                           : Container(),
                     );
-                  }),
+                  }
+                  return Container();
+                },
+              ),
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                GameDetailsHeader(
+                  game: widget.originalGame,
+                  coverOffsetY: -50,
+                  coverScale: 2.0,
                 ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    if (snapshot.hasData)
-                      GameDetailsHeader(
-                        game: snapshot.data!,
-                        coverOffsetY: -50,
-                        coverScale: 2.0,
-                      ),
-                    Container(
-                      padding: const EdgeInsets.all(8.0),
-                      child: ListView(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        children: [
-                          if (snapshot.hasData)
-                            Pair('Name', snapshot.data!.title),
-                          if (snapshot.hasData)
-                            Pair(
-                              'Status',
-                              GameStates.gameStateToString(
-                                  snapshot.data!.gameState),
-                            ),
-                          if (snapshot.hasData)
-                            Pair('Plattform',
-                                snapshot.data!.platforms.join(', ')),
-                          if (snapshot.hasData)
-                            Pair('Preis',
-                                '${snapshot.data!.price?.toStringAsFixed(2) ?? 0.toStringAsFixed(2)} €'),
-                          if (snapshot.hasData)
-                            Pair(
-                                'Altersfreigabe',
-                                AgeRestrictions.getAgeRestrictionText(
-                                    snapshot.data!.ageRestriction ??
-                                        AgeRestriction.unknown)),
-                          if (snapshot.hasData && snapshot.data!.notes != null)
-                            Pair('Anmerkungen', snapshot.data!.notes!),
-                          if (snapshot.hasData)
-                            Pair('Favorisiert',
-                                snapshot.data!.isFavourite ? 'Ja' : 'Nein'),
-                          if (snapshot.hasData &&
-                              snapshot.data!.releaseDate != null)
-                            Pair(
-                                'Erscheinungsdatum',
-                                DateFormat.yMd()
-                                    .format(snapshot.data!.releaseDate!)),
-                          if (snapshot.hasData &&
-                              snapshot.data!.metacriticScore != null)
-                            Pair('Metacritic Score',
-                                '${snapshot.data!.metacriticScore!.toString()} / 100'),
-                          if (snapshot.hasData &&
-                              snapshot.data!.externalGameId != null)
-                            Pair('Externe Game-ID',
-                                snapshot.data!.externalGameId!.toString()),
-                          if (snapshot.hasData &&
-                              snapshot.data!.coverImage != null)
-                            Pair('Coverbild-URL',
-                                snapshot.data!.coverImage!.toString()),
-                          if (snapshot.hasData &&
-                              snapshot.data!.backgroundImage != null)
-                            Pair('Hintergrundbild-URL',
-                                snapshot.data!.backgroundImage!.toString()),
-                          if (snapshot.hasData)
-                            Pair('UUID', snapshot.data!.uuid),
-                        ]
-                            .map((item) => ListTile(
-                                  title: Text(item.a),
-                                  subtitle: Text(item.b),
-                                ))
-                            .toList(),
-                      ),
-                    ),
-                  ],
+                FutureBuilder<Game>(
+                  future: mostRecentGame,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return Container(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ListView(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          children: [
+                            if (snapshot.hasData)
+                              Pair('Name', snapshot.data!.title),
+                            if (snapshot.hasData)
+                              Pair(
+                                'Status',
+                                GameStates.gameStateToString(
+                                    snapshot.data!.gameState),
+                              ),
+                            if (snapshot.hasData)
+                              Pair('Plattform',
+                                  snapshot.data!.platforms.join(', ')),
+                            if (snapshot.hasData)
+                              Pair('Preis',
+                                  '${snapshot.data!.price?.toStringAsFixed(2) ?? 0.toStringAsFixed(2)} €'),
+                            if (snapshot.hasData)
+                              Pair(
+                                  'Altersfreigabe',
+                                  AgeRestrictions.getAgeRestrictionText(
+                                      snapshot.data!.ageRestriction ??
+                                          AgeRestriction.unknown)),
+                            if (snapshot.hasData &&
+                                snapshot.data!.notes != null)
+                              Pair('Anmerkungen', snapshot.data!.notes!),
+                            if (snapshot.hasData)
+                              Pair('Favorisiert',
+                                  snapshot.data!.isFavourite ? 'Ja' : 'Nein'),
+                            if (snapshot.hasData &&
+                                snapshot.data!.releaseDate != null)
+                              Pair(
+                                  'Erscheinungsdatum',
+                                  DateFormat.yMd()
+                                      .format(snapshot.data!.releaseDate!)),
+                            if (snapshot.hasData &&
+                                snapshot.data!.metacriticScore != null)
+                              Pair('Metacritic Score',
+                                  '${snapshot.data!.metacriticScore!.toString()} / 100'),
+                            if (snapshot.hasData &&
+                                snapshot.data!.externalGameId != null)
+                              Pair('Externe Game-ID',
+                                  snapshot.data!.externalGameId!.toString()),
+                            if (snapshot.hasData &&
+                                snapshot.data!.coverImage != null)
+                              Pair('Coverbild-URL',
+                                  snapshot.data!.coverImage!.toString()),
+                            if (snapshot.hasData &&
+                                snapshot.data!.backgroundImage != null)
+                              Pair('Hintergrundbild-URL',
+                                  snapshot.data!.backgroundImage!.toString()),
+                            if (snapshot.hasData)
+                              Pair('UUID', snapshot.data!.uuid),
+                          ]
+                              .map((item) => ListTile(
+                                    title: Text(item.a),
+                                    subtitle: Text(item.b),
+                                  ))
+                              .toList(),
+                        ),
+                      );
+                    }
+                    return Container();
+                  },
                 ),
-              ]),
-            );
-          } else {
-            return Column(
-              children: const [
-                Expanded(child: Center(child: CircularProgressIndicator())),
               ],
-            );
-          }
-        },
+            ),
+          ],
+        ),
       ),
     );
   }
