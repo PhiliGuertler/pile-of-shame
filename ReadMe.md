@@ -16,13 +16,13 @@ It will result in an application that simply displays information about games th
 - Favourite-functionality is implemented with a fancy animation.
 - Exporting/Importing stored games as a json to a location of the user's choosing is implemented
 - Filtering games by platform, age-restriction, state and favourites is implemented
+- All currently visible games can now be scraped at once
 
 ## In Progress
 
 ## TODOs
 - Saving platforms entered by the user in a json file and retrieving them from there has to be implemented. The list/file should be initialized with a bunch of known platforms (see game_addition.dart)
 - Add the functionality to select the game-data from a list of suggestions when searching for the game on igdb instead of returning the first hit
-- Add the functionality to run game-data scraping from all games at once
 
 ## Known issues
 - Sometimes the app crashes at special keyboard-inputs like the arrow-keys or backspace when adding a game during debugging (sporadically)
