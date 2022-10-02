@@ -7,25 +7,18 @@ import '../persistance/storage.dart';
 
 class IGDBScraper {
   Stream<int> scrapeGameList(List<Game> games,
-      {bool skipIfAlreadyScraped = true, int parallelRequests = 1}) async* {
+      {bool skipIfAlreadyScraped = true}) async* {
     await Future.delayed(const Duration(milliseconds: 50));
     yield 0;
-    for (int i = 0; i < games.length; i = i + parallelRequests) {
+    for (int i = 0; i < games.length; i++) {
       yield i;
-      List<Future<Game>> requestResponses = [];
-      for (int k = 0; k < parallelRequests; ++k) {
-        requestResponses.add(
-          scrapeAndUpdateGame(games[i],
-                  skipIfAlreadyScraped: skipIfAlreadyScraped)
-              .then(
-            (value) async {
-              await Storage().addOrUpdateGame(value);
-              return value;
-            },
-          ),
-        );
+      try {
+        Game game = await scrapeAndUpdateGame(games[i],
+            skipIfAlreadyScraped: skipIfAlreadyScraped);
+        await Storage().addOrUpdateGame(game);
+      } catch (error) {
+        debugPrint(error.toString());
       }
-      await Future.wait(requestResponses);
     }
     yield games.length;
   }
