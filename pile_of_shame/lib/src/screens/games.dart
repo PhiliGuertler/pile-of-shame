@@ -88,13 +88,13 @@ class _GameScreenState extends State<GameScreen> {
                         Navigator.pop(context);
                       },
                       itemBuilder: (context) => [
-                        const PopupMenuItem(
+                        PopupMenuItem(
                           value: GamePlatform(
-                              name: 'None',
-                              abbreviation: 'None',
-                              color: Colors.black,
-                              rawgId: -1),
-                          child: Text('Filter entfernen'),
+                            name: 'None',
+                            abbreviation: 'None',
+                            color: Colors.black,
+                          ),
+                          child: const Text('Filter entfernen'),
                         ),
                         const PopupMenuDivider(),
                         ...GamePlatforms.toList()
