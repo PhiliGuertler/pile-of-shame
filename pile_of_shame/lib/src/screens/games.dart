@@ -379,7 +379,7 @@ class _GameScreenState extends State<GameScreen> {
                       },
                       value: 0,
                       child: const ListTile(
-                        leading: Icon(Icons.refresh),
+                        leading: Icon(Icons.storage),
                         title: Text('Neu laden'),
                       ),
                     ),
@@ -389,21 +389,48 @@ class _GameScreenState extends State<GameScreen> {
                         final scraper = IGDBScraper();
                         setState(() {
                           _scrapingProgress = scraper
-                              .scrapeGameList(_games)
+                              .scrapeGameList(_games, parallelRequests: 4)
                               .asBroadcastStream();
                           _scrapingProgress!.listen((event) {
                             if (event == _games.length) {
                               // update the list and reset the stream
                               refresh();
-                              _scrapingProgress = Stream.value(-1);
+                              _scrapingProgress =
+                                  Stream.value(-1).asBroadcastStream();
                             }
                           });
                         });
                       },
-                      value: 0,
+                      value: 1,
                       child: const ListTile(
                         leading: Icon(Icons.refresh),
                         title: Text('Infos von IGDB laden'),
+                      ),
+                    ),
+                    PopupMenuItem(
+                      padding: EdgeInsets.zero,
+                      onTap: () async {
+                        final scraper = IGDBScraper();
+                        setState(() {
+                          _scrapingProgress = scraper
+                              .scrapeGameList(_games,
+                                  skipIfAlreadyScraped: false,
+                                  parallelRequests: 4)
+                              .asBroadcastStream();
+                          _scrapingProgress!.listen((event) {
+                            if (event == _games.length) {
+                              // update the list and reset the stream
+                              refresh();
+                              _scrapingProgress =
+                                  Stream.value(-1).asBroadcastStream();
+                            }
+                          });
+                        });
+                      },
+                      value: 1,
+                      child: const ListTile(
+                        leading: Icon(Icons.update),
+                        title: Text('IGDB Update erzwingen'),
                       ),
                     ),
                     PopupMenuItem(
@@ -420,9 +447,9 @@ class _GameScreenState extends State<GameScreen> {
                           );
                         }
                       },
-                      value: 1,
+                      value: 10,
                       child: const ListTile(
-                        leading: Icon(Icons.import_export),
+                        leading: Icon(Icons.save),
                         title: Text('Spiele exportieren'),
                       ),
                     ),
@@ -433,9 +460,9 @@ class _GameScreenState extends State<GameScreen> {
                         await Storage().writeGames(allGames);
                         refresh();
                       },
-                      value: 2,
+                      value: 11,
                       child: const ListTile(
-                        leading: Icon(Icons.import_export),
+                        leading: Icon(Icons.file_open),
                         title: Text('Spiele importieren'),
                       ),
                     ),
@@ -500,6 +527,19 @@ class _GameScreenState extends State<GameScreen> {
                     )
                   : Container(),
             ),
+          ),
+          StreamBuilder<int>(
+            stream: _scrapingProgress,
+            initialData: -1,
+            builder: (context, snapshot) =>
+                snapshot.hasData && snapshot.data != -1
+                    ? const Positioned(
+                        top: 0.0,
+                        left: 0.0,
+                        right: 0.0,
+                        child: LinearProgressIndicator(),
+                      )
+                    : Container(),
           ),
         ],
       ),
