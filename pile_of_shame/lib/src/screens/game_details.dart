@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:pile_of_shame/src/models/game_status.dart';
-import 'package:pile_of_shame/src/network/igdb/models/igdb_game.dart';
 import 'package:pile_of_shame/src/persistance/storage.dart';
 import 'package:pile_of_shame/src/scrapers/igdb_scraper.dart';
 import 'package:pile_of_shame/src/widgets/game_displays/game_details_header.dart';

@@ -7,6 +7,7 @@ import '../persistance/storage.dart';
 
 class IGDBScraper {
   Stream<int> scrapeGameList(List<Game> games) async* {
+    yield 0;
     for (int i = 0; i < games.length; ++i) {
       yield i;
       try {
