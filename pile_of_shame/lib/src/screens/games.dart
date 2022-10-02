@@ -67,6 +67,17 @@ class _GameScreenState extends State<GameScreen> {
             ),
             appBar: AppBar(
               title: const Text('Alle Spiele'),
+              bottom: PreferredSize(
+                preferredSize: const Size.fromHeight(6.0),
+                child: StreamBuilder<int>(
+                  stream: _scrapingProgress,
+                  initialData: -1,
+                  builder: (context, snapshot) =>
+                      snapshot.hasData && snapshot.data != -1
+                          ? const LinearProgressIndicator()
+                          : Container(),
+                ),
+              ),
               actions: [
                 PopupMenuButton(
                   icon: const Icon(Icons.filter_list),
@@ -389,7 +400,7 @@ class _GameScreenState extends State<GameScreen> {
                         final scraper = IGDBScraper();
                         setState(() {
                           _scrapingProgress = scraper
-                              .scrapeGameList(_games, parallelRequests: 4)
+                              .scrapeGameList(_games)
                               .asBroadcastStream();
                           _scrapingProgress!.listen((event) {
                             if (event == _games.length) {
@@ -414,8 +425,7 @@ class _GameScreenState extends State<GameScreen> {
                         setState(() {
                           _scrapingProgress = scraper
                               .scrapeGameList(_games,
-                                  skipIfAlreadyScraped: false,
-                                  parallelRequests: 4)
+                                  skipIfAlreadyScraped: false)
                               .asBroadcastStream();
                           _scrapingProgress!.listen((event) {
                             if (event == _games.length) {
@@ -527,19 +537,6 @@ class _GameScreenState extends State<GameScreen> {
                     )
                   : Container(),
             ),
-          ),
-          StreamBuilder<int>(
-            stream: _scrapingProgress,
-            initialData: -1,
-            builder: (context, snapshot) =>
-                snapshot.hasData && snapshot.data != -1
-                    ? const Positioned(
-                        top: 0.0,
-                        left: 0.0,
-                        right: 0.0,
-                        child: LinearProgressIndicator(),
-                      )
-                    : Container(),
           ),
         ],
       ),
