@@ -153,8 +153,9 @@ class _GameDetailsState extends State<GameDetails> {
                     IGDBScraper scraper = IGDBScraper();
                     try {
                       // This throws an error, if no game infos were found
-                      Game scrapedGame =
-                          await scraper.scrapeAndUpdateGame(snapshot.data!);
+                      Game scrapedGame = await scraper.scrapeAndUpdateGame(
+                          snapshot.data!,
+                          skipIfAlreadyScraped: false);
                       // update the game in storage and display a message
                       await Storage().addOrUpdateGame(scrapedGame);
                       if (!mounted) return;

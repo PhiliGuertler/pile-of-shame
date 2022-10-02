@@ -21,9 +21,10 @@ class IGDBScraper {
     yield games.length;
   }
 
-  Future<List<IGDBGame>> scrapeGameInfos(Game game) async {
+  Future<List<IGDBGame>> scrapeGameInfos(Game game,
+      {bool skipIfAlreadyScraped = true}) async {
     final api = IGDBApi();
-    if (game.externalGameId != null) {
+    if (game.externalGameId != null && skipIfAlreadyScraped) {
       // this game has an external identifier set, which means it has already been scraped before.
       // TODO: use that identifier
       // Skip that game for now
@@ -38,8 +39,10 @@ class IGDBScraper {
     }
   }
 
-  Future<Game> scrapeAndUpdateGame(Game game) async {
-    List<IGDBGame> games = await scrapeGameInfos(game);
+  Future<Game> scrapeAndUpdateGame(Game game,
+      {bool skipIfAlreadyScraped = true}) async {
+    List<IGDBGame> games =
+        await scrapeGameInfos(game, skipIfAlreadyScraped: skipIfAlreadyScraped);
     // TODO: prompt the user to select one of the game results, if there are more than one.
     if (games.isNotEmpty) {
       IGDBGame scrapingResult = games.first;

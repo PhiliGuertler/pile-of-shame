@@ -142,7 +142,7 @@ class IGDBApi {
     Uri url = Uri.https(baseUrl, gamesEndpoint);
 
     final conditions =
-        IGDBFilterUtils.generateGameNameCondition(gameName, true);
+        IGDBFilterUtils.generateGameNameCondition(gameName.trim(), true);
 
     // try searching for the game first
     IGDBFilters searchFilters = IGDBFilters(
