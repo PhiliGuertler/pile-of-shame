@@ -58,12 +58,13 @@ class IGDBScraper {
     }
     List<IGDBGame> gameResults = await api.getGameByExactName(game.title);
     if (gameResults.isEmpty ||
+        gameResults.length > 1 ||
         (gameResults.first.name != null &&
             (gameResults.first.name!.toLowerCase() !=
                 game.title.toLowerCase()))) {
       debugPrint(
           "No exact matches found during scraping. Trying to search for it");
-      gameResults = await api.getGameBySearchName(game.title);
+      gameResults.addAll(await api.getGameBySearchName(game.title));
     }
 
     return gameResults;
