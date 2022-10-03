@@ -79,6 +79,11 @@ class GamePlatforms {
     abbreviation: 'Twitch',
     color: Colors.blueGrey.shade900,
   );
+  static final GamePlatform pcOrigin = GamePlatform(
+    name: 'PC: Origin',
+    abbreviation: 'Origin',
+    color: Colors.blueGrey.shade900,
+  );
   static final GamePlatform pcXBox = GamePlatform(
     name: 'PC: XBox',
     abbreviation: 'XBox (PC)',
@@ -87,6 +92,11 @@ class GamePlatforms {
   static final GamePlatform vrSteam = GamePlatform(
     name: 'VR: Steam',
     abbreviation: 'SteamVR',
+    color: Colors.blueGrey.shade900,
+  );
+  static final GamePlatform vrOculus = GamePlatform(
+    name: 'VR: Oculus',
+    abbreviation: 'Oculus',
     color: Colors.blueGrey.shade900,
   );
 
@@ -271,7 +281,9 @@ class GamePlatforms {
       pcEpic,
       pcTwitch,
       pcXBox,
+      pcOrigin,
       vrSteam,
+      vrOculus,
       // Sony
       playstation1,
       playstation2,
