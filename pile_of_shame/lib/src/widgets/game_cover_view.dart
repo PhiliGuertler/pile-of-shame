@@ -13,9 +13,11 @@ class GameCoverView extends StatelessWidget {
       child: Stack(
         children: [
           if (imageUrl != null)
-            Image(
-              image: CachedNetworkImageProvider(imageUrl!),
-              fit: BoxFit.cover,
+            Positioned.fill(
+              child: Image(
+                image: CachedNetworkImageProvider(imageUrl!),
+                fit: BoxFit.cover,
+              ),
             ),
           Container(
             decoration: BoxDecoration(
