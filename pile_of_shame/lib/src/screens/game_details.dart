@@ -53,6 +53,14 @@ class _GameDetailsState extends State<GameDetails> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Details'),
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(6.0),
+          child: Builder(
+            builder: (context) {
+              return isScraping ? const LinearProgressIndicator() : Container();
+            },
+          ),
+        ),
         actions: [
           FutureBuilder<Game>(
             builder: (context, snapshot) => IconButton(
@@ -153,19 +161,32 @@ class _GameDetailsState extends State<GameDetails> {
                     IGDBScraper scraper = IGDBScraper();
                     try {
                       // This throws an error, if no game infos were found
-                      Game scrapedGame = await scraper.scrapeAndUpdateGame(
-                          snapshot.data!,
-                          skipIfAlreadyScraped: false);
-                      // update the game in storage and display a message
-                      await Storage().addOrUpdateGame(scrapedGame);
-                      if (!mounted) return;
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text("Informationen aktualisiert."),
-                        ),
+                      Game? scrapedGame = await scraper.scrapeAndUpdateGame(
+                        snapshot.data!,
+                        context: context,
+                        onGameSelected: (game) {
+                          // close the dialog and store the game in scrapedGame
+                          Navigator.pop(context, game);
+                        },
+                        skipIfAlreadyScraped: false,
                       );
-                      // refresh display
-                      refreshGame();
+                      // update the game in storage and display a message
+                      if (scrapedGame != null) {
+                        await Storage().addOrUpdateGame(scrapedGame);
+                        if (!mounted) return;
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text("Informationen aktualisiert."),
+                          ),
+                        );
+                        // refresh display
+                        refreshGame();
+                      } else {
+                        debugPrint("Dialog Cancelled");
+                      }
+                      setState(() {
+                        isScraping = false;
+                      });
                     } catch (e) {
                       if (!mounted) return;
                       ScaffoldMessenger.of(context).showSnackBar(
@@ -187,7 +208,6 @@ class _GameDetailsState extends State<GameDetails> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            if (isScraping) const LinearProgressIndicator(),
             ShaderMask(
               shaderCallback: (bounds) {
                 return const LinearGradient(

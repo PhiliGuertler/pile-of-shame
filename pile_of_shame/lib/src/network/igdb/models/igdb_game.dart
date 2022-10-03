@@ -1,4 +1,5 @@
 import 'package:pile_of_shame/src/network/igdb/models/igdb_image.dart';
+import 'package:pile_of_shame/src/network/igdb/models/igdb_platform.dart';
 
 class IGDBGame {
   final int id;
@@ -6,7 +7,7 @@ class IGDBGame {
   final IGDBImage? cover;
   final DateTime? firstReleaseDate;
   final String? name;
-  final List<int>? platformIds;
+  final List<IGDBPlatform>? platforms;
   final List<IGDBImage>? screenshots;
   final String? slug;
   final double? rating;
@@ -17,7 +18,7 @@ class IGDBGame {
     this.cover,
     this.firstReleaseDate,
     this.name,
-    this.platformIds,
+    this.platforms,
     this.screenshots,
     this.slug,
     this.rating,
@@ -36,8 +37,10 @@ class IGDBGame {
                 json["first_release_date"] * 1000)
             : null,
         name = json["name"],
-        platformIds = json["platforms"] != null
-            ? List<int>.from(json["platforms"] as List)
+        platforms = json["platforms"] != null
+            ? (json["platforms"] as List)
+                .map((platform) => IGDBPlatform.fromJson(platform))
+                .toList()
             : null,
         screenshots = json["screenshots"] != null
             ? (json["screenshots"] as List)

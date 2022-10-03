@@ -12,6 +12,19 @@ import 'package:http/http.dart' as http;
 
 import 'models/igdb_authorization.dart';
 
+const List<String> igdbGameFields = [
+  "alternative_names",
+  "artworks.*",
+  "cover.*",
+  "rating",
+  "first_release_date",
+  "name",
+  "platforms.*",
+  "screenshots.*",
+  "slug",
+  "version_parent",
+];
+
 class IGDBApi {
   // Singleton code
   static final IGDBApi _instance = IGDBApi._internal();
@@ -146,18 +159,7 @@ class IGDBApi {
 
     // try searching for the game first
     IGDBFilters searchFilters = IGDBFilters(
-      fields: [
-        "alternative_names",
-        "artworks.*",
-        "cover.*",
-        "rating",
-        "first_release_date",
-        "name",
-        "platforms",
-        "screenshots.*",
-        "slug",
-        "version_parent",
-      ],
+      fields: igdbGameFields,
       conditions: conditions.join(" | "),
     );
 
@@ -180,18 +182,7 @@ class IGDBApi {
 
     // try searching for the game first
     IGDBFilters searchFilters = IGDBFilters(
-      fields: [
-        "alternative_names",
-        "artworks.*",
-        "cover.*",
-        "rating",
-        "first_release_date",
-        "name",
-        "platforms",
-        "screenshots.*",
-        "slug",
-        "version_parent",
-      ],
+      fields: igdbGameFields,
       search: gameName,
     );
 
@@ -216,18 +207,7 @@ class IGDBApi {
 
     // try searching for the game first
     IGDBFilters searchFilters = IGDBFilters(
-      fields: [
-        "alternative_names",
-        "artworks.*",
-        "cover.*",
-        "rating",
-        "first_release_date",
-        "name",
-        "platforms",
-        "screenshots.*",
-        "slug",
-        "version_parent",
-      ],
+      fields: igdbGameFields,
       conditions: "id = $id",
     );
 

@@ -31,6 +31,11 @@ class IGDBPlatform {
     required this.slug,
   });
 
+  @override
+  String toString() {
+    return name;
+  }
+
   IGDBPlatform.fromJson(Map<String, dynamic> json)
       : id = json["id"],
         abbreviation = json["abbreviation"],
