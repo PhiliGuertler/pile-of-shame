@@ -436,10 +436,29 @@ class _GameScreenState extends State<GameScreen> {
                           });
                         });
                       },
-                      value: 1,
+                      value: 2,
                       child: const ListTile(
                         leading: Icon(Icons.update),
                         title: Text('IGDB Update erzwingen'),
+                      ),
+                    ),
+                    PopupMenuItem(
+                      padding: EdgeInsets.zero,
+                      onTap: () async {
+                        _games.forEach((element) {
+                          element.coverImage = null;
+                          element.externalGameId = null;
+                          element.backgroundImage = null;
+                          element.onlineScore = null;
+                          element.releaseDate = null;
+                        });
+                        await Storage().writeGames(_games);
+                        refresh();
+                      },
+                      value: 3,
+                      child: const ListTile(
+                        leading: Icon(Icons.restore),
+                        title: Text('Scraping-Info entfernen'),
                       ),
                     ),
                     PopupMenuItem(
