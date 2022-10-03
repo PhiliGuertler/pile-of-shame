@@ -17,14 +17,12 @@ It will result in an application that simply displays information about games th
 - Exporting/Importing stored games as a json to a location of the user's choosing is implemented
 - Filtering games by platform, age-restriction, state and favourites is implemented
 - All currently visible games can now be scraped at once
-
-## In Progress
+- If multiple games are found during scraping in the details, a list of options will be displayed
 
 ## TODOs
 - Saving platforms entered by the user in a json file and retrieving them from there has to be implemented. The list/file should be initialized with a bunch of known platforms (see game_addition.dart)
-- Add the functionality to select the game-data from a list of suggestions when searching for the game on igdb instead of returning the first hit
+- cleanup code
 
 ## Known issues
 - Sometimes the app crashes at special keyboard-inputs like the arrow-keys or backspace when adding a game during debugging (sporadically)
 - Focus on Editing and Adding games is weird when new platforms get added on the fly. Maybe this can be fixed by adding platforms using an add-button.
-- Fade-In-Images sometimes throw an error because they access null values in the game-details. Refreshing a game in its details causes this error sometimes aswell.
