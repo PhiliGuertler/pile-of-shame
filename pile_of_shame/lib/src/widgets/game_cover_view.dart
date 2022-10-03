@@ -8,16 +8,12 @@ class GameCoverView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const double imageWidth = 80;
-    const double imageHeight = imageWidth * 4 / 3;
     return Material(
       color: Colors.transparent,
       child: Stack(
         children: [
           if (imageUrl != null)
             Image(
-              width: imageWidth,
-              height: imageHeight,
               image: CachedNetworkImageProvider(imageUrl!),
               fit: BoxFit.cover,
             ),
