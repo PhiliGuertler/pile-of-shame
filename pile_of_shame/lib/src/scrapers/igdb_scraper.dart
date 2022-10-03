@@ -46,22 +46,27 @@ class IGDBScraper {
   Future<List<IGDBGame>> scrapeGameInfos(Game game,
       {bool skipIfAlreadyScraped = true}) async {
     final api = IGDBApi();
-    if (game.externalGameId != null && skipIfAlreadyScraped) {
+    if (game.externalGameId != null) {
       // this game has an external identifier set, which means it has already been scraped before.
-      final gameResults = await api.getGameById(game.externalGameId!);
-      if (gameResults.isEmpty) {
-        debugPrint(
-            "No matches found during scraping with id ${game.externalGameId}");
+      if (!skipIfAlreadyScraped) {
+        final gameResults = await api.getGameById(game.externalGameId!);
+        if (gameResults.isEmpty) {
+          debugPrint(
+              "No matches found during scraping with id ${game.externalGameId}");
+        } else {
+          return gameResults;
+        }
       } else {
-        return gameResults;
+        return [];
       }
     }
     List<IGDBGame> gameResults = await api.getGameByExactName(game.title);
-    if (gameResults.isEmpty ||
-        gameResults.length > 1 ||
-        (gameResults.first.name != null &&
-            (gameResults.first.name!.toLowerCase() !=
-                game.title.toLowerCase()))) {
+    if (!skipIfAlreadyScraped &&
+        (gameResults.isEmpty ||
+            gameResults.length > 1 ||
+            (gameResults.first.name != null &&
+                (gameResults.first.name!.toLowerCase() !=
+                    game.title.toLowerCase())))) {
       debugPrint(
           "No exact matches found during scraping. Trying to search for it");
       gameResults.addAll(await api.getGameBySearchName(game.title));
