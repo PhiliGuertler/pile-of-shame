@@ -16,24 +16,24 @@ class IGDBPlatform {
   final int id;
   final String? abbreviation;
   final String? alternativeName;
-  final String name;
-  final int platformFamilyId;
+  final String? name;
+  final int? platformFamilyId;
   final int? platformLogoId;
-  final String slug;
+  final String? slug;
 
   IGDBPlatform({
     required this.id,
-    required this.abbreviation,
+    this.abbreviation,
     this.alternativeName,
-    required this.name,
-    required this.platformFamilyId,
-    required this.platformLogoId,
-    required this.slug,
+    this.name,
+    this.platformFamilyId,
+    this.platformLogoId,
+    this.slug,
   });
 
   @override
   String toString() {
-    return name;
+    return name ?? "Unbekannte Plattform";
   }
 
   IGDBPlatform.fromJson(Map<String, dynamic> json)
