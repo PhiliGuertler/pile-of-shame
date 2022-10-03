@@ -81,9 +81,7 @@ class _GameDetailsHeaderState extends State<GameDetailsHeader> {
                         child: Hero(
                           tag: widget.game.title,
                           child: Material(
-                            child: FadeInImage(
-                              fadeInDuration: const Duration(milliseconds: 250),
-                              placeholder: MemoryImage(kTransparentImage),
+                            child: Image(
                               image: NetworkImage(widget.game.coverImage!),
                               fit: BoxFit.cover,
                             ),

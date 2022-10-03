@@ -35,6 +35,9 @@ class _GameListItemState extends State<GameListItem> {
 
     final mainPlatform = GamePlatforms.byName(widget.game.platforms.first);
 
+    const double imageWidth = 80;
+    const double imageHeight = imageWidth * 4 / 3;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -52,39 +55,37 @@ class _GameListItemState extends State<GameListItem> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              if (widget.game.coverImage != null)
-                Padding(
-                  padding: const EdgeInsets.only(right: 8.0, left: 8.0),
-                  child: Transform.translate(
-                    offset: Offset(80 * (widget.coverScale - 1.0) * 0.5,
-                        widget.coverOffsetY),
-                    child: Transform.scale(
-                      scale: widget.coverScale,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: mainPlatform.color.withOpacity(0.9),
-                          ),
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(2.0)),
+              Padding(
+                padding: const EdgeInsets.only(right: 8.0, left: 8.0),
+                child: Transform.translate(
+                  offset: Offset(80 * (widget.coverScale - 1.0) * 0.5,
+                      widget.coverOffsetY),
+                  child: Transform.scale(
+                    scale: widget.coverScale,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(
                           color: mainPlatform.color.withOpacity(0.9),
                         ),
-                        width: 80,
-                        child: Hero(
-                          tag: widget.game.title,
-                          child: Material(
-                            child: FadeInImage.memoryNetwork(
-                              fadeInDuration: const Duration(milliseconds: 250),
-                              placeholder: kTransparentImage,
-                              image: widget.game.coverImage!,
-                              fit: BoxFit.cover,
-                            ),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(2.0)),
+                        color: mainPlatform.color.withOpacity(0.9),
+                      ),
+                      width: imageWidth,
+                      height: imageHeight,
+                      child: Hero(
+                        tag: widget.game.title,
+                        child: Material(
+                          child: Image(
+                            image: NetworkImage(widget.game.coverImage!),
+                            fit: BoxFit.cover,
                           ),
                         ),
                       ),
                     ),
                   ),
                 ),
+              ),
               Padding(
                 padding: const EdgeInsets.only(right: 8.0),
                 child: AnimatedFavouriteButton(

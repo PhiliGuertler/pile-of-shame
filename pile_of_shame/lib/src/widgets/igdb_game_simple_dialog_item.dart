@@ -27,8 +27,7 @@ class IGDBGameSimpleDialogItem extends StatelessWidget {
             width: imageWidth,
             height: imageHeight,
             child: igdbGame.cover != null
-                ? FadeInImage(
-                    placeholder: MemoryImage(kTransparentImage),
+                ? Image(
                     image: NetworkImage(
                       IGDBScraper.generateIGDBImageUrl(
                           igdbGame.cover!.imageId, IGDBImageSizes.coverSmall),

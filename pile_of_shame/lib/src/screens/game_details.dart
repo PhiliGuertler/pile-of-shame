@@ -232,10 +232,9 @@ class _GameDetailsState extends State<GameDetails> {
                       height: queryData.size.height > 900 ? 350 : 200,
                       child: (snapshot.hasData &&
                               snapshot.data!.backgroundImage != null)
-                          ? FadeInImage.memoryNetwork(
-                              fadeInDuration: const Duration(milliseconds: 250),
-                              placeholder: kTransparentImage,
-                              image: snapshot.data!.backgroundImage!,
+                          ? Image(
+                              image:
+                                  NetworkImage(snapshot.data!.backgroundImage!),
                               fit: BoxFit.cover,
                             )
                           : Container(),
@@ -248,10 +247,14 @@ class _GameDetailsState extends State<GameDetails> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                GameDetailsHeader(
-                  game: widget.originalGame,
-                  coverOffsetY: -50,
-                  coverScale: 2.0,
+                FutureBuilder<Game>(
+                  future: mostRecentGame,
+                  builder: (context, snapshot) => GameDetailsHeader(
+                    game:
+                        snapshot.hasData ? snapshot.data! : widget.originalGame,
+                    coverOffsetY: -50,
+                    coverScale: 2.0,
+                  ),
                 ),
                 FutureBuilder<Game>(
                   future: mostRecentGame,
