@@ -2,7 +2,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:pile_of_shame/src/network/igdb/models/igdb_game.dart';
-import 'package:transparent_image/transparent_image.dart';
 
 import '../scrapers/igdb_scraper.dart';
 

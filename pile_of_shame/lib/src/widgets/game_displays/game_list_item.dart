@@ -1,11 +1,10 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:pile_of_shame/src/models/game_platform.dart';
 import 'package:pile_of_shame/src/widgets/animated_heart/animated_favourite_button.dart';
-import 'package:transparent_image/transparent_image.dart';
 import '../../models/game.dart';
 import '../../persistance/storage.dart';
 import '../age_restriction.dart';
+import '../game_cover_view.dart';
 import '../game_status_view.dart';
 
 class GameListItem extends StatefulWidget {
@@ -76,13 +75,7 @@ class _GameListItemState extends State<GameListItem> {
                       height: imageHeight,
                       child: Hero(
                         tag: widget.game.title,
-                        child: Material(
-                          child: Image(
-                            image: CachedNetworkImageProvider(
-                                widget.game.coverImage!),
-                            fit: BoxFit.cover,
-                          ),
-                        ),
+                        child: GameCoverView(imageUrl: widget.game.coverImage),
                       ),
                     ),
                   ),

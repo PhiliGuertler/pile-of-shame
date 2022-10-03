@@ -5,7 +5,6 @@ import 'package:pile_of_shame/src/models/game_status.dart';
 import 'package:pile_of_shame/src/persistance/storage.dart';
 import 'package:pile_of_shame/src/scrapers/igdb_scraper.dart';
 import 'package:pile_of_shame/src/widgets/game_displays/game_details_header.dart';
-import 'package:transparent_image/transparent_image.dart';
 
 import '../models/age_restrictions.dart';
 import '../models/game.dart';

@@ -1,10 +1,9 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:pile_of_shame/src/models/game_platform.dart';
 import 'package:pile_of_shame/src/widgets/animated_heart/animated_favourite_button.dart';
-import 'package:transparent_image/transparent_image.dart';
 import '../../models/game.dart';
 import '../../persistance/storage.dart';
+import '../game_cover_view.dart';
 import '../game_status_view.dart';
 
 class GameDetailsHeader extends StatefulWidget {
@@ -55,44 +54,37 @@ class _GameDetailsHeaderState extends State<GameDetailsHeader> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              if (widget.game.coverImage != null)
-                Padding(
-                  padding: EdgeInsets.only(
-                      right: 8.0 + imageWidth * (widget.coverScale - 1.0),
-                      left: 8.0),
-                  child: Transform.translate(
-                    offset: Offset(
-                      imageWidth * (widget.coverScale - 1.0) * 0.5,
-                      widget.coverOffsetY,
-                    ),
-                    child: Transform.scale(
-                      scale: widget.coverScale,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: mainPlatform.color.withOpacity(0.9),
-                          ),
-                          borderRadius: const BorderRadius.all(
-                            Radius.circular(2.0),
-                          ),
+              Padding(
+                padding: EdgeInsets.only(
+                    right: 8.0 + imageWidth * (widget.coverScale - 1.0),
+                    left: 8.0),
+                child: Transform.translate(
+                  offset: Offset(
+                    imageWidth * (widget.coverScale - 1.0) * 0.5,
+                    widget.coverOffsetY,
+                  ),
+                  child: Transform.scale(
+                    scale: widget.coverScale,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(
                           color: mainPlatform.color.withOpacity(0.9),
                         ),
-                        width: imageWidth,
-                        height: imageHeight,
-                        child: Hero(
-                          tag: widget.game.title,
-                          child: Material(
-                            child: Image(
-                              image: CachedNetworkImageProvider(
-                                  widget.game.coverImage!),
-                              fit: BoxFit.cover,
-                            ),
-                          ),
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(2.0),
                         ),
+                        color: mainPlatform.color.withOpacity(0.9),
+                      ),
+                      width: imageWidth,
+                      height: imageHeight,
+                      child: Hero(
+                        tag: widget.game.title,
+                        child: GameCoverView(imageUrl: widget.game.coverImage),
                       ),
                     ),
                   ),
                 ),
+              ),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
