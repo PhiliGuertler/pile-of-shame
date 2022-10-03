@@ -168,11 +168,18 @@ class _GameDetailsState extends State<GameDetails> {
                       },
                       skipIfAlreadyScraped: false,
                     );
+                    setState(() {
+                      isScraping = false;
+                    });
                     debugPrint("Scraping done");
                     // update the game in storage and display a message
-                    if (scrapedGame != null) {
+                    if (scrapedGame != null &&
+                        scrapedGame.externalGameId != null) {
+                      // Game was found
                       await Storage().addOrUpdateGame(scrapedGame);
-                      if (!mounted) return;
+                      if (!mounted) {
+                        return;
+                      }
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                           content: Text("Informationen aktualisiert."),
@@ -180,12 +187,18 @@ class _GameDetailsState extends State<GameDetails> {
                       );
                       // refresh display
                       refreshGame();
-                    } else {
-                      debugPrint("Dialog Cancelled");
+                    } else if (scrapedGame != null) {
+                      // Dialog was not cancelled, instead no game was found
+                      if (!mounted || !snapshot.hasData) {
+                        return;
+                      }
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                              "Spiel ${snapshot.data!.title} nicht gefunden."),
+                        ),
+                      );
                     }
-                    setState(() {
-                      isScraping = false;
-                    });
                   },
                   icon: const Icon(Icons.cloud_download),
                 );
