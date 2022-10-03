@@ -35,9 +35,6 @@ class _GameListItemState extends State<GameListItem> {
 
     final mainPlatform = GamePlatforms.byName(widget.game.platforms.first);
 
-    const double imageWidth = 80;
-    const double imageHeight = imageWidth * 4 / 3;
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -71,8 +68,6 @@ class _GameListItemState extends State<GameListItem> {
                             const BorderRadius.all(Radius.circular(2.0)),
                         color: mainPlatform.color.withOpacity(0.9),
                       ),
-                      width: imageWidth,
-                      height: imageHeight,
                       child: Hero(
                         tag: widget.game.title,
                         child: GameCoverView(imageUrl: widget.game.coverImage),
