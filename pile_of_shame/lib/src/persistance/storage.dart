@@ -113,18 +113,8 @@ class Storage {
         // generate Game-Objects from the decoded contents
         List<Game> importedGames =
             decodedContents.map((entry) => Game.fromJson(entry)).toList();
-        // Merge existing games with imported games
-        List<Game> existingGames = await readGames();
-        List<Game> mergedGames = List.from(existingGames);
-        for (var importedGame in importedGames) {
-          if (mergedGames
-              .where((element) => element.uuid == importedGame.uuid)
-              .isEmpty) {
-            mergedGames.add(importedGame);
-          }
-        }
 
-        return mergedGames;
+        return importedGames;
       } catch (error) {
         debugPrint(
             'An error occured while reading the file: ${error.toString()}');
