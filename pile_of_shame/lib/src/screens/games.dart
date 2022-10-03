@@ -444,18 +444,45 @@ class _GameScreenState extends State<GameScreen> {
                     ),
                     PopupMenuItem(
                       padding: EdgeInsets.zero,
-                      onTap: () async {
-                        _games.forEach((element) {
-                          element.coverImage = null;
-                          element.externalGameId = null;
-                          element.backgroundImage = null;
-                          element.onlineScore = null;
-                          element.releaseDate = null;
-                        });
-                        await Storage().writeGames(_games);
-                        refresh();
+                      onTap: () {
+                        Future.delayed(
+                          const Duration(seconds: 0),
+                          () => showDialog<String>(
+                            context: context,
+                            builder: (BuildContext context) => AlertDialog(
+                              title: const Text(
+                                  'Willst du wirklich ALLE Scraping-Infos löschen?'),
+                              content: const Text(
+                                  'Sie können nur durch den Import einer Datei wieder hergestellt werden.'),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(context, 'Cancel');
+                                  },
+                                  child: const Text('Abbrechen'),
+                                ),
+                                TextButton(
+                                  onPressed: () async {
+                                    for (var element in _games) {
+                                      element.coverImage = null;
+                                      element.externalGameId = null;
+                                      element.backgroundImage = null;
+                                      element.onlineScore = null;
+                                      element.releaseDate = null;
+                                    }
+                                    await Storage().writeGames(_games);
+                                    refresh();
+                                    if (!mounted) return;
+                                    Navigator.pop(context, 'Delete');
+                                  },
+                                  child: const Text('Löschen'),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
                       },
-                      value: 3,
+                      // value: 3,
                       child: const ListTile(
                         leading: Icon(Icons.restore),
                         title: Text('Scraping-Info entfernen'),
