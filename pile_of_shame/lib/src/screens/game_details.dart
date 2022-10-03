@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:pile_of_shame/src/models/game_status.dart';
@@ -233,8 +234,8 @@ class _GameDetailsState extends State<GameDetails> {
                       child: (snapshot.hasData &&
                               snapshot.data!.backgroundImage != null)
                           ? Image(
-                              image:
-                                  NetworkImage(snapshot.data!.backgroundImage!),
+                              image: CachedNetworkImageProvider(
+                                  snapshot.data!.backgroundImage!),
                               fit: BoxFit.cover,
                             )
                           : Container(),

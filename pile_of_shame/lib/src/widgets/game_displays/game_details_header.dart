@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:pile_of_shame/src/models/game_platform.dart';
 import 'package:pile_of_shame/src/widgets/animated_heart/animated_favourite_button.dart';
@@ -82,7 +83,8 @@ class _GameDetailsHeaderState extends State<GameDetailsHeader> {
                           tag: widget.game.title,
                           child: Material(
                             child: Image(
-                              image: NetworkImage(widget.game.coverImage!),
+                              image: CachedNetworkImageProvider(
+                                  widget.game.coverImage!),
                               fit: BoxFit.cover,
                             ),
                           ),

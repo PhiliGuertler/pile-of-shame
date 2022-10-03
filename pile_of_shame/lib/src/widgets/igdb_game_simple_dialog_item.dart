@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:pile_of_shame/src/network/igdb/models/igdb_game.dart';
@@ -28,7 +29,7 @@ class IGDBGameSimpleDialogItem extends StatelessWidget {
             height: imageHeight,
             child: igdbGame.cover != null
                 ? Image(
-                    image: NetworkImage(
+                    image: CachedNetworkImageProvider(
                       IGDBScraper.generateIGDBImageUrl(
                           igdbGame.cover!.imageId, IGDBImageSizes.coverSmall),
                     ),
