@@ -26,7 +26,7 @@ class GameScreen extends StatefulWidget {
 class _GameScreenState extends State<GameScreen> {
   List<Game> _games = [];
 
-  GameFilters _filters = GameFilters();
+  final GameFilters _filters = GameFilters();
 
   Stream<int>? _scrapingProgress;
 
@@ -307,9 +307,8 @@ class _GameScreenState extends State<GameScreen> {
                         ? !_filters.isDescending
                         : _filters.isDescending;
                     setState(() {
-                      _filters = GameFilters(
-                          sortStrategy: sortStrategy,
-                          isDescending: isDescending);
+                      _filters.sortStrategy = sortStrategy;
+                      _filters.isDescending = isDescending;
                     });
                     refresh();
                   },
