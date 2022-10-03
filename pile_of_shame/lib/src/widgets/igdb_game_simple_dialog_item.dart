@@ -36,24 +36,26 @@ class IGDBGameSimpleDialogItem extends StatelessWidget {
                   )
                 : Container(),
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                if (igdbGame.name != null)
-                  Text(
-                    igdbGame.name!,
-                    style: const TextStyle(fontSize: 20),
-                  ),
-                if (igdbGame.firstReleaseDate != null)
-                  Text(
-                      "Erscheinungsdatum: ${DateFormat.yMd().format(igdbGame.firstReleaseDate!)}"),
-                if (igdbGame.platforms != null)
-                  Text(
-                    igdbGame.platforms!.join(", "),
-                  ),
-              ],
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (igdbGame.name != null)
+                    Text(
+                      igdbGame.name!,
+                      style: const TextStyle(fontSize: 20),
+                    ),
+                  if (igdbGame.firstReleaseDate != null)
+                    Text(DateFormat.yMd().format(igdbGame.firstReleaseDate!)),
+                  if (igdbGame.platforms != null)
+                    Text(
+                      igdbGame.platforms!.join(", "),
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                ],
+              ),
             ),
           ),
         ],
