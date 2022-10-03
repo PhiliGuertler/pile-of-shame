@@ -271,7 +271,7 @@ class GamePlatforms {
       pcEpic,
       pcTwitch,
       pcXBox,
-      // vrSteam,
+      vrSteam,
       // Sony
       playstation1,
       playstation2,
