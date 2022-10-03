@@ -12,6 +12,9 @@ class IGDBGameSimpleDialogItem extends StatelessWidget {
   final IGDBGame igdbGame;
   final VoidCallback onPressed;
 
+  static const double imageWidth = 60.0;
+  static const double imageHeight = imageWidth * 4 / 3;
+
   @override
   Widget build(BuildContext context) {
     return SimpleDialogOption(
@@ -20,14 +23,19 @@ class IGDBGameSimpleDialogItem extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          if (igdbGame.cover != null)
-            FadeInImage(
-              placeholder: MemoryImage(kTransparentImage),
-              image: NetworkImage(
-                IGDBScraper.generateIGDBImageUrl(
-                    igdbGame.cover!.imageId, IGDBImageSizes.coverSmall),
-              ),
-            ),
+          SizedBox(
+            width: imageWidth,
+            height: imageHeight,
+            child: igdbGame.cover != null
+                ? FadeInImage(
+                    placeholder: MemoryImage(kTransparentImage),
+                    image: NetworkImage(
+                      IGDBScraper.generateIGDBImageUrl(
+                          igdbGame.cover!.imageId, IGDBImageSizes.coverSmall),
+                    ),
+                  )
+                : Container(),
+          ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
