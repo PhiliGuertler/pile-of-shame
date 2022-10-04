@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pile_of_shame/src/models/age_restrictions.dart';
-import 'package:pile_of_shame/src/models/game_platform.dart';
 import 'package:pile_of_shame/src/persistance/storage.dart';
 import 'package:pile_of_shame/src/scrapers/igdb_scraper.dart';
 import 'package:pile_of_shame/src/screens/game_addition.dart';
@@ -9,13 +7,10 @@ import 'package:pile_of_shame/src/utils/game_filters.dart';
 import 'package:pile_of_shame/src/widgets/game_displays/game_list_item.dart';
 
 import '../models/game.dart';
-import '../models/game_status.dart';
 import '../widgets/filters/filter_popup_menu.dart';
 import '../widgets/filters/sorting_popup_menu.dart';
 import '../widgets/game_list_summary.dart';
-import '../widgets/popup_menu_title.dart';
 import '../widgets/scraping_progress_view.dart';
-import '../widgets/selected_text_style.dart';
 import 'game_details.dart';
 
 class GameScreen extends StatefulWidget {
@@ -25,12 +20,38 @@ class GameScreen extends StatefulWidget {
   State<GameScreen> createState() => _GameScreenState();
 }
 
-class _GameScreenState extends State<GameScreen> {
+class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
   List<Game> _games = [];
 
   GameFilters _filters = GameFilters();
 
   Stream<int>? _scrapingProgress;
+  final AdjustableScrollController _scrollController =
+      AdjustableScrollController();
+  late final AnimationController _scrollDownAnimationController =
+      AnimationController(
+          vsync: this, duration: const Duration(milliseconds: 300));
+  late final Animation<Offset> _scrollDownAnimation = Tween<Offset>(
+    begin: const Offset(0, 1),
+    end: Offset.zero,
+  ).animate(
+    CurvedAnimation(
+      parent: _scrollDownAnimationController,
+      curve: Curves.linearToEaseOut,
+    ),
+  );
+  late final AnimationController _scrollUpAnimationController =
+      AnimationController(
+          vsync: this, duration: const Duration(milliseconds: 300));
+  late final Animation<Offset> _scrollUpAnimation = Tween<Offset>(
+    begin: const Offset(0, 1),
+    end: Offset.zero,
+  ).animate(
+    CurvedAnimation(
+      parent: _scrollUpAnimationController,
+      curve: Curves.linearToEaseOut,
+    ),
+  );
 
   void refresh() {
     Storage().readGames().then((value) {
@@ -45,6 +66,25 @@ class _GameScreenState extends State<GameScreen> {
   void initState() {
     super.initState();
     refresh();
+
+    _scrollController.addListener(() {
+      final double topThreshold =
+          _scrollController.position.minScrollExtent + 40.0;
+      final double bottomThreshold =
+          _scrollController.position.maxScrollExtent - 40.0;
+      if (_scrollController.offset > topThreshold) {
+        _scrollUpAnimationController.forward();
+      } else if (_scrollController.offset < topThreshold) {
+        _scrollUpAnimationController.reverse();
+      }
+      if (_scrollController.offset > bottomThreshold) {
+        _scrollDownAnimationController.reverse();
+      } else if (_scrollController.offset < bottomThreshold) {
+        _scrollDownAnimationController.forward();
+      }
+    });
+    _scrollDownAnimationController.value =
+        _scrollDownAnimationController.upperBound;
   }
 
   @override
@@ -53,20 +93,6 @@ class _GameScreenState extends State<GameScreen> {
       child: Stack(
         children: [
           Scaffold(
-            floatingActionButton: FloatingActionButton(
-              heroTag: "add_game_fab",
-              onPressed: () async {
-                await Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const AddGameScreen(),
-                  ),
-                );
-                refresh();
-              },
-              backgroundColor: Theme.of(context).colorScheme.primary,
-              child: const Icon(Icons.add),
-            ),
             appBar: AppBar(
               title: const Text('Alle Spiele'),
               bottom: PreferredSize(
@@ -244,7 +270,7 @@ class _GameScreenState extends State<GameScreen> {
               ],
             ),
             body: ListView.builder(
-              controller: AdjustableScrollController(),
+              controller: _scrollController,
               shrinkWrap: true,
               itemCount: _games.length + 2,
               itemBuilder: (context, index) {
@@ -287,6 +313,7 @@ class _GameScreenState extends State<GameScreen> {
             builder: (context, snapshot) => Positioned(
               bottom: 0.0,
               left: 0.0,
+              right: 0.0,
               child: snapshot.hasData &&
                       snapshot.data! > -1 &&
                       snapshot.data! < _games.length
@@ -299,6 +326,78 @@ class _GameScreenState extends State<GameScreen> {
                               : "Momentchen!",
                     )
                   : Container(),
+            ),
+          ),
+          Positioned(
+            bottom: 0.0,
+            right: 25.0 * 2 + 8.0 * 2 + 25.0 * 2 + 8.0 * 2,
+            child: SlideTransition(
+              position: _scrollUpAnimation,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: CircleAvatar(
+                  radius: 25,
+                  backgroundColor: Theme.of(context).colorScheme.primary,
+                  child: IconButton(
+                    icon: const Icon(Icons.arrow_upward),
+                    color: Colors.black,
+                    onPressed: () {
+                      _scrollController.animateTo(
+                          _scrollController.position.minScrollExtent,
+                          duration: const Duration(seconds: 1),
+                          curve: Curves.easeInOut);
+                    },
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+            bottom: 0.0,
+            right: 25.0 * 2 + 8.0 * 2,
+            child: SlideTransition(
+              position: _scrollDownAnimation,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: CircleAvatar(
+                  radius: 25,
+                  backgroundColor: Theme.of(context).colorScheme.primary,
+                  child: IconButton(
+                    icon: const Icon(Icons.arrow_downward),
+                    color: Colors.black,
+                    onPressed: () {
+                      _scrollController.animateTo(
+                          _scrollController.position.maxScrollExtent,
+                          duration: const Duration(seconds: 1),
+                          curve: Curves.easeInOut);
+                    },
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+            right: 0,
+            bottom: 0,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: CircleAvatar(
+                radius: 25,
+                backgroundColor: Theme.of(context).colorScheme.primary,
+                child: IconButton(
+                  icon: const Icon(Icons.add),
+                  color: Colors.black,
+                  onPressed: () async {
+                    await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const AddGameScreen(),
+                      ),
+                    );
+                    refresh();
+                  },
+                ),
+              ),
             ),
           ),
         ],
