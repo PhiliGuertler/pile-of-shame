@@ -83,7 +83,7 @@ class _GameScreenState extends State<GameScreen> {
               actions: [
                 FilterPopupMenu(
                     filters: _filters,
-                    updateFilter: ((filters) {
+                    updateFilters: ((filters) {
                       setState(() {
                         _filters = filters;
                       });
