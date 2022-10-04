@@ -20,12 +20,20 @@ enum SortStrategy {
 class GameFilters {
   GameFilters({
     this.sortStrategy = SortStrategy.byDateOfAddition,
-    this.isDescending = false,
+    this.isDescending = true,
     this.platformFilter,
     this.ageRestrictionFilter,
     this.isFavouriteFilter,
     this.gameStateFilter,
   });
+
+  GameFilters.from(GameFilters filters)
+      : sortStrategy = filters.sortStrategy,
+        isDescending = filters.isDescending,
+        platformFilter = filters.platformFilter,
+        ageRestrictionFilter = filters.ageRestrictionFilter,
+        isFavouriteFilter = filters.isFavouriteFilter,
+        gameStateFilter = filters.gameStateFilter;
 
   // Sorting
   SortStrategy sortStrategy;
