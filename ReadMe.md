@@ -22,6 +22,9 @@ It will result in an application that simply displays information about games th
 ## TODOs
 - Saving platforms entered by the user in a json file and retrieving them from there has to be implemented. The list/file should be initialized with a bunch of known platforms (see game_addition.dart)
 - cleanup code
+- Add a search
+- Add the option to select multiple platforms, etc. in the filters
+- Add Graphs and Analytics
 
 ## Known issues
 - Sometimes the app crashes at special keyboard-inputs like the arrow-keys or backspace when adding a game during debugging (sporadically)
