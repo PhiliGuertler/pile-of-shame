@@ -25,6 +25,7 @@ It will result in an application that simply displays information about games th
 - Add a search
 - Add the option to select multiple platforms, etc. in the filters
 - Add Graphs and Analytics
+- Add a state for games that cannot be finished (endless games, online games, etc.)
 
 ## Known issues
 - Sometimes the app crashes at special keyboard-inputs like the arrow-keys or backspace when adding a game during debugging (sporadically)
