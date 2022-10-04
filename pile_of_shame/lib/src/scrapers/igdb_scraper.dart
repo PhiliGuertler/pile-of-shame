@@ -46,19 +46,9 @@ class IGDBScraper {
   Future<List<IGDBGame>> scrapeGameInfos(Game game,
       {bool skipIfAlreadyScraped = true}) async {
     final api = IGDBApi();
-    if (game.externalGameId != null) {
+    if (game.externalGameId != null && skipIfAlreadyScraped) {
       // this game has an external identifier set, which means it has already been scraped before.
-      if (!skipIfAlreadyScraped) {
-        final gameResults = await api.getGameById(game.externalGameId!);
-        if (gameResults.isEmpty) {
-          debugPrint(
-              "No matches found during scraping with id ${game.externalGameId}");
-        } else {
-          return gameResults;
-        }
-      } else {
-        return [];
-      }
+      return [];
     }
     List<IGDBGame> gameResults = await api.getGameByExactName(game.title);
     if (!skipIfAlreadyScraped &&
