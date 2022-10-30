@@ -18,6 +18,7 @@ class GameStatusView extends StatelessWidget {
       case GameState.cancelled:
       case GameState.completed:
       case GameState.completed100Percent:
+      case GameState.unfinishable:
       default:
         return 1.0;
     }
@@ -37,6 +38,8 @@ class GameStatusView extends StatelessWidget {
         return Colors.deepOrange;
       case GameState.onWishList:
         return Colors.blue;
+      case GameState.unfinishable:
+        return Colors.purple;
       default:
         return Colors.transparent;
     }
@@ -77,6 +80,12 @@ class GameStatusView extends StatelessWidget {
     if (gameState == GameState.completed100Percent) {
       return AnimatedSparklingController(
         numSparks: 5,
+        child: content,
+      );
+    }
+    if (gameState == GameState.completed) {
+      return AnimatedSparklingController(
+        numSparks: 1,
         child: content,
       );
     }

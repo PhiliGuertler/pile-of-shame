@@ -6,6 +6,7 @@ enum GameState {
   completed,
   cancelled,
   onWishList,
+  unfinishable,
 }
 
 class GameStates {
@@ -25,6 +26,8 @@ class GameStates {
         return 'Aktiv';
       case GameState.cancelled:
         return 'Abgebrochen';
+      case GameState.unfinishable:
+        return 'Endlosspiel';
       default:
         return '???';
     }
