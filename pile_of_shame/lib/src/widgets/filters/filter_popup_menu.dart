@@ -191,6 +191,11 @@ class FilterPopupMenu extends StatelessWidget {
                     child:
                         Text(GameStates.gameStateToString(GameState.cancelled)),
                   ),
+                  PopupMenuItem(
+                    value: GameState.unfinishable,
+                    child: Text(
+                        GameStates.gameStateToString(GameState.unfinishable)),
+                  ),
                 ],
               ),
             ),
