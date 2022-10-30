@@ -4,6 +4,8 @@
 This project is intended as a hands-on learning project for flutter.
 It will result in an application that simply displays information about games the user has registered and played, as well as information about games the user intends to play.
 
+![Screenshot 1](./main-view.png "List of all Games") ![Screenshot 2](./game-details.png "Game Details")
+
 ## Implemented features
 - Displaying a list of games on the main page is working fine.
 - Persisting a list of games in a local file is working.
