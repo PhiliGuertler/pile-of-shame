@@ -3,9 +3,11 @@ import 'package:pile_of_shame/src/models/game_status.dart';
 import 'package:pile_of_shame/src/widgets/animated_sparkle/animated_sparkling_controller.dart';
 
 class GameStatusView extends StatelessWidget {
-  const GameStatusView({super.key, required this.gameState});
+  const GameStatusView({super.key, required this.gameState, this.onPressed});
 
   final GameState gameState;
+
+  final VoidCallback? onPressed;
 
   double gameStateToProgress(GameState state) {
     switch (state) {
@@ -77,19 +79,32 @@ class GameStatusView extends StatelessWidget {
       ),
     );
 
+    Widget fullContent = content;
+
     if (gameState == GameState.completed100Percent) {
-      return AnimatedSparklingController(
+      fullContent = AnimatedSparklingController(
         numSparks: 5,
         child: content,
       );
     }
     if (gameState == GameState.completed) {
-      return AnimatedSparklingController(
+      fullContent = AnimatedSparklingController(
         numSparks: 1,
         child: content,
       );
     }
 
-    return content;
+    if (onPressed != null) {
+      return InkWell(
+        onTap: () {
+          if (onPressed != null) {
+            onPressed!();
+          }
+        },
+        child: fullContent,
+      );
+    } else {
+      return fullContent;
+    }
   }
 }

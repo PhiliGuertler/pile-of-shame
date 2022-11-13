@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:pile_of_shame/src/models/game_platform.dart';
 import 'package:pile_of_shame/src/widgets/animated_heart/animated_favourite_button.dart';
+import 'package:pile_of_shame/src/widgets/game_status_selection_dialog.dart';
 import '../../models/game.dart';
+import '../../models/game_status.dart';
 import '../../persistance/storage.dart';
 import '../age_restriction.dart';
 import '../game_cover_view.dart';
@@ -110,6 +112,21 @@ class _GameListItemState extends State<GameListItem> {
                     ),
                     GameStatusView(
                       gameState: widget.game.gameState,
+                      onPressed: () async {
+                        final result = await showDialog<GameState>(
+                          context: context,
+                          builder: (context) {
+                            return const GameStatusSelectionDialog();
+                          },
+                        );
+                        if (result != null) {
+                          setState(() {
+                            widget.game.gameState = result;
+                            widget.game.lastUpdated = DateTime.now();
+                            Storage().addOrUpdateGame(widget.game);
+                          });
+                        }
+                      },
                     ),
                   ],
                 ),
