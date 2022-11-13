@@ -25,6 +25,8 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
 
   GameFilters _filters = GameFilters();
 
+  bool isSearchActive = false;
+
   Stream<int>? _scrapingProgress;
   final AdjustableScrollController _scrollController =
       AdjustableScrollController();
@@ -96,17 +98,47 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
             appBar: AppBar(
               title: const Text('Alle Spiele'),
               bottom: PreferredSize(
-                preferredSize: const Size.fromHeight(6.0),
-                child: StreamBuilder<int>(
-                  stream: _scrapingProgress,
-                  initialData: -1,
-                  builder: (context, snapshot) =>
-                      snapshot.hasData && snapshot.data != -1
-                          ? const LinearProgressIndicator()
-                          : Container(),
+                preferredSize:
+                    Size.fromHeight(6.0 + (isSearchActive ? 40.0 : 0.0)),
+                child: Column(
+                  children: [
+                    if (isSearchActive)
+                      Padding(
+                        padding: const EdgeInsets.only(left: 16.0, right: 8.0),
+                        child: TextField(
+                          decoration: const InputDecoration(
+                            icon: Icon(Icons.search),
+                            hintText: 'Nach Spielen suchen',
+                          ),
+                          onChanged: (value) {
+                            setState(() {
+                              _filters.searchQuery = value;
+                            });
+                            refresh();
+                          },
+                        ),
+                      ),
+                    StreamBuilder<int>(
+                      stream: _scrapingProgress,
+                      initialData: -1,
+                      builder: (context, snapshot) =>
+                          snapshot.hasData && snapshot.data != -1
+                              ? const LinearProgressIndicator()
+                              : Container(),
+                    ),
+                  ],
                 ),
               ),
               actions: [
+                IconButton(
+                    onPressed: () {
+                      debugPrint('searching!');
+                      setState(() {
+                        isSearchActive = !isSearchActive;
+                      });
+                    },
+                    icon:
+                        Icon(isSearchActive ? Icons.search_off : Icons.search)),
                 FilterPopupMenu(
                     filters: _filters,
                     updateFilters: ((filters) {

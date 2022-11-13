@@ -1,5 +1,6 @@
 import 'dart:core';
 
+import 'package:flutter/material.dart';
 import 'package:pile_of_shame/src/models/age_restrictions.dart';
 import 'package:pile_of_shame/src/models/game_status.dart';
 
@@ -44,6 +45,7 @@ class GameFilters {
   AgeRestriction? ageRestrictionFilter;
   bool? isFavouriteFilter;
   GameState? gameStateFilter;
+  String? searchQuery;
 
   // ######################################################################## //
   // ### Sorting functions ################################################## //
@@ -196,6 +198,19 @@ class GameFilters {
     }).toList();
   }
 
+  List<Game> _filterBySearchQuery(List<Game> gamesList, String searchQuery) {
+    final searchKeywords = searchQuery.split(RegExp(r'(\s+)'));
+    debugPrint(searchKeywords.toString());
+
+    return gamesList.where((game) {
+      bool matchesAll = true;
+      for (String keyword in searchKeywords) {
+        matchesAll = matchesAll && game.title.toLowerCase().contains(keyword);
+      }
+      return matchesAll;
+    }).toList();
+  }
+
   List<Game> _applySortStrategy(List<Game> gamesList) {
     switch (sortStrategy) {
       case SortStrategy.byLastUpdated:
@@ -231,6 +246,9 @@ class GameFilters {
     }
     if (gameStateFilter != null) {
       sortedGames = _filterByStatus(sortedGames, gameStateFilter!);
+    }
+    if (searchQuery != null) {
+      sortedGames = _filterBySearchQuery(sortedGames, searchQuery!);
     }
 
     return sortedGames;
