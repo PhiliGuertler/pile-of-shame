@@ -50,6 +50,7 @@ dependencies:
   share_plus: ^4.1.0
   flutter_launcher_icons: ^0.10.0
   cached_network_image: ^3.2.2
+  json_annotation: ^4.7.0
 
 dev_dependencies:
   flutter_test:
@@ -62,6 +63,8 @@ dev_dependencies:
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
   test: ^1.21.4
+  json_serializable: ^6.5.4
+  build_runner: ^2.3.0
 
 flutter_icons:
   android: true

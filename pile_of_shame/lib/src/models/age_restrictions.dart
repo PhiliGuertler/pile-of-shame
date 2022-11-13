@@ -1,12 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:json_annotation/json_annotation.dart';
 
 enum AgeRestriction {
+  @JsonValue(0)
   none,
+  @JsonValue(1)
   unknown,
+  @JsonValue(2)
   usk0,
+  @JsonValue(3)
   usk6,
+  @JsonValue(4)
   usk12,
+  @JsonValue(5)
   usk16,
+  @JsonValue(6)
   usk18,
 }
 

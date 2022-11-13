@@ -229,6 +229,7 @@ class _AddGameScreenState extends State<AddGameScreen> {
                                 price: _selectedPrice,
                                 ageRestriction: _selectedAge,
                                 notes: _selectedNotes?.trim(),
+                                lastUpdated: DateTime.now(),
                               );
 
                               // get the list of games from storage

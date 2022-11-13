@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:json_annotation/json_annotation.dart';
 import 'package:pile_of_shame/src/models/game_status.dart';
 import 'package:quiver/core.dart';
 import 'package:uuid/uuid.dart';
 import 'age_restrictions.dart';
 
+part 'game.g.dart';
+
+@JsonSerializable()
 class Game {
-  final String uuid;
+  String uuid;
 
   /// the game's title
   String title;
@@ -28,6 +32,9 @@ class Game {
   /// Stores user-defined notes for the game, e.g. if the game was gifted,
   /// or if DLCs are part of the price
   String? notes;
+
+  /// Stores the last data at which this object was updated
+  DateTime? lastUpdated;
 
   // ######################################################################## //
   // ### Scraped data ####################################################### //
@@ -61,6 +68,7 @@ class Game {
     this.backgroundImage,
     this.coverImage,
     this.externalGameId,
+    this.lastUpdated,
   }) : uuid = const Uuid().v4();
 
   Game.withUuid({
@@ -77,6 +85,7 @@ class Game {
     this.backgroundImage,
     this.coverImage,
     this.externalGameId,
+    this.lastUpdated,
   });
 
   Game.from(Game other)
@@ -104,42 +113,9 @@ class Game {
         ageRestriction ?? AgeRestriction.unknown);
   }
 
-  Game.fromJson(Map<String, dynamic> json)
-      : uuid = json['uuid'],
-        gameState = json['gameState'] != null
-            ? GameState.values[json['gameState']]
-            : GameState.currentlyPlaying,
-        title = json['title'],
-        platforms = List<String>.from(json['platforms'] as List),
-        price = json['price'],
-        ageRestriction = json['ageRestriction'] != null
-            ? AgeRestriction.values[json['ageRestriction']]
-            : null,
-        isFavourite = json['isFavourite'],
-        notes = json['notes'],
-        releaseDate = json['releaseDate'] != null
-            ? DateTime.parse(json['releaseDate'])
-            : null,
-        onlineScore = json['onlineScore'] ?? json['metacriticScore'],
-        backgroundImage = json['backgroundImage'],
-        coverImage = json['coverImage'],
-        externalGameId = json['externalGameId'] ?? json['rawgGameId'];
+  factory Game.fromJson(Map<String, dynamic> json) => _$GameFromJson(json);
 
-  Map<String, dynamic> toJson() => {
-        'uuid': uuid,
-        'gameState': gameState.index,
-        'title': title.trim(),
-        'platforms': platforms,
-        'price': price,
-        'ageRestriction': ageRestriction?.index,
-        'isFavourite': isFavourite,
-        'notes': notes?.trim(),
-        'releaseDate': releaseDate?.toIso8601String(),
-        'onlineScore': onlineScore,
-        'backgroundImage': backgroundImage,
-        'coverImage': coverImage,
-        'externalGameId': externalGameId,
-      };
+  Map<String, dynamic> toJson() => _$GameToJson(this);
 
   @override
   bool operator ==(Object other) {

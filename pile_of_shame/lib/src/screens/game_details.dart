@@ -299,6 +299,12 @@ class _GameDetailsState extends State<GameDetails> {
                                   DateFormat.yMd()
                                       .format(snapshot.data!.releaseDate!)),
                             if (snapshot.hasData &&
+                                snapshot.data!.lastUpdated != null)
+                              Pair(
+                                  'Zuletzt bearbeitet am',
+                                  DateFormat.yMd()
+                                      .format(snapshot.data!.lastUpdated!)),
+                            if (snapshot.hasData &&
                                 snapshot.data!.onlineScore != null)
                               Pair('Online Score',
                                   '${snapshot.data!.onlineScore!.toString()} / 100'),

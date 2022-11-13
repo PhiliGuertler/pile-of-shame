@@ -302,6 +302,7 @@ class _EditGameDetailsState extends State<EditGameDetails> {
                           editedGame.externalGameId =
                               int.tryParse(_externalGameIdController.text);
                           editedGame.ageRestriction = _ageRestrictionController;
+                          editedGame.lastUpdated = DateTime.now();
 
                           // update the game in storage
                           await Storage().addOrUpdateGame(editedGame);
