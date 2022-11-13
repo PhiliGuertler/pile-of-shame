@@ -54,12 +54,12 @@ class _SortingPopupMenuState extends State<SortingPopupMenu> {
         const PopupMenuTitle(title: 'Sortieren nach'),
         StatefulPopupMenuItem<GameFilters>(
           onTap: () {
-            onSelected(SortStrategy.byDateOfAddition);
+            onSelected(SortStrategy.byLastUpdated);
           },
           onStateChanged: (filters) {
             return StatefulPopupMenuItemProps(
-              title: 'Hinzufügedatum',
-              isSelected: filters.sortStrategy == SortStrategy.byDateOfAddition,
+              title: 'Änderungsdatum',
+              isSelected: filters.sortStrategy == SortStrategy.byLastUpdated,
             );
           },
           value: _filters,

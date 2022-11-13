@@ -8,7 +8,7 @@ import '../models/game_platform.dart';
 
 enum SortStrategy {
   none,
-  byDateOfAddition,
+  byLastUpdated,
   byAlphabet,
   byAgeRestriction,
   byPrice,
@@ -19,7 +19,7 @@ enum SortStrategy {
 
 class GameFilters {
   GameFilters({
-    this.sortStrategy = SortStrategy.byDateOfAddition,
+    this.sortStrategy = SortStrategy.byLastUpdated,
     this.isDescending = true,
     this.platformFilter,
     this.ageRestrictionFilter,
@@ -49,14 +49,22 @@ class GameFilters {
   // ### Sorting functions ################################################## //
   // ######################################################################## //
 
-  List<Game> _sortByDateOfAddition(List<Game> gamesList) {
-    // TODO: This probably needs a more sophisticated implementation.
-    // For now, we just change the order of elements depending on isAscending
+  List<Game> _sortByLastUpdated(List<Game> gamesList) {
+    gamesList.sort((a, b) {
+      if (a.lastUpdated != null && b.lastUpdated != null) {
+        return b.lastUpdated!.compareTo(a.lastUpdated!);
+      } else if (a.lastUpdated != null) {
+        return -1;
+      } else if (b.lastUpdated != null) {
+        return 1;
+      } else {
+        return 0;
+      }
+    });
     if (!isDescending) {
-      return gamesList;
-    } else {
-      return gamesList.reversed.toList();
+      gamesList = gamesList.reversed.toList();
     }
+    return gamesList;
   }
 
   List<Game> _sortByAlphabet(List<Game> gamesList) {
@@ -190,8 +198,8 @@ class GameFilters {
 
   List<Game> _applySortStrategy(List<Game> gamesList) {
     switch (sortStrategy) {
-      case SortStrategy.byDateOfAddition:
-        return _sortByDateOfAddition(gamesList);
+      case SortStrategy.byLastUpdated:
+        return _sortByLastUpdated(gamesList);
       case SortStrategy.byAlphabet:
         return _sortByAlphabet(gamesList);
       case SortStrategy.byAgeRestriction:
