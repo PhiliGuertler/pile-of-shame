@@ -132,10 +132,13 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
               actions: [
                 IconButton(
                     onPressed: () {
-                      debugPrint('searching!');
                       setState(() {
                         isSearchActive = !isSearchActive;
+                        if (!isSearchActive) {
+                          _filters.searchQuery = null;
+                        }
                       });
+                      refresh();
                     },
                     icon:
                         Icon(isSearchActive ? Icons.search_off : Icons.search)),
