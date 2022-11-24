@@ -101,7 +101,8 @@ class Game {
         onlineScore = other.onlineScore,
         backgroundImage = other.backgroundImage,
         coverImage = other.coverImage,
-        externalGameId = other.externalGameId;
+        externalGameId = other.externalGameId,
+        lastUpdated = other.lastUpdated;
 
   Color getAgeRestictionColor() {
     return AgeRestrictions.getAgeRestictionColor(
