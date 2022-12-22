@@ -72,6 +72,67 @@ void main() {
       expect(testGame.notes, 'These are some wild notes');
       expect(testGame.onlineScore, 94);
       expect(testGame.price, 59.99);
+      expect(testGame.uuid, 'abcde-fghij');
+    });
+    test('Games are equal if their uuid matches', () {
+      Map<String, dynamic> json = {};
+      json['playStatus'] = PlayStatus.onPileOfShame.code;
+      json['platforms'] = [Platform.gameBoy.code, Platform.gameBoyColor.code];
+      json['title'] = 'Test-Game XVII';
+      json['ageRestriction'] = AgeRestriction.usk12.code;
+      json['backgroundImage'] = 'file://some/place/to/file.jpg';
+      json['coverImage'] = 'file://some/place/to/file.jpg';
+      json['externalGameId'] = -1;
+      json['isFavourite'] = true;
+      json['lastUpdated'] = '2022-12-22T15:45:24.000';
+      json['releaseDate'] = '2020-10-04T00:00:00.000';
+      json['notes'] = 'These are some wild notes';
+      json['onlineScore'] = 94;
+      json['price'] = 59.99;
+      json['uuid'] = 'abcde-fghij';
+
+      final Game testGameA = Game.fromJson(json);
+
+      json['title'] = 'That is a different title!';
+      final Game testGameB = Game.fromJson(json);
+
+      expect(testGameA == testGameB, true);
+
+      json['uuid'] = 'something-else';
+      final Game differentGame = Game.fromJson(json);
+
+      expect(testGameA == differentGame, false);
+    });
+    test('Games create equal hashes if both uuid and title are the same', () {
+      Map<String, dynamic> json = {};
+      json['playStatus'] = PlayStatus.onPileOfShame.code;
+      json['platforms'] = [Platform.gameBoy.code, Platform.gameBoyColor.code];
+      json['title'] = 'Test-Game XVII';
+      json['ageRestriction'] = AgeRestriction.usk12.code;
+      json['backgroundImage'] = 'file://some/place/to/file.jpg';
+      json['coverImage'] = 'file://some/place/to/file.jpg';
+      json['externalGameId'] = -1;
+      json['isFavourite'] = true;
+      json['lastUpdated'] = '2022-12-22T15:45:24.000';
+      json['releaseDate'] = '2020-10-04T00:00:00.000';
+      json['notes'] = 'These are some wild notes';
+      json['onlineScore'] = 94;
+      json['price'] = 59.99;
+      json['uuid'] = 'abcde-fghij';
+
+      final Game testGameA = Game.fromJson(json);
+
+      json['price'] = 43.95;
+      final Game testGameB = Game.fromJson(json);
+      expect(testGameA.hashCode, testGameB.hashCode);
+
+      json['uuid'] = 'something-else';
+      final Game differentGame = Game.fromJson(json);
+      expect(testGameA.hashCode == differentGame.hashCode, false);
+
+      json['title'] = 'A different title';
+      final Game differentTitle = Game.fromJson(json);
+      expect(differentGame.hashCode == differentTitle.hashCode, false);
     });
   });
 }
