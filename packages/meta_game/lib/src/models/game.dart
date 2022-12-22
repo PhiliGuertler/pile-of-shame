@@ -19,7 +19,7 @@ class Game {
   List<Platform> platforms;
 
   /// the game's current state of playing
-  PlayStatus gameState;
+  PlayStatus playStatus;
 
   /// the amount of money that was actually payed for the game
   double? price;
@@ -48,10 +48,10 @@ class Game {
   int? onlineScore;
 
   /// background image for the game
-  String? backgroundImage;
+  Uri? backgroundImage;
 
   /// cover image of the game
-  String? coverImage;
+  Uri? coverImage;
 
   /// the game's id in an external database like RAWG.io or IGDB
   int? externalGameId;
@@ -59,7 +59,7 @@ class Game {
   Game({
     required this.title,
     required this.platforms,
-    required this.gameState,
+    required this.playStatus,
     this.price,
     this.ageRestriction,
     this.isFavourite = false,

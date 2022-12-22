@@ -11,7 +11,7 @@ Game _$GameFromJson(Map<String, dynamic> json) => Game(
       platforms: (json['platforms'] as List<dynamic>)
           .map((e) => $enumDecode(_$PlatformEnumMap, e))
           .toList(),
-      gameState: $enumDecode(_$PlayStatusEnumMap, json['gameState']),
+      playStatus: $enumDecode(_$PlayStatusEnumMap, json['playStatus']),
       price: (json['price'] as num?)?.toDouble(),
       ageRestriction:
           $enumDecodeNullable(_$AgeRestrictionEnumMap, json['ageRestriction']),
@@ -24,8 +24,12 @@ Game _$GameFromJson(Map<String, dynamic> json) => Game(
           ? null
           : DateTime.parse(json['releaseDate'] as String),
       onlineScore: json['onlineScore'] as int?,
-      backgroundImage: json['backgroundImage'] as String?,
-      coverImage: json['coverImage'] as String?,
+      backgroundImage: json['backgroundImage'] == null
+          ? null
+          : Uri.parse(json['backgroundImage'] as String),
+      coverImage: json['coverImage'] == null
+          ? null
+          : Uri.parse(json['coverImage'] as String),
       externalGameId: json['externalGameId'] as int?,
     )..uuid = json['uuid'] as String;
 
@@ -34,7 +38,7 @@ Map<String, dynamic> _$GameToJson(Game instance) => <String, dynamic>{
       'title': instance.title,
       'platforms':
           instance.platforms.map((e) => _$PlatformEnumMap[e]!).toList(),
-      'gameState': _$PlayStatusEnumMap[instance.gameState]!,
+      'playStatus': _$PlayStatusEnumMap[instance.playStatus]!,
       'price': instance.price,
       'ageRestriction': _$AgeRestrictionEnumMap[instance.ageRestriction],
       'isFavourite': instance.isFavourite,
@@ -42,8 +46,8 @@ Map<String, dynamic> _$GameToJson(Game instance) => <String, dynamic>{
       'lastUpdated': instance.lastUpdated?.toIso8601String(),
       'releaseDate': instance.releaseDate?.toIso8601String(),
       'onlineScore': instance.onlineScore,
-      'backgroundImage': instance.backgroundImage,
-      'coverImage': instance.coverImage,
+      'backgroundImage': instance.backgroundImage?.toString(),
+      'coverImage': instance.coverImage?.toString(),
       'externalGameId': instance.externalGameId,
     };
 
