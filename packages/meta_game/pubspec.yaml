@@ -11,6 +11,8 @@ dependencies:
   flutter:
     sdk: flutter
   json_annotation: ^4.7.0
+  quiver: ^3.2.1
+  uuid: ^3.0.7
 
 dev_dependencies:
   flutter_test:
