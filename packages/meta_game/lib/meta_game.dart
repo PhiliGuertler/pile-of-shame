@@ -1,7 +1,6 @@
 library meta_game;
 
-/// A Calculator.
-class Calculator {
-  /// Returns [value] plus 1.
-  int addOne(int value) => value + 1;
-}
+export 'package:meta_game/src/models/age_restriction.dart';
+export 'package:meta_game/src/models/play_status.dart';
+export 'package:meta_game/src/models/platform.dart';
+export 'package:meta_game/src/models/game.dart';
