@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "404159068955",
+    "project_id": "pile-of-shame-56515",
+    "storage_bucket": "pile-of-shame-56515.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:404159068955:android:5bbea759dc0309341b71be",
+        "android_client_info": {
+          "package_name": "com.example.pile_of_shame"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "404159068955-isjuhco7kc9mo9j7k0v6c07jnpi43a75.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDX_XbGRb4Ed2eC7rmbWJwL4L1B4Qqla4Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "404159068955-isjuhco7kc9mo9j7k0v6c07jnpi43a75.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
