@@ -1,5 +1,5 @@
 name: pile_of_shame
-description: A new Flutter project.
+description: An application to keep track of your played games and games on your pile of shame
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
