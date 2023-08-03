@@ -17,3 +17,13 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+
+  assets:
+    - assets/platforms/icons/microsoft
+    - assets/platforms/text_logos/microsoft
+    - assets/platforms/icons/nintendo
+    - assets/platforms/text_logos/nintendo
+    - assets/platforms/icons/pc
+    - assets/platforms/text_logos/pc
+    - assets/platforms/icons/sony
+    - assets/platforms/text_logos/sony
