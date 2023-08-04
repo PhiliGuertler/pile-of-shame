@@ -1,1 +1,9 @@
 include: package:flutter_lints/flutter.yaml
+
+analyzer:
+  plugins:
+    - custom_lint
+  exclude:
+    - '**.freezed.dart'
+    - '**.g.dart'
+    - lib/l10n/generated/*.dart

@@ -16,3 +16,4 @@ os.chdir('..')
 # Run initialization steps
 subprocess.run(['flutter', 'pub', 'get'], check=True)
 subprocess.run(['flutter', 'gen-l10n'], check=True)
+subprocess.run(['dart', 'run', 'build_runner', 'build', '--delete-conflicting-outputs'], check=True)

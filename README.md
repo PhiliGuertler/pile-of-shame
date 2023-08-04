@@ -8,6 +8,7 @@ Make sure to generate some files before hitting run.
 For conveninence, the script `scripts/init_project.py` will perform these actions in the order listed here.
 1. Fetch the dependencies of the project by running `flutter pub get`
 2. Generate localizations using `flutter gen-l10n`
+3. Generate other files by running `dart run build_runner build --delete-conflicting-outputs`
 
 ## Localization (l10n)
 Localization uses flutter's l10n generator.
