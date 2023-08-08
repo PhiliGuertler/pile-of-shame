@@ -12,6 +12,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   flutter_riverpod: ^2.3.6
+  json_annotation: ^4.8.1
   freezed_annotation: ^2.4.1
   intl: any
   path_provider: ^2.1.0
@@ -28,6 +29,7 @@ dev_dependencies:
   riverpod_lint: any
   custom_lint: any
   mockito: any
+  path_provider_platform_interface: ^2.1.0
 
 flutter:
   uses-material-design: true

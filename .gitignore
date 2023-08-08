@@ -50,3 +50,4 @@ app.*.map.json
 /lib/l10n/generated/
 **/*.g.dart
 **/*.freezed.dart
+**/*.mocks.dart
