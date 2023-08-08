@@ -22,11 +22,7 @@ class GamesList with _$GamesList {
 class Games extends _$Games {
   @override
   FutureOr<List<Game>> build() async {
-    return await _readStoredGames();
-  }
-
-  FutureOr<List<Game>> _readStoredGames() async {
-    final gameFile = await ref.read(gameFileProvider.future);
+    final gameFile = await ref.watch(gameFileProvider.future);
     final content = await gameFile.readAsString();
     if (content.isNotEmpty) {
       final games = GamesList.fromJson(jsonDecode(content));
@@ -40,6 +36,7 @@ class Games extends _$Games {
     final gameList = GamesList(games: games);
     final encodedList = jsonEncode(gameList.toJson());
     await gameFile.writeAsString(encodedList);
+    // This also invalidates this provider, as the build method calls watch on gameFileProvider
     ref.invalidate(gameFileProvider);
   }
 }

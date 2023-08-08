@@ -13,11 +13,12 @@ import 'package:pile_of_shame/providers/game_file_provider.dart';
 import 'package:pile_of_shame/providers/game_provider.dart';
 import 'package:pile_of_shame/utils/file_utils.dart';
 
-@GenerateNiceMocks([MockSpec<FileUtils>()])
+@GenerateNiceMocks([MockSpec<FileUtils>(), MockSpec<File>()])
 import 'game_provider_test.mocks.dart';
 
 void main() {
   late MockFileUtils mockFileUtils;
+  late MockFile mockFile;
   late ProviderContainer container;
 
   setUp(() {
@@ -25,6 +26,7 @@ void main() {
     container = ProviderContainer(overrides: [
       fileUtilsProvider.overrideWithValue(mockFileUtils),
     ]);
+    mockFile = MockFile();
   });
 
   test('returns an empty list if the file is empty', () async {
@@ -92,5 +94,51 @@ void main() {
         usk: USK.usk18,
       ),
     ]);
+  });
+  test('Successfully writes a list of games to the games file', () async {
+    when(mockFileUtils.openFile(gameFileName))
+        .thenAnswer((realInvocation) async => mockFile);
+
+    final testGame = Game(
+      name: "Dark Souls",
+      platform: GamePlatform.steam,
+      status: PlayStatus.replaying,
+      lastModified: DateTime(2023, 4, 20),
+      price: 39.99,
+      coverArt: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      releaseDate: DateTime(2012, 9, 23),
+      usk: USK.usk16,
+      dlcs: [
+        DLC(
+          name: "Artorias of the Abyss",
+          status: PlayStatus.onWishList,
+          lastModified: DateTime(2013, 7, 10),
+          price: 9.99,
+        ),
+      ],
+    );
+
+    const String stringifiedTestGameList =
+        '{"games":[{"name":"Dark Souls","platform":"Steam","status":"replaying","lastModified":"2023-04-20T00:00:00.000","price":39.99,"usk":"usk16","dlcs":[{"name":"Artorias of the Abyss","status":"onWishList","lastModified":"2013-07-10T00:00:00.000","price":9.99,"releaseDate":null}],"releaseDate":"2012-09-23T00:00:00.000","coverArt":"https://www.youtube.com/watch?v=dQw4w9WgXcQ"}]}';
+
+    // starts with an empty list as the mockfile returns an empty string
+    final initialValue = await container.read(gamesProvider.future);
+    when(mockFile.readAsString()).thenAnswer((realInvocation) async => "");
+    // the game file should have been opened exactly once
+    verify(mockFileUtils.openFile(gameFileName)).called(1);
+    expect(initialValue, []);
+
+    // returns the stringified test games at the next invocation of readAsString() on mockFile
+    // to stub the process of writing the list to a file
+    when(mockFile.readAsString())
+        .thenAnswer((realInvocation) async => stringifiedTestGameList);
+    await container.read(gamesProvider.notifier).storeGames([testGame]);
+    verify(mockFile.writeAsString(stringifiedTestGameList)).called(1);
+
+    // gamesProvider is supposed to be re-computed after the file was written
+    final finalValue = await container.read(gamesProvider.future);
+    // the game file should have been opened once more
+    verify(mockFileUtils.openFile(gameFileName)).called(1);
+    expect(finalValue, [testGame]);
   });
 }
