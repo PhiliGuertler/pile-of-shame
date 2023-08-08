@@ -11,10 +11,10 @@ class DebugGamePlatformsScreens extends StatelessWidget {
       appBar: AppBar(title: const Text("Debug Game Platforms")),
       body: SafeArea(
         child: CustomScrollView(
-          slivers: GamePlatforms.values
+          slivers: GamePlatform.values
               .map(
                 (platform) => SliverToBoxAdapter(
-                  key: ValueKey(platform.index),
+                  key: ValueKey(platform.name),
                   child: ListTile(
                     title: Text(platform.name),
                     subtitle: Text(platform.abbreviation),

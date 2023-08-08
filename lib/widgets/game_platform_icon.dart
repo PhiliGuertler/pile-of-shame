@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pile_of_shame/models/game_platforms.dart';
 
 class GamePlatformIcon extends StatelessWidget {
-  final GamePlatforms platform;
+  final GamePlatform platform;
   final double width;
   final double height;
 
