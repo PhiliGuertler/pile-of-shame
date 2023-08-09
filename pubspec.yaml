@@ -17,6 +17,8 @@ dependencies:
   intl: any
   path_provider: ^2.1.0
   riverpod_annotation: ^2.1.1
+  dynamic_color: ^1.6.6
+  shared_preferences: ^2.2.0
 
 dev_dependencies:
   flutter_test:
