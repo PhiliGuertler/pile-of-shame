@@ -7,6 +7,10 @@ class FileUtils {
     final directory = await getApplicationDocumentsDirectory();
     final path = directory.path;
     final filePath = '$path/$fileName';
-    return File(filePath);
+    final file = File(filePath);
+    if (!await file.exists()) {
+      await file.create();
+    }
+    return file;
   }
 }
