@@ -21,7 +21,7 @@ class SliverFancyImageAppBar extends ConsumerWidget {
     super.key,
     this.stretchTriggerOffset = 100.0,
     this.onStretchTrigger,
-    this.height = 400.0,
+    this.height = 250.0,
     this.stretchModes = const [
       StretchMode.zoomBackground,
     ],
