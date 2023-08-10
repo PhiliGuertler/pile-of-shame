@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pile_of_shame/features/games/widgets/game_list_tile.dart';
+import 'package:pile_of_shame/providers/file_provider.dart';
 import 'package:pile_of_shame/providers/game_provider.dart';
 import 'package:pile_of_shame/widgets/error_display.dart';
 
@@ -12,7 +13,19 @@ class GamesScreen extends ConsumerWidget {
     final games = ref.watch(gamesProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Games")),
+      appBar: AppBar(
+        title: const Text("Games"),
+        actions: [
+          IconButton(
+              onPressed: () async {
+                final pickedFile = await ref.read(fileUtilsProvider).pickFile();
+                if (pickedFile != null) {
+                  debugPrint(pickedFile.toString());
+                }
+              },
+              icon: const Icon(Icons.file_open_rounded)),
+        ],
+      ),
       body: SafeArea(
         child: games.when(
           data: (games) {
