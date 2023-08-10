@@ -21,7 +21,7 @@ class SliverFancyImageAppBar extends ConsumerWidget {
     super.key,
     this.stretchTriggerOffset = 100.0,
     this.onStretchTrigger,
-    this.height = 150.0,
+    this.height = 400.0,
     this.stretchModes = const [
       StretchMode.zoomBackground,
     ],
@@ -34,11 +34,14 @@ class SliverFancyImageAppBar extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final appThemeSettings = ref.watch(appThemeSettingsProvider);
 
+    final safePadding = MediaQuery.of(context).padding;
+    final minHeight = safePadding.top + 50.0;
+
     return SliverPersistentHeader(
       delegate: _SliverFancyImageAppBarDelegate(
         imagePath: imagePath,
         height: height,
-        minHeight: radius,
+        minHeight: minHeight,
         stretchConfiguration: OverScrollHeaderStretchConfiguration(
           stretchTriggerOffset: stretchTriggerOffset,
           onStretchTrigger: onStretchTrigger,
@@ -47,7 +50,7 @@ class SliverFancyImageAppBar extends ConsumerWidget {
         title: title,
         actions: actions,
         themeColor: appThemeSettings.when(
-          data: (data) => data.primaryColor,
+          data: (data) => data.primaryColor.withOpacity(0.5),
           error: (error, stackTrace) => null,
           loading: () => null,
         ),
@@ -57,8 +60,8 @@ class SliverFancyImageAppBar extends ConsumerWidget {
 }
 
 class _SliverFancyImageAppBarDelegate extends SliverPersistentHeaderDelegate {
-  final double minHeight;
   final double height;
+  final double minHeight;
   final List<StretchMode> stretchModes;
   final String imagePath;
   final Widget? title;
@@ -67,8 +70,8 @@ class _SliverFancyImageAppBarDelegate extends SliverPersistentHeaderDelegate {
 
   const _SliverFancyImageAppBarDelegate({
     required this.imagePath,
-    required this.minHeight,
     required this.height,
+    required this.minHeight,
     required this.stretchConfiguration,
     required this.stretchModes,
     required this.title,
@@ -92,6 +95,8 @@ class _SliverFancyImageAppBarDelegate extends SliverPersistentHeaderDelegate {
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
+    final safePadding = MediaQuery.of(context).padding;
+
     double currentExtent = math.max(height - shrinkOffset, minHeight);
 
     return FlexibleSpaceBar.createSettings(
@@ -114,70 +119,80 @@ class _SliverFancyImageAppBarDelegate extends SliverPersistentHeaderDelegate {
               ),
             ),
           ),
-          NavigationToolbar(
-            middleSpacing: AppBarTheme.of(context).titleSpacing ??
-                NavigationToolbar.kMiddleSpacing,
-            leading: Navigator.of(context).canPop()
-                ? Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 8.0),
-                        child: ClipRRect(
+          Padding(
+            padding: EdgeInsets.only(top: safePadding.top),
+            child: Align(
+              alignment: Alignment.topCenter,
+              child: SizedBox(
+                height: 50.0,
+                child: NavigationToolbar(
+                  middleSpacing: AppBarTheme.of(context).titleSpacing ??
+                      NavigationToolbar.kMiddleSpacing,
+                  leading: Navigator.of(context).canPop()
+                      ? Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(left: 8.0),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(radius),
+                                child: Container(
+                                  color: themeColor,
+                                  child: const BackButton(),
+                                ),
+                              ),
+                            ),
+                          ],
+                        )
+                      : null,
+                  centerMiddle: _getEffectiveCenterTitle(Theme.of(context)),
+                  middle: title != null
+                      ? ClipRRect(
                           borderRadius: BorderRadius.circular(radius),
                           child: Container(
                             color: themeColor,
-                            child: const BackButton(),
-                          ),
-                        ),
-                      ),
-                    ],
-                  )
-                : null,
-            centerMiddle: _getEffectiveCenterTitle(Theme.of(context)),
-            middle: title != null
-                ? ClipRRect(
-                    borderRadius: BorderRadius.circular(radius),
-                    child: Container(
-                      color: themeColor,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: DefaultTextStyle(
-                          overflow: TextOverflow.ellipsis,
-                          softWrap: true,
-                          style: AppBarTheme.of(context).titleTextStyle ??
-                              Theme.of(context).textTheme.titleLarge ??
-                              const TextStyle(),
-                          child: title!,
-                        ),
-                      ),
-                    ),
-                  )
-                : null,
-            trailing: actions != null
-                ? Padding(
-                    padding: const EdgeInsets.only(right: 8.0),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: actions!
-                          .map(
-                            (action) => Stack(
-                              children: [
-                                Positioned.fill(
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(radius),
-                                    child: Container(color: themeColor),
-                                  ),
-                                ),
-                                action
-                              ],
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: DefaultTextStyle(
+                                overflow: TextOverflow.ellipsis,
+                                softWrap: true,
+                                style: AppBarTheme.of(context).titleTextStyle ??
+                                    Theme.of(context).textTheme.titleLarge ??
+                                    const TextStyle(),
+                                child: title!,
+                              ),
                             ),
-                          )
-                          .toList(),
-                    ),
-                  )
-                : null,
+                          ),
+                        )
+                      : null,
+                  trailing: actions != null
+                      ? Padding(
+                          padding: const EdgeInsets.only(right: 8.0),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: actions!
+                                .map(
+                                  (action) => Stack(
+                                    children: [
+                                      Positioned.fill(
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(radius),
+                                          child: Container(color: themeColor),
+                                        ),
+                                      ),
+                                      action
+                                    ],
+                                  ),
+                                )
+                                .toList(),
+                          ),
+                        )
+                      : null,
+                ),
+              ),
+            ),
           ),
         ],
       ),

@@ -23,15 +23,13 @@ class SegmentedActionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const borderRadius = BorderRadius.all(
-      Radius.circular(defaultBorderRadius),
-    );
+    const borderRadius = Radius.circular(defaultBorderRadius);
 
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
         decoration: BoxDecoration(
-          borderRadius: borderRadius,
+          borderRadius: const BorderRadius.all(borderRadius),
           // due to some weird bug we use box shadow instead of border to color
           // the boundaries of the container.
           boxShadow: [
@@ -44,15 +42,13 @@ class SegmentedActionCard extends StatelessWidget {
           color: Theme.of(context).colorScheme.surfaceVariant,
         ),
         child: Card(
-          elevation: 1,
           shape: const RoundedRectangleBorder(
-            // actually we only want to paint the left, bottom and top side,
-            // which is not supported by RoundedRectangleBorder. Thus, we wrap
-            // this card in a container that paints these borders instead.
-            borderRadius: borderRadius,
+            borderRadius: BorderRadius.all(borderRadius),
           ),
           margin: EdgeInsets.zero,
           child: ListView.builder(
+            // Some weird bug leads to extra space at the top if the padding is not set
+            padding: EdgeInsets.zero,
             physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             itemBuilder: (context, index) {
@@ -67,15 +63,14 @@ class SegmentedActionCard extends StatelessWidget {
               final bool isLastItem = index == items.length * 2 - 2;
               ShapeBorder? shape;
               if (isFirstItem || isLastItem) {
-                const roundedRadius = Radius.circular(defaultBorderRadius);
-
                 shape = RoundedRectangleBorder(
-                    borderRadius: BorderRadius.only(
-                  topLeft: isFirstItem ? roundedRadius : Radius.zero,
-                  topRight: isFirstItem ? roundedRadius : Radius.zero,
-                  bottomLeft: isLastItem ? roundedRadius : Radius.zero,
-                  bottomRight: isLastItem ? roundedRadius : Radius.zero,
-                ));
+                  borderRadius: BorderRadius.only(
+                    topLeft: isFirstItem ? borderRadius : Radius.zero,
+                    topRight: isFirstItem ? borderRadius : Radius.zero,
+                    bottomLeft: isLastItem ? borderRadius : Radius.zero,
+                    bottomRight: isLastItem ? borderRadius : Radius.zero,
+                  ),
+                );
               }
 
               final item = items[index ~/ 2];
