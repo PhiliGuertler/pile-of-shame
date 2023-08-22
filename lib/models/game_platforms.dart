@@ -14,6 +14,7 @@ enum GamePlatformFamily {
   microsoft,
   nintendo,
   pc,
+  misc,
   ;
 }
 
@@ -41,6 +42,13 @@ enum GamePlatform {
     assetPath: "game_boy_color.png",
     name: "GameBoy Color",
     abbreviation: "GBC",
+    type: GamePlatformType.handheld,
+  ),
+  gameBoyAdvance(
+    family: GamePlatformFamily.nintendo,
+    assetPath: "game_boy_advance.png",
+    name: "GameBoy Advance",
+    abbreviation: "GBA",
     type: GamePlatformType.handheld,
   ),
   nintendoDS(
@@ -252,6 +260,14 @@ enum GamePlatform {
     assetPath: "twitch.png",
     name: "Twitch",
     abbreviation: "Twitch",
+    type: GamePlatformType.stationary,
+  ),
+  // #### Misc ############################################################## //
+  unknown(
+    abbreviation: 'unknown',
+    family: GamePlatformFamily.misc,
+    assetPath: 'unknown.png',
+    name: 'unknown',
     type: GamePlatformType.stationary,
   ),
   ;
