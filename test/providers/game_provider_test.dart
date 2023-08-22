@@ -43,6 +43,7 @@ void main() {
     final result = await container.read(gamesProvider.future);
     expect(result, [
       Game(
+        id: 'zelda-botw',
         name: "The Legend of Zelda: Breath of the Wild",
         platform: GamePlatform.nintendoSwitch,
         status: PlayStatus.playing,
@@ -70,6 +71,7 @@ void main() {
             "https://cdn02.plentymarkets.com/qozbgypaugq8/item/images/1613/full/PSTR-ZELDA005.jpg",
       ),
       Game(
+        id: 'outer-wilds',
         name: "Outer Wilds",
         platform: GamePlatform.steam,
         status: PlayStatus.completed100Percent,
@@ -86,6 +88,7 @@ void main() {
         ],
       ),
       Game(
+        id: 'sekiro',
         name: "Sekiro",
         platform: GamePlatform.playStation4,
         status: PlayStatus.completed,
@@ -100,6 +103,7 @@ void main() {
         .thenAnswer((realInvocation) async => mockFile);
 
     final testGame = Game(
+      id: 'dark-souls',
       name: "Dark Souls",
       platform: GamePlatform.steam,
       status: PlayStatus.replaying,
@@ -119,7 +123,7 @@ void main() {
     );
 
     const String stringifiedTestGameList =
-        '{"games":[{"name":"Dark Souls","platform":"Steam","status":"replaying","lastModified":"2023-04-20T00:00:00.000","price":39.99,"usk":"usk16","dlcs":[{"name":"Artorias of the Abyss","status":"onWishList","lastModified":"2013-07-10T00:00:00.000","price":9.99,"releaseDate":null}],"releaseDate":"2012-09-23T00:00:00.000","coverArt":"https://www.youtube.com/watch?v=dQw4w9WgXcQ"}]}';
+        '{"games":[{"id":"dark-souls","name":"Dark Souls","platform":"Steam","status":"replaying","lastModified":"2023-04-20T00:00:00.000","price":39.99,"usk":"usk16","dlcs":[{"name":"Artorias of the Abyss","status":"onWishList","lastModified":"2013-07-10T00:00:00.000","price":9.99,"releaseDate":null}],"releaseDate":"2012-09-23T00:00:00.000","coverArt":"https://www.youtube.com/watch?v=dQw4w9WgXcQ"}]}';
 
     // starts with an empty list as the mockfile returns an empty string
     final initialValue = await container.read(gamesProvider.future);

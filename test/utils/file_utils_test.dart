@@ -70,6 +70,7 @@ void main() {
     expect(result.readAsStringSync().replaceAll('\r', ""), """{
     "games": [
         {
+            "id": "zelda-botw",
             "name": "The Legend of Zelda: Breath of the Wild",
             "platform": "Switch",
             "status": "playing",
@@ -96,6 +97,7 @@ void main() {
             "coverArt": "https://cdn02.plentymarkets.com/qozbgypaugq8/item/images/1613/full/PSTR-ZELDA005.jpg"
         },
         {
+            "id": "outer-wilds",
             "name": "Outer Wilds",
             "platform": "Steam",
             "status": "completed100Percent",
@@ -112,6 +114,7 @@ void main() {
             ]
         },
         {
+            "id": "sekiro",
             "name": "Sekiro",
             "platform": "PS4",
             "status": "completed",

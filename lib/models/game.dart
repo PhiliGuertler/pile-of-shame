@@ -27,6 +27,7 @@ class Game with _$Game {
   const Game._();
 
   const factory Game({
+    required String id,
     required String name,
     required GamePlatform platform,
     required PlayStatus status,

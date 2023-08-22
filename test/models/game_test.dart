@@ -6,6 +6,7 @@ import 'package:pile_of_shame/models/play_status.dart';
 void main() {
   test("Correctly accumulates price of game without DLCs", () {
     final testGame = Game(
+      id: 'test-game',
       name: "Test",
       platform: GamePlatform.gameCube,
       status: PlayStatus.completed,
@@ -16,6 +17,7 @@ void main() {
   });
   test("Correctly accumulates price of game with DLCs", () {
     final testGame = Game(
+      id: 'test-game',
       name: "DLC heavy game",
       platform: GamePlatform.gog,
       status: PlayStatus.onPileOfShame,
