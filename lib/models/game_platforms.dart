@@ -1,7 +1,9 @@
+import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 const String _iconBasePath = "assets/platforms/icons";
 const String _textLogoBasePath = "assets/platforms/text_logos";
+const String _controllerBasePath = "assets/platforms/controllers";
 
 enum GamePlatformType {
   stationary,
@@ -288,4 +290,16 @@ enum GamePlatform {
 
   String get iconPath => "$_iconBasePath/${family.name}/$assetPath";
   String get textLogoPath => "$_textLogoBasePath/${family.name}/$assetPath";
+  String get controllerLogoPathLight =>
+      "$_controllerBasePath/${family.name}/${assetPath.replaceFirst('.png', '_light.png')}";
+  String get controllerLogoPathDark =>
+      "$_controllerBasePath/${family.name}/${assetPath.replaceFirst('.png', '_dark.png')}";
+
+  String controllerLogoPath(BuildContext context) {
+    final theme = Theme.of(context);
+    if (theme.brightness == Brightness.light) {
+      return controllerLogoPathLight;
+    }
+    return controllerLogoPathDark;
+  }
 }
