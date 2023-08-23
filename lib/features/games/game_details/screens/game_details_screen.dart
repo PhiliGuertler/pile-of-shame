@@ -10,6 +10,7 @@ import 'package:pile_of_shame/widgets/play_status_display.dart';
 import 'package:pile_of_shame/widgets/segmented_action_card.dart';
 import 'package:pile_of_shame/widgets/skeletons/skeleton_list_tile.dart';
 import 'package:pile_of_shame/widgets/slivers/sliver_fancy_image_app_bar.dart';
+import 'package:pile_of_shame/widgets/usk_logo.dart';
 
 class GameDetailsScreen extends ConsumerStatefulWidget {
   final String gameId;
@@ -112,15 +113,19 @@ class _GameDetailsScreenState extends ConsumerState<GameDetailsScreen> {
                       ),
                       ListTile(
                         title: Text(AppLocalizations.of(context)!.platform),
-                        subtitle: Text(game.platform.toString()),
+                        subtitle: Text(game.platform.name),
                       ),
                       ListTile(
                         title: Text(AppLocalizations.of(context)!.lastModified),
                         subtitle: Text(dateFormatter.format(game.lastModified)),
                       ),
                       ListTile(
+                        leading: USKLogo(
+                          ageRestriction: game.usk,
+                        ),
                         title: Text(AppLocalizations.of(context)!.ageRating),
-                        subtitle: Text(game.usk.name),
+                        subtitle: Text(AppLocalizations.of(context)!
+                            .ratedN(game.usk.age.toString())),
                       ),
                       if (game.dlcs.isNotEmpty)
                         SegmentedActionCard(

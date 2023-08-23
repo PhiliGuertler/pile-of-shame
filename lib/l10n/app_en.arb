@@ -1,4 +1,12 @@
 {
+  "@ratedN": {
+    "placeholders": {
+      "n": {
+        "example": "16",
+        "type": "String"
+      }
+    }
+  },
   "ageRating": "Age rating",
   "appName": "Pile of shame",
   "appSettings": "App-Settings",
@@ -24,6 +32,7 @@
   "playing": "Playing",
   "price": "Price",
   "priceWithDLCs": "Price with DLCs",
+  "ratedN": "Rated {n}",
   "replaying": "Replaying",
   "save": "Save",
   "settings": "Settings",
