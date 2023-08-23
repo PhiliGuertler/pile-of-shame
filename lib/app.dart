@@ -2,7 +2,7 @@ import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:pile_of_shame/features/developer_tools/debug_game_platforms/screens/debug_game_platforms_screens.dart';
+import 'package:pile_of_shame/features/root_page/root_page.dart';
 import 'package:pile_of_shame/models/theming/theme.dart';
 import 'package:pile_of_shame/providers/theming/theme_provider.dart';
 
@@ -57,7 +57,9 @@ class App extends ConsumerWidget {
           orElse: () => null,
         ),
         supportedLocales: AppLocalizations.supportedLocales,
-        home: const DebugGamePlatformsScreens(),
+        home: RootPage(
+          scrollController: ScrollController(),
+        ),
       );
     });
   }
