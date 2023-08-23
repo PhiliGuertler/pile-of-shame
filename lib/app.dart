@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:pile_of_shame/features/root_page/root_page.dart';
 import 'package:pile_of_shame/models/theming/theme.dart';
 import 'package:pile_of_shame/providers/theming/theme_provider.dart';
+import 'package:pile_of_shame/utils/constants.dart';
 
 import 'l10n/generated/app_localizations.dart';
 
@@ -20,7 +21,7 @@ class App extends ConsumerWidget {
         useMaterial3: true,
         colorScheme: colorScheme,
         listTileTheme: const ListTileThemeData(
-          contentPadding: EdgeInsets.symmetric(horizontal: 24.0),
+          contentPadding: EdgeInsets.symmetric(horizontal: defaultPaddingX),
         ),
       );
 

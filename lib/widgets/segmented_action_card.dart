@@ -76,6 +76,8 @@ class SegmentedActionCard extends StatelessWidget {
               final item = items[index ~/ 2];
 
               return ListTile(
+                contentPadding: const EdgeInsets.symmetric(
+                    horizontal: defaultPaddingX - 8.0),
                 shape: shape,
                 leading: item.leading,
                 trailing: item.trailing,

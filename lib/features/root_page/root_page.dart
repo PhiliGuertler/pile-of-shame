@@ -3,17 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pile_of_shame/features/games/games_list/screens/games_screen.dart';
+import 'package:pile_of_shame/features/settings/screens/settings_screen.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 
 import 'models/root_page_models.dart';
 
 class RootPage extends ConsumerStatefulWidget {
-  final Widget child;
   final ScrollController scrollController;
 
   const RootPage({
     super.key,
-    required this.child,
     required this.scrollController,
   });
 
@@ -106,10 +105,7 @@ class _RootPageState extends ConsumerState<RootPage> {
 
     final children = [
       const GamesScreen(),
-      Container(
-        color: Colors.orange,
-        child: const Text('TODO: Implement settings'),
-      ),
+      const SettingsScreen(),
     ];
 
     return Scaffold(
