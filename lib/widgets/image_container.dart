@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pile_of_shame/utils/constants.dart';
 
 class ImageContainer extends StatelessWidget {
   static const double imageSize = 45.0;
@@ -12,7 +11,7 @@ class ImageContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return ClipRRect(
       borderRadius: const BorderRadius.all(
-        Radius.circular(defaultBorderRadius),
+        Radius.circular(8.0),
       ),
       child: Container(
         width: imageSize,

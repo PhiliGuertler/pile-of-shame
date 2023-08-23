@@ -167,101 +167,103 @@ class _SliverFancyImageAppBarDelegate extends SliverPersistentHeaderDelegate {
     final safePadding = MediaQuery.of(context).padding;
 
     double currentExtent = math.max(height - shrinkOffset, minHeight);
+    double currentOpacity =
+        math.max(0.3, 0.8 - (shrinkOffset / minHeight).clamp(0.0, 0.8));
 
     return FlexibleSpaceBar.createSettings(
       currentExtent: currentExtent,
-      child: Stack(
-        children: [
-          ClipDecider(
-            borderRadius: borderRadius,
-            child: FlexibleSpaceBar(
-              stretchModes: stretchModes,
-              background: SizedBox(
-                height: math.max(height - shrinkOffset, minHeight),
-                child: Image.asset(
-                  imagePath,
-                  fit: BoxFit.cover,
-                ),
+      child: ClipDecider(
+        borderRadius: borderRadius,
+        child: FlexibleSpaceBar(
+          stretchModes: stretchModes,
+          background: Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                opacity: currentOpacity,
+                fit: BoxFit.cover,
+                image: AssetImage(imagePath),
               ),
             ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: safePadding.top),
-            child: Align(
-              alignment: Alignment.topCenter,
-              child: SizedBox(
-                height: 50.0,
-                child: NavigationToolbar(
-                  middleSpacing: AppBarTheme.of(context).titleSpacing ??
-                      NavigationToolbar.kMiddleSpacing,
-                  leading: Navigator.of(context).canPop()
-                      ? Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(left: 8.0),
-                              child: ClipRRect(
-                                borderRadius:
-                                    BorderRadius.circular(overlayRadius),
-                                child: Container(
-                                  color: themeColor,
-                                  child: const BackButton(),
+            height: currentExtent,
+            child: Padding(
+              padding: EdgeInsets.only(top: safePadding.top),
+              child: Align(
+                alignment: Alignment.topCenter,
+                child: SizedBox(
+                  height: 50.0,
+                  child: NavigationToolbar(
+                    middleSpacing: AppBarTheme.of(context).titleSpacing ??
+                        NavigationToolbar.kMiddleSpacing,
+                    leading: Navigator.of(context).canPop()
+                        ? Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(left: 8.0),
+                                child: ClipRRect(
+                                  borderRadius:
+                                      BorderRadius.circular(overlayRadius),
+                                  child: Container(
+                                    color: themeColor,
+                                    child: const BackButton(),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          )
+                        : null,
+                    centerMiddle: _getEffectiveCenterTitle(Theme.of(context)),
+                    middle: title != null
+                        ? ClipRRect(
+                            borderRadius: BorderRadius.circular(overlayRadius),
+                            child: Container(
+                              color: themeColor,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: DefaultTextStyle(
+                                  overflow: TextOverflow.ellipsis,
+                                  softWrap: true,
+                                  style: AppBarTheme.of(context)
+                                          .titleTextStyle ??
+                                      Theme.of(context).textTheme.titleLarge ??
+                                      const TextStyle(),
+                                  child: title!,
                                 ),
                               ),
                             ),
-                          ],
-                        )
-                      : null,
-                  centerMiddle: _getEffectiveCenterTitle(Theme.of(context)),
-                  middle: title != null
-                      ? ClipRRect(
-                          borderRadius: BorderRadius.circular(overlayRadius),
-                          child: Container(
-                            color: themeColor,
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: DefaultTextStyle(
-                                overflow: TextOverflow.ellipsis,
-                                softWrap: true,
-                                style: AppBarTheme.of(context).titleTextStyle ??
-                                    Theme.of(context).textTheme.titleLarge ??
-                                    const TextStyle(),
-                                child: title!,
-                              ),
-                            ),
-                          ),
-                        )
-                      : null,
-                  trailing: actions != null
-                      ? Padding(
-                          padding: const EdgeInsets.only(right: 8.0),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: actions!
-                                .map(
-                                  (action) => Stack(
-                                    children: [
-                                      Positioned.fill(
-                                        child: ClipRRect(
-                                          borderRadius: BorderRadius.circular(
-                                              overlayRadius),
-                                          child: Container(color: themeColor),
+                          )
+                        : null,
+                    trailing: actions != null
+                        ? Padding(
+                            padding: const EdgeInsets.only(right: 8.0),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: actions!
+                                  .map(
+                                    (action) => Stack(
+                                      children: [
+                                        Positioned.fill(
+                                          child: ClipRRect(
+                                            borderRadius: BorderRadius.circular(
+                                                overlayRadius),
+                                            child: Container(color: themeColor),
+                                          ),
                                         ),
-                                      ),
-                                      action
-                                    ],
-                                  ),
-                                )
-                                .toList(),
-                          ),
-                        )
-                      : null,
+                                        action
+                                      ],
+                                    ),
+                                  )
+                                  .toList(),
+                            ),
+                          )
+                        : null,
+                  ),
                 ),
               ),
             ),
           ),
-        ],
+        ),
       ),
     );
   }

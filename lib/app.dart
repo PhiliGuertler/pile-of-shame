@@ -19,6 +19,9 @@ class App extends ConsumerWidget {
   ThemeData _createThemeData(ColorScheme colorScheme) => ThemeData(
         useMaterial3: true,
         colorScheme: colorScheme,
+        listTileTheme: const ListTileThemeData(
+          contentPadding: EdgeInsets.symmetric(horizontal: 24.0),
+        ),
       );
 
   // This widget is the root of your application.
