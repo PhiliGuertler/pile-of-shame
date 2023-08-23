@@ -5,6 +5,7 @@
   "completed": "completed",
   "completed100Percent": "100% completed",
   "endlessGame": "Endless game",
+  "games": "Games",
   "lastModified": "Last modified",
   "onPileOfShame": "On the pile of shame",
   "onWishList": "on wishlist",
@@ -12,5 +13,6 @@
   "playing": "Playing",
   "price": "Price",
   "priceWithDLCs": "Price with DLCs",
-  "replaying": "Replaying"
+  "replaying": "Replaying",
+  "settings": "Settings"
 }
