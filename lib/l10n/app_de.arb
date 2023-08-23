@@ -1,8 +1,16 @@
 {
   "ageRating": "Altersfreigabe",
   "appName": "Pile of shame",
+  "cancelled": "Abgebrochen",
+  "completed": "Durchgespielt",
+  "completed100Percent": "Durchgespielt zu 100%",
+  "endlessGame": "Endlosspiel",
   "lastModified": "Zuletzt geändert",
+  "onPileOfShame": "Auf dem Pile of Shame",
+  "onWishList": "Auf der Wunschliste",
   "platform": "Plattform",
+  "playing": "Am Spielen",
   "price": "Preis",
-  "priceWithDLCs": "Preis inkl. DLCs"
+  "priceWithDLCs": "Preis inkl. DLCs",
+  "replaying": "Erneut am Spielen"
 }

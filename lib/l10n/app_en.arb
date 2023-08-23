@@ -1,8 +1,16 @@
 {
   "ageRating": "Age rating",
   "appName": "Pile of shame",
+  "cancelled": "Cancelled",
+  "completed": "completed",
+  "completed100Percent": "100% completed",
+  "endlessGame": "Endless game",
   "lastModified": "Last modified",
+  "onPileOfShame": "On the pile of shame",
+  "onWishList": "on wishlist",
   "platform": "Platform",
+  "playing": "Playing",
   "price": "Price",
-  "priceWithDLCs": "Price with DLCs"
+  "priceWithDLCs": "Price with DLCs",
+  "replaying": "Replaying"
 }
