@@ -40,3 +40,14 @@ class Games extends _$Games {
     ref.invalidate(gameFileProvider);
   }
 }
+
+@riverpod
+AsyncValue<Game> gameById(GameByIdRef ref, String id) {
+  final games = ref.watch(gamesProvider);
+  return games.when(
+    data: (data) =>
+        AsyncValue.data(data.singleWhere((element) => element.id == id)),
+    error: (error, stackTrace) => throw error,
+    loading: () => const AsyncValue.loading(),
+  );
+}
