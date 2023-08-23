@@ -1,3 +1,8 @@
 {
-    "appName": "Pile of shame"
+  "ageRating": "Age rating",
+  "appName": "Pile of shame",
+  "lastModified": "Last modified",
+  "platform": "Platform",
+  "price": "Price",
+  "priceWithDLCs": "Price with DLCs"
 }
