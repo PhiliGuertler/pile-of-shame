@@ -1,9 +1,11 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pile_of_shame/providers/theming/theme_provider.dart';
 import 'package:pile_of_shame/utils/constants.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 const overlayRadius = 50.0;
 
@@ -182,11 +184,14 @@ class _SliverFancyImageAppBarDelegate extends SliverPersistentHeaderDelegate {
               children: [
                 Opacity(
                   opacity: currentOpacity,
-                  child: Image.asset(
-                    imagePath,
-                    fit: BoxFit.cover,
+                  child: FadeInImage(
+                    fadeInDuration: 200.ms,
+                    fadeOutDuration: 200.ms,
                     width: double.infinity,
                     height: double.infinity,
+                    fit: BoxFit.cover,
+                    placeholder: MemoryImage(kTransparentImage),
+                    image: AssetImage(imagePath),
                   ),
                 ),
                 Padding(
