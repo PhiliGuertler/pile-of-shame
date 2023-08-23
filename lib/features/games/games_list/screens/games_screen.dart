@@ -30,14 +30,19 @@ class GamesScreen extends ConsumerWidget {
       body: SafeArea(
         child: games.when(
           data: (games) {
-            return CustomScrollView(
-              slivers: games
-                  .map(
-                    (game) => SliverToBoxAdapter(
-                      child: GameListTile(game: game),
-                    ),
-                  )
-                  .toList(),
+            return RefreshIndicator(
+              onRefresh: () => ref.refresh(gamesProvider.future),
+              child: CustomScrollView(
+                physics: const BouncingScrollPhysics(
+                    parent: AlwaysScrollableScrollPhysics()),
+                slivers: games
+                    .map(
+                      (game) => SliverToBoxAdapter(
+                        child: GameListTile(game: game),
+                      ),
+                    )
+                    .toList(),
+              ),
             );
           },
           error: (error, stackTrace) => ErrorDisplay(

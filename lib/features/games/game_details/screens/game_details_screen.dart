@@ -134,6 +134,7 @@ class _GameDetailsScreenState extends ConsumerState<GameDetailsScreen> {
                               )
                               .toList(),
                         ),
+                      const SizedBox(height: 48.0)
                     ],
                     loading: () => [
                       const ListTileSkeleton(hasLeading: false),
