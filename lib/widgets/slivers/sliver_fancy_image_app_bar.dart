@@ -279,6 +279,10 @@ class _SliverFancyImageAppBarDelegate extends SliverPersistentHeaderDelegate {
   bool shouldRebuild(covariant _SliverFancyImageAppBarDelegate oldDelegate) {
     return minHeight != oldDelegate.minHeight ||
         height != oldDelegate.height ||
-        themeColor != oldDelegate.themeColor;
+        themeColor != oldDelegate.themeColor ||
+        imagePath != oldDelegate.imagePath ||
+        title != oldDelegate.title ||
+        actions != oldDelegate.actions ||
+        borderRadius != oldDelegate.borderRadius;
   }
 }
