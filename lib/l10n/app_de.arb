@@ -1,11 +1,16 @@
 {
   "ageRating": "Altersfreigabe",
   "appName": "Pile of shame",
+  "appSettings": "App-Einstellungen",
+  "appearance": "Erscheinung",
   "cancelled": "Abgebrochen",
+  "comeToTheDarkSide": "Komm zur dunklen Seite",
   "completed": "Durchgespielt",
   "completed100Percent": "Durchgespielt zu 100%",
   "endlessGame": "Endlosspiel",
   "games": "Spiele",
+  "language": "Sprache",
+  "languageSubtitle": "Die umstrittenste Entscheidung",
   "lastModified": "Zuletzt geändert",
   "onPileOfShame": "Auf dem Pile of Shame",
   "onWishList": "Auf der Wunschliste",
@@ -14,5 +19,6 @@
   "price": "Preis",
   "priceWithDLCs": "Preis inkl. DLCs",
   "replaying": "Erneut am Spielen",
-  "settings": "Einstellungen"
+  "settings": "Einstellungen",
+  "systemLanguage": "System-Sprache"
 }

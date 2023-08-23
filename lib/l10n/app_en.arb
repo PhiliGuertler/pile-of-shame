@@ -1,11 +1,16 @@
 {
   "ageRating": "Age rating",
   "appName": "Pile of shame",
+  "appSettings": "App-Settings",
+  "appearance": "Appearance",
   "cancelled": "Cancelled",
+  "comeToTheDarkSide": "Come to the dark side",
   "completed": "completed",
   "completed100Percent": "100% completed",
   "endlessGame": "Endless game",
   "games": "Games",
+  "language": "Language",
+  "languageSubtitle": "The most controversial Decision",
   "lastModified": "Last modified",
   "onPileOfShame": "On the pile of shame",
   "onWishList": "on wishlist",
@@ -14,5 +19,6 @@
   "price": "Price",
   "priceWithDLCs": "Price with DLCs",
   "replaying": "Replaying",
-  "settings": "Settings"
+  "settings": "Settings",
+  "systemLanguage": "System-Language"
 }
