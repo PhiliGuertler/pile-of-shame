@@ -42,6 +42,7 @@ flutter:
   uses-material-design: true
 
   assets:
+    - assets/languages/
     - assets/platforms/icons/microsoft/
     - assets/platforms/text_logos/microsoft/
     - assets/platforms/controllers/nintendo/

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:pile_of_shame/features/settings/appearance/screens/appearance_screen.dart';
+import 'package:pile_of_shame/features/settings/language/screens/language_screen.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/widgets/segmented_action_card.dart';
 
@@ -29,12 +31,26 @@ class SettingsScreen extends StatelessWidget {
                   title: Text(AppLocalizations.of(context)!.appearance),
                   subtitle:
                       Text(AppLocalizations.of(context)!.comeToTheDarkSide),
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const AppearanceScreen(),
+                      ),
+                    );
+                  },
                 ),
                 SegmentedActionCardItem(
                   leading: const Icon(Icons.translate),
                   title: Text(AppLocalizations.of(context)!.language),
                   subtitle:
                       Text(AppLocalizations.of(context)!.languageSubtitle),
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const LanguageScreen(),
+                      ),
+                    );
+                  },
                 ),
               ],
             ),

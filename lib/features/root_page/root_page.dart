@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pile_of_shame/features/games/games_list/screens/games_screen.dart';
-import 'package:pile_of_shame/features/settings/screens/settings_screen.dart';
+import 'package:pile_of_shame/features/settings/root/screens/settings_screen.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 
 import 'models/root_page_models.dart';

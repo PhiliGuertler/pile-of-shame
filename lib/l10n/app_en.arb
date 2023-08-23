@@ -7,11 +7,13 @@
   "comeToTheDarkSide": "Come to the dark side",
   "completed": "completed",
   "completed100Percent": "100% completed",
+  "dark": "Dark",
   "endlessGame": "Endless game",
   "games": "Games",
   "language": "Language",
   "languageSubtitle": "The most controversial Decision",
   "lastModified": "Last modified",
+  "light": "Light",
   "onPileOfShame": "On the pile of shame",
   "onWishList": "on wishlist",
   "platform": "Platform",
@@ -20,5 +22,6 @@
   "priceWithDLCs": "Price with DLCs",
   "replaying": "Replaying",
   "settings": "Settings",
+  "systemDefined": "Specified by the system",
   "systemLanguage": "System-Language"
 }

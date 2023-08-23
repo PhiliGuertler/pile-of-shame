@@ -7,11 +7,13 @@
   "comeToTheDarkSide": "Komm zur dunklen Seite",
   "completed": "Durchgespielt",
   "completed100Percent": "Durchgespielt zu 100%",
+  "dark": "Dunkel",
   "endlessGame": "Endlosspiel",
   "games": "Spiele",
   "language": "Sprache",
   "languageSubtitle": "Die umstrittenste Entscheidung",
   "lastModified": "Zuletzt geändert",
+  "light": "Hell",
   "onPileOfShame": "Auf dem Pile of Shame",
   "onWishList": "Auf der Wunschliste",
   "platform": "Plattform",
@@ -20,5 +22,6 @@
   "priceWithDLCs": "Preis inkl. DLCs",
   "replaying": "Erneut am Spielen",
   "settings": "Einstellungen",
+  "systemDefined": "Vom System vorgegeben",
   "systemLanguage": "System-Sprache"
 }
