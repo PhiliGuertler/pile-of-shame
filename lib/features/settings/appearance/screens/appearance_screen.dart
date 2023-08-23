@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/providers/theming/theme_provider.dart';
+import 'package:pile_of_shame/utils/constants.dart';
+
+import '../widgets/appearance_color_picker_dialog.dart';
 
 class AppearanceScreen extends ConsumerWidget {
   const AppearanceScreen({super.key});
@@ -72,6 +75,28 @@ class AppearanceScreen extends ConsumerWidget {
             controlAffinity: ListTileControlAffinity.trailing,
             groupValue: themeSettings.asData?.value.themeMode,
             value: ThemeMode.system,
+          ),
+          themeSettings.maybeWhen(
+            data: (themeSettings) => Padding(
+              padding: const EdgeInsets.only(
+                left: defaultPaddingX,
+                right: defaultPaddingX,
+                top: 24.0,
+              ),
+              child: ElevatedButton.icon(
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return const AppearanceColorPickerDialog();
+                    },
+                  );
+                },
+                icon: const Icon(Icons.palette),
+                label: Text(AppLocalizations.of(context)!.changeAppColor),
+              ),
+            ),
+            orElse: () => Container(),
           ),
         ],
       ),
