@@ -8,6 +8,7 @@ import 'package:pile_of_shame/utils/constants.dart';
 import 'package:pile_of_shame/widgets/image_container.dart';
 import 'package:pile_of_shame/widgets/play_status_display.dart';
 import 'package:pile_of_shame/widgets/segmented_action_card.dart';
+import 'package:pile_of_shame/widgets/skeletons/skeleton.dart';
 import 'package:pile_of_shame/widgets/skeletons/skeleton_list_tile.dart';
 import 'package:pile_of_shame/widgets/slivers/sliver_fancy_image_app_bar.dart';
 import 'package:pile_of_shame/widgets/usk_logo.dart';
@@ -56,40 +57,25 @@ class _GameDetailsScreenState extends ConsumerState<GameDetailsScreen> {
                     },
                   )
                 ],
-                title: Text(
-                  game.when(
-                    data: (game) => game.name,
-                    error: (error, stackTrace) => 'Error',
-                    loading: () => 'Loading',
-                  ),
+                title: game.when(
+                  data: (game) => Text(game.name),
+                  error: (error, stackTrace) => const Text('Error'),
+                  loading: () => const Skeleton(),
                 ),
               ),
               SliverList.list(
                 children: [
                   game.when(
                     data: (game) => ListTile(
-                      leading: ImageContainer(
-                        child: game.coverArt != null
-                            ? FadeInImage.assetNetwork(
-                                width: double.infinity,
-                                height: double.infinity,
-                                fadeInDuration:
-                                    const Duration(milliseconds: 150),
-                                fadeOutDuration:
-                                    const Duration(milliseconds: 150),
-                                fit: BoxFit.cover,
-                                placeholderFit: BoxFit.cover,
-                                placeholder: game.platform.iconPath,
-                                image: game.coverArt!,
-                              )
-                            : null,
-                      ),
                       title: Text(game.name),
                       subtitle: PlayStatusDisplay(playStatus: game.status),
                     ),
                     error: (error, stackTrace) =>
-                        Text("TODO: Handle error: ${error.toString()}"),
-                    loading: () => const Text("TODO: Display Loading"),
+                        Text("An Error occured: '${error.toString()}'"),
+                    loading: () => const ListTileSkeleton(
+                      hasLeading: false,
+                      hasSubtitle: true,
+                    ),
                   ),
                   ...game.when(
                     data: (game) => [
@@ -112,12 +98,15 @@ class _GameDetailsScreenState extends ConsumerState<GameDetailsScreen> {
                         ),
                       ),
                       ListTile(
-                        title: Text(AppLocalizations.of(context)!.platform),
-                        subtitle: Text(game.platform.name),
-                      ),
-                      ListTile(
                         title: Text(AppLocalizations.of(context)!.lastModified),
                         subtitle: Text(dateFormatter.format(game.lastModified)),
+                      ),
+                      ListTile(
+                        leading: ImageContainer(
+                          child: Image.asset(game.platform.iconPath),
+                        ),
+                        title: Text(AppLocalizations.of(context)!.platform),
+                        subtitle: Text(game.platform.name),
                       ),
                       ListTile(
                         leading: USKLogo(
@@ -142,10 +131,16 @@ class _GameDetailsScreenState extends ConsumerState<GameDetailsScreen> {
                       const SizedBox(height: 48.0)
                     ],
                     loading: () => [
-                      const ListTileSkeleton(hasLeading: false),
-                      const ListTileSkeleton(hasLeading: false),
-                      const ListTileSkeleton(hasLeading: false),
-                      const ListTileSkeleton(hasLeading: false),
+                      const ListTileSkeleton(
+                        hasLeading: false,
+                        hasSubtitle: true,
+                      ),
+                      const ListTileSkeleton(
+                        hasLeading: false,
+                        hasSubtitle: true,
+                      ),
+                      const ListTileSkeleton(hasSubtitle: true),
+                      const ListTileSkeleton(hasSubtitle: true),
                     ],
                     error: (error, stackTrace) => [],
                   ),
