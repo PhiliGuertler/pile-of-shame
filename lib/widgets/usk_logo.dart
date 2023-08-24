@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:pile_of_shame/models/age_restriction.dart';
+import 'package:pile_of_shame/widgets/image_container.dart';
 
 import '../models/game.dart';
 
@@ -20,8 +21,8 @@ class USKLogo extends StatelessWidget {
     final ageRestrictionColor = ageRestriction.color;
     final ageRestrictionText = ageRestriction.age.toString();
     return SizedBox(
-      width: 60,
-      height: 60,
+      width: ImageContainer.imageSize,
+      height: ImageContainer.imageSize,
       child: ClipRRect(
         borderRadius: BorderRadius.circular(8.0),
         child: ColoredBox(
@@ -32,8 +33,8 @@ class USKLogo extends StatelessWidget {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(8.0),
                 child: SizedBox(
-                  width: 40,
-                  height: 40,
+                  width: ImageContainer.imageSize * 0.75,
+                  height: ImageContainer.imageSize * 0.75,
                   child: ColoredBox(
                     color: ageRestrictionColor,
                     child: Transform.rotate(
