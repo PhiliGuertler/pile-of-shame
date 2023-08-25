@@ -21,5 +21,5 @@ NumberFormat numberFormat(NumberFormatRef ref, BuildContext context) {
 
 @riverpod
 DateFormat dateFormat(DateFormatRef ref) {
-  return DateFormat.yMMMMd();
+  return DateFormat.yMd();
 }

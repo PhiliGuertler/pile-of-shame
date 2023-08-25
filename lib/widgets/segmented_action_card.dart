@@ -1,3 +1,4 @@
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:pile_of_shame/utils/constants.dart';
@@ -12,7 +13,13 @@ class SegmentedActionCardItem with _$SegmentedActionCardItem {
     Color? tileColor,
     Widget? leading,
     @Default(Icon(Icons.navigate_next_rounded)) Widget? trailing,
+
+    /// Generic tap handler. Cannot be set if openBuilder is also set.
     VoidCallback? onTap,
+
+    /// Tap handler that triggers a transition to the returned widget of this function. Cannot be set if onTap is also set.
+    Widget Function(BuildContext, void Function({Object? returnValue}))?
+        openBuilderOnTap,
   }) = _SegmentedActionCardItem;
 }
 
@@ -61,7 +68,7 @@ class SegmentedActionCard extends StatelessWidget {
 
               final bool isFirstItem = index == 0;
               final bool isLastItem = index == items.length * 2 - 2;
-              ShapeBorder? shape;
+              late ShapeBorder shape;
               if (isFirstItem || isLastItem) {
                 shape = RoundedRectangleBorder(
                   borderRadius: BorderRadius.only(
@@ -71,21 +78,52 @@ class SegmentedActionCard extends StatelessWidget {
                     bottomRight: isLastItem ? borderRadius : Radius.zero,
                   ),
                 );
+              } else {
+                shape = const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.zero);
               }
 
               final item = items[index ~/ 2];
 
-              return ListTile(
-                contentPadding: const EdgeInsets.symmetric(
-                    horizontal: defaultPaddingX - 8.0),
-                shape: shape,
-                leading: item.leading,
-                trailing: item.trailing,
-                title: item.title,
-                subtitle: item.subtitle,
-                onTap: item.onTap,
-                tileColor: item.tileColor,
-              );
+              // Only allow either onTap or openBuilder to be set, not both at the same time
+              assert((item.onTap != null && item.openBuilderOnTap == null) ||
+                  (item.onTap == null && item.openBuilderOnTap != null) ||
+                  (item.onTap == null && item.openBuilderOnTap == null));
+
+              if (item.openBuilderOnTap != null) {
+                return OpenContainer(
+                  transitionDuration: const Duration(milliseconds: 500),
+                  transitionType: ContainerTransitionType.fadeThrough,
+                  openColor: Theme.of(context).colorScheme.background,
+                  closedColor: item.tileColor ??
+                      Theme.of(context).colorScheme.background,
+                  closedShape: shape,
+                  closedBuilder: (context, openContainer) => ListTile(
+                    contentPadding: const EdgeInsets.symmetric(
+                        horizontal: defaultPaddingX - 8.0),
+                    shape: shape,
+                    leading: item.leading,
+                    trailing: item.trailing,
+                    title: item.title,
+                    subtitle: item.subtitle,
+                    onTap: openContainer,
+                    tileColor: item.tileColor,
+                  ),
+                  openBuilder: item.openBuilderOnTap!,
+                );
+              } else {
+                return ListTile(
+                  contentPadding: const EdgeInsets.symmetric(
+                      horizontal: defaultPaddingX - 8.0),
+                  shape: shape,
+                  leading: item.leading,
+                  trailing: item.trailing,
+                  title: item.title,
+                  subtitle: item.subtitle,
+                  onTap: item.onTap,
+                  tileColor: item.tileColor,
+                );
+              }
             },
             itemCount: items.length * 2 - 1,
           ),

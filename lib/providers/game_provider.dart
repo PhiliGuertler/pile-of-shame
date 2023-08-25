@@ -51,3 +51,15 @@ AsyncValue<Game> gameById(GameByIdRef ref, String id) {
     loading: () => const AsyncValue.loading(),
   );
 }
+
+@riverpod
+AsyncValue<DLC> dlcByGameAndId(
+    DlcByGameAndIdRef ref, String gameId, String dlcId) {
+  final game = ref.watch(gameByIdProvider(gameId));
+  return game.when(
+    data: (game) => AsyncValue.data(
+        game.dlcs.singleWhere((element) => element.id == dlcId)),
+    error: (error, stackTrace) => throw error,
+    loading: () => const AsyncValue.loading(),
+  );
+}
