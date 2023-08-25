@@ -4,6 +4,7 @@ import 'package:pile_of_shame/features/games/dlc_details/screens/dlc_details_scr
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/providers/format_provider.dart';
 import 'package:pile_of_shame/providers/game_provider.dart';
+import 'package:pile_of_shame/utils/constants.dart';
 import 'package:pile_of_shame/widgets/image_container.dart';
 import 'package:pile_of_shame/widgets/play_status_display.dart';
 import 'package:pile_of_shame/widgets/segmented_action_card.dart';
@@ -80,6 +81,15 @@ class _SliverGameDetailsState extends ConsumerState<SliverGameDetails> {
               subtitle: Text(AppLocalizations.of(context)!
                   .ratedN(game.usk.age.toString())),
             ),
+            if (game.dlcs.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.only(
+                    left: defaultPaddingX, right: defaultPaddingX, top: 16.0),
+                child: Text(
+                  "DLCs",
+                  style: Theme.of(context).textTheme.headlineSmall,
+                ),
+              ),
             if (game.dlcs.isNotEmpty)
               SegmentedActionCard(
                 items: game.dlcs
