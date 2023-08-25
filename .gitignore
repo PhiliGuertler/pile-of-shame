@@ -46,6 +46,7 @@ app.*.map.json
 
 **/desktop.ini
 
+# Secrets CI/CD
 secrets/
 
 # generated files
