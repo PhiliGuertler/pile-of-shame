@@ -1,12 +1,13 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/providers/game_file_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'game_provider.g.dart';
 part 'game_provider.freezed.dart';
+part 'game_provider.g.dart';
 
 @freezed
 class GamesList with _$GamesList {
@@ -38,6 +39,17 @@ class Games extends _$Games {
     await gameFile.writeAsString(encodedList);
     // This also invalidates this provider, as the build method calls watch on gameFileProvider
     ref.invalidate(gameFileProvider);
+  }
+
+  Future<void> importGamesFromFile(File file) async {
+    // TODO: Persist these values?
+    state = const AsyncValue.loading();
+    state = await AsyncValue.guard(() async {
+    final contents = await file.readAsString();
+    final jsonContents = jsonDecode(contents);
+    final gameList = GamesList.fromJson(jsonContents);
+      return gameList.games;
+    });
   }
 }
 
