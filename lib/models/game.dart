@@ -12,6 +12,7 @@ class DLC with _$DLC {
   const DLC._();
 
   const factory DLC({
+    required String id,
     required String name,
     required PlayStatus status,
     required DateTime lastModified,

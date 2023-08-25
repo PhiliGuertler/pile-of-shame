@@ -25,12 +25,14 @@ void main() {
       price: 79.99,
       dlcs: [
         DLC(
+          id: 'test-game-dlc1',
           name: "DLC 1",
           status: PlayStatus.onPileOfShame,
           lastModified: DateTime(2023, 8, 8),
           price: 9.99,
         ),
         DLC(
+          id: 'test-game-dlc2',
           name: "DLC 2",
           status: PlayStatus.onPileOfShame,
           lastModified: DateTime(2023, 8, 8),

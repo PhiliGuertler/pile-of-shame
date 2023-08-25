@@ -79,6 +79,7 @@ void main() {
             "usk": "usk12",
             "dlcs": [
                 {
+                    "id": "zelda-botw-die-legendaeren-pruefungen",
                     "name": "Die legendären Prüfungen",
                     "status": "playing",
                     "lastModified": "2023-08-08",
@@ -86,6 +87,7 @@ void main() {
                     "releaseDate": "2018-09-03"
                 },
                 {
+                    "id": "zelda-botw-die-ballade-der-recken",
                     "name": "Die Ballade der Recken",
                     "status": "playing",
                     "lastModified": "2023-08-08",
@@ -106,6 +108,7 @@ void main() {
             "usk": "usk12",
             "dlcs": [
                 {
+                    "id": "outer-wilds-echoes-of-the-eye",
                     "name": "Echoes of the Eye",
                     "status": "completed100Percent",
                     "lastModified": "2023-08-08",

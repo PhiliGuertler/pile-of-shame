@@ -52,6 +52,7 @@ void main() {
         usk: USK.usk12,
         dlcs: [
           DLC(
+            id: 'zelda-botw-die-legendaeren-pruefungen',
             name: "Die legendären Prüfungen",
             status: PlayStatus.playing,
             lastModified: DateTime(2023, 8, 8),
@@ -59,6 +60,7 @@ void main() {
             releaseDate: DateTime(2018, 9, 3),
           ),
           DLC(
+            id: 'zelda-botw-die-ballade-der-recken',
             name: "Die Ballade der Recken",
             status: PlayStatus.playing,
             lastModified: DateTime(2023, 8, 8),
@@ -80,6 +82,7 @@ void main() {
         usk: USK.usk12,
         dlcs: [
           DLC(
+            id: 'outer-wilds-echoes-of-the-eye',
             name: "Echoes of the Eye",
             status: PlayStatus.completed100Percent,
             lastModified: DateTime(2023, 8, 8),
@@ -114,6 +117,7 @@ void main() {
       usk: USK.usk16,
       dlcs: [
         DLC(
+          id: 'dark-souls-artorias-of-the-abyss',
           name: "Artorias of the Abyss",
           status: PlayStatus.onWishList,
           lastModified: DateTime(2013, 7, 10),
@@ -123,7 +127,7 @@ void main() {
     );
 
     const String stringifiedTestGameList =
-        '{"games":[{"id":"dark-souls","name":"Dark Souls","platform":"Steam","status":"replaying","lastModified":"2023-04-20T00:00:00.000","price":39.99,"usk":"usk16","dlcs":[{"name":"Artorias of the Abyss","status":"onWishList","lastModified":"2013-07-10T00:00:00.000","price":9.99,"releaseDate":null}],"releaseDate":"2012-09-23T00:00:00.000","coverArt":"https://www.youtube.com/watch?v=dQw4w9WgXcQ"}]}';
+        '{"games":[{"id":"dark-souls","name":"Dark Souls","platform":"Steam","status":"replaying","lastModified":"2023-04-20T00:00:00.000","price":39.99,"usk":"usk16","dlcs":[{"id":"dark-souls-artorias-of-the-abyss","name":"Artorias of the Abyss","status":"onWishList","lastModified":"2013-07-10T00:00:00.000","price":9.99,"releaseDate":null}],"releaseDate":"2012-09-23T00:00:00.000","coverArt":"https://www.youtube.com/watch?v=dQw4w9WgXcQ"}]}';
 
     // starts with an empty list as the mockfile returns an empty string
     final initialValue = await container.read(gamesProvider.future);
