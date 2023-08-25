@@ -3,7 +3,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pile_of_shame/providers/game_provider.dart';
 import 'package:pile_of_shame/widgets/error_display.dart';
-import 'package:pile_of_shame/widgets/skeletons/skeleton_list_tile.dart';
+import 'package:pile_of_shame/widgets/skeletons/skeleton_game_display.dart';
 
 import '../widgets/game_list_tile.dart';
 
@@ -48,9 +48,7 @@ class GamesScreen extends ConsumerWidget {
           slivers: [
             for (int i = 0; i < 10; ++i)
               const SliverToBoxAdapter(
-                child: ListTileSkeleton(
-                  hasSubtitle: true,
-                ),
+                child: SkeletonGameDisplay(),
               ),
           ],
         ).animate().fadeIn(),

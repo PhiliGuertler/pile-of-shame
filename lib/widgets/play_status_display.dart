@@ -3,6 +3,8 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:pile_of_shame/models/play_status.dart';
 
 class PlayStatusDisplay extends StatelessWidget {
+  static const double height = 32.0;
+
   final PlayStatus playStatus;
 
   const PlayStatusDisplay({super.key, required this.playStatus});
@@ -10,6 +12,7 @@ class PlayStatusDisplay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget widget = Container(
+      height: height,
       decoration: BoxDecoration(
         color: playStatus.toBackgroundColor(context),
         borderRadius: BorderRadius.circular(8.0),
