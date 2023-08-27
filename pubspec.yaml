@@ -39,6 +39,7 @@ dev_dependencies:
   # Testing path_provider requires these dependencies
   path_provider_platform_interface: ^2.1.0
   plugin_platform_interface: any
+  flutter_launcher_icons: ^0.13.1
 
 flutter:
   uses-material-design: true
