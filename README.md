@@ -19,3 +19,10 @@ Once the text has been updated, generate the localization using
 ```bash
 flutter gen-l10n
 ```
+
+## Continuous deployment
+Deployment for Android is managed with fastlane.
+To deploy an internal release of the current version of the application run this command from the `android` directory
+```bash
+bundle exec fastlane internal
+```
