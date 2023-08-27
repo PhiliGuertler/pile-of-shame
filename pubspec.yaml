@@ -24,6 +24,7 @@ dependencies:
   animations: ^2.0.7
   flutter_colorpicker: ^1.0.3
   transparent_image: ^2.0.1
+  flutter_native_splash: ^2.3.2
 
 dev_dependencies:
   flutter_test:
