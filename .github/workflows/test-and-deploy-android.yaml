@@ -3,69 +3,65 @@ on:
   workflow_dispatch:
 
 jobs:
-  run-unit-tests:
+  test_and_build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Setup Java SDK
+        # Setup environment
+      - name: Java - setup SDK
         uses: actions/setup-java@v3
         with:
           distribution: "zulu"
           java-version: "17.x"
           cache: gradle
-      - name: Check Java Version
-        run: java --version
-      - name: Setup Flutter SDK
+      - name: Flutter - setup SDK
         uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
           cache: true
-      - name: Check Flutter version
-        run: flutter --version
-      - name: Fetch dependencies
+        # Fetch dependencies and generate code
+      - name: Flutter - fetch dependencies
         run: flutter pub get
-      - name: Generate Localizations
+      - name: Flutter - generate Localizations
         run: flutter gen-l10n
-      - name: Generate Code
+      - name: Flutter - generate code using build_runner
         run: dart run build_runner build
-      - name: Run unit tests
+        # Run unit tests
+      - name: Flutter - run unit tests
         run: flutter test
-  build_and_deploy:
-    needs: run-unit-tests
+        # Prepare for build signing
+      - name: Android App-Signing - prepare secrets directory
+        run: mkdir -p secrets
+      - name: Android App-Signing - insert secret upload keystore
+        run: echo -n "${{secrets.UPLOAD_KEYSTORE_BASE64}}" | base64 --decode > ./secrets/upload-keystore.jks
+      - name: Android App-Signing - insert secret key properties
+        run: echo -n "${{secrets.KEY_PROPERTIES_BASE64}}" | base64 --decode > ./android/key.properties
+      - name: Flutter - build application
+        run: flutter build appbundle --release
+      - name: Upload app artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: app-build-release
+          path: build
+          retention_days: 5
+  deploy_to_google_play:
+    needs: test_and_build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Setup Java SDK
-        uses: actions/setup-java@v3
+      - uses: action/checkout@v2
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
         with:
-          distribution: "zulu"
-          java-version: "17.x"
-          cache: gradle
-      - name: Setup Flutter SDK
-        uses: subosito/flutter-action@v2
-        with:
-          channel: 'stable'
-          cache: true
-      - uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: '3.2' # Not needed with a .ruby-version file
-      - name: Fetch dependencies
-        run: flutter pub get
-      - name: Generate Localizations
-        run: flutter gen-l10n
-      - name: Generate Code
-        run: dart run build_runner build
-      - name: Prepare secrets directory
-        run: mkdir -p secrets
-      - name: Insert Secret Upload Keystore
-        run: echo -n "${{secrets.UPLOAD_KEYSTORE_BASE64}}" | base64 --decode > ./secrets/upload-keystore.jks
-      - name: Insert Secret Google Play Store
+          ruby-version: '3.2'
+      - name: Prepare Google-Play secrets
         run: echo -n "${{secrets.GOOGLE_PLAY_SECRETS_BASE64}}" | base64 --decode > ./secrets/google-play-secrets.json
-      - name: Insert Secret Key Properties
-        run: echo -n "${{secrets.KEY_PROPERTIES_BASE64}}" | base64 --decode > ./android/key.properties
-      - name: Install Fastlane
+      - name: Restore built app
+        uses: actions/download-artifact@v3
+        with:
+          name: app-build-release
+      - name: Fastlane - install fastlane
         run: bundle install
         working-directory: android
-      - name: Fastlane - Build and Deploy
+      - name: Fastlane - deploy internal app
         run: bundle exec fastlane internal
         working-directory: android

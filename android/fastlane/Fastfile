@@ -17,9 +17,11 @@ default_platform(:android)
 
 platform :android do
   lane :internal do
-    # Build the app using flutter's build command
-    Dir.chdir "../.." do sh("flutter", "build", "appbundle", "--release") end
-    gradle(task: "bundle", build_type: "Release")
+    # prepare native debug symbols for upload
+    zip(
+      path: "../build/app/intermediates/merged_native_libs/release/out/lib/*",
+      output_path: "native-debug-symbols.zip"
+    )
     # as we built our app using flutter's cli, there is no need to build it here again
     upload_to_play_store(
       # for testing, we can set this flag
@@ -31,7 +33,9 @@ platform :android do
       # the path to the binary is relative to the android directory
       aab: "../build/app/outputs/bundle/release/app-release.aab",
       # version code is available via flutter_version plugin
-      version_code: flutter_version()["version_code"]
+      version_code: flutter_version()["version_code"],
+      # native debug symbols
+      mapping_paths: ["native-debug-symbols.zip"]
     )
   end
 
