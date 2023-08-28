@@ -1,4 +1,4 @@
-name: test-and-deploy-android-app
+name: android-test-and-deploy-internal
 on:
   push:
     branches:
@@ -57,6 +57,12 @@ jobs:
           name: app-native-debug-symbols
           path: android/native-debug-symbols.zip
           retention-days: 5
+      - name: Upload mapping artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: app-mapping
+          path: build/app/outputs/mapping/release/mapping.txt
+          retention-days: 5
   deploy_to_google_play:
     needs: test_and_build
     runs-on: ubuntu-latest
@@ -81,6 +87,11 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: app-native-debug-symbols
+          path: android/
+      - name: Restore mapping
+        uses: actions/download-artifact@v3
+        with:
+          name: app-mapping
           path: android/
       - name: Fastlane - install fastlane
         run: bundle install
