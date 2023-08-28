@@ -65,14 +65,18 @@ jobs:
         run: mkdir -p secrets
       - name: Prepare Google-Play secrets
         run: echo -n "${{secrets.GOOGLE_PLAY_SECRETS_BASE64}}" | base64 --decode > ./secrets/google-play-secrets.json
+      - name: Setup directory structure
+        run: mkdir -p build/app/outputs/bundle/release/
       - name: Restore built app
         uses: actions/download-artifact@v3
         with:
           name: app-build-release
+          path: build/app/outputs/bundle/release/app-release.aab
       - name: Restore debug symbols
         uses: actions/download-artifact@v3
         with:
           name: app-native-debug-symbols
+          path: android/native-debug-symbols.zip
       - name: Fastlane - install fastlane
         run: bundle install
         working-directory: android
