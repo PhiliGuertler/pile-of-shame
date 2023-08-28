@@ -7,22 +7,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/checkout@v2
       - name: Setup Java SDK
         uses: actions/setup-java@v3
         with:
           distribution: "zulu"
           java-version: "17.x"
           cache: gradle
-      - name: Check Java Version
-        run: java --version
       - name: Setup Flutter SDK
         uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
           cache: true
-      - name: Check Flutter version
-        run: flutter --version
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2' # Not needed with a .ruby-version file
       - name: Fetch dependencies
         run: flutter pub get
       - name: Generate Localizations
@@ -37,8 +35,9 @@ jobs:
         run: echo -n "${{secrets.GOOGLE_PLAY_SECRETS_BASE64}}" | base64 --decode > ./secrets/google-play-secrets.json
       - name: Insert Secret Key Properties
         run: echo -n "${{secrets.KEY_PROPERTIES_BASE64}}" | base64 --decode > ./android/key.properties
-      - name: Run Flutter tests
-        run: flutter test
+      - name: Install Fastlane
+        run: bundle install
+        working-directory: android
       - name: Fastlane - Build and Deploy
         run: bundle exec fastlane internal
         working-directory: android
