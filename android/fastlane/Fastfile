@@ -45,7 +45,7 @@ platform :android do
       # then the target track
       track_promote_to: "Alpha",
       # version code is available via flutter_version plugin
-      version_code: flutter_version()["version_code"]
+      version_code: flutter_version()["version_code"],
       skip_upload_apk: true,
       skip_upload_aab: true,
     )
