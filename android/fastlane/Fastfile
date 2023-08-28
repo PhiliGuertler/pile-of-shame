@@ -23,6 +23,8 @@ platform :android do
       # validate_only: true,
       # the track "internal" will upload to Google Play's internal testing
       track: "internal",
+      # make sure that we do not actually perform a release, but instead a draft release
+      release_status: "draft",
       # the path to the binary is relative to the android directory
       aab: "../build/app/outputs/bundle/release/app-release.aab",
       # version code is available via flutter_version plugin
