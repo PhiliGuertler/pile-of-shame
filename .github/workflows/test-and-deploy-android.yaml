@@ -73,7 +73,7 @@ jobs:
           name: app-build-release
           path: build/app/outputs/bundle/release/
       - name: Make sure that the artifact was downloaded
-        run: ls build/app/ouputs/bundle/release/
+        run: ls build/app/outputs/bundle/release/
       - name: Restore debug symbols
         uses: actions/download-artifact@v3
         with:
