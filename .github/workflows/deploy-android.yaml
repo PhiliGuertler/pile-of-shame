@@ -24,6 +24,8 @@ jobs:
         run: flutter --version
       - name: Fetch dependencies
         run: flutter pub get
+      - name: Generate Code
+        run: dart run build_runner build
       - name: Run unit tests
         run: flutter test
   build_and_deploy:
@@ -49,6 +51,8 @@ jobs:
         run: flutter --version
       - name: Fetch dependencies
         run: flutter pub get
+      - name: Generate Code
+        run: dart run build_runner build
       - name: Prepare secrets directory
         run: mkdir -p secrets
       - name: Insert Secret Upload Keystore
