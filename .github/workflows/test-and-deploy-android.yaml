@@ -42,13 +42,21 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: app-build-release
-          path: build
+          path: build/app/outputs/bundle/release/app-release.aab
+          retention_days: 5
+      - name: Prepare native debug symbols
+        run: zip -r android/native-debug-symbols.zip build/app/intermediates/merged_native_libs/release/out/lib/arm64-v8a build/app/intermediates/merged_native_libs/release/out/lib/armeabi-v7a build/app/intermediates/merged_native_libs/release/out/lib/x86_64
+      - name: Upload debug symbol artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: app-native-debug-symbols
+          path: android/native-debug-symbols.zip
           retention_days: 5
   deploy_to_google_play:
     needs: test_and_build
     runs-on: ubuntu-latest
     steps:
-      - uses: action/checkout@v2
+      - uses: actions/checkout@v2
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
@@ -59,8 +67,10 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: app-build-release
-      - name: Prepare native debug symbols
-        run: zip -r android/native-debug-symbols.zip build/app/intermediates/merged_native_libs/release/out/lib/arm64-v8a build/app/intermediates/merged_native_libs/release/out/lib/armeabi-v7a build/app/intermediates/merged_native_libs/release/out/lib/x86_64
+      - name: Restore debug symbols
+        uses: actions/download-artifact@v3
+        with:
+          name: app-native-debug-symbols
       - name: Fastlane - install fastlane
         run: bundle install
         working-directory: android
