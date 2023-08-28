@@ -24,6 +24,8 @@ jobs:
         run: flutter --version
       - name: Fetch dependencies
         run: flutter pub get
+      - name: Generate Localizations
+        run: flutter gen-l10n
       - name: Generate Code
         run: dart run build_runner build
       - name: Run unit tests
@@ -51,6 +53,8 @@ jobs:
         run: flutter --version
       - name: Fetch dependencies
         run: flutter pub get
+      - name: Generate Localizations
+        run: flutter gen-l10n
       - name: Generate Code
         run: dart run build_runner build
       - name: Prepare secrets directory
