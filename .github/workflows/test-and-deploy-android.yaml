@@ -1,9 +1,37 @@
-name: deploy-android-app
+name: test-and-deploy-android-app
 on:
   workflow_dispatch:
 
 jobs:
+  run-unit-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Java SDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: "zulu"
+          java-version: "17.x"
+          cache: gradle
+      - name: Check Java Version
+        run: java --version
+      - name: Setup Flutter SDK
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          cache: true
+      - name: Check Flutter version
+        run: flutter --version
+      - name: Fetch dependencies
+        run: flutter pub get
+      - name: Generate Localizations
+        run: flutter gen-l10n
+      - name: Generate Code
+        run: dart run build_runner build
+      - name: Run unit tests
+        run: flutter test
   build_and_deploy:
+    needs: run-unit-tests
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
