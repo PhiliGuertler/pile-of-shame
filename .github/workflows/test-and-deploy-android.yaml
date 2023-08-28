@@ -1,6 +1,8 @@
 name: test-and-deploy-android-app
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - master
 
 jobs:
   test_and_build:
@@ -75,15 +77,11 @@ jobs:
         with:
           name: app-build-release
           path: build/app/outputs/bundle/release/
-      - name: Make sure that the artifact was downloaded
-        run: ls build/app/outputs/bundle/release/
       - name: Restore debug symbols
         uses: actions/download-artifact@v3
         with:
           name: app-native-debug-symbols
           path: android/
-      - name: Make sure that the artifact was downloaded 2
-        run: ls android/
       - name: Fastlane - install fastlane
         run: bundle install
         working-directory: android
