@@ -1,0 +1,55 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+default_platform(:android)
+
+platform :android do
+  lane :internal do
+    # as we built our app using flutter's cli, there is no need to build it here again
+    upload_to_play_store(
+      # for testing, we can set this flag
+      # validate_only: true,
+      # the track "internal" will upload to Google Play's internal testing
+      track: "internal",
+      # make sure that we do not actually perform a release, but instead a draft release
+      release_status: "draft",
+      # the path to the binary is relative to the android directory
+      aab: "../build/app/outputs/bundle/release/app-release.aab",
+      # version code is available via flutter_version plugin
+      version_code: flutter_version()["version_code"],
+      # native debug symbols should be moved to the android/ directory
+      # By default, the symbols are stored here after building the app in release-mode: "../build/app/intermediates/merged_native_libs/release/out/lib/*"
+      # Fastlane's zip function cannot zip the contents of the lib directory itself, so you will have to do that manually like this: "zip -r native-debug-symbols.zip arm64-v8a armeabi-v7a x86_64"
+      mapping_paths: ["native-debug-symbols.zip", "mapping.txt"],
+      skip_upload_apk: true,
+      skip_upload_metadata: true,
+      skip_upload_images: true,
+      skip_upload_screenshots: true,
+    )
+  end
+
+  lane :promote_internal_to_alpha do
+    upload_to_play_store(
+      # pass the source track, in this case internal
+      track: "internal",
+      # then the target track
+      track_promote_to: "Alpha",
+      # version code is available via flutter_version plugin
+      version_code: flutter_version()["version_code"],
+      skip_upload_apk: true,
+      skip_upload_aab: true,
+    )
+  end
+end

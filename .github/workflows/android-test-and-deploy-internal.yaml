@@ -1,0 +1,99 @@
+name: android-test-and-deploy-internal
+on:
+  workflow_dispatch:
+
+jobs:
+  test_and_build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        # Setup environment
+      - name: Java - setup SDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: "zulu"
+          java-version: "17.x"
+          cache: gradle
+      - name: Flutter - setup SDK
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          cache: true
+        # Fetch dependencies and generate code
+      - name: Flutter - fetch dependencies
+        run: flutter pub get
+      - name: Flutter - generate Localizations
+        run: flutter gen-l10n
+      - name: Flutter - generate code using build_runner
+        run: dart run build_runner build
+        # Run unit tests
+      - name: Flutter - run unit tests
+        run: flutter test
+        # Prepare for build signing
+      - name: Android App-Signing - prepare secrets directory
+        run: mkdir -p secrets
+      - name: Android App-Signing - insert secret upload keystore
+        run: echo -n "${{secrets.UPLOAD_KEYSTORE_BASE64}}" | base64 --decode > ./secrets/upload-keystore.jks
+      - name: Android App-Signing - insert secret key properties
+        run: echo -n "${{secrets.KEY_PROPERTIES_BASE64}}" | base64 --decode > ./android/key.properties
+      - name: Flutter - build application
+        run: flutter build appbundle --release
+      - name: Upload app artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: app-build-release
+          path: build/app/outputs/bundle/release/app-release.aab
+          retention-days: 5
+      - name: Prepare native debug symbols
+        run: zip -r native-debug-symbols.zip arm64-v8a armeabi-v7a x86_64
+        working-directory: build/app/intermediates/merged_native_libs/release/out/lib
+      - name: move debug-symbols to android directory
+        run: mv build/app/intermediates/merged_native_libs/release/out/lib/native-debug-symbols.zip android/native-debug-symbols.zip
+      - name: Upload debug symbol artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: app-native-debug-symbols
+          path: android/native-debug-symbols.zip
+          retention-days: 5
+      - name: Upload mapping artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: app-mapping
+          path: build/app/outputs/mapping/release/mapping.txt
+          retention-days: 5
+  deploy_to_google_play:
+    needs: test_and_build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2'
+      - name: Prepare secrets directory
+        run: mkdir -p secrets
+      - name: Prepare Google-Play secrets
+        run: echo -n "${{secrets.GOOGLE_PLAY_SECRETS_BASE64}}" | base64 --decode > ./secrets/google-play-secrets.json
+      - name: Setup directory structure
+        run: mkdir -p build/app/outputs/bundle/release/
+      - name: Restore built app
+        uses: actions/download-artifact@v3
+        with:
+          name: app-build-release
+          path: build/app/outputs/bundle/release/
+      - name: Restore debug symbols
+        uses: actions/download-artifact@v3
+        with:
+          name: app-native-debug-symbols
+          path: android/
+      - name: Restore mapping
+        uses: actions/download-artifact@v3
+        with:
+          name: app-mapping
+          path: android/
+      - name: Fastlane - install fastlane
+        run: bundle install
+        working-directory: android
+      - name: Fastlane - deploy internal app
+        run: bundle exec fastlane internal
+        working-directory: android

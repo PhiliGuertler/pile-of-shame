@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:pile_of_shame/features/settings/appearance/screens/appearance_screen.dart';
 import 'package:pile_of_shame/features/settings/language/screens/language_screen.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
+import 'package:pile_of_shame/utils/constants.dart';
 import 'package:pile_of_shame/widgets/segmented_action_card.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -53,6 +55,32 @@ class SettingsScreen extends StatelessWidget {
                   },
                 ),
               ],
+            ),
+          ),
+          SliverFillRemaining(
+            hasScrollBody: false,
+            child: Align(
+              alignment: Alignment.bottomCenter,
+              child: Padding(
+                padding: const EdgeInsets.all(defaultPaddingX),
+                child: FutureBuilder(
+                  future: PackageInfo.fromPlatform(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return Text(
+                        'App-Version: ${snapshot.data!.version} (${snapshot.data!.buildNumber})',
+                        style: TextStyle(
+                          color: Theme.of(context)
+                              .colorScheme
+                              .onBackground
+                              .withOpacity(0.5),
+                        ),
+                      );
+                    }
+                    return const Text('');
+                  },
+                ),
+              ),
             ),
           ),
         ],

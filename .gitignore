@@ -46,6 +46,9 @@ app.*.map.json
 
 **/desktop.ini
 
+# Secrets CI/CD
+secrets/
+
 # generated files
 /lib/l10n/generated/
 **/*.g.dart

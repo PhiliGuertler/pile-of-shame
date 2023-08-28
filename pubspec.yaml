@@ -1,7 +1,7 @@
 name: pile_of_shame
 description: A new Flutter project.
 publish_to: 'none'
-version: 0.1.0
+version: 0.1.0+5
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
@@ -24,6 +24,8 @@ dependencies:
   animations: ^2.0.7
   flutter_colorpicker: ^1.0.3
   transparent_image: ^2.0.1
+  flutter_native_splash: ^2.3.2
+  package_info_plus: ^4.1.0
 
 dev_dependencies:
   flutter_test:
@@ -39,6 +41,7 @@ dev_dependencies:
   # Testing path_provider requires these dependencies
   path_provider_platform_interface: ^2.1.0
   plugin_platform_interface: any
+  flutter_launcher_icons: ^0.13.1
 
 flutter:
   uses-material-design: true
