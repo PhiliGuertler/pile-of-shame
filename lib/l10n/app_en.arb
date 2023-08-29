@@ -27,6 +27,7 @@
   "languageSubtitle": "The most controversial Decision",
   "lastModified": "Last modified",
   "light": "Light",
+  "name": "Name",
   "onPileOfShame": "On the pile of shame",
   "onWishList": "on wishlist",
   "platform": "Platform",
@@ -38,5 +39,6 @@
   "save": "Save",
   "settings": "Settings",
   "systemDefined": "Specified by the system",
-  "systemLanguage": "System-Language"
+  "systemLanguage": "System-Language",
+  "thisFieldIsRequired": "This field is required"
 }

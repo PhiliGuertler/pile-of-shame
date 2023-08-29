@@ -19,6 +19,7 @@
   "languageSubtitle": "Die umstrittenste Entscheidung",
   "lastModified": "Zuletzt geändert",
   "light": "Hell",
+  "name": "Name",
   "onPileOfShame": "Auf dem Pile of Shame",
   "onWishList": "Auf der Wunschliste",
   "platform": "Plattform",
@@ -30,5 +31,6 @@
   "save": "Speichern",
   "settings": "Einstellungen",
   "systemDefined": "Vom System vorgegeben",
-  "systemLanguage": "System-Sprache"
+  "systemLanguage": "System-Sprache",
+  "thisFieldIsRequired": "Dieses Feld ist erforderlich"
 }
