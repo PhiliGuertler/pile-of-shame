@@ -7,11 +7,8 @@ import 'package:pile_of_shame/features/settings/root/screens/settings_screen.dar
 import 'models/root_page_models.dart';
 
 class RootPage extends ConsumerStatefulWidget {
-  final ScrollController scrollController;
-
   const RootPage({
     super.key,
-    required this.scrollController,
   });
 
   @override
@@ -19,6 +16,7 @@ class RootPage extends ConsumerStatefulWidget {
 }
 
 class _RootPageState extends ConsumerState<RootPage> {
+  late ScrollController _scrollController;
   bool isScrolled = false;
   RootTabs activeTab = RootTabs.games;
 
@@ -36,8 +34,8 @@ class _RootPageState extends ConsumerState<RootPage> {
   }
 
   void handleScroll() {
-    final offset = widget.scrollController.offset;
-    final minScrollExtent = widget.scrollController.position.minScrollExtent;
+    final offset = _scrollController.offset;
+    final minScrollExtent = _scrollController.position.minScrollExtent;
     bool result = offset > minScrollExtent;
     setState(() {
       isScrolled = result;
@@ -47,12 +45,13 @@ class _RootPageState extends ConsumerState<RootPage> {
   @override
   void initState() {
     super.initState();
-    widget.scrollController.addListener(handleScroll);
+    _scrollController = ScrollController();
+    _scrollController.addListener(handleScroll);
   }
 
   @override
   void dispose() {
-    widget.scrollController.removeListener(handleScroll);
+    _scrollController.removeListener(handleScroll);
     super.dispose();
   }
 
@@ -64,7 +63,7 @@ class _RootPageState extends ConsumerState<RootPage> {
     ];
 
     final children = [
-      const GamesScreen(),
+      GamesScreen(scrollController: _scrollController),
       const SettingsScreen(),
     ];
 

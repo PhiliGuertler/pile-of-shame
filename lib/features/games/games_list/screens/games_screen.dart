@@ -8,7 +8,9 @@ import 'package:pile_of_shame/widgets/skeletons/skeleton_game_display.dart';
 import '../widgets/game_list_tile.dart';
 
 class GamesScreen extends ConsumerWidget {
-  const GamesScreen({super.key});
+  final ScrollController scrollController;
+
+  const GamesScreen({super.key, required this.scrollController});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -20,6 +22,7 @@ class GamesScreen extends ConsumerWidget {
           return RefreshIndicator(
             onRefresh: () => ref.refresh(gamesProvider.future),
             child: CustomScrollView(
+              controller: scrollController,
               physics: const BouncingScrollPhysics(
                   parent: AlwaysScrollableScrollPhysics()),
               slivers: [

@@ -58,9 +58,7 @@ class App extends ConsumerWidget {
           orElse: () => null,
         ),
         supportedLocales: AppLocalizations.supportedLocales,
-        home: RootPage(
-          scrollController: ScrollController(),
-        ),
+        home: const RootPage(),
       );
     });
   }
