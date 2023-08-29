@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pile_of_shame/features/games/add_game/screens/add_game_screen.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/widgets/collapsing_floating_action_button.dart';
 
@@ -17,7 +18,7 @@ class RootGamesFab extends StatelessWidget {
       onPressed: () {
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => Container(),
+            builder: (context) => const AddGameScreen(),
           ),
         );
       },

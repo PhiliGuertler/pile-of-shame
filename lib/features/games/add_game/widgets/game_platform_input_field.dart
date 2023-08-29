@@ -22,7 +22,7 @@ class GamePlatformInputField extends StatelessWidget {
         label: label,
         suffixIcon: const Icon(Icons.expand_more),
         prefixIcon: Padding(
-          padding: const EdgeInsets.only(right: 16.0),
+          padding: const EdgeInsets.only(right: 8.0),
           child: ImageContainer(
             child: value != null
                 ? Image.asset(value!.iconPath)
