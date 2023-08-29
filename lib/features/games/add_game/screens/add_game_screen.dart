@@ -15,6 +15,9 @@ import 'package:pile_of_shame/widgets/input/text_input_field.dart';
 import 'package:pile_of_shame/widgets/segmented_action_card.dart';
 import 'package:pile_of_shame/widgets/usk_logo.dart';
 
+import '../models/editable_game.dart';
+import 'add_dlc_screen.dart';
+
 class AddGameScreen extends ConsumerWidget {
   const AddGameScreen({super.key});
 
@@ -196,12 +199,23 @@ class AddGameScreen extends ConsumerWidget {
                 child: SegmentedActionCard(
                   items: [
                     SegmentedActionCardItem(
-                        leading: const Icon(Icons.add),
-                        title: Text(AppLocalizations.of(context)!.addDLC),
-                        onTap: () {
-                          // TODO: Implement Adding a DLC
-                          throw UnimplementedError();
-                        }),
+                      leading: const Icon(Icons.add),
+                      title: Text(AppLocalizations.of(context)!.addDLC),
+                      onTap: () async {
+                        final EditableDLC? result =
+                            await Navigator.of(context).push<EditableDLC?>(
+                          MaterialPageRoute(
+                            builder: (context) => const AddDLCScreen(),
+                          ),
+                        );
+
+                        if (result != null) {
+                          ref.read(addGameProvider.notifier).updateGame(
+                              editableGame.copyWith(
+                                  dlcs: [...editableGame.dlcs, result]));
+                        }
+                      },
+                    ),
                     ...editableGame.dlcs
                         .map(
                           (e) => SegmentedActionCardItem(
