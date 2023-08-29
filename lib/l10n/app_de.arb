@@ -1,4 +1,5 @@
 {
+  "addDLC": "DLC hinzufügen",
   "addGame": "Spiel hinzufügen",
   "ageRating": "Altersfreigabe",
   "appName": "Pile of shame",
@@ -30,6 +31,7 @@
   "replaying": "Erneut am Spielen",
   "save": "Speichern",
   "settings": "Einstellungen",
+  "status": "Status",
   "systemDefined": "Vom System vorgegeben",
   "systemLanguage": "System-Sprache",
   "thisFieldIsRequired": "Dieses Feld ist erforderlich"
