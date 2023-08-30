@@ -26,7 +26,7 @@ class GamesScreen extends ConsumerWidget {
               physics: const BouncingScrollPhysics(
                   parent: AlwaysScrollableScrollPhysics()),
               slivers: [
-                ...games
+                ...games.games
                     .map(
                       (game) => SliverToBoxAdapter(
                         child: GameListTile(game: game),

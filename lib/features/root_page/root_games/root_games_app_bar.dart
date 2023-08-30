@@ -18,9 +18,9 @@ class RootGamesAppBar extends ConsumerWidget implements PreferredSizeWidget {
             onPressed: () async {
               final pickedFile = await ref.read(fileUtilsProvider).pickFile();
               if (pickedFile != null) {
-                await ref
-                    .read(gamesProvider.notifier)
-                    .importGamesFromFile(pickedFile);
+                final gameStorage = ref.read(gameStorageProvider);
+                final games = await gameStorage.readGamesFromFile(pickedFile);
+                await gameStorage.persistGamesList(games);
               }
             },
             icon: const Icon(Icons.file_open_rounded)),

@@ -51,3 +51,31 @@ class Game with _$Game {
     return result;
   }
 }
+
+@unfreezed
+class GamesList with _$GamesList {
+  const GamesList._();
+
+  const factory GamesList({
+    required final List<Game> games,
+  }) = _GamesList;
+
+  factory GamesList.fromJson(Map<String, dynamic> json) =>
+      _$GamesListFromJson(json);
+
+  void updateGame(String id, Game update) {
+    final gameIndex = games.indexWhere((element) => element.id == id);
+    assert(gameIndex != -1);
+
+    games[gameIndex] = update;
+  }
+
+  void removeGame(String id) {
+    games.removeWhere((element) => element.id == id);
+  }
+
+  void addGame(Game game) {
+    assert(games.every((element) => element.id != game.id));
+    games.add(game);
+  }
+}

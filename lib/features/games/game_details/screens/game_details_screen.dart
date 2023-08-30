@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pile_of_shame/features/games/add_game/models/editable_game.dart';
 import 'package:pile_of_shame/features/games/add_game/screens/add_game_screen.dart';
 import 'package:pile_of_shame/features/games/game_details/widgets/sliver_game_details.dart';
-import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/models/game_platforms.dart';
 import 'package:pile_of_shame/providers/game_provider.dart';
 import 'package:pile_of_shame/utils/constants.dart';
@@ -60,17 +59,13 @@ class _GameDetailsScreenState extends ConsumerState<GameDetailsScreen> {
 
                         if (result != null) {
                           final updatedGame = result.toGame();
-                          final List<Game> updatedGames =
-                              List.from(await ref.read(gamesProvider.future));
-                          final gameIndex = updatedGames.indexWhere(
-                              (element) => element.id == updatedGame.id);
-                          assert(gameIndex != -1);
+                          final gamesList =
+                              await ref.read(gamesProvider.future);
+                          gamesList.updateGame(updatedGame.id, updatedGame);
 
-                          updatedGames[gameIndex] = updatedGame;
-
-                          ref
-                              .read(gamesProvider.notifier)
-                              .storeGames(updatedGames);
+                          await ref
+                              .read(gameStorageProvider)
+                              .persistGamesList(gamesList);
                         }
                       },
                     ),
