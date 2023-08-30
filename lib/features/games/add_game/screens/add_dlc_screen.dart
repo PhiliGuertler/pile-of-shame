@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pile_of_shame/features/games/add_game/models/editable_game.dart';
 import 'package:pile_of_shame/features/games/add_game/providers/add_game_provider.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/game_platforms.dart';
@@ -10,7 +11,9 @@ import 'package:pile_of_shame/widgets/input/number_input_field.dart';
 import 'package:pile_of_shame/widgets/input/text_input_field.dart';
 
 class AddDLCScreen extends ConsumerStatefulWidget {
-  const AddDLCScreen({super.key});
+  final EditableDLC? initialValue;
+
+  const AddDLCScreen({super.key, this.initialValue});
 
   @override
   ConsumerState<AddDLCScreen> createState() => _AddDLCScreenState();
@@ -21,7 +24,7 @@ class _AddDLCScreenState extends ConsumerState<AddDLCScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final editableDLC = ref.watch(addDLCProvider);
+    final editableDLC = ref.watch(addDLCProvider(widget.initialValue));
 
     final List<GamePlatform> sortedGamePlatforms =
         List.from(GamePlatform.values);
@@ -34,15 +37,6 @@ class _AddDLCScreenState extends ConsumerState<AddDLCScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.addGame),
-        actions: [
-          IconButton(
-            onPressed: () {
-              // TODO: Display a popup if the user is sure about that
-              Navigator.of(context).pop();
-            },
-            icon: const Icon(Icons.close),
-          ),
-        ],
       ),
       body: Form(
         key: _formKey,
@@ -59,7 +53,7 @@ class _AddDLCScreenState extends ConsumerState<AddDLCScreen> {
                     initialValue: editableDLC.name ?? '',
                     onChanged: (value) {
                       ref
-                          .read(addDLCProvider.notifier)
+                          .read(addDLCProvider(widget.initialValue).notifier)
                           .updateDLC(editableDLC.copyWith(name: value));
                     },
                     validator: Validators.validateFieldIsRequired(context),
@@ -76,7 +70,7 @@ class _AddDLCScreenState extends ConsumerState<AddDLCScreen> {
                     onChanged: (value) {
                       if (value != null) {
                         ref
-                            .read(addDLCProvider.notifier)
+                            .read(addDLCProvider(widget.initialValue).notifier)
                             .updateDLC(editableDLC.copyWith(status: value));
                       }
                     },
@@ -106,7 +100,7 @@ class _AddDLCScreenState extends ConsumerState<AddDLCScreen> {
                     initialValue: editableDLC.price,
                     onChanged: (value) {
                       ref
-                          .read(addDLCProvider.notifier)
+                          .read(addDLCProvider(widget.initialValue).notifier)
                           .updateDLC(editableDLC.copyWith(price: value));
                     },
                     isCurrency: true,

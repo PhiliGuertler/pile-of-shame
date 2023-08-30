@@ -30,7 +30,7 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final editableGame = ref.watch(addGameProvider);
+    final editableGame = ref.watch(addGameProvider());
 
     final List<GamePlatform> sortedGamePlatforms =
         List.from(GamePlatform.values);
@@ -43,15 +43,6 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.addGame),
-        actions: [
-          IconButton(
-            onPressed: () {
-              // TODO: Cancel this process
-              throw UnimplementedError();
-            },
-            icon: const Icon(Icons.close),
-          ),
-        ],
       ),
       body: Form(
         key: _formKey,
@@ -68,7 +59,7 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
                     initialValue: editableGame.name ?? '',
                     onChanged: (value) {
                       ref
-                          .read(addGameProvider.notifier)
+                          .read(addGameProvider().notifier)
                           .updateGame(editableGame.copyWith(name: value));
                     },
                     validator: Validators.validateFieldIsRequired(context),
@@ -112,7 +103,7 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
                     options: sortedGamePlatforms,
                     onChanged: (value) {
                       ref
-                          .read(addGameProvider.notifier)
+                          .read(addGameProvider().notifier)
                           .updateGame(editableGame.copyWith(platform: value));
                     },
                   ),
@@ -128,7 +119,7 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
                     onChanged: (value) {
                       if (value != null) {
                         ref
-                            .read(addGameProvider.notifier)
+                            .read(addGameProvider().notifier)
                             .updateGame(editableGame.copyWith(status: value));
                       }
                     },
@@ -158,7 +149,7 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
                     initialValue: editableGame.price,
                     onChanged: (value) {
                       ref
-                          .read(addGameProvider.notifier)
+                          .read(addGameProvider().notifier)
                           .updateGame(editableGame.copyWith(price: value));
                     },
                     isCurrency: true,
@@ -179,7 +170,7 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
                     onChanged: (value) {
                       if (value != null) {
                         ref
-                            .read(addGameProvider.notifier)
+                            .read(addGameProvider().notifier)
                             .updateGame(editableGame.copyWith(usk: value));
                       }
                     },
@@ -225,19 +216,47 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
                           );
 
                           if (result != null) {
-                            ref.read(addGameProvider.notifier).updateGame(
+                            ref.read(addGameProvider().notifier).updateGame(
                                 editableGame.copyWith(
                                     dlcs: [...editableGame.dlcs, result]));
                           }
                         },
                       ),
                       ...editableGame.dlcs
+                          .asMap()
                           .map(
-                            (e) => SegmentedActionCardItem(
-                              leading: const Icon(Icons.edit),
-                              title: Text(e.name ?? '???'),
+                            (index, dlc) => MapEntry(
+                              index,
+                              SegmentedActionCardItem(
+                                leading: const Icon(Icons.edit),
+                                title: Text(dlc.name ?? '???'),
+                                onTap: () async {
+                                  final EditableDLC? update =
+                                      await Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) => AddDLCScreen(
+                                        initialValue: dlc,
+                                      ),
+                                    ),
+                                  );
+
+                                  if (update != null) {
+                                    final List<EditableDLC> updatedList =
+                                        List.from(editableGame.dlcs);
+                                    updatedList[index] = update;
+
+                                    ref
+                                        .read(addGameProvider().notifier)
+                                        .updateGame(
+                                          editableGame.copyWith(
+                                              dlcs: updatedList),
+                                        );
+                                  }
+                                },
+                              ),
                             ),
                           )
+                          .values
                           .toList(),
                     ],
                   ),

@@ -6,8 +6,8 @@ part 'add_game_provider.g.dart';
 @riverpod
 class AddGame extends _$AddGame {
   @override
-  EditableGame build() {
-    return const EditableGame();
+  EditableGame build([EditableGame? initialValue]) {
+    return initialValue ?? const EditableGame();
   }
 
   void updateGame(EditableGame update) {
@@ -18,8 +18,8 @@ class AddGame extends _$AddGame {
 @riverpod
 class AddDLC extends _$AddDLC {
   @override
-  EditableDLC build() {
-    return const EditableDLC();
+  EditableDLC build([EditableDLC? initialValue]) {
+    return initialValue ?? const EditableDLC();
   }
 
   void updateDLC(EditableDLC update) {
