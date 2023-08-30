@@ -3,6 +3,7 @@ import 'package:pile_of_shame/models/age_restriction.dart';
 import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/models/game_platforms.dart';
 import 'package:pile_of_shame/models/play_status.dart';
+import 'package:uuid/uuid.dart';
 
 part 'editable_game.freezed.dart';
 
@@ -24,8 +25,7 @@ class EditableDLC with _$EditableDLC {
     assert(isValid());
 
     return DLC(
-      // TODO: Generate a unique ID
-      id: "TODO: generate ID",
+      id: const Uuid().v4(),
       lastModified: DateTime.now(),
       name: name!,
       status: status,
@@ -55,8 +55,7 @@ class EditableGame with _$EditableGame {
     assert(isValid() && dlcs.every((element) => element.isValid()));
 
     return Game(
-      // TODO: Generate a unique ID
-      id: 'TODO: generate id',
+      id: const Uuid().v4(),
       name: name!,
       platform: platform!,
       status: status,

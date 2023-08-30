@@ -4,8 +4,10 @@ import 'package:pile_of_shame/features/games/add_game/providers/add_game_provide
 import 'package:pile_of_shame/features/games/add_game/widgets/game_platform_input_field.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/age_restriction.dart';
+import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/models/game_platforms.dart';
 import 'package:pile_of_shame/models/play_status.dart';
+import 'package:pile_of_shame/providers/game_provider.dart';
 import 'package:pile_of_shame/utils/constants.dart';
 import 'package:pile_of_shame/utils/validators.dart';
 import 'package:pile_of_shame/widgets/game_platform_icon.dart';
@@ -275,13 +277,20 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
                   child: SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
-                      onPressed: () {
+                      onPressed: () async {
                         if (_formKey.currentState!.validate() &&
                             editableGame.isValid()) {
-                          // TODO: store the game in the list of games
+                          final games = await ref.read(gamesProvider.future);
+                          final List<Game> updatedGames = List.from(games);
+                          updatedGames.add(editableGame.toGame());
 
-                          Navigator.of(context).pop();
-                          return;
+                          await ref
+                              .read(gamesProvider.notifier)
+                              .storeGames(updatedGames);
+
+                          if (context.mounted) {
+                            Navigator.of(context).pop();
+                          }
                         }
                       },
                       child: Text(AppLocalizations.of(context)!.save),

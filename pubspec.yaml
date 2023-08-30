@@ -26,6 +26,7 @@ dependencies:
   transparent_image: ^2.0.1
   flutter_native_splash: ^2.3.2
   package_info_plus: ^4.1.0
+  uuid: ^3.0.7
 
 dev_dependencies:
   flutter_test:
