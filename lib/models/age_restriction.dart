@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 
 enum USK {
   usk0(age: 0, color: Colors.white),
@@ -15,4 +16,8 @@ enum USK {
     required this.age,
     required this.color,
   });
+
+  String toRatedString(BuildContext context) {
+    return AppLocalizations.of(context)!.ratedN(age.toString());
+  }
 }

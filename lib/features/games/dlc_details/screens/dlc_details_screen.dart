@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pile_of_shame/features/games/add_game/models/editable_game.dart';
+import 'package:pile_of_shame/features/games/add_game/screens/add_dlc_screen.dart';
 import 'package:pile_of_shame/features/games/dlc_details/widgets/sliver_dlc_details.dart';
+import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/models/game_platforms.dart';
 import 'package:pile_of_shame/providers/game_provider.dart';
 import 'package:pile_of_shame/utils/constants.dart';
@@ -40,14 +43,44 @@ class DLCDetailsScreen extends ConsumerWidget {
                   loading: () =>
                       GamePlatform.unknown.controllerLogoPath(context),
                 ),
-                actions: [
-                  IconButton(
-                    icon: const Icon(Icons.edit),
-                    onPressed: () {
-                      debugPrint('TODO: Implement editing');
-                    },
-                  )
-                ],
+                actions: game.maybeWhen(
+                  data: (game) => dlc.maybeWhen(
+                    data: (dlc) => [
+                      IconButton(
+                        icon: const Icon(Icons.edit),
+                        onPressed: () async {
+                          final result =
+                              await Navigator.of(context).push<EditableDLC?>(
+                            MaterialPageRoute(
+                              builder: (context) => AddDLCScreen(
+                                initialValue: EditableDLC.fromDLC(dlc),
+                              ),
+                            ),
+                          );
+
+                          if (result != null) {
+                            final List<DLC> updatedDLCs = List.from(game.dlcs);
+                            final dlcIndex = updatedDLCs
+                                .indexWhere((element) => element.id == dlc.id);
+                            updatedDLCs[dlcIndex] = result.toDLC();
+                            final updatedGame =
+                                game.copyWith(dlcs: updatedDLCs);
+
+                            final gamesList =
+                                await ref.read(gamesProvider.future);
+                            gamesList.updateGame(updatedGame.id, updatedGame);
+
+                            ref
+                                .read(gameStorageProvider)
+                                .persistGamesList(gamesList);
+                          }
+                        },
+                      ),
+                    ],
+                    orElse: () => [],
+                  ),
+                  orElse: () => [],
+                ),
                 title: dlc.when(
                   data: (dlc) => Text(dlc.name),
                   error: (error, stackTrace) => const Text('Error'),

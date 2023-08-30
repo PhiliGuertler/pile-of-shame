@@ -1,4 +1,6 @@
 {
+  "addDLC": "DLC hinzufügen",
+  "addGame": "Spiel hinzufügen",
   "ageRating": "Altersfreigabe",
   "appName": "Pile of shame",
   "appSettings": "App-Einstellungen",
@@ -12,12 +14,15 @@
   "completed": "Durchgespielt",
   "completed100Percent": "Durchgespielt zu 100%",
   "dark": "Dunkel",
+  "editDLC": "DLC bearbeiten",
+  "editGame": "Spiel bearbeiten",
   "endlessGame": "Endlosspiel",
   "games": "Spiele",
   "language": "Sprache",
   "languageSubtitle": "Die umstrittenste Entscheidung",
   "lastModified": "Zuletzt geändert",
   "light": "Hell",
+  "name": "Name",
   "onPileOfShame": "Auf dem Pile of Shame",
   "onWishList": "Auf der Wunschliste",
   "platform": "Plattform",
@@ -28,6 +33,8 @@
   "replaying": "Erneut am Spielen",
   "save": "Speichern",
   "settings": "Einstellungen",
+  "status": "Status",
   "systemDefined": "Vom System vorgegeben",
-  "systemLanguage": "System-Sprache"
+  "systemLanguage": "System-Sprache",
+  "thisFieldIsRequired": "Dieses Feld ist erforderlich"
 }

@@ -1,56 +1,24 @@
 import 'dart:convert';
-import 'dart:io';
 
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:pile_of_shame/models/game.dart';
+import 'package:pile_of_shame/models/game_storage.dart';
 import 'package:pile_of_shame/providers/game_file_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'game_provider.freezed.dart';
 part 'game_provider.g.dart';
 
-@freezed
-class GamesList with _$GamesList {
-  const factory GamesList({
-    required List<Game> games,
-  }) = _GamesList;
-
-  factory GamesList.fromJson(Map<String, dynamic> json) =>
-      _$GamesListFromJson(json);
-}
+@riverpod
+GameStorage gameStorage(GameStorageRef ref) => GameStorage(ref: ref);
 
 @riverpod
-class Games extends _$Games {
-  @override
-  FutureOr<List<Game>> build() async {
-    final gameFile = await ref.watch(gameFileProvider.future);
-    final content = await gameFile.readAsString();
-    if (content.isNotEmpty) {
-      final games = GamesList.fromJson(jsonDecode(content));
-      return games.games;
-    }
-    return [];
-  }
+FutureOr<GamesList> games(GamesRef ref) async {
+  final gameFile = await ref.watch(gameFileProvider.future);
 
-  Future<void> storeGames(List<Game> games) async {
-    final gameFile = await ref.read(gameFileProvider.future);
-    final gameList = GamesList(games: games);
-    final encodedList = jsonEncode(gameList.toJson());
-    await gameFile.writeAsString(encodedList);
-    // This also invalidates this provider, as the build method calls watch on gameFileProvider
-    ref.invalidate(gameFileProvider);
+  final content = await gameFile.readAsString();
+  if (content.isNotEmpty) {
+    return GamesList.fromJson(jsonDecode(content));
   }
-
-  Future<void> importGamesFromFile(File file) async {
-    // TODO: Persist these values?
-    state = const AsyncValue.loading();
-    state = await AsyncValue.guard(() async {
-    final contents = await file.readAsString();
-    final jsonContents = jsonDecode(contents);
-    final gameList = GamesList.fromJson(jsonContents);
-      return gameList.games;
-    });
-  }
+  return const GamesList(games: []);
 }
 
 @riverpod
@@ -58,7 +26,7 @@ AsyncValue<Game> gameById(GameByIdRef ref, String id) {
   final games = ref.watch(gamesProvider);
   return games.when(
     data: (data) =>
-        AsyncValue.data(data.singleWhere((element) => element.id == id)),
+        AsyncValue.data(data.games.singleWhere((element) => element.id == id)),
     error: (error, stackTrace) => throw error,
     loading: () => const AsyncValue.loading(),
   );

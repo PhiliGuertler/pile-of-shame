@@ -34,14 +34,14 @@ void main() {
         (realInvocation) async => File('test_resources/games_empty.json'));
 
     final result = await container.read(gamesProvider.future);
-    expect(result, []);
+    expect(result.games, []);
   });
   test('returns a list of games if the file is not empty', () async {
     when(mockFileUtils.openFile(gameFileName)).thenAnswer(
         (realInvocation) async => File('test_resources/games_filled.json'));
 
     final result = await container.read(gamesProvider.future);
-    expect(result, [
+    expect(result.games, [
       Game(
         id: 'zelda-botw',
         name: "The Legend of Zelda: Breath of the Wild",
@@ -134,19 +134,21 @@ void main() {
     when(mockFile.readAsString()).thenAnswer((realInvocation) async => "");
     // the game file should have been opened exactly once
     verify(mockFileUtils.openFile(gameFileName)).called(1);
-    expect(initialValue, []);
+    expect(initialValue.games, []);
 
     // returns the stringified test games at the next invocation of readAsString() on mockFile
     // to stub the process of writing the list to a file
     when(mockFile.readAsString())
         .thenAnswer((realInvocation) async => stringifiedTestGameList);
-    await container.read(gamesProvider.notifier).storeGames([testGame]);
+    await container.read(gameStorageProvider).persistGamesList(
+          GamesList(games: [testGame]),
+        );
     verify(mockFile.writeAsString(stringifiedTestGameList)).called(1);
 
     // gamesProvider is supposed to be re-computed after the file was written
     final finalValue = await container.read(gamesProvider.future);
     // the game file should have been opened once more
     verify(mockFileUtils.openFile(gameFileName)).called(1);
-    expect(finalValue, [testGame]);
+    expect(finalValue.games, [testGame]);
   });
 }

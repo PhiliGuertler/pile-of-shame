@@ -1,6 +1,4 @@
 # Must-have features
-1. Add new games/DLCs
-2. Edit existing games/DLCs
 3. Filter games list by
     - Platform-Family (Microsoft, Sony, Nintendo, etc.)
     - Platform (PS2, Wii, etc.)
@@ -20,3 +18,4 @@
 - Statistics in Diagrams about the game library, e.g.:
     - pie-chart on amount of games per Platform-Family/Platform
     - pie-chart on total price of games per Platform-Family/Platform
+- Fancy animations, smooth user experience, etc

@@ -7,6 +7,8 @@
       }
     }
   },
+  "addDLC": "Add DLC",
+  "addGame": "Add game",
   "ageRating": "Age rating",
   "appName": "Pile of shame",
   "appSettings": "App-Settings",
@@ -20,12 +22,15 @@
   "completed": "completed",
   "completed100Percent": "100% completed",
   "dark": "Dark",
+  "editDLC": "Edit DLC",
+  "editGame": "Edit game",
   "endlessGame": "Endless game",
   "games": "Games",
   "language": "Language",
   "languageSubtitle": "The most controversial Decision",
   "lastModified": "Last modified",
   "light": "Light",
+  "name": "Name",
   "onPileOfShame": "On the pile of shame",
   "onWishList": "on wishlist",
   "platform": "Platform",
@@ -36,6 +41,8 @@
   "replaying": "Replaying",
   "save": "Save",
   "settings": "Settings",
+  "status": "Status",
   "systemDefined": "Specified by the system",
-  "systemLanguage": "System-Language"
+  "systemLanguage": "System-Language",
+  "thisFieldIsRequired": "This field is required"
 }
