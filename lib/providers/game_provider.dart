@@ -42,12 +42,12 @@ class Games extends _$Games {
   }
 
   Future<void> importGamesFromFile(File file) async {
-    // TODO: Persist these values?
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
-    final contents = await file.readAsString();
-    final jsonContents = jsonDecode(contents);
-    final gameList = GamesList.fromJson(jsonContents);
+      final contents = await file.readAsString();
+      final jsonContents = jsonDecode(contents);
+      final gameList = GamesList.fromJson(jsonContents);
+      await storeGames(gameList.games);
       return gameList.games;
     });
   }

@@ -12,10 +12,20 @@ class EditableDLC with _$EditableDLC {
   const EditableDLC._();
 
   const factory EditableDLC({
+    String? uuid,
     String? name,
     @Default(PlayStatus.onPileOfShame) PlayStatus status,
     double? price,
   }) = _EditableDLC;
+
+  factory EditableDLC.fromDLC(DLC dlc) {
+    return EditableDLC(
+      uuid: dlc.id,
+      name: dlc.name,
+      price: dlc.price,
+      status: dlc.status,
+    );
+  }
 
   bool isValid() {
     return name != null;
@@ -25,7 +35,7 @@ class EditableDLC with _$EditableDLC {
     assert(isValid());
 
     return DLC(
-      id: const Uuid().v4(),
+      id: uuid ?? const Uuid().v4(),
       lastModified: DateTime.now(),
       name: name!,
       status: status,
@@ -39,6 +49,7 @@ class EditableGame with _$EditableGame {
   const EditableGame._();
 
   const factory EditableGame({
+    String? uuid,
     String? name,
     GamePlatform? platform,
     @Default(PlayStatus.onPileOfShame) PlayStatus status,
@@ -46,6 +57,18 @@ class EditableGame with _$EditableGame {
     @Default(USK.usk0) USK usk,
     @Default([]) List<EditableDLC> dlcs,
   }) = _EditableGame;
+
+  factory EditableGame.fromGame(Game game) {
+    return EditableGame(
+      uuid: game.id,
+      name: game.name,
+      platform: game.platform,
+      price: game.price,
+      status: game.status,
+      usk: game.usk,
+      dlcs: game.dlcs.map((dlc) => EditableDLC.fromDLC(dlc)).toList(),
+    );
+  }
 
   bool isValid() {
     return name != null && platform != null;
@@ -55,7 +78,7 @@ class EditableGame with _$EditableGame {
     assert(isValid() && dlcs.every((element) => element.isValid()));
 
     return Game(
-      id: const Uuid().v4(),
+      id: uuid ?? const Uuid().v4(),
       name: name!,
       platform: platform!,
       status: status,

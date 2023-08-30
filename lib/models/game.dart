@@ -4,8 +4,8 @@ import 'package:pile_of_shame/models/play_status.dart';
 
 import 'age_restriction.dart';
 
-part 'game.g.dart';
 part 'game.freezed.dart';
+part 'game.g.dart';
 
 @freezed
 class DLC with _$DLC {

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pile_of_shame/features/games/add_game/models/editable_game.dart';
+import 'package:pile_of_shame/features/games/add_game/screens/add_game_screen.dart';
 import 'package:pile_of_shame/features/games/game_details/widgets/sliver_game_details.dart';
+import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/models/game_platforms.dart';
 import 'package:pile_of_shame/providers/game_provider.dart';
 import 'package:pile_of_shame/utils/constants.dart';
@@ -41,14 +44,39 @@ class _GameDetailsScreenState extends ConsumerState<GameDetailsScreen> {
                   loading: () =>
                       GamePlatform.unknown.controllerLogoPath(context),
                 ),
-                actions: [
-                  IconButton(
-                    icon: const Icon(Icons.edit),
-                    onPressed: () {
-                      debugPrint('TODO: Implement editing');
-                    },
-                  )
-                ],
+                actions: game.maybeWhen(
+                  data: (game) => [
+                    IconButton(
+                      icon: const Icon(Icons.edit),
+                      onPressed: () async {
+                        final result =
+                            await Navigator.of(context).push<EditableGame?>(
+                          MaterialPageRoute(
+                            builder: (context) => AddGameScreen(
+                              initialValue: EditableGame.fromGame(game),
+                            ),
+                          ),
+                        );
+
+                        if (result != null) {
+                          final updatedGame = result.toGame();
+                          final List<Game> updatedGames =
+                              List.from(await ref.read(gamesProvider.future));
+                          final gameIndex = updatedGames.indexWhere(
+                              (element) => element.id == updatedGame.id);
+                          assert(gameIndex != -1);
+
+                          updatedGames[gameIndex] = updatedGame;
+
+                          ref
+                              .read(gamesProvider.notifier)
+                              .storeGames(updatedGames);
+                        }
+                      },
+                    ),
+                  ],
+                  orElse: () => [],
+                ),
                 title: game.when(
                   data: (game) => Text(game.name),
                   error: (error, stackTrace) => const Text('Error'),

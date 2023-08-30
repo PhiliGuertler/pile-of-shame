@@ -4,10 +4,8 @@ import 'package:pile_of_shame/features/games/add_game/providers/add_game_provide
 import 'package:pile_of_shame/features/games/add_game/widgets/game_platform_input_field.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/age_restriction.dart';
-import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/models/game_platforms.dart';
 import 'package:pile_of_shame/models/play_status.dart';
-import 'package:pile_of_shame/providers/game_provider.dart';
 import 'package:pile_of_shame/utils/constants.dart';
 import 'package:pile_of_shame/utils/validators.dart';
 import 'package:pile_of_shame/widgets/game_platform_icon.dart';
@@ -21,7 +19,9 @@ import '../models/editable_game.dart';
 import 'add_dlc_screen.dart';
 
 class AddGameScreen extends ConsumerStatefulWidget {
-  const AddGameScreen({super.key});
+  final EditableGame? initialValue;
+
+  const AddGameScreen({super.key, this.initialValue});
 
   @override
   ConsumerState<AddGameScreen> createState() => _AddGameScreenState();
@@ -32,7 +32,7 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final editableGame = ref.watch(addGameProvider());
+    final editableGame = ref.watch(addGameProvider(widget.initialValue));
 
     final List<GamePlatform> sortedGamePlatforms =
         List.from(GamePlatform.values);
@@ -44,7 +44,9 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.addGame),
+        title: Text(widget.initialValue == null
+            ? AppLocalizations.of(context)!.addGame
+            : AppLocalizations.of(context)!.editGame),
       ),
       body: Form(
         key: _formKey,
@@ -61,11 +63,10 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
                     initialValue: editableGame.name ?? '',
                     onChanged: (value) {
                       ref
-                          .read(addGameProvider().notifier)
+                          .read(addGameProvider(widget.initialValue).notifier)
                           .updateGame(editableGame.copyWith(name: value));
                     },
                     validator: Validators.validateFieldIsRequired(context),
-                    autofocus: true,
                   ),
                 ),
                 Padding(
@@ -105,7 +106,7 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
                     options: sortedGamePlatforms,
                     onChanged: (value) {
                       ref
-                          .read(addGameProvider().notifier)
+                          .read(addGameProvider(widget.initialValue).notifier)
                           .updateGame(editableGame.copyWith(platform: value));
                     },
                   ),
@@ -121,7 +122,7 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
                     onChanged: (value) {
                       if (value != null) {
                         ref
-                            .read(addGameProvider().notifier)
+                            .read(addGameProvider(widget.initialValue).notifier)
                             .updateGame(editableGame.copyWith(status: value));
                       }
                     },
@@ -151,7 +152,7 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
                     initialValue: editableGame.price,
                     onChanged: (value) {
                       ref
-                          .read(addGameProvider().notifier)
+                          .read(addGameProvider(widget.initialValue).notifier)
                           .updateGame(editableGame.copyWith(price: value));
                     },
                     isCurrency: true,
@@ -172,7 +173,7 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
                     onChanged: (value) {
                       if (value != null) {
                         ref
-                            .read(addGameProvider().notifier)
+                            .read(addGameProvider(widget.initialValue).notifier)
                             .updateGame(editableGame.copyWith(usk: value));
                       }
                     },
@@ -218,9 +219,14 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
                           );
 
                           if (result != null) {
-                            ref.read(addGameProvider().notifier).updateGame(
-                                editableGame.copyWith(
-                                    dlcs: [...editableGame.dlcs, result]));
+                            ref
+                                .read(addGameProvider(widget.initialValue)
+                                    .notifier)
+                                .updateGame(
+                                  editableGame.copyWith(
+                                    dlcs: [...editableGame.dlcs, result],
+                                  ),
+                                );
                           }
                         },
                       ),
@@ -248,7 +254,9 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
                                     updatedList[index] = update;
 
                                     ref
-                                        .read(addGameProvider().notifier)
+                                        .read(
+                                            addGameProvider(widget.initialValue)
+                                                .notifier)
                                         .updateGame(
                                           editableGame.copyWith(
                                               dlcs: updatedList),
@@ -280,16 +288,8 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
                       onPressed: () async {
                         if (_formKey.currentState!.validate() &&
                             editableGame.isValid()) {
-                          final games = await ref.read(gamesProvider.future);
-                          final List<Game> updatedGames = List.from(games);
-                          updatedGames.add(editableGame.toGame());
-
-                          await ref
-                              .read(gamesProvider.notifier)
-                              .storeGames(updatedGames);
-
                           if (context.mounted) {
-                            Navigator.of(context).pop();
+                            Navigator.of(context).pop(editableGame);
                           }
                         }
                       },
