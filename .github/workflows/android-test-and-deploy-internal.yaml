@@ -1,6 +1,8 @@
 name: android-test-and-deploy-internal
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - master
 
 jobs:
   test_and_build:
