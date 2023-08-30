@@ -79,13 +79,8 @@ class NumberInputField extends ConsumerWidget {
       initialValue: startValue,
       onChanged: (textValue) {
         if (onChanged != null) {
-          try {
-            final parsed = numberFormatter.parse(textValue);
-            onChanged!(parsed.toDouble());
-          } catch (error) {
-            // Do nothing yet
-            debugPrint(error.toString());
-          }
+          final parsed = numberFormatter.parse(textValue);
+          onChanged!(parsed.toDouble());
         }
       },
       validator: validator,

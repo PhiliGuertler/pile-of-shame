@@ -5,6 +5,7 @@ class TextInputField extends StatelessWidget {
   final String? initialValue;
   final String? helperText;
   final bool enabled;
+  final bool autofocus;
 
   /// Defaults to TextInputAction.next
   final TextInputAction textInputAction;
@@ -20,6 +21,7 @@ class TextInputField extends StatelessWidget {
     this.helperText,
     this.enabled = true,
     this.validator,
+    this.autofocus = false,
   });
 
   @override
@@ -34,6 +36,7 @@ class TextInputField extends StatelessWidget {
       initialValue: initialValue,
       onChanged: onChanged,
       validator: validator,
+      autofocus: autofocus,
     );
   }
 }

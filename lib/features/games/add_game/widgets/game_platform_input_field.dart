@@ -6,12 +6,14 @@ class GamePlatformInputField extends StatelessWidget {
   final Widget label;
   final GamePlatform? value;
   final VoidCallback onTap;
+  final String? Function(String? value)? validator;
 
   const GamePlatformInputField({
     super.key,
     required this.label,
     required this.onTap,
     this.value,
+    this.validator,
   });
 
   @override
@@ -33,6 +35,7 @@ class GamePlatformInputField extends StatelessWidget {
           ),
         ),
       ),
+      validator: validator,
       controller:
           value != null ? TextEditingController(text: value!.name) : null,
       onTap: onTap,

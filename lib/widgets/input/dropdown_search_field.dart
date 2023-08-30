@@ -57,7 +57,6 @@ class _CategorySearchFieldState<T>
   @override
   Widget build(BuildContext context) {
     return SearchAnchor(
-      isFullScreen: false,
       searchController: _searchController,
       builder: (context, controller) {
         return widget.valueBuilder(context, widget.value, () {
