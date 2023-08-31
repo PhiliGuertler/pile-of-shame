@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
-import 'package:pile_of_shame/providers/game_file_provider.dart';
+import 'package:pile_of_shame/providers/games/game_file_provider.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
 class FakePathProviderPlatform extends Fake

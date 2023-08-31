@@ -9,8 +9,8 @@ import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/models/game_platforms.dart';
 import 'package:pile_of_shame/models/play_status.dart';
 import 'package:pile_of_shame/providers/file_provider.dart';
-import 'package:pile_of_shame/providers/game_file_provider.dart';
-import 'package:pile_of_shame/providers/game_provider.dart';
+import 'package:pile_of_shame/providers/games/game_file_provider.dart';
+import 'package:pile_of_shame/providers/games/game_provider.dart';
 import 'package:pile_of_shame/utils/file_utils.dart';
 
 @GenerateNiceMocks([MockSpec<FileUtils>(), MockSpec<File>()])

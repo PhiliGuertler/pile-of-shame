@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/models/game_storage.dart';
-import 'package:pile_of_shame/providers/game_file_provider.dart';
+import 'package:pile_of_shame/providers/games/game_file_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'game_provider.g.dart';
