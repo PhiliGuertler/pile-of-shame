@@ -88,9 +88,68 @@ void main() {
       usk: USK.usk12,
     );
 
-    test(
-      'correctly updates an existing game',
-      () {
+    group('updateGame', () {
+      test(
+        'correctly updates an existing game',
+        () {
+          final GamesList gamesList = GamesList(
+            games: [
+              gameOuterWilds,
+              gameDistance,
+              gameSsx3,
+              gameOriAndTheBlindForest,
+            ],
+          );
+
+          final Game updatedGameDistance = gameDistance.copyWith(
+            name: 'Distance Updated',
+          );
+
+          expect(gamesList.games, [
+            gameOuterWilds,
+            gameDistance,
+            gameSsx3,
+            gameOriAndTheBlindForest,
+          ]);
+
+          gamesList.updateGame(gameDistance.id, updatedGameDistance);
+
+          expect(gamesList.games, [
+            gameOuterWilds,
+            updatedGameDistance,
+            gameSsx3,
+            gameOriAndTheBlindForest,
+          ]);
+        },
+      );
+      test(
+        'throws an exception if attempting to update a non existing game',
+        () {
+          final GamesList gamesList = GamesList(
+            games: [
+              gameOuterWilds,
+            ],
+          );
+
+          final Game updatedGameDistance = gameDistance.copyWith(
+            name: 'Distance Updated',
+          );
+
+          expect(gamesList.games, [
+            gameOuterWilds,
+          ]);
+
+          try {
+            gamesList.updateGame(gameDistance.id, updatedGameDistance);
+          } catch (error) {
+            return;
+          }
+          fail('No exception thrown');
+        },
+      );
+    });
+    group('removeGame', () {
+      test('correctly removes an existing Game', () {
         final GamesList gamesList = GamesList(
           games: [
             gameOuterWilds,
@@ -100,10 +159,6 @@ void main() {
           ],
         );
 
-        final Game updatedGameDistance = gameDistance.copyWith(
-          name: 'Distance Updated',
-        );
-
         expect(gamesList.games, [
           gameOuterWilds,
           gameDistance,
@@ -111,27 +166,19 @@ void main() {
           gameOriAndTheBlindForest,
         ]);
 
-        gamesList.updateGame(gameDistance.id, updatedGameDistance);
+        gamesList.removeGame(gameDistance.id);
 
         expect(gamesList.games, [
           gameOuterWilds,
-          updatedGameDistance,
           gameSsx3,
           gameOriAndTheBlindForest,
         ]);
-      },
-    );
-    test(
-      'throws an exception if attempting to update a non existing game',
-      () {
+      });
+      test('throws an exception if no game with the given id exists', () {
         final GamesList gamesList = GamesList(
           games: [
             gameOuterWilds,
           ],
-        );
-
-        final Game updatedGameDistance = gameDistance.copyWith(
-          name: 'Distance Updated',
         );
 
         expect(gamesList.games, [
@@ -139,12 +186,13 @@ void main() {
         ]);
 
         try {
-          gamesList.updateGame(gameDistance.id, updatedGameDistance);
+          gamesList.removeGame(gameDistance.id);
         } catch (error) {
           return;
         }
+
         fail('No exception thrown');
-      },
-    );
+      });
+    });
   });
 }

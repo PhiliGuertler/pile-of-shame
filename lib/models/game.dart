@@ -71,11 +71,14 @@ class GamesList with _$GamesList {
   }
 
   void removeGame(String id) {
+    assert(games.indexWhere((element) => element.id == id) != -1,
+        "No Game with id '$id' found");
     games.removeWhere((element) => element.id == id);
   }
 
   void addGame(Game game) {
-    assert(games.every((element) => element.id != game.id));
+    assert(games.every((element) => element.id != game.id),
+        "Game with id '${game.id}' already exists. Did you mean to update an existing Game?");
     games.add(game);
   }
 }
