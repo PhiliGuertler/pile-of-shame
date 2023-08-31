@@ -194,5 +194,52 @@ void main() {
         fail('No exception thrown');
       });
     });
+    group('addGame', () {
+      test('correctly adds a new Game', () {
+        final GamesList gamesList = GamesList(
+          games: [
+            gameOuterWilds,
+            gameDistance,
+            gameSsx3,
+          ],
+        );
+
+        expect(gamesList.games, [
+          gameOuterWilds,
+          gameDistance,
+          gameSsx3,
+        ]);
+
+        gamesList.addGame(gameOriAndTheBlindForest);
+
+        expect(gamesList.games, [
+          gameOuterWilds,
+          gameDistance,
+          gameSsx3,
+          gameOriAndTheBlindForest,
+        ]);
+      });
+      test(
+          "throws an exception if a game with the new game's id already exists",
+          () {
+        final GamesList gamesList = GamesList(
+          games: [
+            gameOuterWilds,
+          ],
+        );
+
+        expect(gamesList.games, [
+          gameOuterWilds,
+        ]);
+
+        try {
+          gamesList.addGame(gameOuterWilds);
+        } catch (error) {
+          return;
+        }
+
+        fail('No exception thrown');
+      });
+    });
   });
 }
