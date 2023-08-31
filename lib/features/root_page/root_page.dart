@@ -79,7 +79,7 @@ class _RootPageState extends ConsumerState<RootPage> {
             key: ValueKey(activeTab.index), child: children[activeTab.index]),
       ),
       floatingActionButton: activeTab.fab(context, !isScrolled),
-      appBar: activeTab.appBar(),
+      appBar: activeTab.appBar(_scrollController),
       bottomNavigationBar: NavigationBar(
         selectedIndex: activeTab.index,
         onDestinationSelected: (index) => _handleRootTabChange(index, context),

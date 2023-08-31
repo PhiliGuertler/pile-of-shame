@@ -5,14 +5,25 @@ import 'package:pile_of_shame/providers/file_provider.dart';
 import 'package:pile_of_shame/providers/game_provider.dart';
 
 class RootGamesAppBar extends ConsumerWidget implements PreferredSizeWidget {
+  final ScrollController scrollController;
+
   final preferredSizeAppBar = AppBar();
 
-  RootGamesAppBar({super.key});
+  RootGamesAppBar({super.key, required this.scrollController});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return AppBar(
-      title: Text(AppLocalizations.of(context)!.games),
+      title: GestureDetector(
+        child: Text(AppLocalizations.of(context)!.games),
+        onTap: () {
+          scrollController.animateTo(
+            0,
+            duration: const Duration(milliseconds: 600),
+            curve: Curves.easeInOut,
+          );
+        },
+      ),
       actions: [
         IconButton(
             onPressed: () async {
