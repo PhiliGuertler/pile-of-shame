@@ -65,7 +65,7 @@ class GamesList with _$GamesList {
 
   void updateGame(String id, Game update) {
     final gameIndex = games.indexWhere((element) => element.id == id);
-    assert(gameIndex != -1);
+    assert(gameIndex != -1, "No Game with id '$id' found");
 
     games[gameIndex] = update;
   }
