@@ -26,13 +26,11 @@ class GamesScreen extends ConsumerWidget {
               physics: const BouncingScrollPhysics(
                   parent: AlwaysScrollableScrollPhysics()),
               slivers: [
-                ...games.games
-                    .map(
-                      (game) => SliverToBoxAdapter(
-                        child: GameListTile(game: game),
-                      ),
-                    )
-                    .toList(),
+                SliverList.builder(
+                  itemBuilder: (context, index) =>
+                      GameListTile(game: games.games[index]),
+                  itemCount: games.games.length,
+                ),
                 const SliverToBoxAdapter(
                   child: SizedBox(
                     height: 48.0,
@@ -49,10 +47,10 @@ class GamesScreen extends ConsumerWidget {
         loading: () => CustomScrollView(
           physics: const NeverScrollableScrollPhysics(),
           slivers: [
-            for (int i = 0; i < 10; ++i)
-              const SliverToBoxAdapter(
-                child: SkeletonGameDisplay(),
-              ),
+            SliverList.builder(
+              itemBuilder: (context, index) => const SkeletonGameDisplay(),
+              itemCount: 10,
+            ),
           ],
         ).animate().fadeIn(),
       ),
