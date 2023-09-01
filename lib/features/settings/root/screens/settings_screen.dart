@@ -19,6 +19,9 @@ class SettingsScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final isDebugMode = ref.watch(debugFeatureAccessProvider);
 
+    final errorContainer = Theme.of(context).colorScheme.errorContainer;
+    final onErrorContainer = Theme.of(context).colorScheme.onErrorContainer;
+
     return SafeArea(
       child: CustomScrollView(
         physics: const BouncingScrollPhysics(
@@ -102,11 +105,21 @@ class SettingsScreen extends ConsumerWidget {
                     },
                   ),
                 SegmentedActionCardItem(
-                  leading: const Icon(Icons.delete_forever),
-                  title: Text(AppLocalizations.of(context)!.deleteGames),
-                  trailing: const Icon(Icons.warning),
+                  leading: Icon(
+                    Icons.delete_forever,
+                    color: onErrorContainer,
+                  ),
+                  title: Text(AppLocalizations.of(context)!.deleteGames,
+                      style: TextStyle(color: onErrorContainer)),
+                  trailing: Icon(
+                    Icons.warning,
+                    color: onErrorContainer,
+                  ),
+                  tileColor: errorContainer,
                   subtitle: Text(
-                      AppLocalizations.of(context)!.thisActionCannotBeUndone),
+                    AppLocalizations.of(context)!.thisActionCannotBeUndone,
+                    style: TextStyle(color: onErrorContainer),
+                  ),
                   onTap: () async {
                     final bool? response = await showAdaptiveDialog<bool>(
                       context: context,
