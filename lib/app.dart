@@ -38,6 +38,7 @@ class App extends ConsumerWidget {
       final ColorScheme darkColorScheme = appTheme.computeColorScheme(false);
 
       return MaterialApp(
+        scaffoldMessengerKey: scaffoldMessengerKey,
         theme: _createThemeData(
           lightColorScheme,
         ),
