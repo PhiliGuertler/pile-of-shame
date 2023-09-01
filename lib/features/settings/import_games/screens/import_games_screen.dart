@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
+import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/providers/file_provider.dart';
 import 'package:pile_of_shame/providers/games/game_provider.dart';
 import 'package:pile_of_shame/utils/constants.dart';
@@ -15,6 +18,49 @@ class ImportGamesScreen extends ConsumerStatefulWidget {
 
 class _ImportGamesScreenState extends ConsumerState<ImportGamesScreen> {
   bool isLoading = false;
+
+  Future<void> importGames(
+      Future<GamesList> Function(File file) processGames) async {
+    setState(() {
+      isLoading = true;
+    });
+    final pickedFile = await ref.read(fileUtilsProvider).pickFile();
+    if (pickedFile != null) {
+      try {
+        final gameStorage = ref.read(gameStorageProvider);
+
+        final games = await processGames(pickedFile);
+
+        await gameStorage.persistGamesList(games);
+
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(AppLocalizations.of(context)!.importSuccessful),
+            ),
+          );
+        }
+      } catch (error) {
+        setState(() {
+          isLoading = false;
+        });
+        if (context.mounted) {
+          throw Exception(AppLocalizations.of(context)!.importFailed);
+        }
+      }
+    } else {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(AppLocalizations.of(context)!.importCancelled),
+          ),
+        );
+      }
+    }
+    setState(() {
+      isLoading = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,61 +98,42 @@ class _ImportGamesScreenState extends ConsumerState<ImportGamesScreen> {
                         .yourPreviousGamesWillBeDeleted),
                     onTap: isLoading
                         ? null
-                        : () async {
-                            setState(() {
-                              isLoading = true;
-                            });
-                            final pickedFile =
-                                await ref.read(fileUtilsProvider).pickFile();
-                            if (pickedFile != null) {
-                              try {
+                        : () => importGames(
+                              (File pickedFile) async {
                                 final gameStorage =
                                     ref.read(gameStorageProvider);
-                                final games = await gameStorage
+                                return await gameStorage
                                     .readGamesFromFile(pickedFile);
-                                await gameStorage.persistGamesList(games);
-
-                                if (context.mounted) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(
-                                          AppLocalizations.of(context)!
-                                              .importSuccessful),
-                                    ),
-                                  );
-                                }
-                              } catch (error) {
-                                setState(() {
-                                  isLoading = false;
-                                });
-                                if (context.mounted) {
-                                  throw Exception(AppLocalizations.of(context)!
-                                      .importFailed);
-                                }
-                              }
-                            } else {
-                              if (context.mounted) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text(AppLocalizations.of(context)!
-                                        .importCancelled),
-                                  ),
-                                );
-                              }
-                            }
-                            setState(() {
-                              isLoading = false;
-                            });
-                          },
+                              },
+                            ),
                   ),
                   SegmentedActionCardItem(
                     trailing: trailing,
                     title: Text(AppLocalizations.of(context)!.importAndUpdate),
                     subtitle: Text(
                         "${AppLocalizations.of(context)!.gamesInYourListThatAreOlderThanImportedGamesWillBeOverwritten} ${AppLocalizations.of(context)!.gamesThatAreNotInYourListWillBeImported}"),
-                    onTap: () async {
-                      throw UnimplementedError();
-                    },
+                    onTap: isLoading
+                        ? null
+                        : () => importGames(
+                              (File pickedFile) async {
+                                final gameStorage =
+                                    ref.read(gameStorageProvider);
+                                final GamesList importedGames =
+                                    await gameStorage
+                                        .readGamesFromFile(pickedFile);
+
+                                final GamesList existingGames =
+                                    await ref.read(gamesProvider.future);
+
+                                final GamesList games =
+                                    existingGames.copyWith();
+
+                                games.updateGames(importedGames);
+                                games.addGames(importedGames);
+
+                                return games;
+                              },
+                            ),
                   ),
                   SegmentedActionCardItem(
                     trailing: trailing,
@@ -114,9 +141,27 @@ class _ImportGamesScreenState extends ConsumerState<ImportGamesScreen> {
                         Text(AppLocalizations.of(context)!.updateExistingGames),
                     subtitle: Text(AppLocalizations.of(context)!
                         .gamesInYourListThatAreOlderThanImportedGamesWillBeOverwritten),
-                    onTap: () async {
-                      throw UnimplementedError();
-                    },
+                    onTap: isLoading
+                        ? null
+                        : () => importGames(
+                              (File pickedFile) async {
+                                final gameStorage =
+                                    ref.read(gameStorageProvider);
+                                final GamesList importedGames =
+                                    await gameStorage
+                                        .readGamesFromFile(pickedFile);
+
+                                final GamesList existingGames =
+                                    await ref.read(gamesProvider.future);
+
+                                final GamesList games =
+                                    existingGames.copyWith();
+
+                                games.updateGames(importedGames);
+
+                                return games;
+                              },
+                            ),
                   ),
                   SegmentedActionCardItem(
                     trailing: trailing,
@@ -124,9 +169,27 @@ class _ImportGamesScreenState extends ConsumerState<ImportGamesScreen> {
                         AppLocalizations.of(context)!.importMissingGamesOnly),
                     subtitle: Text(AppLocalizations.of(context)!
                         .gamesThatAreNotInYourListWillBeImported),
-                    onTap: () async {
-                      throw UnimplementedError();
-                    },
+                    onTap: isLoading
+                        ? null
+                        : () => importGames(
+                              (File pickedFile) async {
+                                final gameStorage =
+                                    ref.read(gameStorageProvider);
+                                final GamesList importedGames =
+                                    await gameStorage
+                                        .readGamesFromFile(pickedFile);
+
+                                final GamesList existingGames =
+                                    await ref.read(gamesProvider.future);
+
+                                final GamesList games =
+                                    existingGames.copyWith();
+
+                                games.addGames(importedGames);
+
+                                return games;
+                              },
+                            ),
                   ),
                 ],
               ),

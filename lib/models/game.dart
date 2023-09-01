@@ -81,4 +81,30 @@ class GamesList with _$GamesList {
         "Game with id '${game.id}' already exists. Did you mean to update an existing Game?");
     games.add(game);
   }
+
+  void updateGames(GamesList gamesList) {
+    for (int i = 0; i < games.length; ++i) {
+      Game game = games[i];
+      int possibleUpdateIndex =
+          gamesList.games.indexWhere((update) => update.id == game.id);
+      if (possibleUpdateIndex == -1) {
+        continue;
+      }
+      Game update = gamesList.games[possibleUpdateIndex];
+      if (update.lastModified.compareTo(game.lastModified) > 0) {
+        games[i] = update;
+      }
+    }
+  }
+
+  void addGames(GamesList gamesList) {
+    for (int i = 0; i < gamesList.games.length; ++i) {
+      Game possibleNewGame = gamesList.games[i];
+      int index =
+          games.indexWhere((element) => element.id == possibleNewGame.id);
+      if (index == -1) {
+        addGame(possibleNewGame);
+      }
+    }
+  }
 }
