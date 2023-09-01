@@ -5,7 +5,9 @@ import 'package:pile_of_shame/features/settings/appearance/screens/appearance_sc
 import 'package:pile_of_shame/features/settings/import_games/screens/import_games_screen.dart';
 import 'package:pile_of_shame/features/settings/language/screens/language_screen.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
+import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/providers/debug_provider.dart';
+import 'package:pile_of_shame/providers/games/game_provider.dart';
 import 'package:pile_of_shame/utils/constants.dart';
 import 'package:pile_of_shame/utils/debug/debug_secret_code_input.dart';
 import 'package:pile_of_shame/widgets/segmented_action_card.dart';
@@ -15,6 +17,8 @@ class SettingsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final isDebugMode = ref.watch(debugFeatureAccessProvider);
+
     return SafeArea(
       child: CustomScrollView(
         physics: const BouncingScrollPhysics(
@@ -86,14 +90,60 @@ class SettingsScreen extends ConsumerWidget {
                     ));
                   },
                 ),
+                if (isDebugMode)
+                  SegmentedActionCardItem(
+                    leading: const Icon(Icons.file_upload),
+                    title: Text(AppLocalizations.of(context)!.exportGames),
+                    subtitle: Text(
+                        AppLocalizations.of(context)!.exportGamesToAJSONFile),
+                    onTap: () {
+                      // TODO: Implement button
+                      throw UnimplementedError();
+                    },
+                  ),
                 SegmentedActionCardItem(
-                  leading: const Icon(Icons.file_upload),
-                  title: Text(AppLocalizations.of(context)!.exportGames),
+                  leading: const Icon(Icons.delete_forever),
+                  title: Text(AppLocalizations.of(context)!.deleteGames),
+                  trailing: const Icon(Icons.warning),
                   subtitle: Text(
-                      AppLocalizations.of(context)!.exportGamesToAJSONFile),
-                  onTap: () {
-                    // TODO: Implement button
-                    throw UnimplementedError();
+                      AppLocalizations.of(context)!.thisActionCannotBeUndone),
+                  onTap: () async {
+                    final bool? response = await showAdaptiveDialog<bool>(
+                      context: context,
+                      builder: (context) => AlertDialog.adaptive(
+                        title:
+                            Text(AppLocalizations.of(context)!.deleteAllGames),
+                        content: Text(AppLocalizations.of(context)!
+                            .thisActionCannotBeUndone),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop(false);
+                            },
+                            child: Text(AppLocalizations.of(context)!.cancel),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop(true);
+                            },
+                            child: Text(AppLocalizations.of(context)!.yes),
+                          ),
+                        ],
+                      ),
+                    );
+                    if (response != null && response) {
+                      final gameStore = ref.read(gameStorageProvider);
+                      gameStore.persistGamesList(const GamesList(games: []));
+
+                      if (context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                                AppLocalizations.of(context)!.allGamesDeleted),
+                          ),
+                        );
+                      }
+                    }
                   },
                 ),
               ],

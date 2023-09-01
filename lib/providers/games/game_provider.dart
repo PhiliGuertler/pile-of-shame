@@ -63,3 +63,28 @@ AsyncValue<DLC> dlcByGameAndId(
     loading: () => const AsyncValue.loading(),
   );
 }
+
+@riverpod
+double gamesFilteredTotalPrice(GamesFilteredTotalPriceRef ref) {
+  final games = ref.watch(gamesFilteredProvider);
+
+  return games.when(
+    data: (games) => games.games.fold(
+      0.0,
+      (previousValue, element) => previousValue + element.fullPrice(),
+    ),
+    error: (error, stackTrace) => 0.0,
+    loading: () => 0.0,
+  );
+}
+
+@riverpod
+int gamesFilteredTotalAmount(GamesFilteredTotalAmountRef ref) {
+  final games = ref.watch(gamesFilteredProvider);
+
+  return games.when(
+    data: (games) => games.games.length,
+    error: (error, stackTrace) => 0,
+    loading: () => 0,
+  );
+}

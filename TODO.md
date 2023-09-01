@@ -4,6 +4,8 @@
 - Add Icons for different PlayStatuses
 - Implement settings for different game displays
 - Add option to delete a game or DLC
+- Add a search
+- Add controller images for all platforms
 
 # Must-have features
 - Filter games list by
