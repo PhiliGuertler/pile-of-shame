@@ -4,14 +4,17 @@ import '../image_container.dart';
 import 'skeleton.dart';
 
 class ImageContainerSkeleton extends StatelessWidget {
-  const ImageContainerSkeleton({super.key});
+  final Duration? animationDuration;
+
+  const ImageContainerSkeleton({super.key, this.animationDuration});
 
   @override
   Widget build(BuildContext context) {
-    return const ImageContainer(
+    return ImageContainer(
       child: Skeleton(
         height: ImageContainer.imageSize,
         widthFactor: 1.0,
+        animationDuration: animationDuration,
       ),
     );
   }
