@@ -55,22 +55,17 @@ class AgeRatingFilter extends _$AgeRatingFilter {
 }
 
 @riverpod
-List<Game> filteredGames(FilteredGamesRef ref, List<Game> games) {
+List<Game> applyGameFilters(ApplyGameFiltersRef ref, List<Game> games) {
   final platformFilter = ref.watch(gamePlatformFilterProvider);
   final platformFamilyFilter = ref.watch(gamePlatformFamilyFilterProvider);
   final playStatusFilter = ref.watch(playStatusFilterProvider);
   final ageRatingFilter = ref.watch(ageRatingFilterProvider);
 
   final result = games.where((Game game) {
-    bool isContainedInPlatform = platformFilter.contains(game.platform);
-    bool isContainedInPlatformFamily =
-        platformFamilyFilter.contains(game.platform.family);
-    bool isContainedInPlayStatus = playStatusFilter.contains(game.status);
-    bool isContainedInAgeRatings = ageRatingFilter.contains(game.usk);
-    return isContainedInPlatform &&
-        isContainedInPlatformFamily &&
-        isContainedInPlayStatus &&
-        isContainedInAgeRatings;
+    return platformFilter.contains(game.platform) &&
+        platformFamilyFilter.contains(game.platform.family) &&
+        playStatusFilter.contains(game.status) &&
+        ageRatingFilter.contains(game.usk);
   }).toList();
 
   return result;
