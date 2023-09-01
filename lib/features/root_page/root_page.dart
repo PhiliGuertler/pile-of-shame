@@ -16,12 +16,17 @@ class RootPage extends ConsumerStatefulWidget {
 }
 
 class _RootPageState extends ConsumerState<RootPage> {
-  late ScrollController _scrollController;
+  late ScrollController _scrollControllerGames;
   bool isScrolled = false;
   RootTabs activeTab = RootTabs.games;
 
   void _handleRootTabChange(int index, BuildContext context) {
     if (index == RootTabs.games.index) {
+      if (index == activeTab.index) {
+        _scrollControllerGames.animateTo(0.0,
+            duration: const Duration(milliseconds: 500),
+            curve: Curves.easeInOut);
+      }
       setState(() {
         activeTab = RootTabs.games;
       });
@@ -34,8 +39,8 @@ class _RootPageState extends ConsumerState<RootPage> {
   }
 
   void handleScroll() {
-    final offset = _scrollController.offset;
-    final minScrollExtent = _scrollController.position.minScrollExtent;
+    final offset = _scrollControllerGames.offset;
+    final minScrollExtent = _scrollControllerGames.position.minScrollExtent;
     bool result = offset > minScrollExtent;
     setState(() {
       isScrolled = result;
@@ -45,13 +50,13 @@ class _RootPageState extends ConsumerState<RootPage> {
   @override
   void initState() {
     super.initState();
-    _scrollController = ScrollController();
-    _scrollController.addListener(handleScroll);
+    _scrollControllerGames = ScrollController();
+    _scrollControllerGames.addListener(handleScroll);
   }
 
   @override
   void dispose() {
-    _scrollController.removeListener(handleScroll);
+    _scrollControllerGames.removeListener(handleScroll);
     super.dispose();
   }
 
@@ -63,7 +68,7 @@ class _RootPageState extends ConsumerState<RootPage> {
     ];
 
     final children = [
-      GamesScreen(scrollController: _scrollController),
+      GamesScreen(scrollController: _scrollControllerGames),
       const SettingsScreen(),
     ];
 
@@ -79,7 +84,7 @@ class _RootPageState extends ConsumerState<RootPage> {
             key: ValueKey(activeTab.index), child: children[activeTab.index]),
       ),
       floatingActionButton: activeTab.fab(context, !isScrolled),
-      appBar: activeTab.appBar(_scrollController),
+      appBar: activeTab.appBar(_scrollControllerGames),
       bottomNavigationBar: NavigationBar(
         selectedIndex: activeTab.index,
         onDestinationSelected: (index) => _handleRootTabChange(index, context),
