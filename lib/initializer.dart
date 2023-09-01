@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -34,6 +35,23 @@ class Initializer {
         );
       });
       originalError?.call(details);
+    };
+
+    PlatformDispatcher.instance.onError = (error, stack) {
+      final isDebugMode = container.read(debugFeatureAccessProvider);
+
+      SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+        scaffoldMessengerKey.currentState?.showSnackBar(
+          SnackBar(
+            backgroundColor: Colors.red.shade800,
+            content: Text(
+              isDebugMode ? error.toString() : unknownErrorMessage,
+              style: const TextStyle(color: Colors.white),
+            ),
+          ),
+        );
+      });
+      return false;
     };
   }
 
