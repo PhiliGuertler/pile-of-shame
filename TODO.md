@@ -1,17 +1,26 @@
+# Next up
+- Add more unit tests
+- Improve UI when editing a game or DLC
+- Add Icons for different PlayStatuses
+- Implement settings for different game displays
+- Add option to delete a game or DLC
+
 # Must-have features
-3. Filter games list by
+- Filter games list by
     - Platform-Family (Microsoft, Sony, Nintendo, etc.)
     - Platform (PS2, Wii, etc.)
     - Age-Rating
     - Price (Span)
     - Has or has no DLCs
     - PlayStatus
-4. Sort games by
+- Sort games by
     - Name
     - PlayStatus
     - Price
     - Age-Rating
     - Platform (this includes grouping by Platform-Family)
+    - Amount of DLCs
+    - lastModified
 
 # Nice-to-have features
 - Support for different game information providers, e.g. IGDB, HowLongToBeat, etc.
