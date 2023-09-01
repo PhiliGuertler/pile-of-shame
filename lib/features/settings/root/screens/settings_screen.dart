@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:pile_of_shame/features/settings/appearance/screens/appearance_screen.dart';
+import 'package:pile_of_shame/features/settings/import_games/screens/import_games_screen.dart';
 import 'package:pile_of_shame/features/settings/language/screens/language_screen.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/providers/debug_provider.dart';
@@ -80,8 +81,9 @@ class SettingsScreen extends ConsumerWidget {
                   subtitle: Text(
                       AppLocalizations.of(context)!.importGamesFromAJSONFile),
                   onTap: () {
-                    // TODO: Implement button
-                    throw UnimplementedError();
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const ImportGamesScreen(),
+                    ));
                   },
                 ),
                 SegmentedActionCardItem(
