@@ -63,6 +63,17 @@ class SettingsScreen extends StatelessWidget {
               alignment: Alignment.bottomCenter,
               child: Padding(
                 padding: const EdgeInsets.all(defaultPaddingX),
+                child: DebugSecretCodeInput(
+                  onSecretEnteredCorrectly: () {
+                    final newDebugState = ref
+                        .read(debugFeatureAccessProvider.notifier)
+                        .toggleDebugMode();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text("Developer mode is now $newDebugState"),
+                      ),
+                    );
+                  },
                 child: FutureBuilder(
                   future: PackageInfo.fromPlatform(),
                   builder: (context, snapshot) {
@@ -82,6 +93,7 @@ class SettingsScreen extends StatelessWidget {
                 ),
               ),
             ),
+          ),
           ),
         ],
       ),
