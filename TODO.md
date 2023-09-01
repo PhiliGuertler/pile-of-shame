@@ -6,6 +6,7 @@
 - Add option to delete a game or DLC
 - Add a search
 - Add controller images for all platforms
+- Add a slick display if there are no games yet
 
 # Must-have features
 - Filter games list by
