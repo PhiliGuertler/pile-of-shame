@@ -11,10 +11,12 @@ enum RootTabs {
   settings,
   ;
 
-  PreferredSizeWidget appBar() {
+  PreferredSizeWidget appBar(ScrollController scrollController) {
     switch (this) {
       case RootTabs.games:
-        return RootGamesAppBar();
+        return RootGamesAppBar(
+          scrollController: scrollController,
+        );
       case RootTabs.settings:
         return RootSettingsAppBar();
     }

@@ -5,19 +5,26 @@ import 'skeleton.dart';
 import 'skeleton_image_container.dart';
 
 class SkeletonGameDisplay extends StatelessWidget {
+  static const Duration animationDuration = Duration(milliseconds: 800);
+
   const SkeletonGameDisplay({super.key});
 
   @override
   Widget build(BuildContext context) {
     return const ListTile(
-      leading: ImageContainerSkeleton(),
+      leading: ImageContainerSkeleton(
+        animationDuration: animationDuration,
+      ),
       title: Padding(
         padding: EdgeInsets.only(bottom: 4.0),
-        child: Skeleton(),
+        child: Skeleton(
+          animationDuration: animationDuration,
+        ),
       ),
       subtitle: Skeleton(
         height: PlayStatusDisplay.height,
         widthFactor: 1.0,
+        animationDuration: animationDuration,
       ),
       trailing: SizedBox(
         width: 50.0,
@@ -30,10 +37,12 @@ class SkeletonGameDisplay extends StatelessWidget {
               child: Skeleton(
                 widthFactor: 0.7,
                 alignment: Alignment.centerRight,
+                animationDuration: animationDuration,
               ),
             ),
             Skeleton(
               widthFactor: 1.0,
+              animationDuration: animationDuration,
             ),
           ],
         ),

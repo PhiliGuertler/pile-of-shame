@@ -16,6 +16,7 @@ class AppearanceColorPickerDialog extends ConsumerWidget {
       content: SingleChildScrollView(
         child: BlockPicker(
           availableColors: const [
+            Color(0xFF3B0000),
             Colors.red,
             Colors.orange,
             Colors.yellow,

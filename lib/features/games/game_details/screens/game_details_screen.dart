@@ -4,7 +4,7 @@ import 'package:pile_of_shame/features/games/add_game/models/editable_game.dart'
 import 'package:pile_of_shame/features/games/add_game/screens/add_game_screen.dart';
 import 'package:pile_of_shame/features/games/game_details/widgets/sliver_game_details.dart';
 import 'package:pile_of_shame/models/game_platforms.dart';
-import 'package:pile_of_shame/providers/game_provider.dart';
+import 'package:pile_of_shame/providers/games/game_provider.dart';
 import 'package:pile_of_shame/utils/constants.dart';
 import 'package:pile_of_shame/widgets/skeletons/skeleton.dart';
 import 'package:pile_of_shame/widgets/slivers/sliver_fancy_image_app_bar.dart';

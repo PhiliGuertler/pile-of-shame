@@ -3,8 +3,8 @@ import 'dart:io';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pile_of_shame/models/game.dart';
-import 'package:pile_of_shame/providers/game_file_provider.dart';
-import 'package:pile_of_shame/providers/game_provider.dart';
+import 'package:pile_of_shame/providers/games/game_file_provider.dart';
+import 'package:pile_of_shame/providers/games/game_provider.dart';
 
 class GameStorage {
   final Ref ref;

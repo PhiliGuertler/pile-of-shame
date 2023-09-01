@@ -9,7 +9,7 @@ void main() async {
   final Initializer initializer = Initializer();
   initializer.setupInitialization();
 
-  await initializer.initializeApp();
+  await initializer.initializeApp(providerContainer);
 
   runApp(UncontrolledProviderScope(
     container: providerContainer,

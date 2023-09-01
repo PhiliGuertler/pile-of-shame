@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
 class Skeleton extends StatelessWidget {
-  static const double animationDuration = 1200;
+  static const Duration defaultAnimationDuration = Duration(milliseconds: 1200);
 
+  final Duration animationDuration;
   final double widthFactor;
   final double height;
   final Alignment alignment;
@@ -15,7 +16,8 @@ class Skeleton extends StatelessWidget {
     this.height = 20,
     this.alignment = Alignment.centerLeft,
     this.borderRadius = 8,
-  });
+    Duration? animationDuration,
+  }) : animationDuration = animationDuration ?? defaultAnimationDuration;
 
   @override
   Widget build(BuildContext context) {
@@ -33,11 +35,15 @@ class Skeleton extends StatelessWidget {
         )
             .animate(onPlay: (controller) => controller.repeat())
             .shimmer(
-              duration: animationDuration.ms,
+              duration: animationDuration,
               color: Theme.of(context).colorScheme.onPrimaryContainer,
             )
             .animate()
-            .fadeIn(duration: (animationDuration * 0.5).ms),
+            .fadeIn(
+              duration: Duration(
+                milliseconds: (animationDuration.inMilliseconds * 0.5).toInt(),
+              ),
+            ),
       ),
     );
   }

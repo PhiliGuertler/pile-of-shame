@@ -65,17 +65,46 @@ class GamesList with _$GamesList {
 
   void updateGame(String id, Game update) {
     final gameIndex = games.indexWhere((element) => element.id == id);
-    assert(gameIndex != -1);
+    assert(gameIndex != -1, "No Game with id '$id' found");
 
     games[gameIndex] = update;
   }
 
   void removeGame(String id) {
+    assert(games.indexWhere((element) => element.id == id) != -1,
+        "No Game with id '$id' found");
     games.removeWhere((element) => element.id == id);
   }
 
   void addGame(Game game) {
-    assert(games.every((element) => element.id != game.id));
+    assert(games.every((element) => element.id != game.id),
+        "Game with id '${game.id}' already exists. Did you mean to update an existing Game?");
     games.add(game);
+  }
+
+  void updateGames(GamesList gamesList) {
+    for (int i = 0; i < games.length; ++i) {
+      Game game = games[i];
+      int possibleUpdateIndex =
+          gamesList.games.indexWhere((update) => update.id == game.id);
+      if (possibleUpdateIndex == -1) {
+        continue;
+      }
+      Game update = gamesList.games[possibleUpdateIndex];
+      if (update.lastModified.compareTo(game.lastModified) > 0) {
+        games[i] = update;
+      }
+    }
+  }
+
+  void addGames(GamesList gamesList) {
+    for (int i = 0; i < gamesList.games.length; ++i) {
+      Game possibleNewGame = gamesList.games[i];
+      int index =
+          games.indexWhere((element) => element.id == possibleNewGame.id);
+      if (index == -1) {
+        addGame(possibleNewGame);
+      }
+    }
   }
 }
