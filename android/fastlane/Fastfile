@@ -23,8 +23,6 @@ platform :android do
       # validate_only: true,
       # the track "internal" will upload to Google Play's internal testing
       track: "internal",
-      # make sure that we do not actually perform a release, but instead a draft release
-      release_status: "draft",
       # the path to the binary is relative to the android directory
       aab: "../build/app/outputs/bundle/release/app-release.aab",
       # version code is available via flutter_version plugin
@@ -45,11 +43,44 @@ platform :android do
       # pass the source track, in this case internal
       track: "internal",
       # then the target track
-      track_promote_to: "Alpha",
+      track_promote_to: "alpha",
       # version code is available via flutter_version plugin
       version_code: flutter_version()["version_code"],
       skip_upload_apk: true,
       skip_upload_aab: true,
+      skip_upload_metadata: true,
+      skip_upload_images: true,
+      skip_upload_screenshots: true,
+    )
+  end
+
+  lane :promote_alpha_to_beta do
+    upload_to_play_store(
+      # pass the source track, in this case internal
+      track: "alpha",
+      # then the target track
+      track_promote_to: "beta",
+      # version code is available via flutter_version plugin
+      version_code: flutter_version()["version_code"],
+      skip_upload_apk: true,
+      skip_upload_aab: true,
+      skip_upload_metadata: true,
+      skip_upload_images: true,
+      skip_upload_screenshots: true,
+    )
+  end
+
+  lane :promote_beta_to_production do
+    upload_to_play_store(
+      # pass the source track, in this case internal
+      track: "beta",
+      # then the target track
+      track_promote_to: "production",
+      # version code is available via flutter_version plugin
+      version_code: flutter_version()["version_code"],
+      skip_upload_apk: true,
+      skip_upload_aab: true,
+      # upload metadata, images and screenshots
     )
   end
 end
