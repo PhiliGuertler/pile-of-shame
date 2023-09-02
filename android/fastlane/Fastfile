@@ -56,7 +56,6 @@ platform :android do
 
   lane :promote_alpha_to_beta do
     upload_to_play_store(
-      validate_only: true,
       # pass the source track, in this case internal
       track: "alpha",
       # then the target track
@@ -73,7 +72,6 @@ platform :android do
 
   lane :promote_beta_to_production do
     upload_to_play_store(
-      validate_only: true,
       # pass the source track, in this case internal
       track: "beta",
       # then the target track

@@ -2,7 +2,7 @@ name: android-test-and-deploy-internal
 on:
   push:
     tags:
-      - v*-alpha*
+      - v*-beta*
 
 jobs:
   deploy_to_google_play:
@@ -22,5 +22,5 @@ jobs:
         run: bundle install
         working-directory: android
       - name: Fastlane - promote internal to alpha
-        run: bundle exec fastlane promote_internal_to_alpha
+        run: bundle exec fastlane promote_alpha_to_beta
         working-directory: android
