@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pile_of_shame/features/developer_tools/debug_game_controller_assets/screens/debug_game_controller_assets_screen.dart';
 import 'package:pile_of_shame/utils/constants.dart';
 import 'package:pile_of_shame/widgets/segmented_action_card.dart';
 
@@ -51,7 +52,10 @@ class DebugMenuScreen extends StatelessWidget {
                   subtitle:
                       const Text("Display all Game-Platform Controller assets"),
                   onTap: () {
-                    throw UnimplementedError();
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) =>
+                          const DebugGameControllerAssetsScreen(),
+                    ));
                   },
                 ),
               ],
