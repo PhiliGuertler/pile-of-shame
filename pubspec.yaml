@@ -49,13 +49,16 @@ flutter:
 
   assets:
     - assets/languages/
+    - assets/platforms/controllers/microsoft/
     - assets/platforms/icons/microsoft/
     - assets/platforms/text_logos/microsoft/
     - assets/platforms/controllers/nintendo/
     - assets/platforms/icons/nintendo/
     - assets/platforms/text_logos/nintendo/
+    - assets/platforms/controllers/pc/
     - assets/platforms/icons/pc/
     - assets/platforms/text_logos/pc/
+    - assets/platforms/controllers/sony/
     - assets/platforms/icons/sony/
     - assets/platforms/text_logos/sony/
     - assets/platforms/controllers/misc/
