@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:pile_of_shame/features/developer_tools/debug_menu/screens/debug_menu_screen.dart';
 import 'package:pile_of_shame/features/settings/appearance/screens/appearance_screen.dart';
 import 'package:pile_of_shame/features/settings/import_games/screens/import_games_screen.dart';
 import 'package:pile_of_shame/features/settings/language/screens/language_screen.dart';
@@ -17,8 +18,6 @@ class SettingsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isDebugMode = ref.watch(debugFeatureAccessProvider);
-
     final errorContainer = Theme.of(context).colorScheme.errorContainer;
     final onErrorContainer = Theme.of(context).colorScheme.onErrorContainer;
 
@@ -82,6 +81,18 @@ class SettingsScreen extends ConsumerWidget {
           SliverToBoxAdapter(
             child: SegmentedActionCard(
               items: [
+                SegmentedActionCardItem.debug(
+                  leading: const Icon(Icons.engineering),
+                  title: const Text("Debug-Menu"),
+                  subtitle: const Text("This is where the magic happens"),
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const DebugMenuScreen(),
+                      ),
+                    );
+                  },
+                ),
                 SegmentedActionCardItem(
                   leading: const Icon(Icons.file_download),
                   title: Text(AppLocalizations.of(context)!.importGames),
@@ -93,17 +104,16 @@ class SettingsScreen extends ConsumerWidget {
                     ));
                   },
                 ),
-                if (isDebugMode)
-                  SegmentedActionCardItem(
-                    leading: const Icon(Icons.file_upload),
-                    title: Text(AppLocalizations.of(context)!.exportGames),
-                    subtitle: Text(
-                        AppLocalizations.of(context)!.exportGamesToAJSONFile),
-                    onTap: () {
-                      // TODO: Implement button
-                      throw UnimplementedError();
-                    },
-                  ),
+                SegmentedActionCardItem.debug(
+                  leading: const Icon(Icons.file_upload),
+                  title: Text(AppLocalizations.of(context)!.exportGames),
+                  subtitle: Text(
+                      AppLocalizations.of(context)!.exportGamesToAJSONFile),
+                  onTap: () {
+                    // TODO: Implement button
+                    throw UnimplementedError();
+                  },
+                ),
                 SegmentedActionCardItem(
                   leading: Icon(
                     Icons.delete_forever,

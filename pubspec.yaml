@@ -1,7 +1,7 @@
 name: pile_of_shame
 description: An offline list for the game status of all your video games
 publish_to: 'none'
-version: 0.1.2+7
+version: 0.1.3+8
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
@@ -47,17 +47,24 @@ dev_dependencies:
 flutter:
   uses-material-design: true
 
+  shaders:
+    - shaders/game_controller_shader.frag
+
   assets:
     - assets/languages/
-    - assets/platforms/icons/microsoft/
-    - assets/platforms/text_logos/microsoft/
-    - assets/platforms/controllers/nintendo/
-    - assets/platforms/icons/nintendo/
-    - assets/platforms/text_logos/nintendo/
-    - assets/platforms/icons/pc/
-    - assets/platforms/text_logos/pc/
-    - assets/platforms/icons/sony/
-    - assets/platforms/text_logos/sony/
+    - assets/platforms/controllers/microsoft/
     - assets/platforms/controllers/misc/
+    - assets/platforms/controllers/nintendo/
+    - assets/platforms/controllers/pc/
+    - assets/platforms/controllers/sony/
+    - assets/platforms/icons/microsoft/
     - assets/platforms/icons/misc/
+    - assets/platforms/icons/nintendo/
+    - assets/platforms/icons/pc/
+    - assets/platforms/icons/sony/
+    - assets/platforms/shader/sony/
+    - assets/platforms/text_logos/microsoft/
     - assets/platforms/text_logos/misc/
+    - assets/platforms/text_logos/nintendo/
+    - assets/platforms/text_logos/pc/
+    - assets/platforms/text_logos/sony/
