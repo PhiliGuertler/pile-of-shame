@@ -55,7 +55,7 @@ class DebugMenuScreen extends StatelessWidget {
                     ));
                   },
                 ),
-                SegmentedActionCardItem(
+                SegmentedActionCardItem.debug(
                   leading: const Icon(Icons.sports_esports),
                   title: const Text("Game-Platform Controllers"),
                   subtitle:
@@ -67,8 +67,8 @@ class DebugMenuScreen extends StatelessWidget {
                     ));
                   },
                 ),
-                SegmentedActionCardItem(
-                  leading: const Icon(Icons.sports_esports),
+                SegmentedActionCardItem.debug(
+                  leading: const Icon(Icons.bolt),
                   title: const Text("Game-Platform Controllers"),
                   subtitle: const Text("Display a fancy shader"),
                   onTap: () {

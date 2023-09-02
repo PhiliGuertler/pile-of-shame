@@ -42,18 +42,8 @@ class SegmentedActionCardItem with _$SegmentedActionCardItem {
         openBuilderOnTap,
   }) {
     return SegmentedActionCardItem(
-      title: title != null
-          ? DefaultTextStyle(
-              style: const TextStyle(color: Colors.white),
-              child: title,
-            )
-          : null,
-      subtitle: subtitle != null
-          ? DefaultTextStyle(
-              style: const TextStyle(color: Colors.white),
-              child: subtitle,
-            )
-          : null,
+      title: title,
+      subtitle: subtitle,
       tileColor: Colors.orange.shade800,
       leading: leading,
       onTap: onTap,
