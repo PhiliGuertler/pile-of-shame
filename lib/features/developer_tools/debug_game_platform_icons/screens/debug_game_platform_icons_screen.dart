@@ -2,34 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:pile_of_shame/models/game_platforms.dart';
 import 'package:pile_of_shame/utils/constants.dart';
 
-class DebugGameControllerAssetsScreen extends StatefulWidget {
-  const DebugGameControllerAssetsScreen({super.key});
-
-  @override
-  State<DebugGameControllerAssetsScreen> createState() =>
-      _DebugGameControllerAssetsScreenState();
-}
-
-class _DebugGameControllerAssetsScreenState
-    extends State<DebugGameControllerAssetsScreen> {
-  bool shouldDisplayLightAsset = false;
+class DebugGamePlatformIconsScreen extends StatelessWidget {
+  const DebugGamePlatformIconsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Game Controller Assets"),
-        actions: [
-          IconButton(
-            onPressed: () {
-              setState(() {
-                shouldDisplayLightAsset = !shouldDisplayLightAsset;
-              });
-            },
-            icon: Icon(
-                shouldDisplayLightAsset ? Icons.dark_mode : Icons.light_mode),
-          ),
-        ],
+        title: const Text("Game Platform Icons"),
       ),
       body: SafeArea(
         child: CustomScrollView(
@@ -56,11 +36,7 @@ class _DebugGameControllerAssetsScreenState
                     SizedBox(
                       width: double.infinity,
                       height: 300,
-                      child: Image.asset(
-                        shouldDisplayLightAsset
-                            ? platform.controllerLogoPathLight
-                            : platform.controllerLogoPathDark,
-                      ),
+                      child: Image.asset(platform.iconPath),
                     )
                   ],
                 );
