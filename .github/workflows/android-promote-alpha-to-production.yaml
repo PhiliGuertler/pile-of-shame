@@ -1,0 +1,27 @@
+name: android-test-and-deploy-internal
+on:
+  push:
+    branches:
+      - master
+    tags:
+      - **-release**
+
+jobs:
+  deploy_to_google_play:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2'
+      - name: Prepare secrets directory
+        run: mkdir -p secrets
+      - name: Prepare Google-Play secrets
+        run: echo -n "${{secrets.GOOGLE_PLAY_SECRETS_BASE64}}" | base64 --decode > ./secrets/google-play-secrets.json
+      - name: Fastlane - install fastlane
+        run: bundle install
+        working-directory: android
+      - name: Fastlane - promote internal to alpha
+        run: bundle exec fastlane promote_alpha_to_beta
+        working-directory: android
