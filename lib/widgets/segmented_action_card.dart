@@ -1,6 +1,8 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:pile_of_shame/providers/debug_provider.dart';
 import 'package:pile_of_shame/utils/constants.dart';
 
 part 'segmented_action_card.freezed.dart';
@@ -20,17 +22,61 @@ class SegmentedActionCardItem with _$SegmentedActionCardItem {
     /// Tap handler that triggers a transition to the returned widget of this function. Cannot be set if onTap is also set.
     Widget Function(BuildContext, void Function({Object? returnValue}))?
         openBuilderOnTap,
+
+    // for debugging purposes
+    @Default(false) bool isDebugItem,
   }) = _SegmentedActionCardItem;
+
+  factory SegmentedActionCardItem.debug({
+    Widget? title,
+    Widget? subtitle,
+    Color? tileColor,
+    Widget? leading,
+    Widget? trailing = const Icon(Icons.navigate_next_rounded),
+
+    /// Generic tap handler. Cannot be set if openBuilder is also set.
+    VoidCallback? onTap,
+
+    /// Tap handler that triggers a transition to the returned widget of this function. Cannot be set if onTap is also set.
+    Widget Function(BuildContext, void Function({Object? returnValue}))?
+        openBuilderOnTap,
+  }) {
+    return SegmentedActionCardItem(
+      title: title != null
+          ? DefaultTextStyle(
+              style: const TextStyle(color: Colors.white),
+              child: title,
+            )
+          : null,
+      subtitle: subtitle != null
+          ? DefaultTextStyle(
+              style: const TextStyle(color: Colors.white),
+              child: subtitle,
+            )
+          : null,
+      tileColor: Colors.orange.shade800,
+      leading: leading,
+      onTap: onTap,
+      openBuilderOnTap: openBuilderOnTap,
+      trailing: trailing,
+      isDebugItem: true,
+    );
+  }
 }
 
-class SegmentedActionCard extends StatelessWidget {
+class SegmentedActionCard extends ConsumerWidget {
   final List<SegmentedActionCardItem> items;
 
   const SegmentedActionCard({super.key, required this.items});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     const borderRadius = Radius.circular(defaultBorderRadius);
+    final isDebugMode = ref.watch(debugFeatureAccessProvider);
+
+    final List<SegmentedActionCardItem> filteredItems = isDebugMode
+        ? items
+        : items.where((element) => !element.isDebugItem).toList();
 
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -67,7 +113,7 @@ class SegmentedActionCard extends StatelessWidget {
               }
 
               final bool isFirstItem = index == 0;
-              final bool isLastItem = index == items.length * 2 - 2;
+              final bool isLastItem = index == filteredItems.length * 2 - 2;
               late ShapeBorder shape;
               if (isFirstItem || isLastItem) {
                 shape = RoundedRectangleBorder(
@@ -83,7 +129,7 @@ class SegmentedActionCard extends StatelessWidget {
                     borderRadius: BorderRadius.zero);
               }
 
-              final item = items[index ~/ 2];
+              final item = filteredItems[index ~/ 2];
 
               // Only allow either onTap or openBuilder to be set, not both at the same time
               assert((item.onTap != null && item.openBuilderOnTap == null) ||
@@ -125,7 +171,7 @@ class SegmentedActionCard extends StatelessWidget {
                 );
               }
             },
-            itemCount: items.length * 2 - 1,
+            itemCount: filteredItems.length * 2 - 1,
           ),
         ),
       ),
