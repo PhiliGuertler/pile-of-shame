@@ -20,7 +20,7 @@ platform :android do
     # as we built our app using flutter's cli, there is no need to build it here again
     upload_to_play_store(
       # for testing, we can set this flag
-      validate_only: true,
+      # validate_only: true,
       # the track "internal" will upload to Google Play's internal testing
       track: "internal",
       # the path to the binary is relative to the android directory
