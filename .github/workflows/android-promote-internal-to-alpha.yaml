@@ -9,6 +9,7 @@ on:
 jobs:
   deploy_to_google_play:
     runs-on: ubuntu-latest
+    environment: Deployment
     steps:
       - uses: actions/checkout@v2
       - name: Setup Ruby
