@@ -1,7 +1,7 @@
 name: pile_of_shame
 description: An offline list for the game status of all your video games
 publish_to: 'none'
-version: 0.1.4+9
+version: 0.1.5+10
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
@@ -28,6 +28,8 @@ dependencies:
   package_info_plus: ^4.1.0
   uuid: ^3.0.7
   share_plus: ^7.1.0
+  flutter_file_dialog: ^3.0.2
+  flutter_sticky_header: ^0.6.5
 
 dev_dependencies:
   flutter_test:

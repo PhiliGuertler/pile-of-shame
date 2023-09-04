@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 
 enum PlayStatus {
-  completed100Percent(isCompleted: true),
-  completed(isCompleted: true),
+  playing(isCompleted: false),
   replaying(isCompleted: true),
   endlessGame(isCompleted: true),
-  playing(isCompleted: false),
+  completed(isCompleted: true),
+  completed100Percent(isCompleted: true),
   cancelled(isCompleted: false),
   onPileOfShame(isCompleted: false),
   onWishList(isCompleted: false),

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter_file_dialog/flutter_file_dialog.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -56,8 +57,7 @@ class FileUtils {
     return true;
   }
 
-  Future<bool> _exportFileMobile(
-      File file, String fileName, String dialogTitle) async {
+  Future<bool> shareFile(File file, String fileName, String dialogTitle) async {
     File tmpFile = await createTemporaryFile(fileName);
     await tmpFile.writeAsString(await file.readAsString());
 
@@ -71,6 +71,16 @@ class FileUtils {
     await tmpFile.delete();
 
     return result.status == ShareResultStatus.success;
+  }
+
+  Future<bool> _exportFileMobile(
+      File file, String fileName, String dialogTitle) async {
+    final response = await FlutterFileDialog.saveFile(
+        params: SaveFileDialogParams(
+      fileName: fileName,
+      sourceFilePath: file.path,
+    ));
+    return response != null;
   }
 
   Future<bool> exportFile(

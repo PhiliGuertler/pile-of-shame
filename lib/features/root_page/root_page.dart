@@ -90,6 +90,8 @@ class _RootPageState extends ConsumerState<RootPage> {
         onDestinationSelected: (index) => _handleRootTabChange(index, context),
         destinations: destinations,
       ),
+      drawer: activeTab.drawer(context),
+      endDrawer: activeTab.endDrawer(context),
     );
   }
 }

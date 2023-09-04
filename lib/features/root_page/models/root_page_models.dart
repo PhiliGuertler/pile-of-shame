@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:pile_of_shame/features/games/games_list/widgets/drawers/game_filter_drawer.dart';
+import 'package:pile_of_shame/features/games/games_list/widgets/drawers/game_sorter_drawer.dart';
 import 'package:pile_of_shame/features/root_page/root_games/root_games_app_bar.dart';
 import 'package:pile_of_shame/features/root_page/root_settings/root_settings_app_bar.dart';
 import 'package:pile_of_shame/features/root_page/root_settings/root_settings_destination.dart';
@@ -37,6 +39,24 @@ enum RootTabs {
         return rootGamesDestination(context);
       case RootTabs.settings:
         return rootSettingsDestination(context);
+    }
+  }
+
+  Widget? drawer(BuildContext context) {
+    switch (this) {
+      case RootTabs.games:
+        return const GameSorterDrawer();
+      default:
+        return null;
+    }
+  }
+
+  Widget? endDrawer(BuildContext context) {
+    switch (this) {
+      case RootTabs.games:
+        return const GameFilterDrawer();
+      default:
+        return null;
     }
   }
 }
