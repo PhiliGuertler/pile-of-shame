@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 
 const String _iconBasePath = "assets/platforms/icons";
 const String _textLogoBasePath = "assets/platforms/text_logos";
@@ -18,6 +19,21 @@ enum GamePlatformFamily {
   pc,
   misc,
   ;
+
+  String toLocale(BuildContext context) {
+    switch (this) {
+      case GamePlatformFamily.sony:
+        return AppLocalizations.of(context)!.sony;
+      case GamePlatformFamily.microsoft:
+        return AppLocalizations.of(context)!.microsoft;
+      case GamePlatformFamily.nintendo:
+        return AppLocalizations.of(context)!.nintendo;
+      case GamePlatformFamily.pc:
+        return AppLocalizations.of(context)!.pc;
+      case GamePlatformFamily.misc:
+        return AppLocalizations.of(context)!.misc;
+    }
+  }
 }
 
 @JsonEnum(valueField: 'abbreviation')
