@@ -29,6 +29,7 @@ dependencies:
   uuid: ^3.0.7
   share_plus: ^7.1.0
   flutter_file_dialog: ^3.0.2
+  flutter_sticky_header: ^0.6.5
 
 dev_dependencies:
   flutter_test:

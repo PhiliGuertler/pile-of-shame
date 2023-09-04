@@ -13,35 +13,36 @@ class GameFilterDrawer extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Drawer(
-      child: CustomScrollView(
-        slivers: [
-          SliverPadding(
-            padding: const EdgeInsets.only(
-                left: defaultPaddingX, right: defaultPaddingX, top: 16.0),
-            sliver: SliverToBoxAdapter(
-              child: Text(
-                AppLocalizations.of(context)!.filterGames,
-                style: Theme.of(context).textTheme.headlineSmall,
+      child: SafeArea(
+        child: CustomScrollView(
+          slivers: [
+            SliverPadding(
+              padding: const EdgeInsets.only(
+                  left: defaultPaddingX,
+                  right: defaultPaddingX,
+                  top: 16.0,
+                  bottom: 16.0),
+              sliver: SliverToBoxAdapter(
+                child: Text(
+                  AppLocalizations.of(context)!.filterGames,
+                  style: Theme.of(context).textTheme.headlineSmall,
+                ),
               ),
             ),
-          ),
-          // PlayStatus
-          const SliverToBoxAdapter(child: Divider()),
-          const SliverPlayStatusFilterOptions(),
-          // Platform-Families
-          const SliverToBoxAdapter(child: Divider()),
-          const SliverGamePlatformFamilyFilterOptions(),
-          // Platforms
-          const SliverToBoxAdapter(child: Divider()),
-          const SliverGamePlatformFilterOptions(),
-          // Age-Rating
-          const SliverToBoxAdapter(child: Divider()),
-          const SliverAgeRatingFilterOptions(),
-          // Bottom Padding
-          const SliverPadding(
-            padding: EdgeInsets.only(bottom: 16.0),
-          ),
-        ],
+            // PlayStatus
+            const SliverPlayStatusFilterOptions(),
+            // Platform-Families
+            const SliverGamePlatformFamilyFilterOptions(),
+            // Platforms
+            const SliverGamePlatformFilterOptions(),
+            // Age-Rating
+            const SliverAgeRatingFilterOptions(),
+            // Bottom Padding
+            const SliverPadding(
+              padding: EdgeInsets.only(bottom: 16.0),
+            ),
+          ],
+        ),
       ),
     );
   }
