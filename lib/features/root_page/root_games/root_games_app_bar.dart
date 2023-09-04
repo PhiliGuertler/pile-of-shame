@@ -12,22 +12,34 @@ class RootGamesAppBar extends ConsumerWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return AppBar(
-      title: Text(
-        AppLocalizations.of(context)!.games,
-      ),
-      actions: [
-        IconButton(
-          icon: const Icon(Icons.sort),
-          onPressed: () {},
-        ),
-        Builder(builder: (context) {
-          return IconButton(
-            icon: const Icon(Icons.filter_alt),
-            onPressed: () {
-              Scaffold.of(context).openEndDrawer();
-            },
+      title: GestureDetector(
+        child: Text(AppLocalizations.of(context)!.games),
+        onTap: () {
+          scrollController.animateTo(
+            0,
+            duration: const Duration(milliseconds: 600),
+            curve: Curves.easeInOut,
           );
-        }),
+        },
+      ),
+      leading: Builder(builder: (context) {
+        return IconButton(
+            icon: const Icon(Icons.sort),
+            onPressed: () {
+              Scaffold.of(context).openDrawer();
+            });
+      }),
+      actions: [
+        Builder(
+          builder: (context) {
+            return IconButton(
+              icon: const Icon(Icons.filter_alt),
+              onPressed: () {
+                Scaffold.of(context).openEndDrawer();
+              },
+            );
+          },
+        ),
       ],
     );
   }

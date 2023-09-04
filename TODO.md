@@ -13,13 +13,10 @@
     - Price (Span)
     - Has or has no DLCs
 - Sort games by
-    - Name
-    - PlayStatus
-    - Price
-    - Age-Rating
-    - Platform (this includes grouping by Platform-Family)
     - Amount of DLCs
-    - lastModified
+- Group games by
+    - Platform
+    - Platform Family
 
 # Nice-to-have features
 - Support for different game information providers, e.g. IGDB, HowLongToBeat, etc.
