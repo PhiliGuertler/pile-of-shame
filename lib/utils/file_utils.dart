@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:share_plus/share_plus.dart';
 
 class FileUtils {
   Future<File> openFile(String fileName) async {
@@ -15,6 +16,17 @@ class FileUtils {
     return file;
   }
 
+  Future<File> createTemporaryFile(String fileName) async {
+    final directory = await getTemporaryDirectory();
+    final path = directory.path;
+    final filePath = "$path/$fileName";
+    final file = File(filePath);
+    if (await file.exists()) {
+      throw Exception('Requested File "$fileName" already exists');
+    }
+    return file;
+  }
+
   Future<File?> pickFile() async {
     final FilePickerResult? pickedFile = await FilePicker.platform.pickFiles();
 
@@ -23,5 +35,50 @@ class FileUtils {
       return result;
     }
     return null;
+  }
+
+  Future<bool> _exportFileDesktop(
+      File file, String fileName, String dialogTitle) async {
+    final String? outputFilePath = await FilePicker.platform.saveFile(
+      dialogTitle: dialogTitle,
+      fileName: fileName,
+    );
+
+    if (outputFilePath == null) {
+      // User cancelled the process
+      return false;
+    }
+
+    final fileContents = await file.readAsString();
+
+    final output = File(outputFilePath);
+    await output.writeAsString(fileContents);
+    return true;
+  }
+
+  Future<bool> _exportFileMobile(
+      File file, String fileName, String dialogTitle) async {
+    File tmpFile = await createTemporaryFile(fileName);
+    await tmpFile.writeAsString(await file.readAsString());
+
+    final xFile = XFile(
+      tmpFile.path,
+      mimeType: 'application/json',
+      name: fileName,
+    );
+    final result = await Share.shareXFiles([xFile], subject: dialogTitle);
+
+    await tmpFile.delete();
+
+    return result.status == ShareResultStatus.success;
+  }
+
+  Future<bool> exportFile(
+      File file, String fileName, String dialogTitle) async {
+    if (Platform.isWindows || Platform.isMacOS || Platform.isLinux) {
+      return await _exportFileDesktop(file, fileName, dialogTitle);
+    } else {
+      return await _exportFileMobile(file, fileName, dialogTitle);
+    }
   }
 }
