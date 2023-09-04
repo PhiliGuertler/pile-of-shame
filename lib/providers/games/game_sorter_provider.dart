@@ -4,7 +4,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'game_sorter_provider.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 class SortGames extends _$SortGames {
   @override
   GameSorting build() {

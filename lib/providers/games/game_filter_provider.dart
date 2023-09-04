@@ -6,7 +6,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'game_filter_provider.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 class PlayStatusFilter extends _$PlayStatusFilter {
   @override
   List<PlayStatus> build() {
@@ -18,7 +18,7 @@ class PlayStatusFilter extends _$PlayStatusFilter {
   }
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 class GamePlatformFamilyFilter extends _$GamePlatformFamilyFilter {
   @override
   List<GamePlatformFamily> build() {
@@ -30,7 +30,7 @@ class GamePlatformFamilyFilter extends _$GamePlatformFamilyFilter {
   }
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 class GamePlatformFilter extends _$GamePlatformFilter {
   @override
   List<GamePlatform> build() {
@@ -42,7 +42,7 @@ class GamePlatformFilter extends _$GamePlatformFilter {
   }
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 class AgeRatingFilter extends _$AgeRatingFilter {
   @override
   List<USK> build() {
@@ -52,6 +52,19 @@ class AgeRatingFilter extends _$AgeRatingFilter {
   void setFilter(List<USK> filter) {
     state = filter;
   }
+}
+
+@riverpod
+bool isAnyFilterActive(IsAnyFilterActiveRef ref) {
+  final platformFilter = ref.watch(gamePlatformFilterProvider);
+  final platformFamilyFilter = ref.watch(gamePlatformFamilyFilterProvider);
+  final playStatusFilter = ref.watch(playStatusFilterProvider);
+  final ageRatingFilter = ref.watch(ageRatingFilterProvider);
+
+  return (platformFilter.length != GamePlatform.values.length ||
+      platformFamilyFilter.length != GamePlatformFamily.values.length ||
+      playStatusFilter.length != PlayStatus.values.length ||
+      ageRatingFilter.length != USK.values.length);
 }
 
 @riverpod
