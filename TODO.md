@@ -10,12 +10,8 @@
 
 # Must-have features
 - Filter games list by
-    - Platform-Family (Microsoft, Sony, Nintendo, etc.)
-    - Platform (PS2, Wii, etc.)
-    - Age-Rating
     - Price (Span)
     - Has or has no DLCs
-    - PlayStatus
 - Sort games by
     - Name
     - PlayStatus
