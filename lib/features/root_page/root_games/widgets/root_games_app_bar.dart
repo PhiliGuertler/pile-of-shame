@@ -3,8 +3,10 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/providers/games/game_filter_provider.dart';
+import 'package:pile_of_shame/providers/games/game_search_provider.dart';
 
-class RootGamesAppBar extends ConsumerWidget implements PreferredSizeWidget {
+class RootGamesAppBar extends ConsumerStatefulWidget
+    implements PreferredSizeWidget {
   final ScrollController scrollController;
 
   final preferredSizeAppBar = AppBar();
@@ -12,20 +14,55 @@ class RootGamesAppBar extends ConsumerWidget implements PreferredSizeWidget {
   RootGamesAppBar({super.key, required this.scrollController});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<RootGamesAppBar> createState() => _RootGamesAppBarState();
+
+  @override
+  Size get preferredSize => preferredSizeAppBar.preferredSize;
+}
+
+class _RootGamesAppBarState extends ConsumerState<RootGamesAppBar> {
+  bool isSearchOpen = false;
+  late TextEditingController searchTextController;
+
+  @override
+  void initState() {
+    super.initState();
+
+    searchTextController =
+        TextEditingController(text: ref.read(gameSearchProvider));
+  }
+
+  @override
+  void dispose() {
+    searchTextController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final isFilterActive = ref.watch(isAnyFilterActiveProvider);
 
     return AppBar(
-      title: GestureDetector(
-        child: Text(AppLocalizations.of(context)!.games),
-        onTap: () {
-          scrollController.animateTo(
-            0,
-            duration: const Duration(milliseconds: 600),
-            curve: Curves.easeInOut,
-          );
-        },
-      ),
+      title: isSearchOpen
+          ? TextField(
+              controller: searchTextController,
+              onChanged: (value) {
+                ref.read(gameSearchProvider.notifier).setSearch(value);
+              },
+              decoration: InputDecoration.collapsed(
+                  hintText: AppLocalizations.of(context)!.searchGames),
+              autofocus: true,
+            )
+          : GestureDetector(
+              child: Text(AppLocalizations.of(context)!.games),
+              onTap: () {
+                widget.scrollController.animateTo(
+                  0,
+                  duration: const Duration(milliseconds: 600),
+                  curve: Curves.easeInOut,
+                );
+              },
+            ),
       leading: Builder(builder: (context) {
         return IconButton(
             icon: const Icon(Icons.sort),
@@ -34,6 +71,17 @@ class RootGamesAppBar extends ConsumerWidget implements PreferredSizeWidget {
             });
       }),
       actions: [
+        IconButton(
+          onPressed: () {
+            if (isSearchOpen) {
+              ref.invalidate(gameSearchProvider);
+            }
+            setState(() {
+              isSearchOpen = !isSearchOpen;
+            });
+          },
+          icon: Icon(isSearchOpen ? Icons.search_off : Icons.search),
+        ),
         Builder(
           builder: (context) {
             Widget result = IconButton(
@@ -67,7 +115,4 @@ class RootGamesAppBar extends ConsumerWidget implements PreferredSizeWidget {
       ],
     );
   }
-
-  @override
-  Size get preferredSize => preferredSizeAppBar.preferredSize;
 }

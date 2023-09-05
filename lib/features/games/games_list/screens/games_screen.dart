@@ -28,6 +28,7 @@ class GamesScreen extends ConsumerWidget {
         data: (hasGames) => RefreshIndicator(
           onRefresh: () => ref.refresh(gamesProvider.future),
           child: CustomScrollView(
+            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
             controller: scrollController,
             physics: const BouncingScrollPhysics(
                 parent: AlwaysScrollableScrollPhysics()),

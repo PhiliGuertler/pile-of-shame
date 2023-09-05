@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/game_platforms.dart';
-import 'package:pile_of_shame/models/play_status.dart';
 import 'package:pile_of_shame/providers/games/game_filter_provider.dart';
 
 import 'sliver_filters.dart';
@@ -20,10 +19,10 @@ class SliverGamePlatformFilterOptions extends ConsumerWidget {
       onSelectAll: (value) {
         if (value) {
           ref
-              .read(playStatusFilterProvider.notifier)
-              .setFilter(PlayStatus.values);
+              .read(gamePlatformFilterProvider.notifier)
+              .setFilter(GamePlatform.values);
         } else {
-          ref.read(playStatusFilterProvider.notifier).setFilter([]);
+          ref.read(gamePlatformFilterProvider.notifier).setFilter([]);
         }
       },
       optionBuilder: (option, onChanged) => CheckboxListTile(
