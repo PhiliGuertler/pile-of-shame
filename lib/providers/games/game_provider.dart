@@ -49,8 +49,14 @@ FutureOr<GamesList> gamesFiltered(GamesFilteredRef ref) async {
 AsyncValue<Game> gameById(GameByIdRef ref, String id) {
   final games = ref.watch(gamesProvider);
   return games.when(
-    data: (data) =>
-        AsyncValue.data(data.games.singleWhere((element) => element.id == id)),
+    data: (data) {
+      try {
+        return AsyncValue.data(
+            data.games.singleWhere((element) => element.id == id));
+      } catch (error) {
+        return AsyncError(error, StackTrace.current);
+      }
+    },
     error: (error, stackTrace) => throw error,
     loading: () => const AsyncValue.loading(),
   );
@@ -61,8 +67,14 @@ AsyncValue<DLC> dlcByGameAndId(
     DlcByGameAndIdRef ref, String gameId, String dlcId) {
   final game = ref.watch(gameByIdProvider(gameId));
   return game.when(
-    data: (game) => AsyncValue.data(
-        game.dlcs.singleWhere((element) => element.id == dlcId)),
+    data: (data) {
+      try {
+        return AsyncValue.data(
+            data.dlcs.singleWhere((element) => element.id == dlcId));
+      } catch (error) {
+        return AsyncError(error, StackTrace.current);
+      }
+    },
     error: (error, stackTrace) => throw error,
     loading: () => const AsyncValue.loading(),
   );
