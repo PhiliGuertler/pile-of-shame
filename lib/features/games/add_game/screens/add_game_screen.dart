@@ -236,6 +236,67 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
                             (index, dlc) => MapEntry(
                               index,
                               SegmentedActionCardItem(
+                                trailing: IconButton(
+                                  onPressed: () async {
+                                    final bool? result =
+                                        await showAdaptiveDialog(
+                                      context: context,
+                                      builder: (context) =>
+                                          AlertDialog.adaptive(
+                                        title: Text(
+                                            AppLocalizations.of(context)!
+                                                .deleteDLC),
+                                        content: Text(
+                                            AppLocalizations.of(context)!
+                                                .thisActionCannotBeUndone),
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop(false);
+                                            },
+                                            child: Text(
+                                                AppLocalizations.of(context)!
+                                                    .cancel),
+                                          ),
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop(true);
+                                            },
+                                            child: Text(
+                                              AppLocalizations.of(context)!
+                                                  .delete,
+                                              style: TextStyle(
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .error),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    );
+
+                                    if (result != null && result) {
+                                      final List<EditableDLC> updatedList =
+                                          List.from(editableGame.dlcs);
+                                      updatedList.removeAt(index);
+
+                                      ref
+                                          .read(
+                                            addGameProvider(widget.initialValue)
+                                                .notifier,
+                                          )
+                                          .updateGame(
+                                            editableGame.copyWith(
+                                              dlcs: updatedList,
+                                            ),
+                                          );
+                                    }
+                                  },
+                                  icon: Icon(
+                                    Icons.delete,
+                                    color: Theme.of(context).colorScheme.error,
+                                  ),
+                                ),
                                 leading: const Icon(Icons.edit),
                                 title: Text(dlc.name ?? '???'),
                                 onTap: () async {
@@ -255,11 +316,13 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
 
                                     ref
                                         .read(
-                                            addGameProvider(widget.initialValue)
-                                                .notifier)
+                                          addGameProvider(widget.initialValue)
+                                              .notifier,
+                                        )
                                         .updateGame(
                                           editableGame.copyWith(
-                                              dlcs: updatedList),
+                                            dlcs: updatedList,
+                                          ),
                                         );
                                   }
                                 },
