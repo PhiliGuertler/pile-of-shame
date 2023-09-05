@@ -28,7 +28,11 @@ class GameSorterByPlayStatus extends GameSorter {
   @override
   int compareGames(Game a, Game b, bool isAscending) {
     final factor = isAscending ? 1 : -1;
-    return (a.status.index - b.status.index) * factor;
+    final result = (a.status.index - b.status.index) * factor;
+    if (result == 0) {
+      return const GameSorterByName().compareGames(a, b, isAscending);
+    }
+    return result;
   }
 }
 
@@ -38,7 +42,11 @@ class GameSorterByPrice extends GameSorter {
   @override
   int compareGames(Game a, Game b, bool isAscending) {
     final factor = isAscending ? 1 : -1;
-    return a.price.compareTo(b.price) * factor;
+    final result = a.price.compareTo(b.price) * factor;
+    if (result.abs() < 0.01) {
+      return const GameSorterByName().compareGames(a, b, isAscending);
+    }
+    return result;
   }
 }
 
@@ -48,7 +56,11 @@ class GameSorterByAgeRating extends GameSorter {
   @override
   int compareGames(Game a, Game b, bool isAscending) {
     final factor = isAscending ? 1 : -1;
-    return (a.usk.index - b.usk.index) * factor;
+    final result = (a.usk.index - b.usk.index) * factor;
+    if (result == 0) {
+      return const GameSorterByName().compareGames(a, b, isAscending);
+    }
+    return result;
   }
 }
 
@@ -58,7 +70,11 @@ class GameSorterByPlatform extends GameSorter {
   @override
   int compareGames(Game a, Game b, bool isAscending) {
     final factor = isAscending ? 1 : -1;
-    return (a.platform.index - b.platform.index) * factor;
+    final result = (a.platform.index - b.platform.index) * factor;
+    if (result == 0) {
+      return const GameSorterByName().compareGames(a, b, isAscending);
+    }
+    return result;
   }
 }
 
@@ -68,7 +84,11 @@ class GameSorterByLastModified extends GameSorter {
   @override
   int compareGames(Game a, Game b, bool isAscending) {
     final factor = isAscending ? 1 : -1;
-    return (a.lastModified.compareTo(b.lastModified)) * factor;
+    final result = (a.lastModified.compareTo(b.lastModified)) * factor;
+    if (result == 0) {
+      return const GameSorterByName().compareGames(a, b, isAscending);
+    }
+    return result;
   }
 }
 

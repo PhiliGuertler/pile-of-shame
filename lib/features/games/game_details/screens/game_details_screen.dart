@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pile_of_shame/features/games/add_game/models/editable_game.dart';
 import 'package:pile_of_shame/features/games/add_game/screens/add_game_screen.dart';
 import 'package:pile_of_shame/features/games/game_details/widgets/sliver_game_details.dart';
+import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/game_platforms.dart';
 import 'package:pile_of_shame/providers/games/game_provider.dart';
 import 'package:pile_of_shame/utils/constants.dart';
@@ -80,6 +81,67 @@ class _GameDetailsScreenState extends ConsumerState<GameDetailsScreen> {
               ),
               SliverGameDetails(
                 gameId: widget.gameId,
+              ),
+              SliverFillRemaining(
+                hasScrollBody: false,
+                child: Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: defaultPaddingX, vertical: defaultPaddingX),
+                    child: game.maybeWhen(
+                      data: (game) => TextButton.icon(
+                        icon: const Icon(Icons.delete),
+                        label: Text(AppLocalizations.of(context)!.deleteGame),
+                        onPressed: () async {
+                          final bool? result = await showAdaptiveDialog<bool>(
+                            context: context,
+                            builder: (context) => AlertDialog.adaptive(
+                              title: Text(
+                                  AppLocalizations.of(context)!.deleteGame),
+                              content: Text(AppLocalizations.of(context)!
+                                  .thisActionCannotBeUndone),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop(false);
+                                  },
+                                  child: Text(
+                                      AppLocalizations.of(context)!.cancel),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop(true);
+                                  },
+                                  child: Text(
+                                    AppLocalizations.of(context)!.delete,
+                                    style: TextStyle(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .error),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+
+                          if (result != null && result) {
+                            final games = await ref.read(gamesProvider.future);
+                            games.removeGame(game.id);
+
+                            final gameStorage = ref.read(gameStorageProvider);
+                            await gameStorage.persistGamesList(games);
+
+                            if (context.mounted) {
+                              Navigator.of(context).pop();
+                            }
+                          }
+                        },
+                      ),
+                      orElse: () => const SizedBox(),
+                    ),
+                  ),
+                ),
               ),
             ],
           ),
