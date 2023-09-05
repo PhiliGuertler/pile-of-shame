@@ -1,8 +1,10 @@
+import 'package:pile_of_shame/extensions/string_extensions.dart';
+import 'package:pile_of_shame/models/game.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'game_search_provider.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 class GameSearch extends _$GameSearch {
   @override
   String build() {
@@ -12,4 +14,28 @@ class GameSearch extends _$GameSearch {
   void setSearch(String search) {
     state = search;
   }
+}
+
+@riverpod
+List<Game> applyGameSearch(ApplyGameSearchRef ref, List<Game> games) {
+  final searchTerm = ref.watch(gameSearchProvider);
+
+  final terms = searchTerm.prepareForCaseInsensitiveSearch().split(" ");
+
+  List<Game> result = List.from(games);
+  result = result.where((game) {
+    bool isMatchingName = terms.every(
+      (term) => game.name.prepareForCaseInsensitiveSearch().contains(term),
+    );
+    bool isMatchingPlatform = terms.every((term) => game.platform.abbreviation
+            .prepareForCaseInsensitiveSearch()
+            .contains(term)) ||
+        terms.every((term) => game.platform.name
+            .prepareForCaseInsensitiveSearch()
+            .contains(term));
+
+    return isMatchingName || isMatchingPlatform;
+  }).toList();
+
+  return result;
 }

@@ -4,6 +4,7 @@ import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/models/game_storage.dart';
 import 'package:pile_of_shame/providers/games/game_file_provider.dart';
 import 'package:pile_of_shame/providers/games/game_filter_provider.dart';
+import 'package:pile_of_shame/providers/games/game_search_provider.dart';
 import 'package:pile_of_shame/providers/games/game_sorter_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -36,11 +37,12 @@ FutureOr<GamesList> gamesFiltered(GamesFilteredRef ref) async {
   final games = await ref.watch(gamesProvider.future);
 
   final filteredGames = ref.watch(applyGameFiltersProvider(games.games));
-  final result = ref.watch(applyGameSortingProvider(filteredGames));
+  final searchedGames = ref.watch(applyGameSearchProvider(filteredGames));
+  final sortedGames = ref.watch(applyGameSortingProvider(searchedGames));
 
   await minWaiting;
 
-  return GamesList(games: result);
+  return GamesList(games: sortedGames);
 }
 
 @riverpod
