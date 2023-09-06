@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
@@ -15,7 +17,9 @@ class ExportGamesScreen extends ConsumerStatefulWidget {
 class _ExportGamesScreenState extends ConsumerState<ExportGamesScreen> {
   bool isLoading = false;
 
-  Future<void> exportGames() async {
+  Future<void> handleExport(
+      Future<bool> Function(File inputFile, String fileName, String title)
+          callback) async {
     setState(() {
       isLoading = true;
     });
@@ -27,9 +31,9 @@ class _ExportGamesScreenState extends ConsumerState<ExportGamesScreen> {
     final gamesFile = await ref.read(gameFileProvider.future);
 
     try {
-      final pickedFile = await ref.read(fileUtilsProvider).exportFile(
+      final success = await callback(
           gamesFile, 'games-$currentDateTime.json', exportGamesTitle);
-      if (pickedFile) {
+      if (success) {
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -51,13 +55,24 @@ class _ExportGamesScreenState extends ConsumerState<ExportGamesScreen> {
     });
   }
 
+  Future<void> exportGames() async {
+    return await handleExport(
+      (inputFile, fileName, title) async => await ref
+          .read(fileUtilsProvider)
+          .exportFile(inputFile, fileName, title),
+    );
+  }
+
+  Future<void> shareGames() async {
+    return await handleExport(
+      (inputFile, fileName, title) async => await ref
+          .read(fileUtilsProvider)
+          .shareFile(inputFile, fileName, title),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    final trailing = isLoading
-        ? const SizedBox(
-            width: 28, height: 28, child: CircularProgressIndicator())
-        : const Icon(Icons.file_upload);
-
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.exportGames),
@@ -69,11 +84,28 @@ class _ExportGamesScreenState extends ConsumerState<ExportGamesScreen> {
               child: SegmentedActionCard(
                 items: [
                   SegmentedActionCardItem(
-                    trailing: trailing,
+                    trailing: isLoading
+                        ? const SizedBox(
+                            width: 28,
+                            height: 28,
+                            child: CircularProgressIndicator())
+                        : const Icon(Icons.file_upload),
                     title: Text(AppLocalizations.of(context)!.exportAll),
                     subtitle: Text(AppLocalizations.of(context)!
                         .exportAllGamesIntoAJSONFile),
                     onTap: isLoading ? null : () => exportGames(),
+                  ),
+                  SegmentedActionCardItem(
+                    trailing: isLoading
+                        ? const SizedBox(
+                            width: 28,
+                            height: 28,
+                            child: CircularProgressIndicator())
+                        : const Icon(Icons.share),
+                    title: Text(AppLocalizations.of(context)!.shareGames),
+                    subtitle: Text(
+                        AppLocalizations.of(context)!.shareGamesAsAJSONFile),
+                    onTap: isLoading ? null : () => shareGames(),
                   ),
                 ],
               ),

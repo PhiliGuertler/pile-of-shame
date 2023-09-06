@@ -1,4 +1,5 @@
 import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -55,7 +56,7 @@ class SliverFancyImageAppBar extends ConsumerWidget {
     super.key,
     this.stretchTriggerOffset = 100.0,
     this.onStretchTrigger,
-    this.height = 250.0,
+    this.height = 300.0,
     this.stretchModes = const [
       StretchMode.zoomBackground,
     ],

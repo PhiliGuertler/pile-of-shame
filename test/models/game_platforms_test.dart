@@ -10,13 +10,8 @@ void main() {
     final iconPath = GamePlatform.nintendo3DS.textLogoPath;
     expect(iconPath, 'assets/platforms/text_logos/nintendo/nintendo_3ds.webp');
   });
-  test("Assembles controller-light path as expected", () {
-    final iconPath = GamePlatform.xbox360.controllerLogoPathLight;
-    expect(
-        iconPath, 'assets/platforms/controllers/microsoft/xbox_360_light.webp');
-  });
-  test("Assembles controller-dark path as expected", () {
-    final iconPath = GamePlatform.steam.controllerLogoPathDark;
-    expect(iconPath, 'assets/platforms/controllers/pc/steam_dark.webp');
+  test("Assembles controller-logo path as expected", () {
+    final iconPath = GamePlatform.xbox360.controllerLogoPath;
+    expect(iconPath, 'assets/platforms/controllers/microsoft/xbox_360.webp');
   });
 }

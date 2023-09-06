@@ -21,8 +21,4 @@ flutter gen-l10n
 ```
 
 ## Continuous deployment
-Deployment for Android is managed with fastlane.
-To deploy an internal release of the current version of the application run this command from the `android` directory
-```bash
-bundle exec fastlane internal
-```
+Deployment for Android is managed with fastlane in github actions automatically.

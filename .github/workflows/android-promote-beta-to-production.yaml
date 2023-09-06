@@ -1,4 +1,4 @@
-name: android-test-and-deploy-internal
+name: android-promote-beta-to-production
 on:
   push:
     tags:

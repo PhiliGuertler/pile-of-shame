@@ -307,16 +307,7 @@ enum GamePlatform {
   String get iconPath => "$_iconBasePath/${family.name}/$assetPath.webp";
   String get textLogoPath =>
       "$_textLogoBasePath/${family.name}/$assetPath.webp";
-  String get controllerLogoPathLight =>
-      "$_controllerBasePath/${family.name}/${assetPath}_light.webp";
-  String get controllerLogoPathDark =>
-      "$_controllerBasePath/${family.name}/${assetPath}_dark.webp";
 
-  String controllerLogoPath(BuildContext context) {
-    final theme = Theme.of(context);
-    if (theme.brightness == Brightness.light) {
-      return controllerLogoPathLight;
-    }
-    return controllerLogoPathDark;
-  }
+  String get controllerLogoPath =>
+      "$_controllerBasePath/${family.name}/$assetPath.webp";
 }

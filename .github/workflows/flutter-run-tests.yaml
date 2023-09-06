@@ -1,4 +1,4 @@
-name: android-test-and-deploy-internal
+name: flutter-build-and-run-tests
 on:
   pull_request:
     branches:
