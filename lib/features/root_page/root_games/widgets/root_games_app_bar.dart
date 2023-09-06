@@ -21,15 +21,17 @@ class RootGamesAppBar extends ConsumerStatefulWidget
 }
 
 class _RootGamesAppBarState extends ConsumerState<RootGamesAppBar> {
-  bool isSearchOpen = false;
+  late bool isSearchOpen;
   late TextEditingController searchTextController;
 
   @override
   void initState() {
     super.initState();
 
-    searchTextController =
-        TextEditingController(text: ref.read(gameSearchProvider));
+    final currentSearch = ref.read(gameSearchProvider);
+
+    isSearchOpen = currentSearch.isNotEmpty;
+    searchTextController = TextEditingController(text: currentSearch);
   }
 
   @override
