@@ -15,14 +15,14 @@ class AboutScreen extends StatelessWidget {
         child: SegmentedActionCard(
           items: [
             SegmentedActionCardItem(
-              title: const Text("Github-Repository"),
+              title: Text(AppLocalizations.of(context)!.githubRepository),
               trailing: const Icon(Icons.open_in_new),
               onTap: () {
                 // TODO: Open Github repository
               },
             ),
             SegmentedActionCardItem(
-              title: const Text("Licenses"),
+              title: Text(AppLocalizations.of(context)!.licenses),
               trailing: const Icon(Icons.library_books),
               onTap: () async {
                 final info = await PackageInfo.fromPlatform();
@@ -36,6 +36,12 @@ class AboutScreen extends StatelessWidget {
                   );
                 }
               },
+            ),
+            SegmentedActionCardItem(
+              title: Text(AppLocalizations.of(context)!.imageCredit),
+              subtitle: Text(AppLocalizations.of(context)!
+                  .imagesOfControllersHaveBeenCreatedUsingMidjourney),
+              trailing: const SizedBox(),
             ),
           ],
         ),
