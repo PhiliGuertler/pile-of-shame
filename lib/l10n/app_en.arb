@@ -86,6 +86,8 @@
   "save": "Save",
   "searchGames": "search for games",
   "settings": "Settings",
+  "shareGames": "Share games",
+  "shareGamesAsAJSONFile": "Share games as a JSON-file",
   "sony": "Sony",
   "sortGames": "sort games",
   "status": "Status",

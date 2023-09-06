@@ -51,13 +51,44 @@ class _ExportGamesScreenState extends ConsumerState<ExportGamesScreen> {
     });
   }
 
+  Future<void> shareGames() async {
+    setState(() {
+      isLoading = true;
+    });
+    final exportGamesTitle = AppLocalizations.of(context)!.exportGames;
+    String currentDateTime = DateTime.now().toIso8601String();
+    currentDateTime = currentDateTime.replaceFirst("T", "_");
+    currentDateTime = currentDateTime.replaceAll(":", "-");
+    currentDateTime = currentDateTime.split(".").first;
+    final gamesFile = await ref.read(gameFileProvider.future);
+
+    try {
+      final pickedFile = await ref.read(fileUtilsProvider).shareFile(
+          gamesFile, 'games-$currentDateTime.json', exportGamesTitle);
+      if (pickedFile) {
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(AppLocalizations.of(context)!.exportSucceeded),
+            ),
+          );
+        }
+      }
+    } catch (error) {
+      setState(() {
+        isLoading = false;
+      });
+      if (context.mounted) {
+        throw Exception(AppLocalizations.of(context)!.exportFailed);
+      }
+    }
+    setState(() {
+      isLoading = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    final trailing = isLoading
-        ? const SizedBox(
-            width: 28, height: 28, child: CircularProgressIndicator())
-        : const Icon(Icons.file_upload);
-
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.exportGames),
@@ -69,11 +100,28 @@ class _ExportGamesScreenState extends ConsumerState<ExportGamesScreen> {
               child: SegmentedActionCard(
                 items: [
                   SegmentedActionCardItem(
-                    trailing: trailing,
+                    trailing: isLoading
+                        ? const SizedBox(
+                            width: 28,
+                            height: 28,
+                            child: CircularProgressIndicator())
+                        : const Icon(Icons.file_upload),
                     title: Text(AppLocalizations.of(context)!.exportAll),
                     subtitle: Text(AppLocalizations.of(context)!
                         .exportAllGamesIntoAJSONFile),
                     onTap: isLoading ? null : () => exportGames(),
+                  ),
+                  SegmentedActionCardItem(
+                    trailing: isLoading
+                        ? const SizedBox(
+                            width: 28,
+                            height: 28,
+                            child: CircularProgressIndicator())
+                        : const Icon(Icons.share),
+                    title: Text(AppLocalizations.of(context)!.shareGames),
+                    subtitle: Text(
+                        AppLocalizations.of(context)!.shareGamesAsAJSONFile),
+                    onTap: isLoading ? null : () => shareGames(),
                   ),
                 ],
               ),
