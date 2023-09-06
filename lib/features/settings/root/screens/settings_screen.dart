@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:pile_of_shame/features/developer_tools/debug_menu/screens/debug_menu_screen.dart';
+import 'package:pile_of_shame/features/settings/about/screens/about_screen.dart';
 import 'package:pile_of_shame/features/settings/appearance/screens/appearance_screen.dart';
 import 'package:pile_of_shame/features/settings/export_games/screens/export_games_screen.dart';
 import 'package:pile_of_shame/features/settings/import_games/screens/import_games_screen.dart';
@@ -62,6 +63,17 @@ class SettingsScreen extends ConsumerWidget {
                     Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (context) => const LanguageScreen(),
+                      ),
+                    );
+                  },
+                ),
+                SegmentedActionCardItem(
+                  leading: const Icon(Icons.info),
+                  title: Text(AppLocalizations.of(context)!.aboutThisApp),
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const AboutScreen(),
                       ),
                     );
                   },

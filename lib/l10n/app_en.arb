@@ -7,6 +7,7 @@
       }
     }
   },
+  "aboutThisApp": "About this app",
   "addDLC": "Add DLC",
   "addGame": "Add game",
   "ageRating": "Age rating",
@@ -60,7 +61,7 @@
   "importSuccessful": "Import successful",
   "isAscending": "ascending",
   "language": "Language",
-  "languageSubtitle": "The most controversial Decision",
+  "languageSubtitle": "The most controversial decision",
   "lastModified": "Last modified",
   "light": "Light",
   "microsoft": "Microsoft",
