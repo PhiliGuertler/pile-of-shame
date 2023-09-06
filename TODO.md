@@ -3,9 +3,6 @@
 - Improve UI when editing a game or DLC
 - Add Icons for different PlayStatuses
 - Implement settings for different game displays
-- Add option to delete a game or DLC
-- Add a search
-- Add controller images for all platforms
 - Add a slick display if there are no games yet
 
 # Must-have features
