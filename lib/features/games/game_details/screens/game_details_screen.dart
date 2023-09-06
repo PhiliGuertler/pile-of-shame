@@ -38,11 +38,10 @@ class _GameDetailsScreenState extends ConsumerState<GameDetailsScreen> {
               SliverFancyImageAppBar(
                 borderRadius: -defaultBorderRadius * 2,
                 imagePath: game.when(
-                  data: (game) => game.platform.controllerLogoPath(context),
+                  data: (game) => game.platform.controllerLogoPath,
                   error: (error, stackTrace) =>
-                      GamePlatform.unknown.controllerLogoPath(context),
-                  loading: () =>
-                      GamePlatform.unknown.controllerLogoPath(context),
+                      GamePlatform.unknown.controllerLogoPath,
+                  loading: () => GamePlatform.unknown.controllerLogoPath,
                 ),
                 actions: game.maybeWhen(
                   data: (game) => [
