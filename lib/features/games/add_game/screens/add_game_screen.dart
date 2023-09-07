@@ -142,7 +142,10 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
                         .map(
                           (status) => DropdownMenuItem<PlayStatus>(
                             value: status,
-                            child: Text(status.toLocaleString(context)),
+                            child: Text(
+                              status.toLocaleString(context),
+                              key: ValueKey(status.toString()),
+                            ),
                           ),
                         )
                         .toList(),
@@ -194,7 +197,6 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
                     items: USK.values
                         .map(
                           (usk) => DropdownMenuItem<USK>(
-                            key: ValueKey(usk.toString()),
                             value: usk,
                             child: Row(
                               children: [
@@ -202,7 +204,10 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
                                   padding: const EdgeInsets.only(right: 8.0),
                                   child: USKLogo(ageRestriction: usk),
                                 ),
-                                Text(usk.toRatedString(context)),
+                                Text(
+                                  usk.toRatedString(context),
+                                  key: ValueKey(usk.toString()),
+                                ),
                               ],
                             ),
                           ),

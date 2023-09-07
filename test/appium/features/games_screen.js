@@ -1,8 +1,7 @@
 const find = require("appium-flutter-finder");
 
 class GamesScreen {
-    constructor() {
-    }
+    constructor() {}
 
     async openFilters() {
         const filterButton = find.byValueKey("filter_games");
@@ -45,6 +44,11 @@ class GamesScreen {
     async clickScreenTitle() {
         const title = find.byValueKey("games_screen_title");
         await driver.elementClick(title);
+    }
+
+    async clickGameByName(name) {
+        const game = find.byText(name);
+        await driver.elementClick(game);
     }
 }
 
