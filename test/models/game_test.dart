@@ -112,9 +112,10 @@ void main() {
             gameOriAndTheBlindForest,
           ]);
 
-          gamesList.updateGame(gameDistance.id, updatedGameDistance);
+          final result =
+              gamesList.updateGame(gameDistance.id, updatedGameDistance);
 
-          expect(gamesList.games, [
+          expect(result.games, [
             gameOuterWilds,
             updatedGameDistance,
             gameSsx3,
@@ -166,9 +167,9 @@ void main() {
           gameOriAndTheBlindForest,
         ]);
 
-        gamesList.removeGame(gameDistance.id);
+        final result = gamesList.removeGame(gameDistance.id);
 
-        expect(gamesList.games, [
+        expect(result.games, [
           gameOuterWilds,
           gameSsx3,
           gameOriAndTheBlindForest,
@@ -210,9 +211,9 @@ void main() {
           gameSsx3,
         ]);
 
-        gamesList.addGame(gameOriAndTheBlindForest);
+        final result = gamesList.addGame(gameOriAndTheBlindForest);
 
-        expect(gamesList.games, [
+        expect(result.games, [
           gameOuterWilds,
           gameDistance,
           gameSsx3,
