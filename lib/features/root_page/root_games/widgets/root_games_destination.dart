@@ -4,7 +4,7 @@ import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 
 NavigationDestination rootGamesDestination(BuildContext context) {
   return NavigationDestination(
-    key: const ValueKey('games'),
+    key: const ValueKey('root_games'),
     icon: const Icon(Icons.gamepad_outlined),
     selectedIcon: const Icon(Icons.gamepad)
         .animate()

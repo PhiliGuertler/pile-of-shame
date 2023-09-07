@@ -14,7 +14,7 @@ class RootGamesFab extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return CollapsingFloatingActionButton(
-      key: const ValueKey('add'),
+      key: const ValueKey('add_game'),
       icon: const Icon(Icons.add_rounded),
       label: Text(AppLocalizations.of(context)!.addGame),
       isExtended: isExtended,

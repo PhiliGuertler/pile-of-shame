@@ -10,6 +10,7 @@ part 'segmented_action_card.freezed.dart';
 @freezed
 class SegmentedActionCardItem with _$SegmentedActionCardItem {
   const factory SegmentedActionCardItem({
+    Key? key,
     Widget? title,
     Widget? subtitle,
     Color? tileColor,
@@ -28,6 +29,7 @@ class SegmentedActionCardItem with _$SegmentedActionCardItem {
   }) = _SegmentedActionCardItem;
 
   factory SegmentedActionCardItem.debug({
+    Key? key,
     Widget? title,
     Widget? subtitle,
     Color? tileColor,
@@ -42,6 +44,7 @@ class SegmentedActionCardItem with _$SegmentedActionCardItem {
         openBuilderOnTap,
   }) {
     return SegmentedActionCardItem(
+      key: key,
       title: title,
       subtitle: subtitle,
       tileColor: Colors.orange.shade800,
@@ -149,6 +152,7 @@ class SegmentedActionCard extends ConsumerWidget {
                 );
               } else {
                 return ListTile(
+                  key: item.key,
                   contentPadding: const EdgeInsets.symmetric(
                       horizontal: defaultPaddingX - 8.0),
                   shape: shape,
