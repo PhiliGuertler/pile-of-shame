@@ -2,6 +2,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+// ignore: depend_on_referenced_packages
+import 'package:flutter_driver/driver_extension.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pile_of_shame/app.dart';
@@ -9,6 +11,17 @@ import 'package:pile_of_shame/providers/debug_provider.dart';
 
 class Initializer {
   void setupInitialization() {
+    if (const bool.fromEnvironment(
+      "FLUTTER_APPIUM_TEST",
+      defaultValue: false,
+    )) {
+      // FlutterDriverExtensions break keyboard inputs and should only be
+      // enabled for integration tests that use the flutter_driver api!
+      debugPrint("[AppInitializer] Enabling flutter driver extensions");
+      enableFlutterDriverExtension();
+    } else {
+      debugPrint("[AppInitializer] Disabling flutter driver extensions");
+    }
     WidgetsBinding binding = WidgetsFlutterBinding.ensureInitialized();
     FlutterNativeSplash.preserve(widgetsBinding: binding);
   }
