@@ -17,6 +17,7 @@
   "appSettings": "App-Settings",
   "appearance": "Appearance",
   "beforeYouImportGamesYouShouldExportYourPreviousGamesAsAPrecaution": "Before you import games, you should export your previous games as a precaution. Changes made by imports cannot be undone.",
+  "buildYourPileOfShameByAddingNewGames": "Build your pile of shame by adding new games.",
   "byAgeRating": "by age rating",
   "byLastModified": "by modification date",
   "byName": "by name",

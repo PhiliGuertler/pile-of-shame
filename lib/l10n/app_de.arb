@@ -9,6 +9,7 @@
   "appSettings": "App-Einstellungen",
   "appearance": "Erscheinung",
   "beforeYouImportGamesYouShouldExportYourPreviousGamesAsAPrecaution": "Bevor Du Spiele importierst, solltest Du Deine bisherigen Spiele vorsichtshalber exportieren. Änderungen durch Importe können nicht rückgängig gemacht werden.",
+  "buildYourPileOfShameByAddingNewGames": "Baue Deinen Pile of Shame auf, indem du neue Spiele hinzufügst",
   "byAgeRating": "nach Altersfreigabe",
   "byLastModified": "nach Änderungsdatum",
   "byName": "nach Name",

@@ -1,4 +1,5 @@
 import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:pile_of_shame/utils/constants.dart';
@@ -62,7 +63,7 @@ class _SliverFancyImageHeaderDelegate extends SliverPersistentHeaderDelegate {
       currentExtent: currentExtent,
       child: ClipRRect(
         borderRadius: const BorderRadius.all(
-          Radius.circular(defaultBorderRadius),
+          Radius.circular(defaultBorderRadius * 2.0),
         ),
         child: FlexibleSpaceBar(
           stretchModes: stretchModes,

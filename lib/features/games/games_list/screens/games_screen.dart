@@ -8,6 +8,7 @@ import 'package:pile_of_shame/providers/games/game_provider.dart';
 import 'package:pile_of_shame/utils/constants.dart';
 import 'package:pile_of_shame/widgets/error_display.dart';
 import 'package:pile_of_shame/widgets/skeletons/skeleton_game_display.dart';
+import 'package:pile_of_shame/widgets/slivers/sliver_fancy_image_header.dart';
 
 import '../widgets/sliver_filter_by_family.dart';
 
@@ -33,25 +34,42 @@ class GamesScreen extends ConsumerWidget {
             physics: const BouncingScrollPhysics(
                 parent: AlwaysScrollableScrollPhysics()),
             slivers: [
-              const SliverContractSorterFilter(),
-              const SliverFilteredGames(),
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                      top: 16.0,
-                      left: defaultPaddingX,
-                      right: defaultPaddingX,
-                      bottom: 80.0),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(AppLocalizations.of(context)!.nGames(totalGames)),
-                      Text(currencyFormatter.format(totalPrice)),
-                    ],
+              if (!hasGames)
+                const SliverFancyImageHeader(
+                    imagePath: 'assets/misc/game_pile.webp', height: 300.0),
+              if (!hasGames)
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: defaultPaddingX, vertical: 16.0),
+                    child: Text(
+                      AppLocalizations.of(context)!
+                          .buildYourPileOfShameByAddingNewGames,
+                      style: Theme.of(context).textTheme.headlineSmall,
+                      textAlign: TextAlign.center,
+                    ),
                   ),
-                ).animate().fadeIn(),
-              ),
+                ),
+              if (hasGames) const SliverContractSorterFilter(),
+              if (hasGames) const SliverFilteredGames(),
+              if (hasGames)
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                        top: 16.0,
+                        left: defaultPaddingX,
+                        right: defaultPaddingX,
+                        bottom: 80.0),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(AppLocalizations.of(context)!.nGames(totalGames)),
+                        Text(currencyFormatter.format(totalPrice)),
+                      ],
+                    ),
+                  ).animate().fadeIn(),
+                ),
             ],
           ),
         ),
