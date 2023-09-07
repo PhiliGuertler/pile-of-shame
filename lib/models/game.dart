@@ -52,39 +52,50 @@ class Game with _$Game {
   }
 }
 
-@unfreezed
+@freezed
 class GamesList with _$GamesList {
   const GamesList._();
 
   const factory GamesList({
-    required final List<Game> games,
+    required List<Game> games,
   }) = _GamesList;
 
   factory GamesList.fromJson(Map<String, dynamic> json) =>
       _$GamesListFromJson(json);
 
-  void updateGame(String id, Game update) {
+  GamesList updateGame(String id, Game update) {
     final gameIndex = games.indexWhere((element) => element.id == id);
     assert(gameIndex != -1, "No Game with id '$id' found");
 
-    games[gameIndex] = update;
+    final List<Game> updatedGames = List.from(games);
+
+    updatedGames[gameIndex] = update;
+    return GamesList(games: updatedGames);
   }
 
-  void removeGame(String id) {
+  GamesList removeGame(String id) {
     assert(games.indexWhere((element) => element.id == id) != -1,
         "No Game with id '$id' found");
-    games.removeWhere((element) => element.id == id);
+
+    final List<Game> updatedGames = List.from(games);
+    updatedGames.removeWhere((element) => element.id == id);
+    return GamesList(games: updatedGames);
   }
 
-  void addGame(Game game) {
+  GamesList addGame(Game game) {
     assert(games.every((element) => element.id != game.id),
         "Game with id '${game.id}' already exists. Did you mean to update an existing Game?");
-    games.add(game);
+
+    final List<Game> updatedGames = List.from(games);
+    updatedGames.add(game);
+    return GamesList(games: updatedGames);
   }
 
-  void updateGames(GamesList gamesList) {
-    for (int i = 0; i < games.length; ++i) {
-      Game game = games[i];
+  GamesList updateGames(GamesList gamesList) {
+    final List<Game> updatedGames = List.from(games);
+
+    for (int i = 0; i < updatedGames.length; ++i) {
+      Game game = updatedGames[i];
       int possibleUpdateIndex =
           gamesList.games.indexWhere((update) => update.id == game.id);
       if (possibleUpdateIndex == -1) {
@@ -92,19 +103,25 @@ class GamesList with _$GamesList {
       }
       Game update = gamesList.games[possibleUpdateIndex];
       if (update.lastModified.compareTo(game.lastModified) > 0) {
-        games[i] = update;
+        updatedGames[i] = update;
       }
     }
+
+    return GamesList(games: updatedGames);
   }
 
-  void addGames(GamesList gamesList) {
+  GamesList addGames(GamesList gamesList) {
+    GamesList updatedGames = this;
+
     for (int i = 0; i < gamesList.games.length; ++i) {
       Game possibleNewGame = gamesList.games[i];
       int index =
           games.indexWhere((element) => element.id == possibleNewGame.id);
       if (index == -1) {
-        addGame(possibleNewGame);
+        updatedGames = addGame(possibleNewGame);
       }
     }
+
+    return updatedGames;
   }
 }

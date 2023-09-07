@@ -61,11 +61,12 @@ class _GameDetailsScreenState extends ConsumerState<GameDetailsScreen> {
                           final updatedGame = result.toGame();
                           final gamesList =
                               await ref.read(gamesProvider.future);
-                          gamesList.updateGame(updatedGame.id, updatedGame);
+                          final update =
+                              gamesList.updateGame(updatedGame.id, updatedGame);
 
                           await ref
                               .read(gameStorageProvider)
-                              .persistGamesList(gamesList);
+                              .persistGamesList(update);
                         }
                       },
                     ),
@@ -126,10 +127,10 @@ class _GameDetailsScreenState extends ConsumerState<GameDetailsScreen> {
 
                           if (result != null && result) {
                             final games = await ref.read(gamesProvider.future);
-                            games.removeGame(game.id);
+                            final update = games.removeGame(game.id);
 
                             final gameStorage = ref.read(gameStorageProvider);
-                            await gameStorage.persistGamesList(games);
+                            await gameStorage.persistGamesList(update);
 
                             if (context.mounted) {
                               Navigator.of(context).pop();

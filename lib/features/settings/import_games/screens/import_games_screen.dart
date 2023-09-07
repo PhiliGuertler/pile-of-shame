@@ -125,13 +125,11 @@ class _ImportGamesScreenState extends ConsumerState<ImportGamesScreen> {
                                 final GamesList existingGames =
                                     await ref.read(gamesProvider.future);
 
-                                final GamesList games =
-                                    existingGames.copyWith();
+                                final update1 =
+                                    existingGames.updateGames(importedGames);
+                                final update2 = update1.addGames(importedGames);
 
-                                games.updateGames(importedGames);
-                                games.addGames(importedGames);
-
-                                return games;
+                                return update2;
                               },
                             ),
                   ),
@@ -154,12 +152,10 @@ class _ImportGamesScreenState extends ConsumerState<ImportGamesScreen> {
                                 final GamesList existingGames =
                                     await ref.read(gamesProvider.future);
 
-                                final GamesList games =
-                                    existingGames.copyWith();
+                                final update =
+                                    existingGames.updateGames(importedGames);
 
-                                games.updateGames(importedGames);
-
-                                return games;
+                                return update;
                               },
                             ),
                   ),
@@ -182,12 +178,10 @@ class _ImportGamesScreenState extends ConsumerState<ImportGamesScreen> {
                                 final GamesList existingGames =
                                     await ref.read(gamesProvider.future);
 
-                                final GamesList games =
-                                    existingGames.copyWith();
+                                final update =
+                                    existingGames.addGames(importedGames);
 
-                                games.addGames(importedGames);
-
-                                return games;
+                                return update;
                               },
                             ),
                   ),
