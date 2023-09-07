@@ -67,11 +67,12 @@ class DLCDetailsScreen extends ConsumerWidget {
 
                             final gamesList =
                                 await ref.read(gamesProvider.future);
-                            gamesList.updateGame(updatedGame.id, updatedGame);
+                            final update = gamesList.updateGame(
+                                updatedGame.id, updatedGame);
 
                             ref
                                 .read(gameStorageProvider)
-                                .persistGamesList(gamesList);
+                                .persistGamesList(update);
                           }
                         },
                       ),

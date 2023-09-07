@@ -27,10 +27,10 @@ class RootGamesFab extends ConsumerWidget {
 
         if (result != null) {
           final games = await ref.read(gamesProvider.future);
-          games.addGame(result.toGame());
+          final update = games.addGame(result.toGame());
 
           final gameStorage = ref.read(gameStorageProvider);
-          await gameStorage.persistGamesList(games);
+          await gameStorage.persistGamesList(update);
         }
       },
     );
