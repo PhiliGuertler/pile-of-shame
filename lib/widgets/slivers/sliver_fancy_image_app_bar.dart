@@ -11,6 +11,7 @@ import 'package:transparent_image/transparent_image.dart';
 const overlayRadius = 50.0;
 
 const minimumScrollTriggerOffset = 8.0;
+const minimumToolbarHeight = 50.0;
 
 // Creates a drawer-like gap at the bottom of the clipped area
 class InvertedCornerClipPath extends CustomClipper<Path> {
@@ -90,7 +91,7 @@ class SliverFancyImageAppBar extends ConsumerWidget {
         title: title,
         actions: actions,
         themeColor: appThemeSettings.when(
-          data: (data) => data.primaryColor.withOpacity(0.5),
+          data: (data) => Theme.of(context).colorScheme.primaryContainer,
           error: (error, stackTrace) => null,
           loading: () => null,
         ),
@@ -170,8 +171,8 @@ class _SliverFancyImageAppBarDelegate extends SliverPersistentHeaderDelegate {
     final safePadding = MediaQuery.of(context).padding;
 
     double currentExtent = math.max(height - shrinkOffset, minHeight);
-    double currentOpacity =
-        math.max(0.0, 0.8 - (shrinkOffset / minHeight).clamp(0.0, 0.8));
+    double currentOpacity = math.max(0.0,
+        0.8 - (shrinkOffset / (height - minimumToolbarHeight)).clamp(0.0, 0.8));
 
     return FlexibleSpaceBar.createSettings(
       currentExtent: currentExtent,
@@ -200,7 +201,7 @@ class _SliverFancyImageAppBarDelegate extends SliverPersistentHeaderDelegate {
                   child: Align(
                     alignment: Alignment.topCenter,
                     child: SizedBox(
-                      height: 50.0,
+                      height: minimumToolbarHeight,
                       child: NavigationToolbar(
                         middleSpacing: AppBarTheme.of(context).titleSpacing ??
                             NavigationToolbar.kMiddleSpacing,
