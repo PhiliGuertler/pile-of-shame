@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
+import 'package:pile_of_shame/widgets/app_scaffold.dart';
 import 'package:pile_of_shame/widgets/image_container.dart';
 import 'package:pile_of_shame/widgets/segmented_action_card.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -10,7 +11,7 @@ class AboutScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       appBar: AppBar(title: Text(AppLocalizations.of(context)!.aboutThisApp)),
       body: SafeArea(
         child: SegmentedActionCard(

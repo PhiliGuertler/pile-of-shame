@@ -4,6 +4,7 @@ import 'package:pile_of_shame/features/developer_tools/debug_game_controller_sha
 import 'package:pile_of_shame/features/developer_tools/debug_game_platform_icons/screens/debug_game_platform_icons_screen.dart';
 import 'package:pile_of_shame/features/developer_tools/debug_game_platform_text_logos/screens/debug_game_platform_text_logos_screen.dart';
 import 'package:pile_of_shame/utils/constants.dart';
+import 'package:pile_of_shame/widgets/app_scaffold.dart';
 import 'package:pile_of_shame/widgets/segmented_action_card.dart';
 
 class DebugMenuScreen extends StatelessWidget {
@@ -11,7 +12,7 @@ class DebugMenuScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       appBar: AppBar(
         title: const Text("Debug Menu"),
       ),

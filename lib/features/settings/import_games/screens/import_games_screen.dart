@@ -7,6 +7,7 @@ import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/providers/file_provider.dart';
 import 'package:pile_of_shame/providers/games/game_provider.dart';
 import 'package:pile_of_shame/utils/constants.dart';
+import 'package:pile_of_shame/widgets/app_scaffold.dart';
 import 'package:pile_of_shame/widgets/segmented_action_card.dart';
 
 class ImportGamesScreen extends ConsumerStatefulWidget {
@@ -69,7 +70,7 @@ class _ImportGamesScreenState extends ConsumerState<ImportGamesScreen> {
             width: 28, height: 28, child: CircularProgressIndicator())
         : const Icon(Icons.file_download);
 
-    return Scaffold(
+    return AppScaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.importGames),
       ),

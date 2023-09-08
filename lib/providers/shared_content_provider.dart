@@ -3,7 +3,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'shared_content_provider.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 class SharedContent extends _$SharedContent {
   @override
   List<SharedFile> build() {
