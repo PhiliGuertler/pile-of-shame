@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pile_of_shame/app.dart';
 import 'package:pile_of_shame/initializer.dart';
+import 'package:pile_of_shame/receive_share_app.dart';
 
 void main() async {
   final providerContainer = ProviderContainer();
@@ -13,6 +13,6 @@ void main() async {
 
   runApp(UncontrolledProviderScope(
     container: providerContainer,
-    child: const App(),
+    child: const ReceiveShareApp(),
   ));
 }

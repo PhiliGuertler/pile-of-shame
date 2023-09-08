@@ -7,6 +7,7 @@ import 'package:pile_of_shame/models/game_platforms.dart';
 import 'package:pile_of_shame/models/play_status.dart';
 import 'package:pile_of_shame/utils/constants.dart';
 import 'package:pile_of_shame/utils/validators.dart';
+import 'package:pile_of_shame/widgets/app_scaffold.dart';
 import 'package:pile_of_shame/widgets/input/number_input_field.dart';
 import 'package:pile_of_shame/widgets/input/text_input_field.dart';
 
@@ -34,7 +35,7 @@ class _AddDLCScreenState extends ConsumerState<AddDLCScreen> {
           ),
     );
 
-    return Scaffold(
+    return AppScaffold(
       appBar: AppBar(
         title: Text(widget.initialValue == null
             ? AppLocalizations.of(context)!.addDLC

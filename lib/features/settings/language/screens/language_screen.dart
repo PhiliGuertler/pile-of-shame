@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pile_of_shame/extensions/locale_extensions.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/providers/theming/theme_provider.dart';
+import 'package:pile_of_shame/widgets/app_scaffold.dart';
 
 class LanguageScreen extends ConsumerWidget {
   const LanguageScreen({super.key});
@@ -13,7 +14,7 @@ class LanguageScreen extends ConsumerWidget {
 
     final themeSettings = ref.watch(appThemeSettingsProvider);
 
-    return Scaffold(
+    return AppScaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.language),
       ),

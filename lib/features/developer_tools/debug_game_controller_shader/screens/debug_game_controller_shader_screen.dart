@@ -3,6 +3,7 @@ import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:pile_of_shame/features/developer_tools/debug_game_controller_shader/painters/game_controller_painter.dart';
 import 'package:pile_of_shame/utils/shaders.dart';
+import 'package:pile_of_shame/widgets/app_scaffold.dart';
 
 class DebugGameControllerShaderScreen extends StatefulWidget {
   final Future<ui.FragmentShader> shader;
@@ -32,7 +33,7 @@ class _DebugGameControllerShaderScreenState
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       appBar: AppBar(
         title: const Text("Debug Game Controller Shader"),
       ),

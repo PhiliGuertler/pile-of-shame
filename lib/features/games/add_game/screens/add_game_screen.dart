@@ -8,6 +8,7 @@ import 'package:pile_of_shame/models/game_platforms.dart';
 import 'package:pile_of_shame/models/play_status.dart';
 import 'package:pile_of_shame/utils/constants.dart';
 import 'package:pile_of_shame/utils/validators.dart';
+import 'package:pile_of_shame/widgets/app_scaffold.dart';
 import 'package:pile_of_shame/widgets/game_platform_icon.dart';
 import 'package:pile_of_shame/widgets/input/dropdown_search_field.dart';
 import 'package:pile_of_shame/widgets/input/number_input_field.dart';
@@ -42,7 +43,7 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
           ),
     );
 
-    return Scaffold(
+    return AppScaffold(
       appBar: AppBar(
         title: Text(widget.initialValue == null
             ? AppLocalizations.of(context)!.addGame
