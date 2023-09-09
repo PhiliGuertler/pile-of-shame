@@ -7,6 +7,18 @@
       }
     }
   },
+  "@dateAtTime": {
+    "placeholders": {
+      "date": {
+        "example": "04/04/2023",
+        "type": "String"
+      },
+      "time": {
+        "example": "11:24:59",
+        "type": "String"
+      }
+    }
+  },
   "aboutThisApp": "About this app",
   "addDLC": "Add DLC",
   "addGame": "Add game",
@@ -33,6 +45,7 @@
   "completed": "completed",
   "completed100Percent": "100% completed",
   "dark": "Dark",
+  "dateAtTime": "{date} at {time} o'clock",
   "delete": "delete",
   "deleteAllGames": "Delete all games?",
   "deleteDLC": "Delete DLC",

@@ -25,6 +25,7 @@
   "completed": "Durchgespielt",
   "completed100Percent": "Durchgespielt zu 100%",
   "dark": "Dunkel",
+  "dateAtTime": "{date} um {time} Uhr",
   "delete": "Löschen",
   "deleteAllGames": "Alle Spiele löschen?",
   "deleteDLC": "DLC löschen",

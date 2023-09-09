@@ -18,6 +18,7 @@ class SliverDLCDetails extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final dateFormatter = ref.watch(dateFormatProvider);
+    final timeFormatter = ref.watch(timeFormatProvider);
     final currencyFormatter = ref.watch(currencyFormatProvider(context));
 
     return SliverList.list(
@@ -35,7 +36,12 @@ class SliverDLCDetails extends ConsumerWidget {
         ),
         ListTile(
           title: Text(AppLocalizations.of(context)!.lastModified),
-          subtitle: Text(dateFormatter.format(dlc.lastModified)),
+          subtitle: Text(
+            AppLocalizations.of(context)!.dateAtTime(
+              dateFormatter.format(dlc.lastModified),
+              timeFormatter.format(dlc.lastModified),
+            ),
+          ),
         ),
         ListTile(
           leading: ImageContainer(

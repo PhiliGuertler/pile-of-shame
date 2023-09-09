@@ -28,6 +28,7 @@ class _SliverGameDetailsState extends ConsumerState<SliverGameDetails> {
   @override
   Widget build(BuildContext context) {
     final dateFormatter = ref.watch(dateFormatProvider);
+    final timeFormatter = ref.watch(timeFormatProvider);
     final currencyFormatter = ref.watch(currencyFormatProvider(context));
 
     return SliverList.list(
@@ -56,7 +57,12 @@ class _SliverGameDetailsState extends ConsumerState<SliverGameDetails> {
         ).animate().fadeIn(),
         ListTile(
           title: Text(AppLocalizations.of(context)!.lastModified),
-          subtitle: Text(dateFormatter.format(widget.game.lastModified)),
+          subtitle: Text(
+            AppLocalizations.of(context)!.dateAtTime(
+              dateFormatter.format(widget.game.lastModified),
+              timeFormatter.format(widget.game.lastModified),
+            ),
+          ),
         ).animate().fadeIn(),
         ListTile(
           leading: ImageContainer(
