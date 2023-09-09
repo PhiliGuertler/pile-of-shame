@@ -3,6 +3,7 @@
 A simple offline list for games you want to play, are playing, or played in the past.
 Written in Flutter.
 
+
 ## Setup
 Make sure to generate some files before hitting run.
 For conveninence, the script `scripts/init_project.py` will perform these actions in the order listed here.
@@ -75,3 +76,9 @@ npm run test-android
 
 You might have to adjust the config for your platform, as the name of the device/emulator is specified there.
 Have a look at [the Android config](./test/appium/configs/wdio.android.conf.js) and [the iOS config](./test/appium/configs/wdio.ios.conf.js).
+
+## Download the App
+
+<div style="height: 80px;">
+    <a href='https://play.google.com/store/apps/details?id=org.philipp_guertler.pile_of_shame&pcampaignid=web_share&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png'/></a>
+</div>
