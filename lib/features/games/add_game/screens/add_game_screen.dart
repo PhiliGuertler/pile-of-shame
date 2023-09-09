@@ -59,6 +59,7 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
                   padding: const EdgeInsets.symmetric(
                       horizontal: defaultPaddingX, vertical: 4.0),
                   child: TextInputField(
+                    key: const ValueKey("game_name"),
                     label: Text('${AppLocalizations.of(context)!.name}*'),
                     textInputAction: TextInputAction.next,
                     initialValue: editableGame.name ?? '',
@@ -74,6 +75,7 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
                   padding:
                       const EdgeInsets.symmetric(horizontal: defaultPaddingX),
                   child: DropdownSearchField<GamePlatform>(
+                    key: const ValueKey("game_platform_dropdown"),
                     value: editableGame.platform,
                     filter: (searchTerm, option) {
                       // check if the platform family is matching
@@ -93,12 +95,14 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
                           matchesName;
                     },
                     optionBuilder: (context, option, onTap) => ListTile(
+                      key: ValueKey(option.abbreviation),
                       leading: GamePlatformIcon(platform: option),
                       title: Text(option.name),
                       onTap: onTap,
                     ),
                     valueBuilder: (context, option, onTap) =>
                         GamePlatformInputField(
+                      key: const ValueKey("game_platform_input"),
                       value: option,
                       label: Text("${AppLocalizations.of(context)!.platform}*"),
                       onTap: onTap,
@@ -116,6 +120,7 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
                   padding:
                       const EdgeInsets.symmetric(horizontal: defaultPaddingX),
                   child: DropdownButtonFormField<PlayStatus>(
+                    key: const ValueKey("play_status"),
                     decoration: InputDecoration(
                       label: Text("${AppLocalizations.of(context)!.status}*"),
                       suffixIcon: const Icon(Icons.expand_more),
@@ -138,7 +143,10 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
                         .map(
                           (status) => DropdownMenuItem<PlayStatus>(
                             value: status,
-                            child: Text(status.toLocaleString(context)),
+                            child: Text(
+                              status.toLocaleString(context),
+                              key: ValueKey(status.toString()),
+                            ),
                           ),
                         )
                         .toList(),
@@ -148,6 +156,7 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
                   padding:
                       const EdgeInsets.symmetric(horizontal: defaultPaddingX),
                   child: NumberInputField(
+                    key: const ValueKey("price"),
                     label: Text(AppLocalizations.of(context)!.price),
                     textInputAction: TextInputAction.next,
                     initialValue: editableGame.price,
@@ -163,6 +172,7 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
                   padding:
                       const EdgeInsets.symmetric(horizontal: defaultPaddingX),
                   child: DropdownButtonFormField<USK>(
+                    key: const ValueKey("age_rating"),
                     decoration: InputDecoration(
                       label: Text(AppLocalizations.of(context)!.ageRating),
                       prefixIcon: Padding(
@@ -195,7 +205,10 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
                                   padding: const EdgeInsets.only(right: 8.0),
                                   child: USKLogo(ageRestriction: usk),
                                 ),
-                                Text(usk.toRatedString(context)),
+                                Text(
+                                  usk.toRatedString(context),
+                                  key: ValueKey(usk.toString()),
+                                ),
                               ],
                             ),
                           ),
@@ -209,6 +222,7 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
                   child: SegmentedActionCard(
                     items: [
                       SegmentedActionCardItem(
+                        key: const ValueKey("add_dlc"),
                         leading: const Icon(Icons.add),
                         title: Text(AppLocalizations.of(context)!.addDLC),
                         onTap: () async {
@@ -349,6 +363,7 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
                   child: SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
+                      key: const ValueKey("save_game"),
                       onPressed: () async {
                         if (_formKey.currentState!.validate() &&
                             editableGame.isValid()) {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pile_of_shame/features/games/add_game/models/editable_game.dart';
 import 'package:pile_of_shame/features/games/add_game/screens/add_game_screen.dart';
@@ -8,7 +9,6 @@ import 'package:pile_of_shame/models/game_platforms.dart';
 import 'package:pile_of_shame/providers/games/game_provider.dart';
 import 'package:pile_of_shame/utils/constants.dart';
 import 'package:pile_of_shame/widgets/app_scaffold.dart';
-import 'package:pile_of_shame/widgets/skeletons/skeleton.dart';
 import 'package:pile_of_shame/widgets/slivers/sliver_fancy_image_app_bar.dart';
 
 class GameDetailsScreen extends ConsumerStatefulWidget {
@@ -32,20 +32,40 @@ class _GameDetailsScreenState extends ConsumerState<GameDetailsScreen> {
         top: false,
         child: RefreshIndicator(
           onRefresh: () => ref.refresh(gamesProvider.future),
-          child: CustomScrollView(
-            physics: const BouncingScrollPhysics(
-                parent: AlwaysScrollableScrollPhysics()),
-            slivers: [
-              SliverFancyImageAppBar(
-                borderRadius: -defaultBorderRadius * 2,
-                imagePath: game.when(
-                  data: (game) => game.platform.controllerLogoPath,
-                  error: (error, stackTrace) =>
-                      GamePlatform.unknown.controllerLogoPath,
-                  loading: () => GamePlatform.unknown.controllerLogoPath,
+          child: game.when(
+            error: (error, stackTrace) => CustomScrollView(
+              slivers: [
+                SliverFancyImageAppBar(
+                  borderRadius: -defaultBorderRadius * 2,
+                  key: const ValueKey('error-appbar'),
+                  imagePath: GamePlatform.unknown.controllerLogoPath,
                 ),
-                actions: game.maybeWhen(
-                  data: (game) => [
+                SliverToBoxAdapter(
+                  child: Text(error.toString()),
+                )
+              ],
+            ).animate().fadeIn(),
+            loading: () => const CustomScrollView(
+              physics: NeverScrollableScrollPhysics(),
+              slivers: [
+                SliverFancyImageAppBar(
+                  key: ValueKey('loading-appbar'),
+                  borderRadius: -defaultBorderRadius * 2,
+                  imagePath: 'assets/misc/loading.webp',
+                ),
+                SliverGameDetailsSkeleton(),
+              ],
+            ).animate().fadeIn(),
+            data: (game) => CustomScrollView(
+              physics: const BouncingScrollPhysics(
+                parent: AlwaysScrollableScrollPhysics(),
+              ),
+              slivers: [
+                SliverFancyImageAppBar(
+                  key: const ValueKey('appbar'),
+                  borderRadius: -defaultBorderRadius * 2,
+                  imagePath: game.platform.controllerLogoPath,
+                  actions: [
                     IconButton(
                       icon: const Icon(Icons.edit),
                       onPressed: () async {
@@ -72,26 +92,20 @@ class _GameDetailsScreenState extends ConsumerState<GameDetailsScreen> {
                       },
                     ),
                   ],
-                  orElse: () => [],
+                  title: Text(game.name),
                 ),
-                title: game.when(
-                  data: (game) => Text(game.name),
-                  error: (error, stackTrace) => const Text('Error'),
-                  loading: () => const Skeleton(),
+                SliverGameDetails(
+                  game: game,
                 ),
-              ),
-              SliverGameDetails(
-                gameId: widget.gameId,
-              ),
-              SliverFillRemaining(
-                hasScrollBody: false,
-                child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: defaultPaddingX, vertical: defaultPaddingX),
-                    child: game.maybeWhen(
-                      data: (game) => TextButton.icon(
+                SliverFillRemaining(
+                  hasScrollBody: false,
+                  child: Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: defaultPaddingX,
+                          vertical: defaultPaddingX),
+                      child: TextButton.icon(
                         icon: const Icon(Icons.delete),
                         label: Text(AppLocalizations.of(context)!.deleteGame),
                         onPressed: () async {
@@ -139,12 +153,11 @@ class _GameDetailsScreenState extends ConsumerState<GameDetailsScreen> {
                           }
                         },
                       ),
-                      orElse: () => const SizedBox(),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ).animate().fadeIn(),
           ),
         ),
       ),

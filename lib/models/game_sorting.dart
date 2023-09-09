@@ -5,6 +5,7 @@ import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'game.dart';
 
 part 'game_sorting.freezed.dart';
+part 'game_sorting.g.dart';
 
 abstract class GameSorter {
   const GameSorter();
@@ -127,8 +128,13 @@ enum SortStrategy {
 
 @freezed
 class GameSorting with _$GameSorting {
+  const GameSorting._();
+
   const factory GameSorting({
     @Default(true) bool isAscending,
     @Default(SortStrategy.byName) SortStrategy sortStrategy,
   }) = _GameSorting;
+
+  factory GameSorting.fromJson(Map<String, dynamic> json) =>
+      _$GameSortingFromJson(json);
 }

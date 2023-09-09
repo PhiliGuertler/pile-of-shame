@@ -23,3 +23,8 @@ NumberFormat numberFormat(NumberFormatRef ref, BuildContext context) {
 DateFormat dateFormat(DateFormatRef ref) {
   return DateFormat.yMd();
 }
+
+@riverpod
+DateFormat timeFormat(TimeFormatRef ref) {
+  return DateFormat.Hms();
+}

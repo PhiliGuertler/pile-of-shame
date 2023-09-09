@@ -194,7 +194,7 @@ class _SliverFancyImageAppBarDelegate extends SliverPersistentHeaderDelegate {
                     fit: BoxFit.cover,
                     placeholder: MemoryImage(kTransparentImage),
                     image: AssetImage(imagePath),
-                  ),
+                  ).animate(delay: 200.ms).fadeIn(),
                 ),
                 Padding(
                   padding: EdgeInsets.only(top: safePadding.top),

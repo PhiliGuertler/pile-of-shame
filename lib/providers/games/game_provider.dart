@@ -15,7 +15,10 @@ GameStorage gameStorage(GameStorageRef ref) => GameStorage(ref: ref);
 
 @riverpod
 FutureOr<GamesList> games(GamesRef ref) async {
+  final minWaiting = Future.delayed(const Duration(milliseconds: 600));
   final gameFile = await ref.watch(gameFileProvider.future);
+
+  await minWaiting;
 
   final content = await gameFile.readAsString();
   if (content.isNotEmpty) {
@@ -33,51 +36,28 @@ FutureOr<bool> hasGames(HasGamesRef ref) async {
 
 @riverpod
 FutureOr<GamesList> gamesFiltered(GamesFilteredRef ref) async {
-  final minWaiting = Future.delayed(const Duration(milliseconds: 400));
   final games = await ref.watch(gamesProvider.future);
 
   final filteredGames = ref.watch(applyGameFiltersProvider(games.games));
   final searchedGames = ref.watch(applyGameSearchProvider(filteredGames));
-  final sortedGames = ref.watch(applyGameSortingProvider(searchedGames));
-
-  await minWaiting;
+  final sortedGames =
+      await ref.watch(applyGameSortingProvider(searchedGames).future);
 
   return GamesList(games: sortedGames);
 }
 
 @riverpod
-AsyncValue<Game> gameById(GameByIdRef ref, String id) {
-  final games = ref.watch(gamesProvider);
-  return games.when(
-    data: (data) {
-      try {
-        return AsyncValue.data(
-            data.games.singleWhere((element) => element.id == id));
-      } catch (error) {
-        return AsyncError(error, StackTrace.current);
-      }
-    },
-    error: (error, stackTrace) => throw error,
-    loading: () => const AsyncValue.loading(),
-  );
+FutureOr<Game> gameById(GameByIdRef ref, String id) async {
+  final games = await ref.watch(gamesProvider.future);
+
+  return games.games.singleWhere((element) => element.id == id);
 }
 
 @riverpod
-AsyncValue<DLC> dlcByGameAndId(
-    DlcByGameAndIdRef ref, String gameId, String dlcId) {
-  final game = ref.watch(gameByIdProvider(gameId));
-  return game.when(
-    data: (data) {
-      try {
-        return AsyncValue.data(
-            data.dlcs.singleWhere((element) => element.id == dlcId));
-      } catch (error) {
-        return AsyncError(error, StackTrace.current);
-      }
-    },
-    error: (error, stackTrace) => throw error,
-    loading: () => const AsyncValue.loading(),
-  );
+FutureOr<DLC> dlcByGameAndId(
+    DlcByGameAndIdRef ref, String gameId, String dlcId) async {
+  final game = await ref.watch(gameByIdProvider(gameId).future);
+  return game.dlcs.singleWhere((element) => element.id == dlcId);
 }
 
 @riverpod

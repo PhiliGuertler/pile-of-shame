@@ -41,42 +41,44 @@ enum PlayStatus {
   }
 
   Color toBackgroundColor(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-
     switch (this) {
       case PlayStatus.completed:
-      case PlayStatus.endlessGame:
+        return Colors.green.shade400;
       case PlayStatus.completed100Percent:
         return Colors.green;
+      case PlayStatus.endlessGame:
+        return Colors.yellow.shade400;
       case PlayStatus.replaying:
+        return Colors.orange.shade400;
       case PlayStatus.playing:
-        return colorScheme.primaryContainer;
+        return Colors.orange.shade700;
       case PlayStatus.cancelled:
-        return colorScheme.errorContainer;
+        return Colors.red.shade600;
       case PlayStatus.onPileOfShame:
-        return colorScheme.secondaryContainer;
+        return Colors.teal.shade500;
       case PlayStatus.onWishList:
-        return colorScheme.tertiaryContainer;
+        return Colors.purple.shade700;
     }
   }
 
   Color toForegroundColor(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-
     switch (this) {
       case PlayStatus.completed:
-      case PlayStatus.endlessGame:
+        return Colors.black;
       case PlayStatus.completed100Percent:
         return Colors.black;
+      case PlayStatus.endlessGame:
+        return Colors.black;
       case PlayStatus.replaying:
+        return Colors.black;
       case PlayStatus.playing:
-        return colorScheme.onPrimaryContainer;
+        return Colors.black;
       case PlayStatus.cancelled:
-        return colorScheme.onErrorContainer;
+        return Colors.white;
       case PlayStatus.onPileOfShame:
-        return colorScheme.onSecondaryContainer;
+        return Colors.white;
       case PlayStatus.onWishList:
-        return colorScheme.onTertiaryContainer;
+        return Colors.white;
     }
   }
 }

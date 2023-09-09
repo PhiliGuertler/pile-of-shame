@@ -47,6 +47,7 @@ class _RootGamesAppBarState extends ConsumerState<RootGamesAppBar> {
     return AppBar(
       title: isSearchOpen
           ? TextField(
+              key: const ValueKey('search_games'),
               controller: searchTextController,
               onChanged: (value) {
                 ref.read(gameSearchProvider.notifier).setSearch(value);
@@ -56,6 +57,7 @@ class _RootGamesAppBarState extends ConsumerState<RootGamesAppBar> {
               autofocus: true,
             )
           : GestureDetector(
+              key: const ValueKey('games_screen_title'),
               child: Text(AppLocalizations.of(context)!.games),
               onTap: () {
                 widget.scrollController.animateTo(
@@ -67,6 +69,7 @@ class _RootGamesAppBarState extends ConsumerState<RootGamesAppBar> {
             ),
       leading: Builder(builder: (context) {
         return IconButton(
+            key: const ValueKey("sort_games"),
             icon: const Icon(Icons.sort),
             onPressed: () {
               Scaffold.of(context).openDrawer();
@@ -74,6 +77,7 @@ class _RootGamesAppBarState extends ConsumerState<RootGamesAppBar> {
       }),
       actions: [
         IconButton(
+          key: const ValueKey("toggle_game_search"),
           onPressed: () {
             if (isSearchOpen) {
               ref.invalidate(gameSearchProvider);
@@ -87,6 +91,7 @@ class _RootGamesAppBarState extends ConsumerState<RootGamesAppBar> {
         Builder(
           builder: (context) {
             Widget result = IconButton(
+              key: const ValueKey("filter_games"),
               icon: const Icon(Icons.filter_alt),
               color:
                   isFilterActive ? Theme.of(context).colorScheme.primary : null,
