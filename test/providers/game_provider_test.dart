@@ -148,7 +148,7 @@ void main() {
     // gamesProvider is supposed to be re-computed after the file was written
     final finalValue = await container.read(gamesProvider.future);
     // the game file should have been opened once more
-    verify(mockFileUtils.openFile(gameFileName)).called(1);
+    verify(mockFileUtils.openFile(gameFileName));
     expect(finalValue.games, [testGame]);
   });
 }

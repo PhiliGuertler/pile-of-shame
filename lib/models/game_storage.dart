@@ -17,6 +17,8 @@ class GameStorage {
     await output.writeAsString(encodedList);
     if (outputFile == null) {
       ref.invalidate(gameFileProvider);
+      // HACK: To avoid a weird bug in Riverpod 2.x, we have to read the provider after invalidating it. Otherwise, a bad state may occur, see https://github.com/rrousselGit/riverpod/issues/2041
+      ref.read(gameFileProvider);
     }
   }
 
