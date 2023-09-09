@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:pile_of_shame/models/game_platforms.dart';
 import 'package:pile_of_shame/utils/constants.dart';
+import 'package:pile_of_shame/widgets/app_scaffold.dart';
 
 class DebugGamePlatformIconsScreen extends StatelessWidget {
   const DebugGamePlatformIconsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       appBar: AppBar(
         title: const Text("Game Platform Icons"),
       ),

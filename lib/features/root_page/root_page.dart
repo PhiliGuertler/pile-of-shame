@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pile_of_shame/features/games/games_list/screens/games_screen.dart';
 import 'package:pile_of_shame/features/settings/root/screens/settings_screen.dart';
+import 'package:pile_of_shame/widgets/app_scaffold.dart';
 
 import 'models/root_page_models.dart';
 
@@ -72,7 +73,7 @@ class _RootPageState extends ConsumerState<RootPage> {
       const SettingsScreen(),
     ];
 
-    return Scaffold(
+    return AppScaffold(
       body: PageTransitionSwitcher(
         transitionBuilder: (child, primaryAnimation, secondaryAnimation) =>
             FadeThroughTransition(

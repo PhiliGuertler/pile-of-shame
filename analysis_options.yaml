@@ -7,3 +7,6 @@ analyzer:
     - '**.freezed.dart'
     - '**.g.dart'
     - lib/l10n/generated/*.dart
+    - '**/node_modules/'
+    - '**/build/'
+    - '**/coverage/'
