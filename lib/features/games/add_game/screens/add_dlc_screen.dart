@@ -37,9 +37,11 @@ class _AddDLCScreenState extends ConsumerState<AddDLCScreen> {
 
     return AppScaffold(
       appBar: AppBar(
-        title: Text(widget.initialValue == null
-            ? AppLocalizations.of(context)!.addDLC
-            : AppLocalizations.of(context)!.editDLC),
+        title: Text(
+          widget.initialValue == null
+              ? AppLocalizations.of(context)!.addDLC
+              : AppLocalizations.of(context)!.editDLC,
+        ),
       ),
       body: Form(
         key: _formKey,
