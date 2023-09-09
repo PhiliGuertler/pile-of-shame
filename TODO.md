@@ -5,6 +5,9 @@
 - Add Icons for different PlayStatuses
 - Implement settings for different game displays
 
+# Not implemented
+- Receive Share-Intent on iOS
+
 # Must-have features
 - Filter games list by
     - Price (Span)
