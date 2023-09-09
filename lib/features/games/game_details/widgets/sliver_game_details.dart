@@ -91,8 +91,10 @@ class _SliverGameDetailsState extends ConsumerState<SliverGameDetails> {
                     subtitle: SizedBox(
                         height: 32.0,
                         child: PlayStatusDisplay(playStatus: dlc.status)),
-                    openBuilderOnTap: (context, action) =>
-                        DLCDetailsScreen(gameId: widget.game.id, dlcId: dlc.id),
+                    openBuilderOnTap: (context, action) => DLCDetailsScreen(
+                      game: widget.game,
+                      dlcId: dlc.id,
+                    ),
                   ),
                 )
                 .toList(),

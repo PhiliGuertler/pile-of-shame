@@ -56,10 +56,11 @@ class GamesScreen extends ConsumerWidget {
                 SliverToBoxAdapter(
                   child: Padding(
                     padding: const EdgeInsets.only(
-                        top: 16.0,
-                        left: defaultPaddingX,
-                        right: defaultPaddingX,
-                        bottom: 80.0),
+                      top: 16.0,
+                      left: defaultPaddingX,
+                      right: defaultPaddingX,
+                      bottom: 80.0,
+                    ),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,

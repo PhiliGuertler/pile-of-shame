@@ -2,6 +2,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:pile_of_shame/utils/constants.dart';
 
 class SliverFancyImageHeader extends StatelessWidget {
@@ -72,7 +73,7 @@ class _SliverFancyImageHeaderDelegate extends SliverPersistentHeaderDelegate {
             child: Image.asset(
               imagePath,
               fit: BoxFit.cover,
-            ),
+            ).animate(delay: 200.ms).fadeIn(),
           ),
         ),
       ),

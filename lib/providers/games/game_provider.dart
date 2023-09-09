@@ -50,37 +50,13 @@ FutureOr<Game> gameById(GameByIdRef ref, String id) async {
   final games = await ref.watch(gamesProvider.future);
 
   return games.games.singleWhere((element) => element.id == id);
-
-  // return games.when(
-  //   data: (data) {
-  //     try {
-  //       return AsyncValue.data(
-  //           data.games.singleWhere((element) => element.id == id));
-  //     } catch (error) {
-  //       return AsyncError(error, StackTrace.current);
-  //     }
-  //   },
-  //   error: (error, stackTrace) => throw error,
-  //   loading: () => const AsyncValue.loading(),
-  // );
 }
 
 @riverpod
-AsyncValue<DLC> dlcByGameAndId(
-    DlcByGameAndIdRef ref, String gameId, String dlcId) {
-  final game = ref.watch(gameByIdProvider(gameId));
-  return game.when(
-    data: (data) {
-      try {
-        return AsyncValue.data(
-            data.dlcs.singleWhere((element) => element.id == dlcId));
-      } catch (error) {
-        return AsyncError(error, StackTrace.current);
-      }
-    },
-    error: (error, stackTrace) => throw error,
-    loading: () => const AsyncValue.loading(),
-  );
+FutureOr<DLC> dlcByGameAndId(
+    DlcByGameAndIdRef ref, String gameId, String dlcId) async {
+  final game = await ref.watch(gameByIdProvider(gameId).future);
+  return game.dlcs.singleWhere((element) => element.id == dlcId);
 }
 
 @riverpod
