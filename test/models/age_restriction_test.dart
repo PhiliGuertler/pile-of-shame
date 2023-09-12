@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/age_restriction.dart';
+
+import '../test_utils/test_utils.dart';
 
 void main() {
   group("USK colors", () {
@@ -42,14 +43,8 @@ void main() {
   group("toRatedString", () {
     testWidgets("returns the correct string with Locale 'de'",
         (widgetTester) async {
-      await widgetTester.pumpWidget(MaterialApp(
-        localizationsDelegates: AppLocalizations.localizationsDelegates,
-        locale: const Locale('de'),
-        supportedLocales: AppLocalizations.supportedLocales,
-        home: Container(),
-      ));
-
-      final BuildContext context = widgetTester.element(find.byType(Container));
+      final BuildContext context =
+          await TestUtils.setupBuildContextForLocale(widgetTester, "de");
 
       final result = USK.usk12.toRatedString(context);
 
@@ -57,14 +52,8 @@ void main() {
     });
     testWidgets("returns the correct string with Locale 'en'",
         (widgetTester) async {
-      await widgetTester.pumpWidget(MaterialApp(
-        localizationsDelegates: AppLocalizations.localizationsDelegates,
-        locale: const Locale('en'),
-        supportedLocales: AppLocalizations.supportedLocales,
-        home: Container(),
-      ));
-
-      final BuildContext context = widgetTester.element(find.byType(Container));
+      final BuildContext context =
+          await TestUtils.setupBuildContextForLocale(widgetTester, "en");
 
       final result = USK.usk12.toRatedString(context);
 
