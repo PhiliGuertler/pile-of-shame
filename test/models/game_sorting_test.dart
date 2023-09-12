@@ -1,9 +1,14 @@
+import 'dart:convert';
+
+import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pile_of_shame/models/age_restriction.dart';
 import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/models/game_platforms.dart';
 import 'package:pile_of_shame/models/game_sorting.dart';
 import 'package:pile_of_shame/models/play_status.dart';
+
+import '../test_utils/test_utils.dart';
 
 void main() {
   final Game a = Game(
@@ -171,6 +176,156 @@ void main() {
         true,
       );
       expect(isABeforeB(result2), true);
+    });
+  });
+
+  group("SortStrategy", () {
+    group("byName", () {
+      testWidgets(
+        "returns correct localeString for 'de'",
+        (widgetTester) async {
+          final BuildContext context =
+              await TestUtils.setupBuildContextForLocale(widgetTester, "de");
+
+          expect(SortStrategy.byName.toLocaleString(context), "nach Name");
+        },
+      );
+      testWidgets(
+        "returns correct localeString for 'en'",
+        (widgetTester) async {
+          final BuildContext context =
+              await TestUtils.setupBuildContextForLocale(widgetTester, "en");
+
+          expect(SortStrategy.byName.toLocaleString(context), "by name");
+        },
+      );
+    });
+    group("byPlayStatus", () {
+      testWidgets(
+        "returns correct localeString for 'de'",
+        (widgetTester) async {
+          final BuildContext context =
+              await TestUtils.setupBuildContextForLocale(widgetTester, "de");
+
+          expect(
+              SortStrategy.byPlayStatus.toLocaleString(context), "nach Status");
+        },
+      );
+      testWidgets(
+        "returns correct localeString for 'en'",
+        (widgetTester) async {
+          final BuildContext context =
+              await TestUtils.setupBuildContextForLocale(widgetTester, "en");
+
+          expect(
+              SortStrategy.byPlayStatus.toLocaleString(context), "by status");
+        },
+      );
+    });
+    group("byPrice", () {
+      testWidgets(
+        "returns correct localeString for 'de'",
+        (widgetTester) async {
+          final BuildContext context =
+              await TestUtils.setupBuildContextForLocale(widgetTester, "de");
+
+          expect(SortStrategy.byPrice.toLocaleString(context), "nach Preis");
+        },
+      );
+      testWidgets(
+        "returns correct localeString for 'en'",
+        (widgetTester) async {
+          final BuildContext context =
+              await TestUtils.setupBuildContextForLocale(widgetTester, "en");
+
+          expect(SortStrategy.byPrice.toLocaleString(context), "by price");
+        },
+      );
+    });
+    group("byAgeRating", () {
+      testWidgets(
+        "returns correct localeString for 'de'",
+        (widgetTester) async {
+          final BuildContext context =
+              await TestUtils.setupBuildContextForLocale(widgetTester, "de");
+
+          expect(SortStrategy.byAgeRating.toLocaleString(context),
+              "nach Altersfreigabe");
+        },
+      );
+      testWidgets(
+        "returns correct localeString for 'en'",
+        (widgetTester) async {
+          final BuildContext context =
+              await TestUtils.setupBuildContextForLocale(widgetTester, "en");
+
+          expect(SortStrategy.byAgeRating.toLocaleString(context),
+              "by age rating");
+        },
+      );
+    });
+    group("byPlatform", () {
+      testWidgets(
+        "returns correct localeString for 'de'",
+        (widgetTester) async {
+          final BuildContext context =
+              await TestUtils.setupBuildContextForLocale(widgetTester, "de");
+
+          expect(SortStrategy.byPlatform.toLocaleString(context),
+              "nach Plattform");
+        },
+      );
+      testWidgets(
+        "returns correct localeString for 'en'",
+        (widgetTester) async {
+          final BuildContext context =
+              await TestUtils.setupBuildContextForLocale(widgetTester, "en");
+
+          expect(
+              SortStrategy.byPlatform.toLocaleString(context), "by platform");
+        },
+      );
+    });
+    group("byLastModified", () {
+      testWidgets(
+        "returns correct localeString for 'de'",
+        (widgetTester) async {
+          final BuildContext context =
+              await TestUtils.setupBuildContextForLocale(widgetTester, "de");
+
+          expect(SortStrategy.byLastModified.toLocaleString(context),
+              "nach Änderungsdatum");
+        },
+      );
+      testWidgets(
+        "returns correct localeString for 'en'",
+        (widgetTester) async {
+          final BuildContext context =
+              await TestUtils.setupBuildContextForLocale(widgetTester, "en");
+
+          expect(SortStrategy.byLastModified.toLocaleString(context),
+              "by modification date");
+        },
+      );
+    });
+  });
+
+  group("GameSorting", () {
+    test("toJson is readable", () {
+      const GameSorting sorting = GameSorting(
+          isAscending: true, sortStrategy: SortStrategy.byLastModified);
+      final String json = jsonEncode(sorting.toJson());
+
+      expect(json, '{"isAscending":true,"sortStrategy":"byLastModified"}');
+    });
+    test("fromJson works as expected", () {
+      const String jsonString =
+          '{"isAscending":true,"sortStrategy":"byLastModified"}';
+
+      final GameSorting sorting = GameSorting.fromJson(jsonDecode(jsonString));
+
+      expect(sorting.isAscending, true);
+      expect(sorting.sortStrategy, SortStrategy.byLastModified);
     });
   });
 }

@@ -1,12 +1,4 @@
 {
-  "@ratedN": {
-    "placeholders": {
-      "n": {
-        "example": "16",
-        "type": "String"
-      }
-    }
-  },
   "@dateAtTime": {
     "placeholders": {
       "date": {
@@ -15,6 +7,14 @@
       },
       "time": {
         "example": "11:24:59",
+        "type": "String"
+      }
+    }
+  },
+  "@ratedN": {
+    "placeholders": {
+      "n": {
+        "example": "16",
         "type": "String"
       }
     }
