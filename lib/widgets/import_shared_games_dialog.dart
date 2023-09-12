@@ -153,10 +153,10 @@ class _ImportSharedGamesState extends ConsumerState<ImportSharedGames> {
                                   final GamesList existingGames =
                                       await ref.read(gamesProvider.future);
 
-                                  final update1 =
-                                      existingGames.updateGames(importedGames);
+                                  final update1 = existingGames
+                                      .updateGamesByLastModified(importedGames);
                                   final update2 =
-                                      update1.addGames(importedGames);
+                                      update1.addMissingGames(importedGames);
 
                                   return update2;
                                 },
@@ -181,8 +181,8 @@ class _ImportSharedGamesState extends ConsumerState<ImportSharedGames> {
                                   final GamesList existingGames =
                                       await ref.read(gamesProvider.future);
 
-                                  final update =
-                                      existingGames.updateGames(importedGames);
+                                  final update = existingGames
+                                      .updateGamesByLastModified(importedGames);
 
                                   return update;
                                 },
@@ -207,8 +207,8 @@ class _ImportSharedGamesState extends ConsumerState<ImportSharedGames> {
                                   final GamesList existingGames =
                                       await ref.read(gamesProvider.future);
 
-                                  final update =
-                                      existingGames.addGames(importedGames);
+                                  final update = existingGames
+                                      .addMissingGames(importedGames);
 
                                   return update;
                                 },

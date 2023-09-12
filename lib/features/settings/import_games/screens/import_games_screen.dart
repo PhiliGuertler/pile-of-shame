@@ -126,9 +126,10 @@ class _ImportGamesScreenState extends ConsumerState<ImportGamesScreen> {
                                 final GamesList existingGames =
                                     await ref.read(gamesProvider.future);
 
-                                final update1 =
-                                    existingGames.updateGames(importedGames);
-                                final update2 = update1.addGames(importedGames);
+                                final update1 = existingGames
+                                    .updateGamesByLastModified(importedGames);
+                                final update2 =
+                                    update1.addMissingGames(importedGames);
 
                                 return update2;
                               },
@@ -153,8 +154,8 @@ class _ImportGamesScreenState extends ConsumerState<ImportGamesScreen> {
                                 final GamesList existingGames =
                                     await ref.read(gamesProvider.future);
 
-                                final update =
-                                    existingGames.updateGames(importedGames);
+                                final update = existingGames
+                                    .updateGamesByLastModified(importedGames);
 
                                 return update;
                               },
@@ -179,8 +180,8 @@ class _ImportGamesScreenState extends ConsumerState<ImportGamesScreen> {
                                 final GamesList existingGames =
                                     await ref.read(gamesProvider.future);
 
-                                final update =
-                                    existingGames.addGames(importedGames);
+                                final update = existingGames
+                                    .addMissingGames(importedGames);
 
                                 return update;
                               },
