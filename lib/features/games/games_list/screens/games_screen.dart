@@ -7,6 +7,7 @@ import 'package:pile_of_shame/providers/format_provider.dart';
 import 'package:pile_of_shame/providers/games/game_provider.dart';
 import 'package:pile_of_shame/utils/constants.dart';
 import 'package:pile_of_shame/widgets/error_display.dart';
+import 'package:pile_of_shame/widgets/skeletons/skeleton.dart';
 import 'package:pile_of_shame/widgets/skeletons/skeleton_game_display.dart';
 import 'package:pile_of_shame/widgets/slivers/sliver_fancy_image_header.dart';
 
@@ -65,8 +66,18 @@ class GamesScreen extends ConsumerWidget {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(AppLocalizations.of(context)!.nGames(totalGames)),
-                        Text(currencyFormatter.format(totalPrice)),
+                        totalGames.when(
+                          data: (totalGames) => Text(
+                              AppLocalizations.of(context)!.nGames(totalGames)),
+                          loading: () => const Skeleton(),
+                          error: (error, stackTrace) => Text(error.toString()),
+                        ),
+                        totalPrice.when(
+                          data: (totalPrice) =>
+                              Text(currencyFormatter.format(totalPrice)),
+                          loading: () => const Skeleton(),
+                          error: (error, stackTrace) => Text(error.toString()),
+                        ),
                       ],
                     ),
                   ).animate().fadeIn(),

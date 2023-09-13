@@ -69,26 +69,19 @@ FutureOr<DLC> dlcByGameAndId(
 }
 
 @riverpod
-double gamesFilteredTotalPrice(GamesFilteredTotalPriceRef ref) {
-  final games = ref.watch(gamesFilteredProvider);
+FutureOr<double> gamesFilteredTotalPrice(GamesFilteredTotalPriceRef ref) async {
+  final list = await ref.watch(gamesFilteredProvider.future);
 
-  return games.when(
-    data: (games) => games.games.fold(
-      0.0,
-      (previousValue, element) => previousValue + element.fullPrice(),
-    ),
-    error: (error, stackTrace) => 0.0,
-    loading: () => 0.0,
+  final sum = list.games.fold(
+    0.0,
+    (previousValue, element) => previousValue + element.fullPrice(),
   );
+  return sum;
 }
 
 @riverpod
-int gamesFilteredTotalAmount(GamesFilteredTotalAmountRef ref) {
-  final games = ref.watch(gamesFilteredProvider);
+FutureOr<int> gamesFilteredTotalAmount(GamesFilteredTotalAmountRef ref) async {
+  final list = await ref.watch(gamesFilteredProvider.future);
 
-  return games.when(
-    data: (games) => games.games.length,
-    error: (error, stackTrace) => 0,
-    loading: () => 0,
-  );
+  return list.games.length;
 }

@@ -7,16 +7,23 @@ import 'package:mockito/mockito.dart';
 import 'package:pile_of_shame/models/age_restriction.dart';
 import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/models/game_platforms.dart';
+import 'package:pile_of_shame/models/game_sorting.dart';
 import 'package:pile_of_shame/models/play_status.dart';
 import 'package:pile_of_shame/providers/file_provider.dart';
 import 'package:pile_of_shame/providers/games/game_file_provider.dart';
+import 'package:pile_of_shame/providers/games/game_filter_provider.dart';
 import 'package:pile_of_shame/providers/games/game_provider.dart';
+import 'package:pile_of_shame/providers/games/game_search_provider.dart';
+import 'package:pile_of_shame/providers/games/game_sorter_provider.dart';
 import 'package:pile_of_shame/utils/file_utils.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 @GenerateNiceMocks([MockSpec<FileUtils>(), MockSpec<File>()])
 import 'game_provider_test.mocks.dart';
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
+
   final gameZeldaBotw = Game(
     id: 'zelda-botw',
     name: "The Legend of Zelda: Breath of the Wild",
@@ -224,6 +231,129 @@ void main() {
           dlcByGameAndIdProvider(gameZeldaBotw.id, gameZeldaBotw.dlcs[0].id)
               .future);
       expect(game, gameZeldaBotw.dlcs[0]);
+    });
+  });
+  group("gamesFilteredProvider", () {
+    test("returns all games by default, sorted by name", () async {
+      when(mockFileUtils.openFile(gameFileName)).thenAnswer(
+          (realInvocation) async => File('test_resources/games_filled.json'));
+      SharedPreferences.setMockInitialValues(
+        {},
+      );
+
+      final GamesList games =
+          await container.read(gamesFilteredProvider.future);
+
+      expect(games.games, [
+        gameOuterWilds,
+        gameSekiro,
+        gameZeldaBotw,
+      ]);
+    });
+    test("returns filtered games only, sorted by name", () async {
+      when(mockFileUtils.openFile(gameFileName)).thenAnswer(
+          (realInvocation) async => File('test_resources/games_filled.json'));
+      SharedPreferences.setMockInitialValues(
+        {},
+      );
+
+      container
+          .read(gamePlatformFilterProvider.notifier)
+          .setFilter([GamePlatform.nintendoSwitch, GamePlatform.playStation4]);
+
+      final GamesList games =
+          await container.read(gamesFilteredProvider.future);
+
+      expect(games.games, [
+        gameSekiro,
+        gameZeldaBotw,
+      ]);
+    });
+    test("returns filtered games with active search, sorted by price",
+        () async {
+      when(mockFileUtils.openFile(gameFileName)).thenAnswer(
+          (realInvocation) async => File('test_resources/games_filled.json'));
+      SharedPreferences.setMockInitialValues(
+        {},
+      );
+
+      container.read(gameSearchProvider.notifier).setSearch("zelda");
+      container.read(sortGamesProvider.notifier).setSorting(
+            const GameSorting(
+              isAscending: true,
+              sortStrategy: SortStrategy.byPrice,
+            ),
+          );
+      container
+          .read(gamePlatformFilterProvider.notifier)
+          .setFilter([GamePlatform.nintendoSwitch, GamePlatform.playStation4]);
+
+      final GamesList games =
+          await container.read(gamesFilteredProvider.future);
+
+      expect(games.games, [
+        gameZeldaBotw,
+      ]);
+    });
+  });
+  group("gamesFilteredProvider", () {
+    test("returns the sum of prices of all games", () async {
+      when(mockFileUtils.openFile(gameFileName)).thenAnswer(
+          (realInvocation) async => File('test_resources/games_filled.json'));
+      SharedPreferences.setMockInitialValues(
+        {},
+      );
+
+      final double totalPrice =
+          await container.read(gamesFilteredTotalPriceProvider.future);
+
+      expect(totalPrice, 59.99 + 23.99 + 23.99 + 29.95 + 16.99 + 60.00);
+    });
+    test("returns the sum prices of filtered games", () async {
+      when(mockFileUtils.openFile(gameFileName)).thenAnswer(
+          (realInvocation) async => File('test_resources/games_filled.json'));
+      SharedPreferences.setMockInitialValues(
+        {},
+      );
+
+      container
+          .read(gamePlatformFilterProvider.notifier)
+          .setFilter([GamePlatform.nintendoSwitch]);
+
+      final double totalPrice =
+          await container.read(gamesFilteredTotalPriceProvider.future);
+
+      expect(totalPrice, 59.99 + 23.99 + 23.99);
+    });
+  });
+  group("gamesFilteredTotalAmountProvider", () {
+    test("returns the amount of all games", () async {
+      when(mockFileUtils.openFile(gameFileName)).thenAnswer(
+          (realInvocation) async => File('test_resources/games_filled.json'));
+      SharedPreferences.setMockInitialValues(
+        {},
+      );
+
+      final int amount =
+          await container.read(gamesFilteredTotalAmountProvider.future);
+
+      expect(amount, 3);
+    });
+    test("returns the amount of filtered games", () async {
+      when(mockFileUtils.openFile(gameFileName)).thenAnswer(
+          (realInvocation) async => File('test_resources/games_filled.json'));
+      SharedPreferences.setMockInitialValues(
+        {},
+      );
+
+      container
+          .read(gamePlatformFilterProvider.notifier)
+          .setFilter([GamePlatform.nintendoSwitch]);
+
+      final int totalPrice =
+          await container.read(gamesFilteredTotalAmountProvider.future);
+
+      expect(totalPrice, 1);
     });
   });
 }
