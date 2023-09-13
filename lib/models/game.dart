@@ -17,7 +17,6 @@ class DLC with _$DLC {
     required PlayStatus status,
     required DateTime lastModified,
     @Default(0.0) double price,
-    DateTime? releaseDate,
   }) = _DLC;
 
   factory DLC.fromJson(Map<String, dynamic> json) => _$DLCFromJson(json);
@@ -36,8 +35,6 @@ class Game with _$Game {
     required double price,
     @Default(USK.usk0) USK usk,
     @Default([]) List<DLC> dlcs,
-    DateTime? releaseDate,
-    String? coverArt,
   }) = _Game;
 
   factory Game.fromJson(Map<String, dynamic> json) => _$GameFromJson(json);
@@ -63,6 +60,8 @@ class GamesList with _$GamesList {
   factory GamesList.fromJson(Map<String, dynamic> json) =>
       _$GamesListFromJson(json);
 
+  /// Updates a game by overwriting it.
+  /// If no game with the given id exists, an Exception is thrown.
   GamesList updateGame(String id, Game update) {
     final gameIndex = games.indexWhere((element) => element.id == id);
     assert(gameIndex != -1, "No Game with id '$id' found");
@@ -73,6 +72,8 @@ class GamesList with _$GamesList {
     return GamesList(games: updatedGames);
   }
 
+  /// Removes a game from the list by its id
+  /// If no game with the same id exists, an Exception is thrown.
   GamesList removeGame(String id) {
     assert(games.indexWhere((element) => element.id == id) != -1,
         "No Game with id '$id' found");
@@ -82,6 +83,8 @@ class GamesList with _$GamesList {
     return GamesList(games: updatedGames);
   }
 
+  /// Adds a game to the list
+  /// If a game with the same id already exists, an Exception is thrown.
   GamesList addGame(Game game) {
     assert(games.every((element) => element.id != game.id),
         "Game with id '${game.id}' already exists. Did you mean to update an existing Game?");
@@ -91,7 +94,10 @@ class GamesList with _$GamesList {
     return GamesList(games: updatedGames);
   }
 
-  GamesList updateGames(GamesList gamesList) {
+  /// Updates games that are marked as more recent by their lastModified member.
+  /// Games with the same id but with the same lastModified or more recent will not be altered.
+  /// If no game matches the id of an input game it won't be added, instead nothing happens.
+  GamesList updateGamesByLastModified(GamesList gamesList) {
     final List<Game> updatedGames = List.from(games);
 
     for (int i = 0; i < updatedGames.length; ++i) {
@@ -110,7 +116,9 @@ class GamesList with _$GamesList {
     return GamesList(games: updatedGames);
   }
 
-  GamesList addGames(GamesList gamesList) {
+  /// Adds missing games to the list.
+  /// A game is considered missing if there is no game with the same id yet.
+  GamesList addMissingGames(GamesList gamesList) {
     GamesList updatedGames = this;
 
     for (int i = 0; i < gamesList.games.length; ++i) {

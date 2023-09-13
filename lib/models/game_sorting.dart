@@ -28,11 +28,11 @@ class GameSorterByPlayStatus extends GameSorter {
 
   @override
   int compareGames(Game a, Game b, bool isAscending) {
-    final factor = isAscending ? 1 : -1;
-    final result = (a.status.index - b.status.index) * factor;
-    if (result == 0) {
+    if (a.status == b.status) {
       return const GameSorterByName().compareGames(a, b, isAscending);
     }
+    final factor = isAscending ? 1 : -1;
+    final result = (a.status.index - b.status.index) * factor;
     return result;
   }
 }
@@ -42,11 +42,12 @@ class GameSorterByPrice extends GameSorter {
 
   @override
   int compareGames(Game a, Game b, bool isAscending) {
-    final factor = isAscending ? 1 : -1;
-    final result = a.price.compareTo(b.price) * factor;
-    if (result.abs() < 0.01) {
+    final difference = a.price - b.price;
+    if (difference.abs() < 0.01) {
       return const GameSorterByName().compareGames(a, b, isAscending);
     }
+    final factor = isAscending ? 1 : -1;
+    final result = a.price.compareTo(b.price) * factor;
     return result;
   }
 }
@@ -56,11 +57,11 @@ class GameSorterByAgeRating extends GameSorter {
 
   @override
   int compareGames(Game a, Game b, bool isAscending) {
-    final factor = isAscending ? 1 : -1;
-    final result = (a.usk.index - b.usk.index) * factor;
-    if (result == 0) {
+    if (a.usk == b.usk) {
       return const GameSorterByName().compareGames(a, b, isAscending);
     }
+    final factor = isAscending ? 1 : -1;
+    final result = (a.usk.index - b.usk.index) * factor;
     return result;
   }
 }
@@ -70,11 +71,11 @@ class GameSorterByPlatform extends GameSorter {
 
   @override
   int compareGames(Game a, Game b, bool isAscending) {
-    final factor = isAscending ? 1 : -1;
-    final result = (a.platform.index - b.platform.index) * factor;
-    if (result == 0) {
+    if (a.platform == b.platform) {
       return const GameSorterByName().compareGames(a, b, isAscending);
     }
+    final factor = isAscending ? 1 : -1;
+    final result = (a.platform.index - b.platform.index) * factor;
     return result;
   }
 }

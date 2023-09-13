@@ -24,17 +24,16 @@ List<Game> applyGameSearch(ApplyGameSearchRef ref, List<Game> games) {
 
   List<Game> result = List.from(games);
   result = result.where((game) {
-    bool isMatchingName = terms.every(
-      (term) => game.name.prepareForCaseInsensitiveSearch().contains(term),
-    );
-    bool isMatchingPlatform = terms.every((term) => game.platform.abbreviation
-            .prepareForCaseInsensitiveSearch()
-            .contains(term)) ||
-        terms.every((term) => game.platform.name
-            .prepareForCaseInsensitiveSearch()
-            .contains(term));
-
-    return isMatchingName || isMatchingPlatform;
+    return terms.every((term) {
+      bool matchesName =
+          game.name.prepareForCaseInsensitiveSearch().contains(term);
+      bool matchesPlatformAbbreviation = game.platform.abbreviation
+          .prepareForCaseInsensitiveSearch()
+          .contains(term);
+      bool matchesPlatform =
+          game.platform.name.prepareForCaseInsensitiveSearch().contains(term);
+      return matchesName || matchesPlatformAbbreviation || matchesPlatform;
+    });
   }).toList();
 
   return result;

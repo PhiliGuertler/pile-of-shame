@@ -242,5 +242,50 @@ void main() {
         fail('No exception thrown');
       });
     });
+    group("updateGamesByLastModified", () {
+      test("correctly updates older games only", () {
+        final GamesList original = GamesList(
+            games: [gameDistance, gameSsx3, gameOriAndTheBlindForest]);
+
+        final Game updatedDistance = gameDistance.copyWith(
+            usk: USK.usk18, lastModified: DateTime(2024, 9, 12));
+        final Game updatedOri = gameOriAndTheBlindForest.copyWith(
+            price: 999.95, lastModified: DateTime(2022, 1, 1));
+
+        final GamesList update = GamesList(games: [
+          updatedOri,
+          updatedDistance,
+        ]);
+
+        final GamesList result = original.updateGamesByLastModified(update);
+
+        expect(result.games, [
+          updatedDistance,
+          gameSsx3,
+          // the update-game is older, so this should not have been updated
+          gameOriAndTheBlindForest,
+        ]);
+      });
+    });
+    group("addMissingGames", () {
+      test("correctly adds missing games only", () {
+        final GamesList original = GamesList(
+            games: [gameDistance, gameSsx3, gameOriAndTheBlindForest]);
+
+        final GamesList update = GamesList(games: [
+          gameOuterWilds,
+          gameSsx3,
+        ]);
+
+        final GamesList result = original.addMissingGames(update);
+
+        expect(result.games, [
+          gameDistance,
+          gameSsx3,
+          gameOriAndTheBlindForest,
+          gameOuterWilds,
+        ]);
+      });
+    });
   });
 }
