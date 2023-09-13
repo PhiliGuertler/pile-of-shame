@@ -50,14 +50,22 @@ FutureOr<GamesList> gamesFiltered(GamesFilteredRef ref) async {
 FutureOr<Game> gameById(GameByIdRef ref, String id) async {
   final games = await ref.watch(gamesProvider.future);
 
-  return games.games.singleWhere((element) => element.id == id);
+  try {
+    return games.games.singleWhere((element) => element.id == id);
+  } catch (error) {
+    throw Exception("No game with id '$id' found");
+  }
 }
 
 @riverpod
 FutureOr<DLC> dlcByGameAndId(
     DlcByGameAndIdRef ref, String gameId, String dlcId) async {
   final game = await ref.watch(gameByIdProvider(gameId).future);
-  return game.dlcs.singleWhere((element) => element.id == dlcId);
+  try {
+    return game.dlcs.singleWhere((element) => element.id == dlcId);
+  } catch (error) {
+    throw Exception("No dlc with id '$dlcId' found");
+  }
 }
 
 @riverpod

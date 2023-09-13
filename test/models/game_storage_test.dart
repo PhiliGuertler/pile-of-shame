@@ -33,7 +33,7 @@ void main() {
   );
   final GamesList testGameList = GamesList(games: [testGame]);
   const String jsonGameList =
-      '{"games":[{"id":"testGame","name":"Test Game","platform":"GB","status":"completed","lastModified":"2023-09-12T00:00:00.000","price":19.99,"usk":"usk0","dlcs":[],"releaseDate":null,"coverArt":null}]}';
+      '{"games":[{"id":"testGame","name":"Test Game","platform":"GB","status":"completed","lastModified":"2023-09-12T00:00:00.000","price":19.99,"usk":"usk0","dlcs":[]}]}';
 
   setUp(() {
     mockPathProviderPlatform = FakePathProviderPlatform();

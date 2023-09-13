@@ -17,7 +17,6 @@ class DLC with _$DLC {
     required PlayStatus status,
     required DateTime lastModified,
     @Default(0.0) double price,
-    DateTime? releaseDate,
   }) = _DLC;
 
   factory DLC.fromJson(Map<String, dynamic> json) => _$DLCFromJson(json);
@@ -36,8 +35,6 @@ class Game with _$Game {
     required double price,
     @Default(USK.usk0) USK usk,
     @Default([]) List<DLC> dlcs,
-    DateTime? releaseDate,
-    String? coverArt,
   }) = _Game;
 
   factory Game.fromJson(Map<String, dynamic> json) => _$GameFromJson(json);
