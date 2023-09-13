@@ -66,17 +66,34 @@ class GamesScreen extends ConsumerWidget {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        totalGames.when(
-                          data: (totalGames) => Text(
-                              AppLocalizations.of(context)!.nGames(totalGames)),
-                          loading: () => const Skeleton(),
-                          error: (error, stackTrace) => Text(error.toString()),
+                        SizedBox(
+                          width: 128,
+                          child: totalGames.when(
+                            data: (totalGames) => Text(
+                                AppLocalizations.of(context)!
+                                    .nGames(totalGames)),
+                            loading: () => const Skeleton(
+                              widthFactor: 1,
+                            ),
+                            error: (error, stackTrace) =>
+                                Text(error.toString()),
+                          ),
                         ),
-                        totalPrice.when(
-                          data: (totalPrice) =>
-                              Text(currencyFormatter.format(totalPrice)),
-                          loading: () => const Skeleton(),
-                          error: (error, stackTrace) => Text(error.toString()),
+                        SizedBox(
+                          width: 128,
+                          child: Align(
+                            alignment: Alignment.centerRight,
+                            child: totalPrice.when(
+                              data: (totalPrice) =>
+                                  Text(currencyFormatter.format(totalPrice)),
+                              loading: () => const Skeleton(
+                                widthFactor: 1,
+                                alignment: Alignment.centerRight,
+                              ),
+                              error: (error, stackTrace) =>
+                                  Text(error.toString()),
+                            ),
+                          ),
                         ),
                       ],
                     ),
