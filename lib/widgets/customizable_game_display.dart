@@ -43,8 +43,6 @@ class CustomizableGameDisplay extends ConsumerWidget {
             case GameDisplayLeading.playStatusIcon:
               leadingWidget = PlayStatusIcon.fromGame(
                 game: game,
-                hasAnimation: settings.hasFancyAnimations,
-                hasRepeatingAnimation: settings.hasRepeatingAnimations,
               );
             case GameDisplayLeading.none:
               leadingWidget = null;
@@ -57,8 +55,6 @@ class CustomizableGameDisplay extends ConsumerWidget {
             case GameDisplayTrailing.playStatusIcon:
               trailingWidget = PlayStatusIcon.fromGame(
                 game: game,
-                hasAnimation: settings.hasFancyAnimations,
-                hasRepeatingAnimation: settings.hasRepeatingAnimations,
               );
             case GameDisplayTrailing.priceAndLastModified:
               trailingWidget = Column(
