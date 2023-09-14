@@ -14,7 +14,7 @@ class GameListTile extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final currencyFormatter = ref.watch(currencyFormatProvider(context));
-    final dateFormatter = ref.watch(dateFormatProvider);
+    final dateFormatter = ref.watch(dateFormatProvider(context));
 
     return DefaultTextStyle.merge(
       style: TextStyle(color: game.status.foregroundColor),

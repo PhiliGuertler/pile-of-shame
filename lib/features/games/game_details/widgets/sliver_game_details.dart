@@ -8,6 +8,7 @@ import 'package:pile_of_shame/providers/format_provider.dart';
 import 'package:pile_of_shame/utils/constants.dart';
 import 'package:pile_of_shame/widgets/game_platform_icon.dart';
 import 'package:pile_of_shame/widgets/play_status_display.dart';
+import 'package:pile_of_shame/widgets/play_status_icon.dart';
 import 'package:pile_of_shame/widgets/segmented_action_card.dart';
 import 'package:pile_of_shame/widgets/skeletons/skeleton.dart';
 import 'package:pile_of_shame/widgets/skeletons/skeleton_list_tile.dart';
@@ -27,8 +28,8 @@ class _SliverGameDetailsState extends ConsumerState<SliverGameDetails> {
 
   @override
   Widget build(BuildContext context) {
-    final dateFormatter = ref.watch(dateFormatProvider);
-    final timeFormatter = ref.watch(timeFormatProvider);
+    final dateFormatter = ref.watch(dateFormatProvider(context));
+    final timeFormatter = ref.watch(timeFormatProvider(context));
     final currencyFormatter = ref.watch(currencyFormatProvider(context));
 
     return SliverList.list(
@@ -63,6 +64,13 @@ class _SliverGameDetailsState extends ConsumerState<SliverGameDetails> {
               timeFormatter.format(widget.game.lastModified),
             ),
           ),
+        ).animate().fadeIn(),
+        ListTile(
+          leading: PlayStatusIcon(
+            playStatus: widget.game.status,
+          ),
+          title: Text(AppLocalizations.of(context)!.status),
+          subtitle: Text(widget.game.status.toLocaleString(context)),
         ).animate().fadeIn(),
         ListTile(
           leading: GamePlatformIcon(
