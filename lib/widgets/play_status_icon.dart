@@ -317,7 +317,9 @@ class PlayStatusIcon extends ConsumerWidget {
     }
 
     if (playStatus == PlayStatus.completed ||
-        playStatus == PlayStatus.cancelled) {
+        playStatus == PlayStatus.cancelled ||
+        playStatus == PlayStatus.onPileOfShame ||
+        playStatus == PlayStatus.onWishList) {
       icon = PlayStatusGrowIcon(
         playStatus: playStatus,
       );
