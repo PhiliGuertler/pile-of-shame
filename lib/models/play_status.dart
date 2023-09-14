@@ -42,7 +42,7 @@ enum PlayStatus {
     isCompleted: false,
     backgroundColor: Color.fromRGBO(0, 150, 136, 1),
     foregroundColor: Colors.white,
-    icon: Icons.filter_none,
+    icon: Icons.clear_all,
   ),
   onWishList(
     isCompleted: false,
