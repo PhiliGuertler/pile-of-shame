@@ -55,6 +55,20 @@ class PlayStatusIcon extends StatelessWidget {
               .shakeY(amount: 0.5)
               .then(delay: 200.ms));
     }
+    if (playStatus == PlayStatus.endlessGame) {
+      icon = icon
+          .animate(
+            onPlay: (controller) {
+              controller.repeat();
+            },
+          )
+          .rotate(
+              begin: 0.0,
+              end: 0.5,
+              duration: 300.ms,
+              curve: Curves.easeInOutBack)
+          .then(delay: 1.seconds);
+    }
     if (playStatus == PlayStatus.completed ||
         playStatus == PlayStatus.cancelled) {
       icon = icon
