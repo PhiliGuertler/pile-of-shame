@@ -4,12 +4,13 @@ import 'package:pile_of_shame/features/games/add_game/models/editable_game.dart'
 import 'package:pile_of_shame/features/games/add_game/providers/add_game_provider.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/game_platforms.dart';
-import 'package:pile_of_shame/models/play_status.dart';
 import 'package:pile_of_shame/utils/constants.dart';
 import 'package:pile_of_shame/utils/validators.dart';
 import 'package:pile_of_shame/widgets/app_scaffold.dart';
 import 'package:pile_of_shame/widgets/input/number_input_field.dart';
 import 'package:pile_of_shame/widgets/input/text_input_field.dart';
+
+import '../widgets/play_status_dropdown.dart';
 
 class AddDLCScreen extends ConsumerStatefulWidget {
   final EditableDLC? initialValue;
@@ -67,33 +68,13 @@ class _AddDLCScreenState extends ConsumerState<AddDLCScreen> {
                 Padding(
                   padding:
                       const EdgeInsets.symmetric(horizontal: defaultPaddingX),
-                  child: DropdownButtonFormField<PlayStatus>(
-                    decoration: InputDecoration(
-                      label: Text(AppLocalizations.of(context)!.status),
-                      suffixIcon: const Icon(Icons.expand_more),
-                    ),
-                    onChanged: (value) {
-                      if (value != null) {
-                        ref
-                            .read(addDLCProvider(widget.initialValue).notifier)
-                            .updateDLC(editableDLC.copyWith(status: value));
-                      }
-                    },
-                    // Display the text of selected items only, as the prefix-icon takes care of the logo
-                    selectedItemBuilder: (context) => PlayStatus.values
-                        .map((status) => Text(status.toLocaleString(context)))
-                        .toList(),
-                    // Don't display the default icon, instead display nothing
-                    icon: const SizedBox(),
+                  child: PlayStatusDropdown(
                     value: editableDLC.status,
-                    items: PlayStatus.values
-                        .map(
-                          (status) => DropdownMenuItem<PlayStatus>(
-                            value: status,
-                            child: Text(status.toLocaleString(context)),
-                          ),
-                        )
-                        .toList(),
+                    onSelect: (selection) {
+                      ref
+                          .read(addDLCProvider(widget.initialValue).notifier)
+                          .updateDLC(editableDLC.copyWith(status: selection));
+                    },
                   ),
                 ),
                 Padding(

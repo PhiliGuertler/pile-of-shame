@@ -4,8 +4,9 @@ class ImageContainer extends StatelessWidget {
   static const double imageSize = 45.0;
 
   final Widget? child;
+  final Color? backgroundColor;
 
-  const ImageContainer({super.key, this.child});
+  const ImageContainer({super.key, this.child, this.backgroundColor});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +17,8 @@ class ImageContainer extends StatelessWidget {
       child: Container(
         width: imageSize,
         height: imageSize,
-        color: Theme.of(context).colorScheme.primaryContainer.withOpacity(0.3),
+        color: backgroundColor ??
+            Theme.of(context).colorScheme.primaryContainer.withOpacity(0.3),
         child: Center(child: child),
       ),
     );

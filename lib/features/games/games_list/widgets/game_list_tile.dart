@@ -17,9 +17,9 @@ class GameListTile extends ConsumerWidget {
     final dateFormatter = ref.watch(dateFormatProvider);
 
     return DefaultTextStyle.merge(
-      style: TextStyle(color: game.status.toForegroundColor(context)),
+      style: TextStyle(color: game.status.foregroundColor),
       child: ListTile(
-        tileColor: game.status.toBackgroundColor(context),
+        tileColor: game.status.backgroundColor,
         title: Text(game.name),
         subtitle: PlayStatusDisplay(playStatus: game.status),
         leading: GamePlatformIcon(

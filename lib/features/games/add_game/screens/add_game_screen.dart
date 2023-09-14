@@ -5,7 +5,6 @@ import 'package:pile_of_shame/features/games/add_game/widgets/game_platform_inpu
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/age_restriction.dart';
 import 'package:pile_of_shame/models/game_platforms.dart';
-import 'package:pile_of_shame/models/play_status.dart';
 import 'package:pile_of_shame/utils/constants.dart';
 import 'package:pile_of_shame/utils/validators.dart';
 import 'package:pile_of_shame/widgets/app_scaffold.dart';
@@ -17,6 +16,7 @@ import 'package:pile_of_shame/widgets/segmented_action_card.dart';
 import 'package:pile_of_shame/widgets/usk_logo.dart';
 
 import '../models/editable_game.dart';
+import '../widgets/play_status_dropdown.dart';
 import 'add_dlc_screen.dart';
 
 class AddGameScreen extends ConsumerStatefulWidget {
@@ -119,37 +119,13 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
                 Padding(
                   padding:
                       const EdgeInsets.symmetric(horizontal: defaultPaddingX),
-                  child: DropdownButtonFormField<PlayStatus>(
-                    key: const ValueKey("play_status"),
-                    decoration: InputDecoration(
-                      label: Text("${AppLocalizations.of(context)!.status}*"),
-                      suffixIcon: const Icon(Icons.expand_more),
-                    ),
-                    onChanged: (value) {
-                      if (value != null) {
-                        ref
-                            .read(addGameProvider(widget.initialValue).notifier)
-                            .updateGame(editableGame.copyWith(status: value));
-                      }
-                    },
-                    // Display the text of selected items only, as the prefix-icon takes care of the logo
-                    selectedItemBuilder: (context) => PlayStatus.values
-                        .map((status) => Text(status.toLocaleString(context)))
-                        .toList(),
-                    // Don't display the default icon, instead display nothing
-                    icon: const SizedBox(),
+                  child: PlayStatusDropdown(
                     value: editableGame.status,
-                    items: PlayStatus.values
-                        .map(
-                          (status) => DropdownMenuItem<PlayStatus>(
-                            value: status,
-                            child: Text(
-                              status.toLocaleString(context),
-                              key: ValueKey(status.toString()),
-                            ),
-                          ),
-                        )
-                        .toList(),
+                    onSelect: (selection) {
+                      ref
+                          .read(addGameProvider(widget.initialValue).notifier)
+                          .updateGame(editableGame.copyWith(status: selection));
+                    },
                   ),
                 ),
                 Padding(

@@ -14,7 +14,7 @@ class PlayStatusDisplay extends StatelessWidget {
     Widget widget = Container(
       height: height,
       decoration: BoxDecoration(
-        color: playStatus.toBackgroundColor(context),
+        color: playStatus.backgroundColor,
         borderRadius: BorderRadius.circular(8.0),
       ),
       child: Padding(
@@ -23,7 +23,7 @@ class PlayStatusDisplay extends StatelessWidget {
           child: Text(
             playStatus.toLocaleString(context),
             style: TextStyle(
-              color: playStatus.toForegroundColor(context),
+              color: playStatus.foregroundColor,
             ),
           ),
         ),
