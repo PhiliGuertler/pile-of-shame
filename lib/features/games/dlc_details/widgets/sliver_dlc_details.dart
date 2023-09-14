@@ -26,11 +26,11 @@ class SliverDLCDetails extends ConsumerWidget {
     return SliverList.list(
       children: [
         ListTile(
-          title: Text(AppLocalizations.of(context)!.name),
+          title: Text(AppLocalizations.of(context)!.gameName),
           subtitle: Text(game.name),
         ),
         ListTile(
-          title: Text(AppLocalizations.of(context)!.name),
+          title: Text(AppLocalizations.of(context)!.dlcName),
           subtitle: Text(dlc.name),
           trailing: const Chip(label: Text("DLC")),
         ),

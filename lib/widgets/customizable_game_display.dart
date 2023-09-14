@@ -37,21 +37,37 @@ class CustomizableGameDisplay extends ConsumerWidget {
         data: (settings) {
           switch (settings.leading) {
             case GameDisplayLeading.ageRatingIcon:
-              leadingWidget = USKLogo.fromGame(game: game);
+              leadingWidget = USKLogo.fromGame(
+                game: game,
+                hasAnimation: settings.hasFancyAnimations,
+                hasRepeatingAnimation: settings.hasRepeatingAnimations,
+              );
             case GameDisplayLeading.platformIcon:
               leadingWidget = GamePlatformIcon.fromGame(game: game);
             case GameDisplayLeading.playStatusIcon:
-              leadingWidget = PlayStatusIcon.fromGame(game: game);
+              leadingWidget = PlayStatusIcon.fromGame(
+                game: game,
+                hasAnimation: settings.hasFancyAnimations,
+                hasRepeatingAnimation: settings.hasRepeatingAnimations,
+              );
             case GameDisplayLeading.none:
               leadingWidget = null;
           }
           switch (settings.trailing) {
             case GameDisplayTrailing.ageRatingIcon:
-              trailingWidget = USKLogo.fromGame(game: game);
+              trailingWidget = USKLogo.fromGame(
+                game: game,
+                hasAnimation: settings.hasFancyAnimations,
+                hasRepeatingAnimation: settings.hasRepeatingAnimations,
+              );
             case GameDisplayTrailing.platformIcon:
               trailingWidget = GamePlatformIcon.fromGame(game: game);
             case GameDisplayTrailing.playStatusIcon:
-              trailingWidget = PlayStatusIcon.fromGame(game: game);
+              trailingWidget = PlayStatusIcon.fromGame(
+                game: game,
+                hasAnimation: settings.hasFancyAnimations,
+                hasRepeatingAnimation: settings.hasRepeatingAnimations,
+              );
             case GameDisplayTrailing.priceAndLastModified:
               trailingWidget = Column(
                 crossAxisAlignment: CrossAxisAlignment.end,

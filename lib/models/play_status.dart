@@ -12,7 +12,7 @@ enum PlayStatus {
     isCompleted: true,
     backgroundColor: Color.fromRGBO(255, 167, 38, 1),
     foregroundColor: Colors.black,
-    icon: Icons.sports_esports,
+    icon: Icons.videogame_asset,
   ),
   endlessGame(
     isCompleted: true,

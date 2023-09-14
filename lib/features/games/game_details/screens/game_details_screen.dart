@@ -102,9 +102,12 @@ class _GameDetailsScreenState extends ConsumerState<GameDetailsScreen> {
                   child: Align(
                     alignment: Alignment.bottomCenter,
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: defaultPaddingX,
-                          vertical: defaultPaddingX),
+                      padding: const EdgeInsets.only(
+                        top: 16.0,
+                        left: defaultPaddingX,
+                        right: defaultPaddingX,
+                        bottom: 8.0,
+                      ),
                       child: TextButton.icon(
                         icon: const Icon(Icons.delete),
                         label: Text(AppLocalizations.of(context)!.deleteGame),
