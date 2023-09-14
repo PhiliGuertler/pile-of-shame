@@ -48,7 +48,13 @@ class App extends ConsumerWidget {
         themeMode: appTheme.themeMode,
         localeResolutionCallback:
             (Locale? locale, Iterable<Locale> supportedLocales) {
-          Intl.defaultLocale = locale?.toLanguageTag();
+          if (supportedLocales
+              .any((element) => element.languageCode == locale?.languageCode)) {
+            Intl.defaultLocale = locale?.toLanguageTag();
+          } else {
+            Intl.defaultLocale = "en";
+            return const Locale("en");
+          }
           return locale;
         },
         localizationsDelegates: const [
