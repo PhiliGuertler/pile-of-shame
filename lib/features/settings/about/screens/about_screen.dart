@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
+import 'package:pile_of_shame/utils/constants.dart';
 import 'package:pile_of_shame/widgets/app_scaffold.dart';
 import 'package:pile_of_shame/widgets/image_container.dart';
 import 'package:pile_of_shame/widgets/segmented_action_card.dart';
@@ -41,6 +42,19 @@ class AboutScreen extends StatelessWidget {
                         child: Image.asset('assets/app/logo.png')),
                     applicationName: info.appName,
                     applicationVersion: "${info.version} (${info.buildNumber})",
+                    children: [
+                      ClipRRect(
+                        borderRadius:
+                            BorderRadius.circular(defaultBorderRadius),
+                        child: SizedBox(
+                          height: 200,
+                          child: Image.asset(
+                            'assets/misc/loading.webp',
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      )
+                    ],
                   );
                 }
               },
