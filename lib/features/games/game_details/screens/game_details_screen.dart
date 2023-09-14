@@ -55,7 +55,7 @@ class _GameDetailsScreenState extends ConsumerState<GameDetailsScreen> {
                 ),
                 SliverGameDetailsSkeleton(),
               ],
-            ).animate().fadeIn(),
+            ).animate().fadeIn(duration: 1.seconds),
             data: (game) => CustomScrollView(
               physics: const BouncingScrollPhysics(
                 parent: AlwaysScrollableScrollPhysics(),

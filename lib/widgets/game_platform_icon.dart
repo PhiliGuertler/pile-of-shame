@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/models/game_platforms.dart';
 
 import 'image_container.dart';
@@ -10,6 +11,9 @@ class GamePlatformIcon extends StatelessWidget {
     super.key,
     required this.platform,
   });
+
+  GamePlatformIcon.fromGame({super.key, required Game game})
+      : platform = game.platform;
 
   @override
   Widget build(BuildContext context) {

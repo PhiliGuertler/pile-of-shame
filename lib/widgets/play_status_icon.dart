@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/models/play_status.dart';
 import 'package:pile_of_shame/widgets/image_container.dart';
 
@@ -10,6 +11,9 @@ class PlayStatusIcon extends StatelessWidget {
     super.key,
     required this.playStatus,
   });
+
+  PlayStatusIcon.fromGame({super.key, required Game game})
+      : playStatus = game.status;
 
   @override
   Widget build(BuildContext context) {

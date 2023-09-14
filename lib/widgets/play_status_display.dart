@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/models/play_status.dart';
 
 class PlayStatusDisplay extends StatelessWidget {
@@ -8,6 +9,9 @@ class PlayStatusDisplay extends StatelessWidget {
   final PlayStatus playStatus;
 
   const PlayStatusDisplay({super.key, required this.playStatus});
+
+  PlayStatusDisplay.fromGame({super.key, required Game game})
+      : playStatus = game.status;
 
   @override
   Widget build(BuildContext context) {
