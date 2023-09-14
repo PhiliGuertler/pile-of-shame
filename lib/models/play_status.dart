@@ -2,20 +2,66 @@ import 'package:flutter/material.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 
 enum PlayStatus {
-  playing(isCompleted: false),
-  replaying(isCompleted: true),
-  endlessGame(isCompleted: true),
-  completed(isCompleted: true),
-  completed100Percent(isCompleted: true),
-  cancelled(isCompleted: false),
-  onPileOfShame(isCompleted: false),
-  onWishList(isCompleted: false),
+  playing(
+    isCompleted: false,
+    backgroundColor: Color.fromRGBO(245, 124, 0, 1),
+    foregroundColor: Colors.black,
+    icon: Icons.sports_esports,
+  ),
+  replaying(
+    isCompleted: true,
+    backgroundColor: Color.fromRGBO(255, 167, 38, 1),
+    foregroundColor: Colors.black,
+    icon: Icons.sports_esports,
+  ),
+  endlessGame(
+    isCompleted: true,
+    backgroundColor: Color.fromRGBO(255, 238, 88, 1),
+    foregroundColor: Colors.black,
+    icon: Icons.all_inclusive,
+  ),
+  completed(
+    isCompleted: true,
+    backgroundColor: Color.fromRGBO(102, 187, 106, 1),
+    foregroundColor: Colors.black,
+    icon: Icons.done,
+  ),
+  completed100Percent(
+    isCompleted: true,
+    backgroundColor: Colors.green,
+    foregroundColor: Colors.black,
+    icon: Icons.done_all,
+  ),
+  cancelled(
+    isCompleted: false,
+    backgroundColor: Color.fromRGBO(229, 57, 53, 1),
+    foregroundColor: Colors.white,
+    icon: Icons.close,
+  ),
+  onPileOfShame(
+    isCompleted: false,
+    backgroundColor: Color.fromRGBO(0, 150, 136, 1),
+    foregroundColor: Colors.white,
+    icon: Icons.filter_none,
+  ),
+  onWishList(
+    isCompleted: false,
+    backgroundColor: Color.fromRGBO(123, 31, 162, 1),
+    foregroundColor: Colors.white,
+    icon: Icons.receipt_long,
+  ),
   ;
 
   final bool isCompleted;
+  final Color backgroundColor;
+  final Color foregroundColor;
+  final IconData icon;
 
   const PlayStatus({
     required this.isCompleted,
+    required this.backgroundColor,
+    required this.foregroundColor,
+    required this.icon,
   });
 
   String toLocaleString(BuildContext context) {
@@ -37,48 +83,6 @@ enum PlayStatus {
         return localizations.onPileOfShame;
       case PlayStatus.onWishList:
         return localizations.onWishList;
-    }
-  }
-
-  Color toBackgroundColor(BuildContext context) {
-    switch (this) {
-      case PlayStatus.completed:
-        return Colors.green.shade400;
-      case PlayStatus.completed100Percent:
-        return Colors.green;
-      case PlayStatus.endlessGame:
-        return Colors.yellow.shade400;
-      case PlayStatus.replaying:
-        return Colors.orange.shade400;
-      case PlayStatus.playing:
-        return Colors.orange.shade700;
-      case PlayStatus.cancelled:
-        return Colors.red.shade600;
-      case PlayStatus.onPileOfShame:
-        return Colors.teal.shade500;
-      case PlayStatus.onWishList:
-        return Colors.purple.shade700;
-    }
-  }
-
-  Color toForegroundColor(BuildContext context) {
-    switch (this) {
-      case PlayStatus.completed:
-        return Colors.black;
-      case PlayStatus.completed100Percent:
-        return Colors.black;
-      case PlayStatus.endlessGame:
-        return Colors.black;
-      case PlayStatus.replaying:
-        return Colors.black;
-      case PlayStatus.playing:
-        return Colors.black;
-      case PlayStatus.cancelled:
-        return Colors.white;
-      case PlayStatus.onPileOfShame:
-        return Colors.white;
-      case PlayStatus.onWishList:
-        return Colors.white;
     }
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/models/play_status.dart';
 
 class PlayStatusDisplay extends StatelessWidget {
@@ -9,12 +10,15 @@ class PlayStatusDisplay extends StatelessWidget {
 
   const PlayStatusDisplay({super.key, required this.playStatus});
 
+  PlayStatusDisplay.fromGame({super.key, required Game game})
+      : playStatus = game.status;
+
   @override
   Widget build(BuildContext context) {
     Widget widget = Container(
       height: height,
       decoration: BoxDecoration(
-        color: playStatus.toBackgroundColor(context),
+        color: playStatus.backgroundColor,
         borderRadius: BorderRadius.circular(8.0),
       ),
       child: Padding(
@@ -23,7 +27,7 @@ class PlayStatusDisplay extends StatelessWidget {
           child: Text(
             playStatus.toLocaleString(context),
             style: TextStyle(
-              color: playStatus.toForegroundColor(context),
+              color: playStatus.foregroundColor,
             ),
           ),
         ),

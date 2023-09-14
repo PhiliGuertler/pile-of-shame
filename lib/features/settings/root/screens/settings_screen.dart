@@ -5,6 +5,7 @@ import 'package:pile_of_shame/features/developer_tools/debug_menu/screens/debug_
 import 'package:pile_of_shame/features/settings/about/screens/about_screen.dart';
 import 'package:pile_of_shame/features/settings/appearance/screens/appearance_screen.dart';
 import 'package:pile_of_shame/features/settings/export_games/screens/export_games_screen.dart';
+import 'package:pile_of_shame/features/settings/game_display/screens/game_display_screen.dart';
 import 'package:pile_of_shame/features/settings/import_games/screens/import_games_screen.dart';
 import 'package:pile_of_shame/features/settings/language/screens/language_screen.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
@@ -63,6 +64,19 @@ class SettingsScreen extends ConsumerWidget {
                     Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (context) => const LanguageScreen(),
+                      ),
+                    );
+                  },
+                ),
+                SegmentedActionCardItem(
+                  leading: const Icon(Icons.sports_esports),
+                  title: Text(AppLocalizations.of(context)!.gameDisplay),
+                  subtitle: Text(
+                      AppLocalizations.of(context)!.personalizeGameDisplays),
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const GameDisplayScreen(),
                       ),
                     );
                   },
