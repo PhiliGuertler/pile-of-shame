@@ -35,8 +35,8 @@ class _SliverGameDetailsState extends ConsumerState<SliverGameDetails> {
     return SliverList.list(
       children: [
         ListTile(
-          title: Text(widget.game.name),
-          subtitle: PlayStatusDisplay(playStatus: widget.game.status),
+          title: Text(AppLocalizations.of(context)!.gameName),
+          subtitle: Text(widget.game.name),
         ),
         ListTile(
           title: Text(shouldShowPriceSum
@@ -113,7 +113,6 @@ class _SliverGameDetailsState extends ConsumerState<SliverGameDetails> {
                 )
                 .toList(),
           ).animate().fadeIn(),
-        const SizedBox(height: 48.0)
       ],
     );
   }

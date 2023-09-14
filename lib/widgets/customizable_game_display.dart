@@ -41,7 +41,9 @@ class CustomizableGameDisplay extends ConsumerWidget {
             case GameDisplayLeading.platformIcon:
               leadingWidget = GamePlatformIcon.fromGame(game: game);
             case GameDisplayLeading.playStatusIcon:
-              leadingWidget = PlayStatusIcon.fromGame(game: game);
+              leadingWidget = PlayStatusIcon.fromGame(
+                game: game,
+              );
             case GameDisplayLeading.none:
               leadingWidget = null;
           }
@@ -51,7 +53,9 @@ class CustomizableGameDisplay extends ConsumerWidget {
             case GameDisplayTrailing.platformIcon:
               trailingWidget = GamePlatformIcon.fromGame(game: game);
             case GameDisplayTrailing.playStatusIcon:
-              trailingWidget = PlayStatusIcon.fromGame(game: game);
+              trailingWidget = PlayStatusIcon.fromGame(
+                game: game,
+              );
             case GameDisplayTrailing.priceAndLastModified:
               trailingWidget = Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
