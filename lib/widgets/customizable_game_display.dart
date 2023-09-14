@@ -37,11 +37,7 @@ class CustomizableGameDisplay extends ConsumerWidget {
         data: (settings) {
           switch (settings.leading) {
             case GameDisplayLeading.ageRatingIcon:
-              leadingWidget = USKLogo.fromGame(
-                game: game,
-                hasAnimation: settings.hasFancyAnimations,
-                hasRepeatingAnimation: settings.hasRepeatingAnimations,
-              );
+              leadingWidget = USKLogo.fromGame(game: game);
             case GameDisplayLeading.platformIcon:
               leadingWidget = GamePlatformIcon.fromGame(game: game);
             case GameDisplayLeading.playStatusIcon:
@@ -55,11 +51,7 @@ class CustomizableGameDisplay extends ConsumerWidget {
           }
           switch (settings.trailing) {
             case GameDisplayTrailing.ageRatingIcon:
-              trailingWidget = USKLogo.fromGame(
-                game: game,
-                hasAnimation: settings.hasFancyAnimations,
-                hasRepeatingAnimation: settings.hasRepeatingAnimations,
-              );
+              trailingWidget = USKLogo.fromGame(game: game);
             case GameDisplayTrailing.platformIcon:
               trailingWidget = GamePlatformIcon.fromGame(game: game);
             case GameDisplayTrailing.playStatusIcon:
