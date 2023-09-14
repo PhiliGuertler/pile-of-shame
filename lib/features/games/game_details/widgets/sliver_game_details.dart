@@ -6,7 +6,7 @@ import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/providers/format_provider.dart';
 import 'package:pile_of_shame/utils/constants.dart';
-import 'package:pile_of_shame/widgets/image_container.dart';
+import 'package:pile_of_shame/widgets/game_platform_icon.dart';
 import 'package:pile_of_shame/widgets/play_status_display.dart';
 import 'package:pile_of_shame/widgets/segmented_action_card.dart';
 import 'package:pile_of_shame/widgets/skeletons/skeleton.dart';
@@ -65,8 +65,8 @@ class _SliverGameDetailsState extends ConsumerState<SliverGameDetails> {
           ),
         ).animate().fadeIn(),
         ListTile(
-          leading: ImageContainer(
-            child: Image.asset(widget.game.platform.iconPath),
+          leading: GamePlatformIcon(
+            platform: widget.game.platform,
           ),
           title: Text(AppLocalizations.of(context)!.platform),
           subtitle: Text(widget.game.platform.name),

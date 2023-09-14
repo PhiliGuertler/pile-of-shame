@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pile_of_shame/models/game_platforms.dart';
+import 'package:pile_of_shame/widgets/game_platform_icon.dart';
 import 'package:pile_of_shame/widgets/image_container.dart';
 
 class GamePlatformInputField extends StatelessWidget {
@@ -25,14 +26,16 @@ class GamePlatformInputField extends StatelessWidget {
         suffixIcon: const Icon(Icons.expand_more),
         prefixIcon: Padding(
           padding: const EdgeInsets.only(right: 8.0),
-          child: ImageContainer(
-            child: value != null
-                ? Image.asset(value!.iconPath)
-                : Icon(
+          child: value != null
+              ? GamePlatformIcon(
+                  platform: value!,
+                )
+              : ImageContainer(
+                  child: Icon(
                     Icons.sports_esports,
                     color: Theme.of(context).colorScheme.onPrimaryContainer,
                   ),
-          ),
+                ),
         ),
       ),
       validator: validator,

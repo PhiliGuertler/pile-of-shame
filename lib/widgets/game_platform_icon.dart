@@ -14,10 +14,13 @@ class GamePlatformIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ImageContainer(
-      child: Image.asset(
-        platform.iconPath,
-        width: double.infinity,
-        height: double.infinity,
+      child: Padding(
+        padding: const EdgeInsets.all(4.0),
+        child: Image.asset(
+          platform.iconPath,
+          width: double.infinity,
+          height: double.infinity,
+        ),
       ),
     );
   }

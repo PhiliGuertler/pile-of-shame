@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/providers/format_provider.dart';
-import 'package:pile_of_shame/widgets/image_container.dart';
+import 'package:pile_of_shame/widgets/game_platform_icon.dart';
 import 'package:pile_of_shame/widgets/play_status_display.dart';
 import 'package:pile_of_shame/widgets/skeletons/skeleton.dart';
 import 'package:pile_of_shame/widgets/skeletons/skeleton_list_tile.dart';
@@ -44,8 +44,8 @@ class SliverDLCDetails extends ConsumerWidget {
           ),
         ),
         ListTile(
-          leading: ImageContainer(
-            child: Image.asset(game.platform.iconPath),
+          leading: GamePlatformIcon(
+            platform: game.platform,
           ),
           title: Text(AppLocalizations.of(context)!.platform),
           subtitle: Text(game.platform.name),
