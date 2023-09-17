@@ -5,6 +5,7 @@ import 'package:pile_of_shame/features/games/add_game/widgets/game_platform_inpu
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/age_restriction.dart';
 import 'package:pile_of_shame/models/game_platforms.dart';
+import 'package:pile_of_shame/providers/games/game_platforms_provider.dart';
 import 'package:pile_of_shame/utils/constants.dart';
 import 'package:pile_of_shame/utils/validators.dart';
 import 'package:pile_of_shame/widgets/app_scaffold.dart';
@@ -35,8 +36,13 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
   Widget build(BuildContext context) {
     final editableGame = ref.watch(addGameProvider(widget.initialValue));
 
-    final List<GamePlatform> sortedGamePlatforms =
-        List.from(GamePlatform.values);
+    final gamePlatforms = ref.watch(gamePlatformsProvider);
+    final allPlatforms = gamePlatforms.maybeWhen(
+      data: (data) => data,
+      orElse: () => GamePlatform.values,
+    );
+
+    final List<GamePlatform> sortedGamePlatforms = List.from(allPlatforms);
     sortedGamePlatforms.sort(
       (a, b) => a.name.toLowerCase().compareTo(
             b.name.toLowerCase(),

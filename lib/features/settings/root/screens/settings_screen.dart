@@ -8,6 +8,7 @@ import 'package:pile_of_shame/features/settings/export_games/screens/export_game
 import 'package:pile_of_shame/features/settings/game_display/screens/game_display_screen.dart';
 import 'package:pile_of_shame/features/settings/import_games/screens/import_games_screen.dart';
 import 'package:pile_of_shame/features/settings/language/screens/language_screen.dart';
+import 'package:pile_of_shame/features/settings/platforms/screens/platforms_screen.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/providers/debug_provider.dart';
@@ -77,6 +78,19 @@ class SettingsScreen extends ConsumerWidget {
                     Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (context) => const GameDisplayScreen(),
+                      ),
+                    );
+                  },
+                ),
+                SegmentedActionCardItem(
+                  leading: const Icon(Icons.videogame_asset),
+                  title: Text(AppLocalizations.of(context)!.yourPlatforms),
+                  subtitle:
+                      Text(AppLocalizations.of(context)!.selectYourPlatforms),
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const PlatformsScreen(),
                       ),
                     );
                   },

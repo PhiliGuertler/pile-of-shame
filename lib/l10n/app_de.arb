@@ -91,6 +91,8 @@
   "rightArea": "rechter Bereich",
   "save": "Speichern",
   "searchGames": "Spiele suchen",
+  "selectWhichGamePlatformsYouHaveOnlyEnabledPlatformsAreSelectableWhenAddingAndEditingGamesAlsoOnlyEnabledPlatformsCanBeUsedAsFiltersGamesFromDisabledPlatformsAreStillVisibleWhenNoPlatformFiltersAreActive": "Wähle aus, welche Spiele-Plattformen Du hast. Nur aktivierte Plattformen sind beim Hinzufügen und Bearbeiten von Spielen auswählbar. Außerdem können nur aktivierte Plattformen als Filter verwendet werden. Spiele aus deaktivierten Plattformen sind weiterhin sichtbar, wenn keine Plattform-Filter aktiv sind.",
+  "selectYourPlatforms": "Wähle Deine Plattformen",
   "settings": "Einstellungen",
   "shareGames": "Spiele teilen",
   "shareGamesAsAJSONFile": "Spiele als JSON-Datei teilen",
@@ -103,5 +105,6 @@
   "thisFieldIsRequired": "Dieses Feld ist erforderlich",
   "updateExistingGames": "Existierende Spiele aktualisieren",
   "yes": "Ja",
+  "yourPlatforms": "Deine Plattformen",
   "yourPreviousGamesWillBeDeleted": "Deine bisherigen Spiele werden gelöscht."
 }

@@ -2,6 +2,7 @@ import 'package:pile_of_shame/models/age_restriction.dart';
 import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/models/game_platforms.dart';
 import 'package:pile_of_shame/models/play_status.dart';
+import 'package:pile_of_shame/providers/games/game_platforms_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'game_filter_provider.g.dart';
@@ -34,7 +35,11 @@ class GamePlatformFamilyFilter extends _$GamePlatformFamilyFilter {
 class GamePlatformFilter extends _$GamePlatformFilter {
   @override
   List<GamePlatform> build() {
-    return GamePlatform.values;
+    final allPlatforms = ref.watch(gamePlatformsProvider);
+    return allPlatforms.maybeWhen(
+      data: (data) => data,
+      orElse: () => GamePlatform.values,
+    );
   }
 
   void setFilter(List<GamePlatform> filter) {
@@ -56,12 +61,17 @@ class AgeRatingFilter extends _$AgeRatingFilter {
 
 @riverpod
 bool isAnyFilterActive(IsAnyFilterActiveRef ref) {
+  final allPlatforms = ref.watch(gamePlatformsProvider);
+  int numAllPlatforms = allPlatforms.maybeWhen(
+    data: (data) => data.length,
+    orElse: () => GamePlatform.values.length,
+  );
   final platformFilter = ref.watch(gamePlatformFilterProvider);
   final platformFamilyFilter = ref.watch(gamePlatformFamilyFilterProvider);
   final playStatusFilter = ref.watch(playStatusFilterProvider);
   final ageRatingFilter = ref.watch(ageRatingFilterProvider);
 
-  return (platformFilter.length != GamePlatform.values.length ||
+  return (platformFilter.length < numAllPlatforms ||
       platformFamilyFilter.length != GamePlatformFamily.values.length ||
       playStatusFilter.length != PlayStatus.values.length ||
       ageRatingFilter.length != USK.values.length);
@@ -70,12 +80,19 @@ bool isAnyFilterActive(IsAnyFilterActiveRef ref) {
 @riverpod
 List<Game> applyGameFilters(ApplyGameFiltersRef ref, List<Game> games) {
   final platformFilter = ref.watch(gamePlatformFilterProvider);
+  final allPlatforms = ref.watch(gamePlatformsProvider);
+  final allLogicalPlatforms = allPlatforms.maybeWhen(
+    data: (data) => data.length == platformFilter.length
+        ? GamePlatform.values
+        : platformFilter,
+    orElse: () => GamePlatform.values,
+  );
   final platformFamilyFilter = ref.watch(gamePlatformFamilyFilterProvider);
   final playStatusFilter = ref.watch(playStatusFilterProvider);
   final ageRatingFilter = ref.watch(ageRatingFilterProvider);
 
   final result = games.where((Game game) {
-    return platformFilter.contains(game.platform) &&
+    return allLogicalPlatforms.contains(game.platform) &&
         platformFamilyFilter.contains(game.platform.family) &&
         playStatusFilter.contains(game.status) &&
         ageRatingFilter.contains(game.usk);
