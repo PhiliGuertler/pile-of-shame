@@ -35,11 +35,7 @@ class GamePlatformFamilyFilter extends _$GamePlatformFamilyFilter {
 class GamePlatformFilter extends _$GamePlatformFilter {
   @override
   List<GamePlatform> build() {
-    final allPlatforms = ref.watch(gamePlatformsProvider);
-    return allPlatforms.maybeWhen(
-      data: (data) => data,
-      orElse: () => GamePlatform.values,
-    );
+    return GamePlatform.values;
   }
 
   void setFilter(List<GamePlatform> filter) {
@@ -85,7 +81,7 @@ List<Game> applyGameFilters(ApplyGameFiltersRef ref, List<Game> games) {
     data: (data) => data.length == platformFilter.length
         ? GamePlatform.values
         : platformFilter,
-    orElse: () => GamePlatform.values,
+    orElse: () => platformFilter,
   );
   final platformFamilyFilter = ref.watch(gamePlatformFamilyFilterProvider);
   final playStatusFilter = ref.watch(playStatusFilterProvider);
