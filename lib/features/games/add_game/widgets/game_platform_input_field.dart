@@ -39,8 +39,9 @@ class GamePlatformInputField extends StatelessWidget {
         ),
       ),
       validator: validator,
-      controller:
-          value != null ? TextEditingController(text: value!.name) : null,
+      controller: value != null
+          ? TextEditingController(text: value!.localizedName(context))
+          : null,
       onTap: onTap,
     );
   }

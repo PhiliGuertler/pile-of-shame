@@ -77,7 +77,7 @@ class _SliverGameDetailsState extends ConsumerState<SliverGameDetails> {
             platform: widget.game.platform,
           ),
           title: Text(AppLocalizations.of(context)!.platform),
-          subtitle: Text(widget.game.platform.name),
+          subtitle: Text(widget.game.platform.localizedName(context)),
         ).animate().fadeIn(),
         ListTile(
           leading: USKLogo(

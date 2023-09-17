@@ -111,6 +111,7 @@
   "rightArea": "right area",
   "save": "Save",
   "searchGames": "search for games",
+  "sega": "SEGA",
   "selectWhichGamePlatformsYouHaveOnlyEnabledPlatformsAreSelectableWhenAddingAndEditingGamesAlsoOnlyEnabledPlatformsCanBeUsedAsFiltersGamesFromDisabledPlatformsAreStillVisibleWhenNoPlatformFiltersAreActive": "Select which game platforms you have. Only enabled platforms are selectable when adding and editing games. Also, only enabled platforms can be used as filters. Games from disabled platforms are still visible when no platform filters are active.",
   "selectYourPlatforms": "Select your platforms",
   "settings": "Settings",

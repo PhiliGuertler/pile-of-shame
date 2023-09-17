@@ -12,8 +12,6 @@ import 'l10n/generated/app_localizations.dart';
 final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey =
     GlobalKey<ScaffoldMessengerState>();
 
-final GlobalKey<NavigatorState> appKey = GlobalKey<NavigatorState>();
-
 class App extends ConsumerWidget {
   const App({super.key});
 

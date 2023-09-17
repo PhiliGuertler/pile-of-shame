@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:pile_of_shame/features/developer_tools/debug_game_controller_assets/screens/debug_game_controller_assets_screen.dart';
 import 'package:pile_of_shame/features/developer_tools/debug_game_controller_shader/screens/debug_game_controller_shader_screen.dart';
 import 'package:pile_of_shame/features/developer_tools/debug_game_platform_icons/screens/debug_game_platform_icons_screen.dart';
-import 'package:pile_of_shame/features/developer_tools/debug_game_platform_text_logos/screens/debug_game_platform_text_logos_screen.dart';
 import 'package:pile_of_shame/utils/constants.dart';
 import 'package:pile_of_shame/widgets/app_scaffold.dart';
 import 'package:pile_of_shame/widgets/segmented_action_card.dart';
@@ -45,18 +44,6 @@ class DebugMenuScreen extends StatelessWidget {
                   },
                 ),
                 SegmentedActionCardItem(
-                  leading: const Icon(Icons.text_format),
-                  title: const Text("Game-Platform Text-Logos"),
-                  subtitle:
-                      const Text("Display all Game-Platform Text-Logo assets"),
-                  onTap: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) =>
-                          const DebugGamePlatformTextLogosScreen(),
-                    ));
-                  },
-                ),
-                SegmentedActionCardItem.debug(
                   leading: const Icon(Icons.sports_esports),
                   title: const Text("Game-Platform Controllers"),
                   subtitle:

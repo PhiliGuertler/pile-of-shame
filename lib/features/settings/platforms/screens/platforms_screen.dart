@@ -5,6 +5,7 @@ import 'package:pile_of_shame/models/game_platforms.dart';
 import 'package:pile_of_shame/providers/games/game_platforms_provider.dart';
 import 'package:pile_of_shame/utils/constants.dart';
 import 'package:pile_of_shame/widgets/app_scaffold.dart';
+import 'package:pile_of_shame/widgets/game_platform_icon.dart';
 import 'package:pile_of_shame/widgets/skeletons/skeleton_list_tile.dart';
 
 class PlatformsScreen extends ConsumerWidget {
@@ -35,7 +36,20 @@ class PlatformsScreen extends ConsumerWidget {
                 final isContained = gamePlatforms.contains(platform);
                 return SwitchListTile.adaptive(
                   value: isContained,
-                  title: Text(platform.name),
+                  title: Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(right: 8.0),
+                        child: GamePlatformIcon(platform: platform),
+                      ),
+                      Expanded(
+                        child: Text(
+                          platform.localizedName(context),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
+                  ),
                   onChanged: (value) {
                     List<GamePlatform> update = List.from(gamePlatforms);
                     if (value) {
@@ -65,6 +79,7 @@ class PlatformsScreen extends ConsumerWidget {
               ),
             ),
           ),
+          const SliverPadding(padding: EdgeInsets.only(bottom: 16.0)),
         ],
       ),
     );

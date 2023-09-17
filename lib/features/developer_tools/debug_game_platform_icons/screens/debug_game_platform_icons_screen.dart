@@ -30,7 +30,7 @@ class DebugGamePlatformIconsScreen extends StatelessWidget {
                         bottom: 8.0,
                       ),
                       child: Text(
-                        platform.name,
+                        platform.localizedName(context),
                         style: Theme.of(context).textTheme.headlineSmall,
                       ),
                     ),

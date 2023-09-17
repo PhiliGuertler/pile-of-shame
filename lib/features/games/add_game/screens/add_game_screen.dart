@@ -44,8 +44,8 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
 
     final List<GamePlatform> sortedGamePlatforms = List.from(allPlatforms);
     sortedGamePlatforms.sort(
-      (a, b) => a.name.toLowerCase().compareTo(
-            b.name.toLowerCase(),
+      (a, b) => a.localizedName(context).toLowerCase().compareTo(
+            b.localizedName(context).toLowerCase(),
           ),
     );
 
@@ -93,8 +93,10 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
                           .toLowerCase()
                           .contains(searchTerm);
                       // check if the platform's name conains all the search terms
-                      final matchesName =
-                          option.name.toLowerCase().contains(searchTerm);
+                      final matchesName = option
+                          .localizedName(context)
+                          .toLowerCase()
+                          .contains(searchTerm);
 
                       return matchesFamily ||
                           matchesAbbreviation ||
@@ -103,7 +105,7 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
                     optionBuilder: (context, option, onTap) => ListTile(
                       key: ValueKey(option.abbreviation),
                       leading: GamePlatformIcon(platform: option),
-                      title: Text(option.name),
+                      title: Text(option.localizedName(context)),
                       onTap: onTap,
                     ),
                     valueBuilder: (context, option, onTap) =>

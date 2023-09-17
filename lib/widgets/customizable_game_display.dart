@@ -90,7 +90,7 @@ class CustomizableGameDisplay extends ConsumerWidget {
             case GameDisplaySecondary.ageRatingText:
               secondaryWidget = AgeRatingTextDisplay.fromGame(game: game);
             case GameDisplaySecondary.platformText:
-              secondaryWidget = Text(game.platform.name);
+              secondaryWidget = Text(game.platform.localizedName(context));
             case GameDisplaySecondary.price:
               secondaryWidget =
                   Text(currencyFormatter.format(game.fullPrice()));

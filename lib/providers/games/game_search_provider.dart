@@ -30,6 +30,8 @@ List<Game> applyGameSearch(ApplyGameSearchRef ref, List<Game> games) {
       bool matchesPlatformAbbreviation = game.platform.abbreviation
           .prepareForCaseInsensitiveSearch()
           .contains(term);
+
+      // FIXME: This does not consider translations of the platforms...
       bool matchesPlatform =
           game.platform.name.prepareForCaseInsensitiveSearch().contains(term);
       return matchesName || matchesPlatformAbbreviation || matchesPlatform;

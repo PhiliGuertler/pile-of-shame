@@ -17,6 +17,7 @@ enum GamePlatformFamily {
   microsoft,
   nintendo,
   pc,
+  sega,
   misc,
   ;
 
@@ -30,6 +31,8 @@ enum GamePlatformFamily {
         return AppLocalizations.of(context)!.nintendo;
       case GamePlatformFamily.pc:
         return AppLocalizations.of(context)!.pc;
+      case GamePlatformFamily.sega:
+        return AppLocalizations.of(context)!.sega;
       case GamePlatformFamily.misc:
         return AppLocalizations.of(context)!.misc;
     }
@@ -229,6 +232,36 @@ enum GamePlatform {
     abbreviation: "XBox Series",
     type: GamePlatformType.stationary,
   ),
+  // #### SEGA ############################################################## //
+  // ### Stationaries ####################################################### //
+  segaMegaDrive(
+    family: GamePlatformFamily.sega,
+    assetPath: "sega_mega_drive",
+    name: "SEGA Mega Drive",
+    abbreviation: "SMD",
+    type: GamePlatformType.stationary,
+  ),
+  segaGameGear(
+    family: GamePlatformFamily.sega,
+    assetPath: "sega_game_gear",
+    name: "SEGA Game Gear",
+    abbreviation: "SGG",
+    type: GamePlatformType.handheld,
+  ),
+  segaSaturn(
+    family: GamePlatformFamily.sega,
+    assetPath: "sega_saturn",
+    name: "SEGA Saturn",
+    abbreviation: "SS",
+    type: GamePlatformType.stationary,
+  ),
+  segaDreamcast(
+    family: GamePlatformFamily.sega,
+    assetPath: "sega_dreamcast",
+    name: "SEGA Dreamcast",
+    abbreviation: "SD",
+    type: GamePlatformType.stationary,
+  ),
   // #### PC ################################################################ //
   // ### Stationaries ####################################################### //
   pcMisc(
@@ -281,6 +314,13 @@ enum GamePlatform {
     type: GamePlatformType.stationary,
   ),
   // #### Misc ############################################################## //
+  smartphone(
+    family: GamePlatformFamily.misc,
+    abbreviation: 'phone',
+    assetPath: 'smartphone',
+    name: 'Smartphone',
+    type: GamePlatformType.handheld,
+  ),
   unknown(
     abbreviation: 'unknown',
     family: GamePlatformFamily.misc,
@@ -310,4 +350,13 @@ enum GamePlatform {
 
   String get controllerLogoPath =>
       "$_controllerBasePath/${family.name}/$assetPath.webp";
+
+  String localizedName(BuildContext context) {
+    switch (this) {
+      case GamePlatform.unknown:
+        return AppLocalizations.of(context)!.misc;
+      default:
+        return name;
+    }
+  }
 }
