@@ -16,6 +16,7 @@ class EditableDLC with _$EditableDLC {
     String? name,
     @Default(PlayStatus.onPileOfShame) PlayStatus status,
     double? price,
+    String? notes,
   }) = _EditableDLC;
 
   factory EditableDLC.fromDLC(DLC dlc) {
@@ -24,6 +25,7 @@ class EditableDLC with _$EditableDLC {
       name: dlc.name,
       price: dlc.price,
       status: dlc.status,
+      notes: dlc.notes,
     );
   }
 
@@ -40,6 +42,7 @@ class EditableDLC with _$EditableDLC {
       name: name!,
       status: status,
       price: price ?? 0.0,
+      notes: notes,
     );
   }
 }
@@ -56,6 +59,7 @@ class EditableGame with _$EditableGame {
     double? price,
     @Default(USK.usk0) USK usk,
     @Default([]) List<EditableDLC> dlcs,
+    String? notes,
   }) = _EditableGame;
 
   factory EditableGame.fromGame(Game game) {
@@ -67,6 +71,7 @@ class EditableGame with _$EditableGame {
       status: game.status,
       usk: game.usk,
       dlcs: game.dlcs.map((dlc) => EditableDLC.fromDLC(dlc)).toList(),
+      notes: game.notes,
     );
   }
 
@@ -86,6 +91,7 @@ class EditableGame with _$EditableGame {
       price: price ?? 0.0,
       usk: usk,
       dlcs: dlcs.map((e) => e.toDLC()).toList(),
+      notes: notes,
     );
   }
 }

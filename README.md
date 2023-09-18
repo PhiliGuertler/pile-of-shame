@@ -79,6 +79,17 @@ Have a look at [the Android config](./test/appium/configs/wdio.android.conf.js) 
 
 ## Download the App
 
-<div style="height: 80px;">
+<div style="width: 200px">
     <a href='https://play.google.com/store/apps/details?id=org.philipp_guertler.pile_of_shame&pcampaignid=web_share&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png'/></a>
 </div>
+
+## Screenshots
+
+<p align="center">
+    <img src="./android/fastlane/metadata/android/en-US/images/phoneScreenshots/1_en-US.jpg" width="300">
+    <img src="./android/fastlane/metadata/android/en-US/images/phoneScreenshots/2_en-US.jpg" width="300">
+</p>
+<p align="center">
+    <img src="./android/fastlane/metadata/android/en-US/images/phoneScreenshots/3_en-US.jpg" width="300">
+    <img src="./android/fastlane/metadata/android/en-US/images/phoneScreenshots/4_en-US.jpg" width="300">
+</p>

@@ -7,6 +7,7 @@ import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/providers/format_provider.dart';
 import 'package:pile_of_shame/utils/constants.dart';
 import 'package:pile_of_shame/widgets/game_platform_icon.dart';
+import 'package:pile_of_shame/widgets/note.dart';
 import 'package:pile_of_shame/widgets/play_status_display.dart';
 import 'package:pile_of_shame/widgets/play_status_icon.dart';
 import 'package:pile_of_shame/widgets/segmented_action_card.dart';
@@ -89,6 +90,10 @@ class _SliverGameDetailsState extends ConsumerState<SliverGameDetails> {
           subtitle: Text(AppLocalizations.of(context)!
               .ratedN(widget.game.usk.age.toString())),
         ).animate().fadeIn(),
+        if (widget.game.notes != null && widget.game.notes!.isNotEmpty)
+          Note(
+            child: Text(widget.game.notes!),
+          ),
         if (widget.game.dlcs.isNotEmpty)
           Padding(
             padding: const EdgeInsets.only(

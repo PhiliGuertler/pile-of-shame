@@ -91,8 +91,10 @@ void main() {
         status: PlayStatus.onWishList,
         lastModified: DateTime(2013, 7, 10),
         price: 9.99,
+        notes: "DLC Notes",
       ),
     ],
+    notes: "Game Notes",
   );
 
   late MockFileUtils mockFileUtils;
@@ -131,7 +133,7 @@ void main() {
           .thenAnswer((realInvocation) async => mockFile);
 
       const String stringifiedTestGameList =
-          '{"games":[{"id":"dark-souls","name":"Dark Souls","platform":"Steam","status":"replaying","lastModified":"2023-04-20T00:00:00.000","price":39.99,"usk":"usk16","dlcs":[{"id":"dark-souls-artorias-of-the-abyss","name":"Artorias of the Abyss","status":"onWishList","lastModified":"2013-07-10T00:00:00.000","price":9.99}]}]}';
+          '{"games":[{"id":"dark-souls","name":"Dark Souls","platform":"Steam","status":"replaying","lastModified":"2023-04-20T00:00:00.000","price":39.99,"usk":"usk16","dlcs":[{"id":"dark-souls-artorias-of-the-abyss","name":"Artorias of the Abyss","status":"onWishList","lastModified":"2013-07-10T00:00:00.000","price":9.99,"notes":"DLC Notes"}],"notes":"Game Notes"}]}';
 
       // starts with an empty list as the mockfile returns an empty string
       final initialValue = await container.read(gamesProvider.future);
