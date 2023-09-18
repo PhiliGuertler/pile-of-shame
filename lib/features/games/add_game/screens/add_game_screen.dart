@@ -207,6 +207,26 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
                   ),
                 ),
                 Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: defaultPaddingX, vertical: 4.0),
+                  child: TextInputField(
+                    key: const ValueKey("game_notes"),
+                    isMultiline: true,
+                    label: Text(AppLocalizations.of(context)!.notes),
+                    textInputAction: TextInputAction.newline,
+                    initialValue: editableGame.notes ?? '',
+                    onChanged: (value) {
+                      ref
+                          .read(addGameProvider(widget.initialValue).notifier)
+                          .updateGame(
+                            editableGame.copyWith(
+                                notes: value.isEmpty ? null : value),
+                          );
+                    },
+                    validator: Validators.validateFieldIsRequired(context),
+                  ),
+                ),
+                Padding(
                   padding:
                       const EdgeInsets.symmetric(vertical: defaultPaddingX),
                   child: SegmentedActionCard(

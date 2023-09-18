@@ -5,6 +5,7 @@ import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/providers/format_provider.dart';
 import 'package:pile_of_shame/widgets/game_platform_icon.dart';
+import 'package:pile_of_shame/widgets/note.dart';
 import 'package:pile_of_shame/widgets/play_status_display.dart';
 import 'package:pile_of_shame/widgets/play_status_icon.dart';
 import 'package:pile_of_shame/widgets/skeletons/skeleton.dart';
@@ -73,6 +74,10 @@ class SliverDLCDetails extends ConsumerWidget {
           subtitle: Text(
               AppLocalizations.of(context)!.ratedN(game.usk.age.toString())),
         ),
+        if (dlc.notes != null && dlc.notes!.isNotEmpty)
+          Note(
+            child: Text(dlc.notes!),
+          ),
         const SizedBox(height: 48.0)
       ],
     );

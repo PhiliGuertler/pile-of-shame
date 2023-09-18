@@ -83,6 +83,26 @@ class _AddDLCScreenState extends ConsumerState<AddDLCScreen> {
                     isCurrency: true,
                   ),
                 ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: defaultPaddingX, vertical: 4.0),
+                  child: TextInputField(
+                    key: const ValueKey("dlc_notes"),
+                    isMultiline: true,
+                    label: Text(AppLocalizations.of(context)!.notes),
+                    textInputAction: TextInputAction.newline,
+                    initialValue: editableDLC.notes ?? '',
+                    onChanged: (value) {
+                      ref
+                          .read(addDLCProvider(widget.initialValue).notifier)
+                          .updateDLC(
+                            editableDLC.copyWith(
+                                notes: value.isEmpty ? null : value),
+                          );
+                    },
+                    validator: Validators.validateFieldIsRequired(context),
+                  ),
+                ),
               ],
             ),
             SliverFillRemaining(

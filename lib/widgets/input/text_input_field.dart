@@ -6,6 +6,7 @@ class TextInputField extends StatelessWidget {
   final String? helperText;
   final bool enabled;
   final bool autofocus;
+  final bool isMultiline;
 
   /// Defaults to TextInputAction.next
   final TextInputAction textInputAction;
@@ -17,6 +18,7 @@ class TextInputField extends StatelessWidget {
     required this.label,
     this.initialValue,
     this.textInputAction = TextInputAction.next,
+    this.isMultiline = false,
     this.onChanged,
     this.helperText,
     this.enabled = true,
@@ -32,6 +34,9 @@ class TextInputField extends StatelessWidget {
         enabled: enabled,
         helperText: helperText,
       ),
+      keyboardType: isMultiline ? TextInputType.multiline : null,
+      minLines: isMultiline ? 1 : null,
+      maxLines: isMultiline ? 5 : null,
       textInputAction: textInputAction,
       initialValue: initialValue,
       onChanged: onChanged,
