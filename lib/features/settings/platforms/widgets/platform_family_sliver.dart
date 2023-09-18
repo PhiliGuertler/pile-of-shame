@@ -19,6 +19,7 @@ class PlatformFamilySliver extends ConsumerWidget {
     final List<GamePlatform> fullPlatforms = fullSelection[family]!;
 
     return selection.when(
+      skipLoadingOnReload: true,
       data: (selection) {
         return SliverList.builder(
           itemBuilder: (context, index) {
@@ -58,7 +59,10 @@ class PlatformFamilySliver extends ConsumerWidget {
               GamePlatform platform = fullPlatforms[effectiveIndex];
               return SwitchListTile.adaptive(
                 title: Row(children: [
-                  GamePlatformIcon(platform: platform),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 16.0),
+                    child: GamePlatformIcon(platform: platform),
+                  ),
                   Expanded(
                     child: Text(
                       platform.localizedName(context),
