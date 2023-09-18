@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/game_platforms.dart';
 import 'package:pile_of_shame/providers/games/game_filter_provider.dart';
+import 'package:pile_of_shame/providers/games/game_platforms_provider.dart';
 import 'package:pile_of_shame/widgets/skeletons/skeleton.dart';
 
 class SliverContractSorterFilter extends ConsumerWidget {
@@ -11,55 +12,64 @@ class SliverContractSorterFilter extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final activeFilters = ref.watch(gamePlatformFamilyFilterProvider);
+    final activeFamilies = ref.watch(activeGamePlatformFamiliesProvider);
 
-    return SliverToBoxAdapter(
-      child: SizedBox(
-        height: 50.0,
-        child: ListView(
-          scrollDirection: Axis.horizontal,
-          children: [
-            const SizedBox(width: 4.0),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 4.0),
-              child: FilterChip(
-                  selected:
-                      activeFilters.length == GamePlatformFamily.values.length,
-                  label: Text(AppLocalizations.of(context)!.all),
-                  onSelected: (value) {
-                    if (value) {
-                      ref
-                          .read(gamePlatformFamilyFilterProvider.notifier)
-                          .setFilter(GamePlatformFamily.values);
-                    } else {
-                      ref
-                          .read(gamePlatformFamilyFilterProvider.notifier)
-                          .setFilter([]);
-                    }
-                  }),
-            ),
-            ...GamePlatformFamily.values.map(
-              (filter) => Padding(
+    return activeFamilies.when(
+      skipLoadingOnReload: true,
+      data: (activeFamilies) => SliverToBoxAdapter(
+        child: SizedBox(
+          height: 50.0,
+          child: ListView(
+            scrollDirection: Axis.horizontal,
+            children: [
+              const SizedBox(width: 4.0),
+              Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 4.0),
                 child: FilterChip(
-                  selected: activeFilters.contains(filter),
-                  label: Text(filter.toLocale(context)),
-                  onSelected: (value) {
-                    final List<GamePlatformFamily> updatedFilters =
-                        List.from(activeFilters);
-                    if (value) {
-                      updatedFilters.add(filter);
-                    } else {
-                      updatedFilters.remove(filter);
-                    }
-                    ref
-                        .read(gamePlatformFamilyFilterProvider.notifier)
-                        .setFilter(updatedFilters);
-                  },
+                    selected: activeFilters.length >= activeFamilies.length,
+                    label: Text(AppLocalizations.of(context)!.all),
+                    onSelected: (value) {
+                      if (value) {
+                        ref
+                            .read(gamePlatformFamilyFilterProvider.notifier)
+                            .setFilter(GamePlatformFamily.values);
+                      } else {
+                        ref
+                            .read(gamePlatformFamilyFilterProvider.notifier)
+                            .setFilter([]);
+                      }
+                    }),
+              ),
+              ...activeFamilies.map(
+                (filter) => Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                  child: FilterChip(
+                    selected: activeFilters.contains(filter),
+                    label: Text(filter.toLocale(AppLocalizations.of(context)!)),
+                    onSelected: (value) {
+                      final List<GamePlatformFamily> updatedFilters =
+                          List.from(activeFilters);
+                      if (value) {
+                        updatedFilters.add(filter);
+                      } else {
+                        updatedFilters.remove(filter);
+                      }
+                      ref
+                          .read(gamePlatformFamilyFilterProvider.notifier)
+                          .setFilter(updatedFilters);
+                    },
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(width: 4.0),
-          ],
+              const SizedBox(width: 4.0),
+            ],
+          ),
+        ),
+      ),
+      loading: () => const SliverContractSorterFilterSkeleton(),
+      error: (error, stackTrace) => SliverToBoxAdapter(
+        child: Text(
+          error.toString(),
         ),
       ),
     );

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/game_platforms.dart';
 import 'package:pile_of_shame/utils/constants.dart';
 import 'package:pile_of_shame/widgets/app_scaffold.dart';
@@ -30,7 +31,7 @@ class DebugGameControllerAssetsScreen extends StatelessWidget {
                         bottom: 8.0,
                       ),
                       child: Text(
-                        platform.name,
+                        platform.localizedName(AppLocalizations.of(context)!),
                         style: Theme.of(context).textTheme.headlineSmall,
                       ),
                     ),

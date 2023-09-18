@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/models/play_status.dart';
 
@@ -25,7 +26,7 @@ class PlayStatusDisplay extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
         child: Center(
           child: Text(
-            playStatus.toLocaleString(context),
+            playStatus.toLocaleString(AppLocalizations.of(context)!),
             style: TextStyle(
               color: playStatus.foregroundColor,
             ),

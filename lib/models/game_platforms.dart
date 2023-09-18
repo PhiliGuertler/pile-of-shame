@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 
@@ -17,21 +16,24 @@ enum GamePlatformFamily {
   microsoft,
   nintendo,
   pc,
+  sega,
   misc,
   ;
 
-  String toLocale(BuildContext context) {
+  String toLocale(AppLocalizations l10n) {
     switch (this) {
       case GamePlatformFamily.sony:
-        return AppLocalizations.of(context)!.sony;
+        return l10n.sony;
       case GamePlatformFamily.microsoft:
-        return AppLocalizations.of(context)!.microsoft;
+        return l10n.microsoft;
       case GamePlatformFamily.nintendo:
-        return AppLocalizations.of(context)!.nintendo;
+        return l10n.nintendo;
       case GamePlatformFamily.pc:
-        return AppLocalizations.of(context)!.pc;
+        return l10n.pc;
+      case GamePlatformFamily.sega:
+        return l10n.sega;
       case GamePlatformFamily.misc:
-        return AppLocalizations.of(context)!.misc;
+        return l10n.misc;
     }
   }
 }
@@ -229,6 +231,36 @@ enum GamePlatform {
     abbreviation: "XBox Series",
     type: GamePlatformType.stationary,
   ),
+  // #### SEGA ############################################################## //
+  // ### Stationaries ####################################################### //
+  segaMegaDrive(
+    family: GamePlatformFamily.sega,
+    assetPath: "sega_mega_drive",
+    name: "SEGA Mega Drive",
+    abbreviation: "SMD",
+    type: GamePlatformType.stationary,
+  ),
+  segaGameGear(
+    family: GamePlatformFamily.sega,
+    assetPath: "sega_game_gear",
+    name: "SEGA Game Gear",
+    abbreviation: "SGG",
+    type: GamePlatformType.handheld,
+  ),
+  segaSaturn(
+    family: GamePlatformFamily.sega,
+    assetPath: "sega_saturn",
+    name: "SEGA Saturn",
+    abbreviation: "SS",
+    type: GamePlatformType.stationary,
+  ),
+  segaDreamcast(
+    family: GamePlatformFamily.sega,
+    assetPath: "sega_dreamcast",
+    name: "SEGA Dreamcast",
+    abbreviation: "SD",
+    type: GamePlatformType.stationary,
+  ),
   // #### PC ################################################################ //
   // ### Stationaries ####################################################### //
   pcMisc(
@@ -281,6 +313,13 @@ enum GamePlatform {
     type: GamePlatformType.stationary,
   ),
   // #### Misc ############################################################## //
+  smartphone(
+    family: GamePlatformFamily.misc,
+    abbreviation: 'phone',
+    assetPath: 'smartphone',
+    name: 'Smartphone',
+    type: GamePlatformType.handheld,
+  ),
   unknown(
     abbreviation: 'unknown',
     family: GamePlatformFamily.misc,
@@ -310,4 +349,13 @@ enum GamePlatform {
 
   String get controllerLogoPath =>
       "$_controllerBasePath/${family.name}/$assetPath.webp";
+
+  String localizedName(AppLocalizations l10n) {
+    switch (this) {
+      case GamePlatform.unknown:
+        return l10n.misc;
+      default:
+        return name;
+    }
+  }
 }

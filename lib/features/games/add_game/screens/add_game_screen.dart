@@ -5,6 +5,7 @@ import 'package:pile_of_shame/features/games/add_game/widgets/game_platform_inpu
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/age_restriction.dart';
 import 'package:pile_of_shame/models/game_platforms.dart';
+import 'package:pile_of_shame/providers/games/game_platforms_provider.dart';
 import 'package:pile_of_shame/utils/constants.dart';
 import 'package:pile_of_shame/utils/validators.dart';
 import 'package:pile_of_shame/widgets/app_scaffold.dart';
@@ -35,11 +36,19 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
   Widget build(BuildContext context) {
     final editableGame = ref.watch(addGameProvider(widget.initialValue));
 
-    final List<GamePlatform> sortedGamePlatforms =
-        List.from(GamePlatform.values);
+    final gamePlatforms = ref.watch(activeGamePlatformsProvider);
+    final allPlatforms = gamePlatforms.maybeWhen(
+      data: (data) => data,
+      orElse: () => GamePlatform.values,
+    );
+
+    final List<GamePlatform> sortedGamePlatforms = List.from(allPlatforms);
     sortedGamePlatforms.sort(
-      (a, b) => a.name.toLowerCase().compareTo(
-            b.name.toLowerCase(),
+      (a, b) => a
+          .localizedName(AppLocalizations.of(context)!)
+          .toLowerCase()
+          .compareTo(
+            b.localizedName(AppLocalizations.of(context)!).toLowerCase(),
           ),
     );
 
@@ -87,8 +96,10 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
                           .toLowerCase()
                           .contains(searchTerm);
                       // check if the platform's name conains all the search terms
-                      final matchesName =
-                          option.name.toLowerCase().contains(searchTerm);
+                      final matchesName = option
+                          .localizedName(AppLocalizations.of(context)!)
+                          .toLowerCase()
+                          .contains(searchTerm);
 
                       return matchesFamily ||
                           matchesAbbreviation ||
@@ -97,7 +108,8 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
                     optionBuilder: (context, option, onTap) => ListTile(
                       key: ValueKey(option.abbreviation),
                       leading: GamePlatformIcon(platform: option),
-                      title: Text(option.name),
+                      title: Text(
+                          option.localizedName(AppLocalizations.of(context)!)),
                       onTap: onTap,
                     ),
                     valueBuilder: (context, option, onTap) =>
@@ -166,7 +178,8 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
                     },
                     // Display the text of selected items only, as the prefix-icon takes care of the logo
                     selectedItemBuilder: (context) => USK.values
-                        .map((usk) => Text(usk.toRatedString(context)))
+                        .map((usk) => Text(
+                            usk.toRatedString(AppLocalizations.of(context)!)))
                         .toList(),
                     // Don't display the default icon, instead display nothing
                     icon: const SizedBox(),
@@ -182,7 +195,8 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
                                   child: USKLogo(ageRestriction: usk),
                                 ),
                                 Text(
-                                  usk.toRatedString(context),
+                                  usk.toRatedString(
+                                      AppLocalizations.of(context)!),
                                   key: ValueKey(usk.toString()),
                                 ),
                               ],

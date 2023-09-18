@@ -25,7 +25,7 @@ class SliverAgeRatingFilterOptions extends ConsumerWidget {
         }
       },
       optionBuilder: (option, onChanged) => CheckboxListTile(
-        title: Text(option.toRatedString(context)),
+        title: Text(option.toRatedString(AppLocalizations.of(context)!)),
         value: ageRatingFilter.contains(option),
         onChanged: (value) {
           ref

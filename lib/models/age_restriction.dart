@@ -17,7 +17,7 @@ enum USK {
     required this.color,
   });
 
-  String toRatedString(BuildContext context) {
-    return AppLocalizations.of(context)!.ratedN(age.toString());
+  String toRatedString(AppLocalizations l10n) {
+    return l10n.ratedN(age.toString());
   }
 }

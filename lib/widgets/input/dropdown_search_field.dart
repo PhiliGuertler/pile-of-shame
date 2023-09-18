@@ -65,12 +65,24 @@ class _CategorySearchFieldState<T>
       },
       suggestionsBuilder: (context, controller) {
         final filteredOptions = filterOptions(controller.text);
-        return filteredOptions.map(
-          (option) => widget.optionBuilder(context, option, () {
-            controller.closeView(controller.text);
-            widget.onChanged(option);
-          }),
-        );
+        final result = filteredOptions
+            .map(
+              (option) => widget.optionBuilder(context, option, () {
+                controller.closeView(controller.text);
+                widget.onChanged(option);
+              }),
+            )
+            .toList();
+
+        if (result.isNotEmpty) {
+          result.last = Padding(
+            padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom),
+            child: result.last,
+          );
+        }
+
+        return result;
       },
     );
   }

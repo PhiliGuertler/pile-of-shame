@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/age_restriction.dart';
 import 'package:pile_of_shame/models/game.dart';
 
@@ -21,7 +22,7 @@ class AgeRatingTextDisplay extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
         child: Center(
           child: Text(
-            usk.toRatedString(context),
+            usk.toRatedString(AppLocalizations.of(context)!),
             style: TextStyle(
               color: usk.color.computeLuminance() > 0.5
                   ? Colors.black

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pile_of_shame/features/games/games_list/widgets/sliver_filtered_games.dart';
+import 'package:pile_of_shame/features/games/games_list/widgets/slivers/sliver_grouped_games.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/providers/format_provider.dart';
 import 'package:pile_of_shame/providers/games/game_provider.dart';
@@ -25,8 +25,11 @@ class GamesScreen extends ConsumerWidget {
     final currencyFormatter = ref.watch(currencyFormatProvider(context));
     final totalGames = ref.watch(gamesFilteredTotalAmountProvider);
 
+    final groupedGames = ref.watch(gamesGroupedProvider);
+
     return SafeArea(
       child: hasGames.when(
+        skipLoadingOnReload: true,
         data: (hasGames) => RefreshIndicator(
           onRefresh: () => ref.refresh(gamesProvider.future),
           child: CustomScrollView(
@@ -52,7 +55,33 @@ class GamesScreen extends ConsumerWidget {
                   ),
                 ),
               if (hasGames) const SliverContractSorterFilter(),
-              if (hasGames) const SliverFilteredGames(),
+              if (hasGames)
+                ...groupedGames.when(
+                  data: (groupedGames) {
+                    return groupedGames.entries
+                        .map((group) => SliverGroupedGames(
+                              games: group.value,
+                              groupName: group.key,
+                            ));
+                  },
+                  error: (error, stackTrace) => [
+                    SliverToBoxAdapter(
+                      child: ErrorDisplay(
+                        error: error,
+                        stackTrace: stackTrace,
+                      ),
+                    ),
+                  ],
+                  loading: () => [
+                    SliverList.builder(
+                      itemBuilder: (context, index) =>
+                          const SkeletonGameDisplay()
+                              .animate()
+                              .fade(curve: Curves.easeOut, duration: 130.ms),
+                      itemCount: 10,
+                    ),
+                  ],
+                ),
               if (hasGames)
                 SliverToBoxAdapter(
                   child: Padding(

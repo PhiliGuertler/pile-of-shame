@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/game_platforms.dart';
 import 'package:pile_of_shame/providers/games/game_filter_provider.dart';
+import 'package:pile_of_shame/providers/games/game_platforms_provider.dart';
 
 import 'sliver_filters.dart';
 
@@ -11,11 +12,16 @@ class SliverGamePlatformFamilyFilterOptions extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final activePlatformFamilies =
+        ref.watch(activeGamePlatformFamiliesProvider);
     final platformFamilyFilter = ref.watch(gamePlatformFamilyFilterProvider);
     return SliverFilters<GamePlatformFamily>(
       title: AppLocalizations.of(context)!.platformFamilies,
       selectedValues: platformFamilyFilter,
-      options: GamePlatformFamily.values,
+      options: activePlatformFamilies.maybeWhen(
+        data: (data) => data,
+        orElse: () => GamePlatformFamily.values,
+      ),
       onSelectAll: (value) {
         if (value) {
           ref
@@ -26,7 +32,7 @@ class SliverGamePlatformFamilyFilterOptions extends ConsumerWidget {
         }
       },
       optionBuilder: (option, onChanged) => CheckboxListTile(
-        title: Text(option.toLocale(context)),
+        title: Text(option.toLocale(AppLocalizations.of(context)!)),
         value: platformFamilyFilter.contains(option),
         onChanged: (value) {
           ref

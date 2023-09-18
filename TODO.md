@@ -1,10 +1,3 @@
-# Next up
-- Add more unit tests and integration tests
-- Improve UI when editing a game or DLC
-- Improve UI when loading or refreshing something
-- Add Icons for different PlayStatuses
-- Implement settings for different game displays
-
 # Not implemented
 - Receive Share-Intent on iOS
 
@@ -14,9 +7,6 @@
     - Has or has no DLCs
 - Sort games by
     - Amount of DLCs
-- Group games by
-    - Platform
-    - Platform Family
 
 # Nice-to-have features
 - Support for different game information providers, e.g. IGDB, HowLongToBeat, etc.

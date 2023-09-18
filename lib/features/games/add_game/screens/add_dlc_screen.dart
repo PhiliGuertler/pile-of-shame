@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pile_of_shame/features/games/add_game/models/editable_game.dart';
 import 'package:pile_of_shame/features/games/add_game/providers/add_game_provider.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
-import 'package:pile_of_shame/models/game_platforms.dart';
 import 'package:pile_of_shame/utils/constants.dart';
 import 'package:pile_of_shame/utils/validators.dart';
 import 'package:pile_of_shame/widgets/app_scaffold.dart';
@@ -27,14 +26,6 @@ class _AddDLCScreenState extends ConsumerState<AddDLCScreen> {
   @override
   Widget build(BuildContext context) {
     final editableDLC = ref.watch(addDLCProvider(widget.initialValue));
-
-    final List<GamePlatform> sortedGamePlatforms =
-        List.from(GamePlatform.values);
-    sortedGamePlatforms.sort(
-      (a, b) => a.name.toLowerCase().compareTo(
-            b.name.toLowerCase(),
-          ),
-    );
 
     return AppScaffold(
       appBar: AppBar(

@@ -27,7 +27,7 @@ class SliverPlayStatusFilterOptions extends ConsumerWidget {
         }
       },
       optionBuilder: (option, onChanged) => CheckboxListTile(
-        title: Text(option.toLocaleString(context)),
+        title: Text(option.toLocaleString(AppLocalizations.of(context)!)),
         value: playStatusFilter.contains(option),
         onChanged: (value) {
           ref

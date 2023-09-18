@@ -28,7 +28,7 @@ class SliverFilters<T> extends StatelessWidget {
             title,
             style: Theme.of(context).textTheme.titleLarge,
           ),
-          value: selectedValues.length == options.length,
+          value: selectedValues.length >= options.length,
           onChanged: (value) {
             if (value != null) {
               onSelectAll(value);
