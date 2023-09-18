@@ -8,7 +8,7 @@ part 'game_group_provider.g.dart';
 
 @Riverpod(keepAlive: true)
 class GroupGames extends _$GroupGames with Persistable {
-  static const String storageKey = "sorter";
+  static const String storageKey = "grouper";
 
   @override
   FutureOr<GameGrouping> build() async {
