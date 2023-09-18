@@ -27,6 +27,7 @@ class GamesScreen extends ConsumerWidget {
 
     return SafeArea(
       child: hasGames.when(
+        skipLoadingOnReload: true,
         data: (hasGames) => RefreshIndicator(
           onRefresh: () => ref.refresh(gamesProvider.future),
           child: CustomScrollView(
