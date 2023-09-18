@@ -32,7 +32,7 @@ class SliverGamePlatformFamilyFilterOptions extends ConsumerWidget {
         }
       },
       optionBuilder: (option, onChanged) => CheckboxListTile(
-        title: Text(option.toLocale(context)),
+        title: Text(option.toLocale(AppLocalizations.of(context)!)),
         value: platformFamilyFilter.contains(option),
         onChanged: (value) {
           ref

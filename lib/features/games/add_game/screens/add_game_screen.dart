@@ -44,8 +44,11 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
 
     final List<GamePlatform> sortedGamePlatforms = List.from(allPlatforms);
     sortedGamePlatforms.sort(
-      (a, b) => a.localizedName(context).toLowerCase().compareTo(
-            b.localizedName(context).toLowerCase(),
+      (a, b) => a
+          .localizedName(AppLocalizations.of(context)!)
+          .toLowerCase()
+          .compareTo(
+            b.localizedName(AppLocalizations.of(context)!).toLowerCase(),
           ),
     );
 
@@ -94,7 +97,7 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
                           .contains(searchTerm);
                       // check if the platform's name conains all the search terms
                       final matchesName = option
-                          .localizedName(context)
+                          .localizedName(AppLocalizations.of(context)!)
                           .toLowerCase()
                           .contains(searchTerm);
 
@@ -105,7 +108,8 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
                     optionBuilder: (context, option, onTap) => ListTile(
                       key: ValueKey(option.abbreviation),
                       leading: GamePlatformIcon(platform: option),
-                      title: Text(option.localizedName(context)),
+                      title: Text(
+                          option.localizedName(AppLocalizations.of(context)!)),
                       onTap: onTap,
                     ),
                     valueBuilder: (context, option, onTap) =>
@@ -174,7 +178,8 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
                     },
                     // Display the text of selected items only, as the prefix-icon takes care of the logo
                     selectedItemBuilder: (context) => USK.values
-                        .map((usk) => Text(usk.toRatedString(context)))
+                        .map((usk) => Text(
+                            usk.toRatedString(AppLocalizations.of(context)!)))
                         .toList(),
                     // Don't display the default icon, instead display nothing
                     icon: const SizedBox(),
@@ -190,7 +195,8 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
                                   child: USKLogo(ageRestriction: usk),
                                 ),
                                 Text(
-                                  usk.toRatedString(context),
+                                  usk.toRatedString(
+                                      AppLocalizations.of(context)!),
                                   key: ValueKey(usk.toString()),
                                 ),
                               ],

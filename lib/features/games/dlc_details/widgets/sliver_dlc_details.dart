@@ -54,14 +54,16 @@ class SliverDLCDetails extends ConsumerWidget {
             playStatus: dlc.status,
           ),
           title: Text(AppLocalizations.of(context)!.status),
-          subtitle: Text(dlc.status.toLocaleString(context)),
+          subtitle:
+              Text(dlc.status.toLocaleString(AppLocalizations.of(context)!)),
         ).animate().fadeIn(),
         ListTile(
           leading: GamePlatformIcon(
             platform: game.platform,
           ),
           title: Text(AppLocalizations.of(context)!.platform),
-          subtitle: Text(game.platform.localizedName(context)),
+          subtitle:
+              Text(game.platform.localizedName(AppLocalizations.of(context)!)),
         ),
         ListTile(
           leading: USKLogo(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/custom_game_display_settings.dart';
 import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/providers/custom_game_display.dart';
@@ -90,7 +91,8 @@ class CustomizableGameDisplay extends ConsumerWidget {
             case GameDisplaySecondary.ageRatingText:
               secondaryWidget = AgeRatingTextDisplay.fromGame(game: game);
             case GameDisplaySecondary.platformText:
-              secondaryWidget = Text(game.platform.localizedName(context));
+              secondaryWidget = Text(
+                  game.platform.localizedName(AppLocalizations.of(context)!));
             case GameDisplaySecondary.price:
               secondaryWidget =
                   Text(currencyFormatter.format(game.fullPrice()));

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/game_platforms.dart';
 import 'package:pile_of_shame/providers/games/game_platforms_provider.dart';
 import 'package:pile_of_shame/widgets/game_platform_icon.dart';
@@ -31,7 +32,7 @@ class PlatformFamilySliver extends ConsumerWidget {
                 padding: const EdgeInsets.only(top: 16.0, bottom: 8.0),
                 child: SwitchListTile.adaptive(
                   title: Text(
-                    family.toLocale(context),
+                    family.toLocale(AppLocalizations.of(context)!),
                     style: Theme.of(context).textTheme.headlineSmall,
                   ),
                   value: selectedPlatforms.isNotEmpty,
@@ -65,7 +66,7 @@ class PlatformFamilySliver extends ConsumerWidget {
                   ),
                   Expanded(
                     child: Text(
-                      platform.localizedName(context),
+                      platform.localizedName(AppLocalizations.of(context)!),
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),

@@ -4,6 +4,7 @@ import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/models/game_storage.dart';
 import 'package:pile_of_shame/providers/games/game_file_provider.dart';
 import 'package:pile_of_shame/providers/games/game_filter_provider.dart';
+import 'package:pile_of_shame/providers/games/game_group_provider.dart';
 import 'package:pile_of_shame/providers/games/game_search_provider.dart';
 import 'package:pile_of_shame/providers/games/game_sorter_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -84,4 +85,11 @@ FutureOr<int> gamesFilteredTotalAmount(GamesFilteredTotalAmountRef ref) async {
   final list = await ref.watch(gamesFilteredProvider.future);
 
   return list.games.length;
+}
+
+@riverpod
+FutureOr<Map<String, List<Game>>> gamesGrouped(GamesGroupedRef ref) async {
+  final filteredGames = await ref.watch(gamesFilteredProvider.future);
+
+  return await ref.watch(applyGameGroupProvider(filteredGames.games).future);
 }

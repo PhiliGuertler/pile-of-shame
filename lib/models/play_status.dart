@@ -64,25 +64,24 @@ enum PlayStatus {
     required this.icon,
   });
 
-  String toLocaleString(BuildContext context) {
-    final localizations = AppLocalizations.of(context)!;
+  String toLocaleString(AppLocalizations l10n) {
     switch (this) {
       case PlayStatus.completed:
-        return localizations.completed;
+        return l10n.completed;
       case PlayStatus.completed100Percent:
-        return localizations.completed100Percent;
+        return l10n.completed100Percent;
       case PlayStatus.replaying:
-        return localizations.replaying;
+        return l10n.replaying;
       case PlayStatus.endlessGame:
-        return localizations.endlessGame;
+        return l10n.endlessGame;
       case PlayStatus.playing:
-        return localizations.playing;
+        return l10n.playing;
       case PlayStatus.cancelled:
-        return localizations.cancelled;
+        return l10n.cancelled;
       case PlayStatus.onPileOfShame:
-        return localizations.onPileOfShame;
+        return l10n.onPileOfShame;
       case PlayStatus.onWishList:
-        return localizations.onWishList;
+        return l10n.onWishList;
     }
   }
 }

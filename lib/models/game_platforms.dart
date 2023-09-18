@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 
@@ -21,20 +20,20 @@ enum GamePlatformFamily {
   misc,
   ;
 
-  String toLocale(BuildContext context) {
+  String toLocale(AppLocalizations l10n) {
     switch (this) {
       case GamePlatformFamily.sony:
-        return AppLocalizations.of(context)!.sony;
+        return l10n.sony;
       case GamePlatformFamily.microsoft:
-        return AppLocalizations.of(context)!.microsoft;
+        return l10n.microsoft;
       case GamePlatformFamily.nintendo:
-        return AppLocalizations.of(context)!.nintendo;
+        return l10n.nintendo;
       case GamePlatformFamily.pc:
-        return AppLocalizations.of(context)!.pc;
+        return l10n.pc;
       case GamePlatformFamily.sega:
-        return AppLocalizations.of(context)!.sega;
+        return l10n.sega;
       case GamePlatformFamily.misc:
-        return AppLocalizations.of(context)!.misc;
+        return l10n.misc;
     }
   }
 }
@@ -351,10 +350,10 @@ enum GamePlatform {
   String get controllerLogoPath =>
       "$_controllerBasePath/${family.name}/$assetPath.webp";
 
-  String localizedName(BuildContext context) {
+  String localizedName(AppLocalizations l10n) {
     switch (this) {
       case GamePlatform.unknown:
-        return AppLocalizations.of(context)!.misc;
+        return l10n.misc;
       default:
         return name;
     }

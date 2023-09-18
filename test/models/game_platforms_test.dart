@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/game_platforms.dart';
 
 import '../test_utils/test_utils.dart';
@@ -12,7 +13,8 @@ void main() {
         final BuildContext context =
             await TestUtils.setupBuildContextForLocale(widgetTester, "de");
 
-        final result = GamePlatformFamily.microsoft.toLocale(context);
+        final result = GamePlatformFamily.microsoft
+            .toLocale(AppLocalizations.of(context)!);
 
         expect(result, "Microsoft");
       });
@@ -20,7 +22,8 @@ void main() {
         final BuildContext context =
             await TestUtils.setupBuildContextForLocale(widgetTester, "de");
 
-        final result = GamePlatformFamily.sony.toLocale(context);
+        final result =
+            GamePlatformFamily.sony.toLocale(AppLocalizations.of(context)!);
 
         expect(result, "Sony");
       });
@@ -29,7 +32,8 @@ void main() {
         final BuildContext context =
             await TestUtils.setupBuildContextForLocale(widgetTester, "de");
 
-        final result = GamePlatformFamily.nintendo.toLocale(context);
+        final result =
+            GamePlatformFamily.nintendo.toLocale(AppLocalizations.of(context)!);
 
         expect(result, "Nintendo");
       });
@@ -37,7 +41,8 @@ void main() {
         final BuildContext context =
             await TestUtils.setupBuildContextForLocale(widgetTester, "de");
 
-        final result = GamePlatformFamily.pc.toLocale(context);
+        final result =
+            GamePlatformFamily.pc.toLocale(AppLocalizations.of(context)!);
 
         expect(result, "PC");
       });
@@ -45,7 +50,8 @@ void main() {
         final BuildContext context =
             await TestUtils.setupBuildContextForLocale(widgetTester, "de");
 
-        final result = GamePlatformFamily.misc.toLocale(context);
+        final result =
+            GamePlatformFamily.misc.toLocale(AppLocalizations.of(context)!);
 
         expect(result, "Sonstige");
       });
@@ -56,7 +62,8 @@ void main() {
         final BuildContext context =
             await TestUtils.setupBuildContextForLocale(widgetTester, "en");
 
-        final result = GamePlatformFamily.microsoft.toLocale(context);
+        final result = GamePlatformFamily.microsoft
+            .toLocale(AppLocalizations.of(context)!);
 
         expect(result, "Microsoft");
       });
@@ -64,7 +71,8 @@ void main() {
         final BuildContext context =
             await TestUtils.setupBuildContextForLocale(widgetTester, "en");
 
-        final result = GamePlatformFamily.sony.toLocale(context);
+        final result =
+            GamePlatformFamily.sony.toLocale(AppLocalizations.of(context)!);
 
         expect(result, "Sony");
       });
@@ -73,7 +81,8 @@ void main() {
         final BuildContext context =
             await TestUtils.setupBuildContextForLocale(widgetTester, "en");
 
-        final result = GamePlatformFamily.nintendo.toLocale(context);
+        final result =
+            GamePlatformFamily.nintendo.toLocale(AppLocalizations.of(context)!);
 
         expect(result, "Nintendo");
       });
@@ -81,7 +90,8 @@ void main() {
         final BuildContext context =
             await TestUtils.setupBuildContextForLocale(widgetTester, "en");
 
-        final result = GamePlatformFamily.pc.toLocale(context);
+        final result =
+            GamePlatformFamily.pc.toLocale(AppLocalizations.of(context)!);
 
         expect(result, "PC");
       });
@@ -89,7 +99,8 @@ void main() {
         final BuildContext context =
             await TestUtils.setupBuildContextForLocale(widgetTester, "en");
 
-        final result = GamePlatformFamily.misc.toLocale(context);
+        final result =
+            GamePlatformFamily.misc.toLocale(AppLocalizations.of(context)!);
 
         expect(result, "Misc");
       });

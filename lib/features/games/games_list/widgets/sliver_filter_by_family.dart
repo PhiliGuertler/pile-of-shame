@@ -45,7 +45,7 @@ class SliverContractSorterFilter extends ConsumerWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 4.0),
                   child: FilterChip(
                     selected: activeFilters.contains(filter),
-                    label: Text(filter.toLocale(context)),
+                    label: Text(filter.toLocale(AppLocalizations.of(context)!)),
                     onSelected: (value) {
                       final List<GamePlatformFamily> updatedFilters =
                           List.from(activeFilters);
