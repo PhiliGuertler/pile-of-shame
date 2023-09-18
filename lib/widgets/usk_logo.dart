@@ -110,11 +110,16 @@ class USKLogo extends ConsumerWidget {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(8.0),
         child: ColoredBox(
-          color: ageRestrictionColor.withOpacity(0.5),
-          child: Center(
-            child: Transform.rotate(
-              angle: pi * 0.25,
-              child: clippedRectangle,
+          color: Theme.of(context).brightness == Brightness.light
+              ? Colors.grey.shade300
+              : Colors.grey.shade700,
+          child: ColoredBox(
+            color: ageRestrictionColor.withOpacity(0.5),
+            child: Center(
+              child: Transform.rotate(
+                angle: pi * 0.25,
+                child: clippedRectangle,
+              ),
             ),
           ),
         ),
