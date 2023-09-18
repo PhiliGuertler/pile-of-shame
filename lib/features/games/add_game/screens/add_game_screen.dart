@@ -223,7 +223,6 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
                                 notes: value.isEmpty ? null : value),
                           );
                     },
-                    validator: Validators.validateFieldIsRequired(context),
                   ),
                 ),
                 Padding(

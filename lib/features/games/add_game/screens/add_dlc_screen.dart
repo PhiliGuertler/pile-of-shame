@@ -100,7 +100,6 @@ class _AddDLCScreenState extends ConsumerState<AddDLCScreen> {
                                 notes: value.isEmpty ? null : value),
                           );
                     },
-                    validator: Validators.validateFieldIsRequired(context),
                   ),
                 ),
               ],
