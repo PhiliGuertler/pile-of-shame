@@ -57,7 +57,7 @@ class AgeRatingFilter extends _$AgeRatingFilter {
 
 @riverpod
 bool isAnyFilterActive(IsAnyFilterActiveRef ref) {
-  final allPlatforms = ref.watch(gamePlatformsProvider);
+  final allPlatforms = ref.watch(activeGamePlatformsProvider);
   int numAllPlatforms = allPlatforms.maybeWhen(
     data: (data) => data.length,
     orElse: () => GamePlatform.values.length,
@@ -76,7 +76,7 @@ bool isAnyFilterActive(IsAnyFilterActiveRef ref) {
 @riverpod
 List<Game> applyGameFilters(ApplyGameFiltersRef ref, List<Game> games) {
   final platformFilter = ref.watch(gamePlatformFilterProvider);
-  final allPlatforms = ref.watch(gamePlatformsProvider);
+  final allPlatforms = ref.watch(activeGamePlatformsProvider);
   final allLogicalPlatforms = allPlatforms.maybeWhen(
     data: (data) => data.length == platformFilter.length
         ? GamePlatform.values

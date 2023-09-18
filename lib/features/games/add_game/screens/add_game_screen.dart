@@ -36,7 +36,7 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
   Widget build(BuildContext context) {
     final editableGame = ref.watch(addGameProvider(widget.initialValue));
 
-    final gamePlatforms = ref.watch(gamePlatformsProvider);
+    final gamePlatforms = ref.watch(activeGamePlatformsProvider);
     final allPlatforms = gamePlatforms.maybeWhen(
       data: (data) => data,
       orElse: () => GamePlatform.values,

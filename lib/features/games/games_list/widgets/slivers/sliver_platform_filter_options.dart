@@ -13,7 +13,7 @@ class SliverGamePlatformFilterOptions extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final platformFilter = ref.watch(gamePlatformFilterProvider);
-    final allPlatforms = ref.watch(gamePlatformsProvider);
+    final allPlatforms = ref.watch(activeGamePlatformsProvider);
 
     final allPlatformValues = allPlatforms.maybeWhen(
       data: (data) => data,

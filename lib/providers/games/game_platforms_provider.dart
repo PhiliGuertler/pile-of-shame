@@ -19,7 +19,7 @@ class GamePlatformList with _$GamePlatformList {
 }
 
 @Riverpod(keepAlive: true)
-class GamePlatforms extends _$GamePlatforms with Persistable {
+class ActiveGamePlatforms extends _$ActiveGamePlatforms with Persistable {
   static const String storageKey = "game-platforms";
 
   @override
@@ -39,4 +39,51 @@ class GamePlatforms extends _$GamePlatforms with Persistable {
       return platforms;
     });
   }
+}
+
+@riverpod
+FutureOr<List<GamePlatformFamily>> activeGamePlatformFamilies(
+    ActiveGamePlatformFamiliesRef ref) async {
+  final activePlatforms = await ref.watch(activeGamePlatformsProvider.future);
+
+  List<GamePlatformFamily> families = [];
+
+  for (var platform in activePlatforms) {
+    if (!families.contains(platform.family)) {
+      families.add(platform.family);
+    }
+  }
+
+  return families;
+}
+
+@riverpod
+Map<GamePlatformFamily, List<GamePlatform>> gamePlatformsByFamily(
+    GamePlatformsByFamilyRef ref) {
+  Map<GamePlatformFamily, List<GamePlatform>> result = {};
+
+  for (var family in GamePlatformFamily.values) {
+    result[family] = GamePlatform.values
+        .where((platform) => platform.family == family)
+        .toList();
+  }
+  result.removeWhere((key, value) => value.isEmpty);
+
+  return result;
+}
+
+@riverpod
+FutureOr<Map<GamePlatformFamily, List<GamePlatform>>>
+    activeGamePlatformsByFamily(ActiveGamePlatformsByFamilyRef ref) async {
+  final activePlatforms = await ref.watch(activeGamePlatformsProvider.future);
+
+  Map<GamePlatformFamily, List<GamePlatform>> result = {};
+
+  for (var family in GamePlatformFamily.values) {
+    result[family] =
+        activePlatforms.where((platform) => platform.family == family).toList();
+  }
+  result.removeWhere((key, value) => value.isEmpty);
+
+  return result;
 }
