@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/custom_game_display_settings.dart';
@@ -114,12 +115,24 @@ class CustomizableGameDisplay extends ConsumerWidget {
       children: [
         if (game.isFavorite)
           const Positioned(
-              left: -favoriteSize * 0.4,
-              child: Icon(
-                Icons.favorite,
-                size: favoriteSize,
-                color: Colors.red,
-              )),
+                  right: -favoriteSize * 0.4,
+                  child: Icon(
+                    Icons.favorite,
+                    size: favoriteSize,
+                    color: Colors.red,
+                  ))
+              .animate()
+              .moveX(begin: favoriteSize, end: 0, curve: Curves.easeInOutBack),
+        if (game.notes != null && game.notes!.isNotEmpty)
+          Positioned(
+            left: -favoriteSize * 0.4,
+            child: Icon(
+              Icons.note,
+              size: favoriteSize,
+              color: Theme.of(context).colorScheme.surfaceVariant,
+            ).animate().moveX(
+                begin: -favoriteSize, end: 0, curve: Curves.easeInOutBack),
+          ),
         ListTile(
           title: Text(game.name),
           subtitle: secondaryWidget,
