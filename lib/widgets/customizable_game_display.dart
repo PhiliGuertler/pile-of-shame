@@ -107,12 +107,27 @@ class CustomizableGameDisplay extends ConsumerWidget {
           secondaryWidget = const Skeleton();
         });
 
-    return ListTile(
-      title: Text(game.name),
-      subtitle: secondaryWidget,
-      leading: leadingWidget,
-      trailing: trailingWidget,
-      onTap: onTap,
+    const double favoriteSize = 32;
+
+    return Stack(
+      alignment: Alignment.centerLeft,
+      children: [
+        if (game.isFavorite)
+          const Positioned(
+              left: -favoriteSize * 0.4,
+              child: Icon(
+                Icons.favorite,
+                size: favoriteSize,
+                color: Colors.red,
+              )),
+        ListTile(
+          title: Text(game.name),
+          subtitle: secondaryWidget,
+          leading: leadingWidget,
+          trailing: trailingWidget,
+          onTap: onTap,
+        ),
+      ],
     );
   }
 }
