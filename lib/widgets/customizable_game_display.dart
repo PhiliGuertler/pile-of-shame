@@ -8,9 +8,10 @@ import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/providers/custom_game_display.dart';
 import 'package:pile_of_shame/providers/format_provider.dart';
 import 'package:pile_of_shame/providers/games/game_provider.dart';
+import 'package:pile_of_shame/utils/constants.dart';
 import 'package:pile_of_shame/widgets/age_rating_text_display.dart';
-import 'package:pile_of_shame/widgets/animated/animated_heart/animated_heart_button.dart';
 import 'package:pile_of_shame/widgets/game_platform_icon.dart';
+import 'package:pile_of_shame/widgets/note.dart';
 import 'package:pile_of_shame/widgets/play_status_display.dart';
 import 'package:pile_of_shame/widgets/play_status_icon.dart';
 import 'package:pile_of_shame/widgets/skeletons/skeleton.dart';
@@ -118,27 +119,48 @@ class CustomizableGameDisplay extends ConsumerWidget {
         motion: const ScrollMotion(),
         extentRatio: 0.2,
         children: [
-          Expanded(
-            child: Container(
-              color: Colors.red,
-              child: AnimatedHeartButton(
-                  isFilled: game.isFavorite,
-                  onPressed: () async {
-                    final updatedGame =
-                        game.copyWith(isFavorite: !game.isFavorite);
-                    final gamesList = await ref.read(gamesProvider.future);
-                    final update =
-                        gamesList.updateGame(updatedGame.id, updatedGame);
+          SlidableAction(
+            onPressed: (context) async {
+              final updatedGame = game.copyWith(isFavorite: !game.isFavorite);
+              final gamesList = await ref.read(gamesProvider.future);
+              final update = gamesList.updateGame(updatedGame.id, updatedGame);
 
-                    await ref
-                        .read(gameStorageProvider)
-                        .persistGamesList(update);
-                  },
-                  color: Colors.white),
-            ),
+              await ref.read(gameStorageProvider).persistGamesList(update);
+            },
+            backgroundColor: Colors.red,
+            foregroundColor: Colors.white,
+            icon: game.isFavorite ? Icons.favorite : Icons.favorite_border,
           ),
         ],
       ),
+      startActionPane: game.notes != null && game.notes!.isNotEmpty
+          ? ActionPane(
+              motion: const ScrollMotion(),
+              extentRatio: 0.2,
+              children: [
+                SlidableAction(
+                  onPressed: (context) {
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: defaultPaddingX, vertical: 48.0),
+                          child: Note(
+                            child: Text(game.notes!),
+                          ),
+                        );
+                      },
+                    );
+                  },
+                  backgroundColor: Theme.of(context).colorScheme.surfaceVariant,
+                  foregroundColor:
+                      Theme.of(context).colorScheme.onSurfaceVariant,
+                  icon: Icons.open_in_full,
+                ),
+              ],
+            )
+          : null,
       child: Stack(
         alignment: Alignment.centerLeft,
         children: [
