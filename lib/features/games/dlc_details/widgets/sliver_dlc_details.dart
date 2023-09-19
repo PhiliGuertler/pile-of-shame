@@ -4,6 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/providers/format_provider.dart';
+import 'package:pile_of_shame/providers/games/game_provider.dart';
+import 'package:pile_of_shame/widgets/animated/animated_heart/animated_heart_button.dart';
 import 'package:pile_of_shame/widgets/game_platform_icon.dart';
 import 'package:pile_of_shame/widgets/note.dart';
 import 'package:pile_of_shame/widgets/play_status_display.dart';
@@ -29,11 +31,27 @@ class SliverDLCDetails extends ConsumerWidget {
         ListTile(
           title: Text(AppLocalizations.of(context)!.gameName),
           subtitle: Text(game.name),
+          trailing: const Chip(label: Text("DLC")),
         ),
         ListTile(
           title: Text(AppLocalizations.of(context)!.dlcName),
           subtitle: Text(dlc.name),
-          trailing: const Chip(label: Text("DLC")),
+          trailing: AnimatedHeartButton(
+            isFilled: dlc.isFavorite,
+            onPressed: () async {
+              final updatedDLC = dlc.copyWith(isFavorite: !dlc.isFavorite);
+              final List<DLC> updatedDLCs = List.from(game.dlcs);
+              final dlcIndex =
+                  updatedDLCs.indexWhere((element) => element.id == dlc.id);
+              updatedDLCs[dlcIndex] = updatedDLC;
+              final updatedGame = game.copyWith(dlcs: updatedDLCs);
+
+              final gamesList = await ref.read(gamesProvider.future);
+              final update = gamesList.updateGame(updatedGame.id, updatedGame);
+
+              ref.read(gameStorageProvider).persistGamesList(update);
+            },
+          ),
         ),
         ListTile(
           title: Text(AppLocalizations.of(context)!.price),
