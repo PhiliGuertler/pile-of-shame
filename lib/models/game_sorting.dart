@@ -124,6 +124,20 @@ class GameSorterByHasNotes extends GameSorter {
   }
 }
 
+class GameSorterByDLCCount extends GameSorter {
+  const GameSorterByDLCCount();
+
+  @override
+  int compareGames(Game a, Game b, bool isAscending) {
+    final factor = isAscending ? 1 : -1;
+    final result = a.dlcs.length.compareTo(b.dlcs.length) * factor;
+    if (result == 0) {
+      return const GameSorterByName().compareGames(a, b, isAscending);
+    }
+    return result;
+  }
+}
+
 enum SortStrategy {
   byName(sorter: GameSorterByName()),
   byPlayStatus(sorter: GameSorterByPlayStatus()),
@@ -133,6 +147,7 @@ enum SortStrategy {
   byLastModified(sorter: GameSorterByLastModified()),
   byFavorites(sorter: GameSorterByFavorites()),
   byHasNotes(sorter: GameSorterByHasNotes()),
+  byDLCCount(sorter: GameSorterByDLCCount()),
   ;
 
   String toLocaleString(BuildContext context) {
@@ -153,6 +168,8 @@ enum SortStrategy {
         return AppLocalizations.of(context)!.byFavorites;
       case SortStrategy.byHasNotes:
         return AppLocalizations.of(context)!.byHasNotes;
+      case SortStrategy.byDLCCount:
+        return AppLocalizations.of(context)!.byDLCCount;
     }
   }
 

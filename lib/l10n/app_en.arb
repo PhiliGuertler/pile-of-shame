@@ -11,19 +11,19 @@
       }
     }
   },
-  "@ratedN": {
-    "placeholders": {
-      "n": {
-        "example": "16",
-        "type": "String"
-      }
-    }
-  },
   "@nDLCs": {
     "placeholders": {
       "num": {
         "example": "2",
         "type": "int"
+      }
+    }
+  },
+  "@ratedN": {
+    "placeholders": {
+      "n": {
+        "example": "16",
+        "type": "String"
       }
     }
   },
@@ -40,6 +40,7 @@
   "bottomArea": "bottom area",
   "buildYourPileOfShameByAddingNewGames": "Build your pile of shame by adding new games.",
   "byAgeRating": "by age rating",
+  "byDLCCount": "by DLC count",
   "byFavorites": "by favorites",
   "byHasDLCs": "by DLCs",
   "byHasNotes": "by notes",
@@ -85,7 +86,6 @@
   "gamesThatAreNotInYourListWillBeImported": "Games that are not in your list will be imported.",
   "githubRepository": "Github repository",
   "groupGames": "Group games",
-  "nDLCs": "{num, plural, =0{No DLCs} =1{1 DLC} other{{num} DLCs}}",
   "hasDLCs": "has DLCs",
   "hasNoDLCs": "has no DLCs",
   "hasNoNotes": "has no notes",
@@ -112,6 +112,7 @@
   "light": "Light",
   "microsoft": "Microsoft",
   "misc": "Misc",
+  "nDLCs": "{num, plural, =0{No DLCs} =1{1 DLC} other{{num} DLCs}}",
   "nGames": "{num, plural, =0{No Games} =1{1 Game} other{{num} Games}}",
   "name": "Name",
   "nintendo": "Nintendo",
