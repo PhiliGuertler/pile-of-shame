@@ -132,6 +132,13 @@ class _SliverGameDetailsState extends ConsumerState<SliverGameDetails> {
                 )
                 .toList(),
           ).animate().fadeIn(),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: defaultPaddingX),
+          child: Text(
+            AppLocalizations.of(context)!.nDLCs(widget.game.dlcs.length),
+            textAlign: TextAlign.end,
+          ),
+        ),
       ],
     );
   }
