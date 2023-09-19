@@ -1,0 +1,14 @@
+- Games can now be marked as favorites.
+- It is now possible to save notes for a game.
+- New sorting options:
+    - by favorites
+    - by notes
+    - by number of DLCs
+- New grouping options:
+    - by favorites
+    - by notes
+    - by DLCs
+- New filter options:
+    - favorite: yes/no
+    - notes: yes/no
+    - DLCs: yes/no

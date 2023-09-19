@@ -30,6 +30,7 @@ class DLCDetailsScreen extends ConsumerWidget {
         child: RefreshIndicator(
           onRefresh: () => ref.refresh(gamesProvider.future),
           child: dlc.when(
+            skipLoadingOnReload: true,
             loading: () => const CustomScrollView(
               physics: NeverScrollableScrollPhysics(),
               slivers: [

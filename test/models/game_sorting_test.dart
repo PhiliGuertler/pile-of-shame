@@ -19,6 +19,15 @@ void main() {
     lastModified: DateTime(2023, 9, 12),
     price: 15,
     usk: USK.usk12,
+    isFavorite: true,
+    dlcs: [
+      DLC(
+        id: "a-dlc",
+        name: "a-dlc",
+        status: PlayStatus.completed,
+        lastModified: DateTime(2023, 9, 12),
+      ),
+    ],
   );
   final Game b = Game(
     id: "b",
@@ -28,6 +37,7 @@ void main() {
     lastModified: DateTime(2023, 9, 11),
     price: 19,
     usk: USK.usk6,
+    notes: "These are some notes",
   );
 
   bool isABeforeB(int comparison) {
@@ -173,6 +183,87 @@ void main() {
       final result2 = sorter.compareGames(
         a.copyWith(lastModified: DateTime(2023, 4, 4)),
         a.copyWith(lastModified: DateTime(2023, 4, 4), name: 'bbbb'),
+        true,
+      );
+      expect(isABeforeB(result2), true);
+    });
+  });
+  group("GameSorterByFavorites", () {
+    const sorter = GameSorterByFavorites();
+
+    test("compares two games ascending correctly", () {
+      // isFavorite < !isFavorite
+      final result = sorter.compareGames(a, b, true);
+      expect(isABeforeB(result), true);
+    });
+    test("compares two games descending correctly", () {
+      final result = sorter.compareGames(a, b, false);
+      expect(isABeforeB(result), false);
+    });
+    test("sorts by name if both games have the same lastModified date", () {
+      final result1 = sorter.compareGames(
+        a.copyWith(isFavorite: true, name: 'bbbb'),
+        a.copyWith(isFavorite: true),
+        true,
+      );
+      expect(isABeforeB(result1), false);
+      final result2 = sorter.compareGames(
+        a.copyWith(isFavorite: true),
+        a.copyWith(isFavorite: true, name: 'bbbb'),
+        true,
+      );
+      expect(isABeforeB(result2), true);
+    });
+  });
+  group("GameSorterByHasNotes", () {
+    const sorter = GameSorterByHasNotes();
+
+    test("compares two games ascending correctly", () {
+      // null > "These are some notes"
+      final result = sorter.compareGames(a, b, true);
+      expect(isABeforeB(result), false);
+    });
+    test("compares two games descending correctly", () {
+      final result = sorter.compareGames(a, b, false);
+      expect(isABeforeB(result), true);
+    });
+    test("sorts by name if both games have the same lastModified date", () {
+      final result1 = sorter.compareGames(
+        a.copyWith(notes: "true", name: 'bbbb'),
+        a.copyWith(notes: "true"),
+        true,
+      );
+      expect(isABeforeB(result1), false);
+      final result2 = sorter.compareGames(
+        a.copyWith(notes: "true"),
+        a.copyWith(notes: "true", name: 'bbbb'),
+        true,
+      );
+      expect(isABeforeB(result2), true);
+    });
+  });
+  group("GameSorterByDLCCount", () {
+    const sorter = GameSorterByDLCCount();
+
+    test("compares two games ascending correctly", () {
+      // 1 > 0
+      final result = sorter.compareGames(a, b, true);
+      expect(isABeforeB(result), false);
+    });
+    test("compares two games descending correctly", () {
+      final result = sorter.compareGames(a, b, false);
+      expect(isABeforeB(result), true);
+    });
+    test("sorts by name if both games have the same lastModified date", () {
+      final result1 = sorter.compareGames(
+        a.copyWith(name: 'bbbb'),
+        a.copyWith(),
+        true,
+      );
+      expect(isABeforeB(result1), false);
+      final result2 = sorter.compareGames(
+        a.copyWith(),
+        a.copyWith(name: 'bbbb'),
         true,
       );
       expect(isABeforeB(result2), true);

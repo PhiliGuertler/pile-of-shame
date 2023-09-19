@@ -176,4 +176,95 @@ void main() {
       });
     });
   });
+  group("GameGrouperByIsFavorite", () {
+    GameGrouperByIsFavorite grouper = const GameGrouperByIsFavorite();
+    group("matchesGroup", () {
+      test("returns true if the favorite-flag matches the group", () {
+        final response = grouper.matchesGroup(
+            true, gameDarkSouls.copyWith(isFavorite: true));
+        expect(response, true);
+      });
+      test("returns false if the favorite-flag does not match the group", () {
+        final response = grouper.matchesGroup(
+            true, gameDarkSouls.copyWith(isFavorite: false));
+        expect(response, false);
+      });
+    });
+    test("values returns all bool values", () {
+      final response = grouper.values();
+      expect(response, [true, false]);
+    });
+    group("groupToLocaleString", () {
+      test("returns correct DE string", () {
+        final response =
+            grouper.groupToLocaleString(AppLocalizationsDe(), true);
+        expect(response, "ist Favorit");
+      });
+      test("returns correct EN string", () {
+        final response =
+            grouper.groupToLocaleString(AppLocalizationsEn(), true);
+        expect(response, "is favorite");
+      });
+    });
+  });
+  group("GameGrouperByHasNotes", () {
+    GameGrouperByHasNotes grouper = const GameGrouperByHasNotes();
+    group("matchesGroup", () {
+      test("returns true if notes exist and the group is true", () {
+        final response = grouper.matchesGroup(
+            true, gameDarkSouls.copyWith(notes: "some notes"));
+        expect(response, true);
+      });
+      test("returns false if notes exist the group is false", () {
+        final response = grouper.matchesGroup(
+            false, gameDarkSouls.copyWith(notes: "some notes"));
+        expect(response, false);
+      });
+    });
+    test("values returns all bool values", () {
+      final response = grouper.values();
+      expect(response, [true, false]);
+    });
+    group("groupToLocaleString", () {
+      test("returns correct DE string", () {
+        final response =
+            grouper.groupToLocaleString(AppLocalizationsDe(), true);
+        expect(response, "hat Notizen");
+      });
+      test("returns correct EN string", () {
+        final response =
+            grouper.groupToLocaleString(AppLocalizationsEn(), true);
+        expect(response, "has notes");
+      });
+    });
+  });
+  group("GameGrouperByHasDLCs", () {
+    GameGrouperByHasDLCs grouper = const GameGrouperByHasDLCs();
+    group("matchesGroup", () {
+      test("returns true if DLCs exist and the group is true", () {
+        final response = grouper.matchesGroup(true, gameDarkSouls);
+        expect(response, true);
+      });
+      test("returns false if DLCs exist the group is false", () {
+        final response = grouper.matchesGroup(false, gameDarkSouls);
+        expect(response, false);
+      });
+    });
+    test("values returns all bool values", () {
+      final response = grouper.values();
+      expect(response, [true, false]);
+    });
+    group("groupToLocaleString", () {
+      test("returns correct DE string", () {
+        final response =
+            grouper.groupToLocaleString(AppLocalizationsDe(), true);
+        expect(response, "hat DLCs");
+      });
+      test("returns correct EN string", () {
+        final response =
+            grouper.groupToLocaleString(AppLocalizationsEn(), true);
+        expect(response, "has DLCs");
+      });
+    });
+  });
 }

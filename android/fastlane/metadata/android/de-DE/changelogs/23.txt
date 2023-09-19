@@ -1,0 +1,14 @@
+- Spiele können nun als Favoriten markiert werden.
+- Es ist nun möglich, Notizen zu einem Spiel zu speichern.
+- Neue Sortier-Optionen:
+    - nach Favoriten
+    - nach Notizen
+    - nach Anzahl DLCs
+- Neue Gruppierungs-Optionen:
+    - nach Favoriten
+    - nach Notizen
+    - nach DLCs
+- Neue Filter-Optionen:
+    - Favorit: ja/nein
+    - Notizen: ja/nein
+    - DLCs: ja/nein

@@ -16,10 +16,7 @@ GameStorage gameStorage(GameStorageRef ref) => GameStorage(ref: ref);
 
 @riverpod
 FutureOr<GamesList> games(GamesRef ref) async {
-  final minWaiting = Future.delayed(const Duration(milliseconds: 600));
   final gameFile = await ref.watch(gameFileProvider.future);
-
-  await minWaiting;
 
   final content = await gameFile.readAsString();
   if (content.isNotEmpty) {

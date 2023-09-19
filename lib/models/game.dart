@@ -18,6 +18,7 @@ class DLC with _$DLC {
     required DateTime lastModified,
     @Default(0.0) double price,
     String? notes,
+    @Default(false) bool isFavorite,
   }) = _DLC;
 
   factory DLC.fromJson(Map<String, dynamic> json) => _$DLCFromJson(json);
@@ -37,6 +38,7 @@ class Game with _$Game {
     @Default(USK.usk0) USK usk,
     @Default([]) List<DLC> dlcs,
     String? notes,
+    @Default(false) bool isFavorite,
   }) = _Game;
 
   factory Game.fromJson(Map<String, dynamic> json) => _$GameFromJson(json);

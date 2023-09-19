@@ -11,6 +11,14 @@
       }
     }
   },
+  "@nDLCs": {
+    "placeholders": {
+      "num": {
+        "example": "2",
+        "type": "int"
+      }
+    }
+  },
   "@ratedN": {
     "placeholders": {
       "n": {
@@ -32,6 +40,10 @@
   "bottomArea": "bottom area",
   "buildYourPileOfShameByAddingNewGames": "Build your pile of shame by adding new games.",
   "byAgeRating": "by age rating",
+  "byDLCCount": "by DLC count",
+  "byFavorites": "by favorites",
+  "byHasDLCs": "by DLCs",
+  "byHasNotes": "by notes",
   "byLastModified": "by modification date",
   "byName": "by name",
   "byNone": "by nothing",
@@ -55,6 +67,7 @@
   "deleteGame": "Delete game",
   "deleteGames": "Delete games",
   "dlcName": "DLC name",
+  "dlcs": "DLCs",
   "editDLC": "Edit DLC",
   "editGame": "Edit game",
   "endlessGame": "Endless game",
@@ -65,6 +78,7 @@
   "exportGamesToAJSONFile": "Export games to a JSON-file",
   "exportSucceeded": "Export succeeded",
   "fancyAnimations": "fancy animations",
+  "favorites": "Favorites",
   "filterGames": "Filter games",
   "gameDisplay": "Game display",
   "gameName": "Game name",
@@ -73,6 +87,10 @@
   "gamesThatAreNotInYourListWillBeImported": "Games that are not in your list will be imported.",
   "githubRepository": "Github repository",
   "groupGames": "Group games",
+  "hasDLCs": "has DLCs",
+  "hasNoDLCs": "has no DLCs",
+  "hasNoNotes": "has no notes",
+  "hasNotes": "has notes",
   "imageCredit": "image credit",
   "imagesOfControllersHaveBeenCreatedUsingMidjourney": "Images of controllers have been created using midjourney.",
   "importAndOverride": "Import and override",
@@ -85,6 +103,8 @@
   "importMissingGamesOnly": "Import missing games only",
   "importSuccessful": "Import successful",
   "isAscending": "ascending",
+  "isFavorite": "is favorite",
+  "isNotFavorite": "is not favorite",
   "language": "Language",
   "languageSubtitle": "The most controversial decision",
   "lastModified": "Last modified",
@@ -93,11 +113,12 @@
   "light": "Light",
   "microsoft": "Microsoft",
   "misc": "Misc",
+  "nDLCs": "{num, plural, =0{No DLCs} =1{1 DLC} other{{num} DLCs}}",
   "nGames": "{num, plural, =0{No Games} =1{1 Game} other{{num} Games}}",
   "name": "Name",
   "nintendo": "Nintendo",
   "none": "none",
-  "notes": "notes",
+  "notes": "Notes",
   "onPileOfShame": "On the pile of shame",
   "onWishList": "on wishlist",
   "pc": "PC",

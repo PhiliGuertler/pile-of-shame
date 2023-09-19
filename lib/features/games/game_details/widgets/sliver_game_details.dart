@@ -5,7 +5,9 @@ import 'package:pile_of_shame/features/games/dlc_details/screens/dlc_details_scr
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/providers/format_provider.dart';
+import 'package:pile_of_shame/providers/games/game_provider.dart';
 import 'package:pile_of_shame/utils/constants.dart';
+import 'package:pile_of_shame/widgets/animated/animated_heart/animated_heart_button.dart';
 import 'package:pile_of_shame/widgets/game_platform_icon.dart';
 import 'package:pile_of_shame/widgets/note.dart';
 import 'package:pile_of_shame/widgets/play_status_display.dart';
@@ -38,6 +40,17 @@ class _SliverGameDetailsState extends ConsumerState<SliverGameDetails> {
         ListTile(
           title: Text(AppLocalizations.of(context)!.gameName),
           subtitle: Text(widget.game.name),
+          trailing: AnimatedHeartButton(
+            isFilled: widget.game.isFavorite,
+            onPressed: () async {
+              final updatedGame =
+                  widget.game.copyWith(isFavorite: !widget.game.isFavorite);
+              final gamesList = await ref.read(gamesProvider.future);
+              final update = gamesList.updateGame(updatedGame.id, updatedGame);
+
+              await ref.read(gameStorageProvider).persistGamesList(update);
+            },
+          ),
         ),
         ListTile(
           title: Text(shouldShowPriceSum
@@ -108,10 +121,9 @@ class _SliverGameDetailsState extends ConsumerState<SliverGameDetails> {
             items: widget.game.dlcs
                 .map(
                   (dlc) => SegmentedActionCardItem(
+                    leading: PlayStatusIcon(playStatus: dlc.status),
                     title: Text(dlc.name),
-                    subtitle: SizedBox(
-                        height: 32.0,
-                        child: PlayStatusDisplay(playStatus: dlc.status)),
+                    subtitle: Text(currencyFormatter.format(dlc.price)),
                     openBuilderOnTap: (context, action) => DLCDetailsScreen(
                       game: widget.game,
                       dlcId: dlc.id,
@@ -120,6 +132,13 @@ class _SliverGameDetailsState extends ConsumerState<SliverGameDetails> {
                 )
                 .toList(),
           ).animate().fadeIn(),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: defaultPaddingX),
+          child: Text(
+            AppLocalizations.of(context)!.nDLCs(widget.game.dlcs.length),
+            textAlign: TextAlign.end,
+          ),
+        ),
       ],
     );
   }

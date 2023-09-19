@@ -12,7 +12,6 @@ class PlatformsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final fullSelection = ref.watch(gamePlatformsByFamilyProvider);
-    // TODO: Allow enabling/disabling of platform families
 
     return AppScaffold(
       appBar: AppBar(

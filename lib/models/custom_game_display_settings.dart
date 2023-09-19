@@ -85,12 +85,12 @@ class CustomGameDisplaySettings with _$CustomGameDisplaySettings {
   const CustomGameDisplaySettings._();
 
   const factory CustomGameDisplaySettings({
-    @Default(GameDisplayLeading.platformIcon) GameDisplayLeading leading,
+    @Default(GameDisplayLeading.playStatusIcon) GameDisplayLeading leading,
     @Default(GameDisplayTrailing.priceAndLastModified)
     GameDisplayTrailing trailing,
-    @Default(GameDisplaySecondary.statusText) GameDisplaySecondary secondary,
+    @Default(GameDisplaySecondary.platformText) GameDisplaySecondary secondary,
     @Default(true) bool hasFancyAnimations,
-    @Default(true) bool hasRepeatingAnimations,
+    @Default(false) bool hasRepeatingAnimations,
   }) = _CustomGameDisplaySettings;
 
   factory CustomGameDisplaySettings.fromJson(Map<String, dynamic> json) =>

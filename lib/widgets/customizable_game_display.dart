@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/custom_game_display_settings.dart';
 import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/providers/custom_game_display.dart';
 import 'package:pile_of_shame/providers/format_provider.dart';
+import 'package:pile_of_shame/providers/games/game_provider.dart';
+import 'package:pile_of_shame/utils/constants.dart';
 import 'package:pile_of_shame/widgets/age_rating_text_display.dart';
 import 'package:pile_of_shame/widgets/game_platform_icon.dart';
+import 'package:pile_of_shame/widgets/note.dart';
 import 'package:pile_of_shame/widgets/play_status_display.dart';
 import 'package:pile_of_shame/widgets/play_status_icon.dart';
 import 'package:pile_of_shame/widgets/skeletons/skeleton.dart';
@@ -107,12 +112,88 @@ class CustomizableGameDisplay extends ConsumerWidget {
           secondaryWidget = const Skeleton();
         });
 
-    return ListTile(
-      title: Text(game.name),
-      subtitle: secondaryWidget,
-      leading: leadingWidget,
-      trailing: trailingWidget,
-      onTap: onTap,
+    const double favoriteSize = 32;
+
+    return Slidable(
+      endActionPane: ActionPane(
+        motion: const ScrollMotion(),
+        extentRatio: 0.2,
+        children: [
+          SlidableAction(
+            onPressed: (context) async {
+              final updatedGame = game.copyWith(isFavorite: !game.isFavorite);
+              final gamesList = await ref.read(gamesProvider.future);
+              final update = gamesList.updateGame(updatedGame.id, updatedGame);
+
+              await ref.read(gameStorageProvider).persistGamesList(update);
+            },
+            backgroundColor: Colors.red,
+            foregroundColor: Colors.white,
+            icon: game.isFavorite ? Icons.favorite : Icons.favorite_border,
+          ),
+        ],
+      ),
+      startActionPane: game.notes != null && game.notes!.isNotEmpty
+          ? ActionPane(
+              motion: const ScrollMotion(),
+              extentRatio: 0.2,
+              children: [
+                SlidableAction(
+                  onPressed: (context) {
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: defaultPaddingX, vertical: 48.0),
+                          child: Note(
+                            child: Text(game.notes!),
+                          ),
+                        );
+                      },
+                    );
+                  },
+                  backgroundColor: Theme.of(context).colorScheme.surfaceVariant,
+                  foregroundColor:
+                      Theme.of(context).colorScheme.onSurfaceVariant,
+                  icon: Icons.open_in_full,
+                ),
+              ],
+            )
+          : null,
+      child: Stack(
+        alignment: Alignment.centerLeft,
+        children: [
+          const Positioned(
+                  right: -favoriteSize * 0.4,
+                  child: Icon(
+                    Icons.favorite,
+                    size: favoriteSize,
+                    color: Colors.red,
+                  ))
+              .animate(
+                target: game.isFavorite ? 1 : 0,
+              )
+              .moveX(begin: favoriteSize, end: 0, curve: Curves.easeInOutBack),
+          if (game.notes != null && game.notes!.isNotEmpty)
+            Positioned(
+              left: -favoriteSize * 0.4,
+              child: Icon(
+                Icons.note,
+                size: favoriteSize,
+                color: Theme.of(context).colorScheme.surfaceVariant,
+              ).animate().moveX(
+                  begin: -favoriteSize, end: 0, curve: Curves.easeInOutBack),
+            ),
+          ListTile(
+            title: Text(game.name),
+            subtitle: secondaryWidget,
+            leading: leadingWidget,
+            trailing: trailingWidget,
+            onTap: onTap,
+          ),
+        ],
+      ),
     );
   }
 }

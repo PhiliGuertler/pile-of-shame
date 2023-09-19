@@ -33,6 +33,7 @@ class _GameDetailsScreenState extends ConsumerState<GameDetailsScreen> {
         child: RefreshIndicator(
           onRefresh: () => ref.refresh(gamesProvider.future),
           child: game.when(
+            skipLoadingOnReload: true,
             error: (error, stackTrace) => CustomScrollView(
               slivers: [
                 SliverFancyImageAppBar(

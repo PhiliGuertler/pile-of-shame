@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pile_of_shame/features/games/games_list/widgets/slivers/sliver_age_rating_options.dart';
+import 'package:pile_of_shame/features/games/games_list/widgets/slivers/sliver_favorite_options.dart';
+import 'package:pile_of_shame/features/games/games_list/widgets/slivers/sliver_has_dlcs_options.dart';
+import 'package:pile_of_shame/features/games/games_list/widgets/slivers/sliver_has_notes_options.dart';
 import 'package:pile_of_shame/features/games/games_list/widgets/slivers/sliver_platform_family_filter_options.dart';
 import 'package:pile_of_shame/features/games/games_list/widgets/slivers/sliver_platform_filter_options.dart';
 import 'package:pile_of_shame/features/games/games_list/widgets/slivers/sliver_play_status_filter_options.dart';
@@ -29,6 +32,12 @@ class GameFilterDrawer extends ConsumerWidget {
                 ),
               ),
             ),
+            // Favorites
+            const SliverFavoriteFilterOptions(),
+            // Has Notes
+            const SliverHasNotesFilterOptions(),
+            // Has DLCs
+            const SliverHasDLCsFilterOptions(),
             // PlayStatus
             const SliverPlayStatusFilterOptions(),
             // Platform-Families
