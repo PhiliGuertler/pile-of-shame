@@ -176,4 +176,35 @@ void main() {
       });
     });
   });
+  group("GameGrouperByIsFavorite", () {
+    GameGrouperByIsFavorite grouper = const GameGrouperByIsFavorite();
+    group("matchesGroup", () {
+      test("returns true if the favorite-flag matches the group", () {
+        final response = grouper.matchesGroup(
+            true, gameDarkSouls.copyWith(isFavorite: true));
+        expect(response, true);
+      });
+      test("returns false if the favorite-flag does not match the group", () {
+        final response = grouper.matchesGroup(
+            true, gameDarkSouls.copyWith(isFavorite: false));
+        expect(response, false);
+      });
+    });
+    test("values returns all bool values", () {
+      final response = grouper.values();
+      expect(response, [true, false]);
+    });
+    group("groupToLocaleString", () {
+      test("returns correct DE string", () {
+        final response =
+            grouper.groupToLocaleString(AppLocalizationsDe(), true);
+        expect(response, "ist Favorit");
+      });
+      test("returns correct EN string", () {
+        final response =
+            grouper.groupToLocaleString(AppLocalizationsEn(), true);
+        expect(response, "is favorite");
+      });
+    });
+  });
 }

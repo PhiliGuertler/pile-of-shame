@@ -94,11 +94,31 @@ class GameGrouperByAgeRating extends GameGrouper<USK> {
   }
 }
 
+class GameGrouperByIsFavorite extends GameGrouper<bool> {
+  const GameGrouperByIsFavorite();
+
+  @override
+  bool matchesGroup(bool group, Game game) {
+    return game.isFavorite == group;
+  }
+
+  @override
+  List<bool> values() {
+    return [true, false];
+  }
+
+  @override
+  String groupToLocaleString(AppLocalizations l10n, bool group) {
+    return group ? l10n.isFavorite : l10n.isNotFavorite;
+  }
+}
+
 enum GroupStrategy {
   byPlatform(grouper: GameGrouperByPlatform()),
   byPlatformFamily(grouper: GameGrouperByPlatformFamily()),
   byPlayStatus(grouper: GameGrouperByPlayStatus()),
   byAgeRating(grouper: GameGrouperByAgeRating()),
+  byIsFavorite(grouper: GameGrouperByIsFavorite()),
   byNone(grouper: null),
   ;
 
@@ -116,6 +136,8 @@ enum GroupStrategy {
         return l10n.byStatus;
       case GroupStrategy.byAgeRating:
         return l10n.byAgeRating;
+      case GroupStrategy.byIsFavorite:
+        return l10n.byFavorites;
       case GroupStrategy.byNone:
         return l10n.byNone;
     }
