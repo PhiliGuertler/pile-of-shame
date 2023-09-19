@@ -19,6 +19,7 @@ void main() {
     lastModified: DateTime(2023, 9, 12),
     price: 15,
     usk: USK.usk12,
+    isFavorite: true,
   );
   final Game b = Game(
     id: "b",
@@ -173,6 +174,33 @@ void main() {
       final result2 = sorter.compareGames(
         a.copyWith(lastModified: DateTime(2023, 4, 4)),
         a.copyWith(lastModified: DateTime(2023, 4, 4), name: 'bbbb'),
+        true,
+      );
+      expect(isABeforeB(result2), true);
+    });
+  });
+  group("GameSorterByFavorites", () {
+    const sorter = GameSorterByFavorites();
+
+    test("compares two games ascending correctly", () {
+      // isFavorite < !isFavorite
+      final result = sorter.compareGames(a, b, true);
+      expect(isABeforeB(result), true);
+    });
+    test("compares two games descending correctly", () {
+      final result = sorter.compareGames(a, b, false);
+      expect(isABeforeB(result), false);
+    });
+    test("sorts by name if both games have the same lastModified date", () {
+      final result1 = sorter.compareGames(
+        a.copyWith(isFavorite: true, name: 'bbbb'),
+        a.copyWith(isFavorite: true),
+        true,
+      );
+      expect(isABeforeB(result1), false);
+      final result2 = sorter.compareGames(
+        a.copyWith(isFavorite: true),
+        a.copyWith(isFavorite: true, name: 'bbbb'),
         true,
       );
       expect(isABeforeB(result2), true);
