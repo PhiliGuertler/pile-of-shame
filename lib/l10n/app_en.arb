@@ -19,6 +19,14 @@
       }
     }
   },
+  "@nDLCs": {
+    "placeholders": {
+      "num": {
+        "example": "2",
+        "type": "int"
+      }
+    }
+  },
   "aboutThisApp": "About this app",
   "addDLC": "Add DLC",
   "addGame": "Add game",
@@ -33,6 +41,7 @@
   "buildYourPileOfShameByAddingNewGames": "Build your pile of shame by adding new games.",
   "byAgeRating": "by age rating",
   "byFavorites": "by favorites",
+  "byHasDLCs": "by DLCs",
   "byHasNotes": "by notes",
   "byLastModified": "by modification date",
   "byName": "by name",
@@ -76,6 +85,9 @@
   "gamesThatAreNotInYourListWillBeImported": "Games that are not in your list will be imported.",
   "githubRepository": "Github repository",
   "groupGames": "Group games",
+  "nDLCs": "{num, plural, =0{No DLCs} =1{1 DLC} other{{num} DLCs}}",
+  "hasDLCs": "has DLCs",
+  "hasNoDLCs": "has no DLCs",
   "hasNoNotes": "has no notes",
   "hasNotes": "has notes",
   "imageCredit": "image credit",

@@ -132,6 +132,25 @@ class GameGrouperByHasNotes extends GameGrouper<bool> {
   }
 }
 
+class GameGrouperByHasDLCs extends GameGrouper<bool> {
+  const GameGrouperByHasDLCs();
+
+  @override
+  bool matchesGroup(bool group, Game game) {
+    return game.dlcs.isNotEmpty == group;
+  }
+
+  @override
+  List<bool> values() {
+    return [true, false];
+  }
+
+  @override
+  String groupToLocaleString(AppLocalizations l10n, bool group) {
+    return group ? l10n.hasDLCs : l10n.hasNoDLCs;
+  }
+}
+
 enum GroupStrategy {
   byPlatform(grouper: GameGrouperByPlatform()),
   byPlatformFamily(grouper: GameGrouperByPlatformFamily()),
@@ -139,6 +158,7 @@ enum GroupStrategy {
   byAgeRating(grouper: GameGrouperByAgeRating()),
   byIsFavorite(grouper: GameGrouperByIsFavorite()),
   byHasNotes(grouper: GameGrouperByHasNotes()),
+  byHasDLCs(grouper: GameGrouperByHasDLCs()),
   byNone(grouper: null),
   ;
 
@@ -160,6 +180,8 @@ enum GroupStrategy {
         return l10n.byFavorites;
       case GroupStrategy.byHasNotes:
         return l10n.byHasNotes;
+      case GroupStrategy.byHasDLCs:
+        return l10n.byHasDLCs;
       case GroupStrategy.byNone:
         return l10n.byNone;
     }

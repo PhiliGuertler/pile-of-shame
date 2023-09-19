@@ -238,4 +238,33 @@ void main() {
       });
     });
   });
+  group("GameGrouperByHasDLCs", () {
+    GameGrouperByHasDLCs grouper = const GameGrouperByHasDLCs();
+    group("matchesGroup", () {
+      test("returns true if DLCs exist and the group is true", () {
+        final response = grouper.matchesGroup(true, gameDarkSouls);
+        expect(response, true);
+      });
+      test("returns false if DLCs exist the group is false", () {
+        final response = grouper.matchesGroup(false, gameDarkSouls);
+        expect(response, false);
+      });
+    });
+    test("values returns all bool values", () {
+      final response = grouper.values();
+      expect(response, [true, false]);
+    });
+    group("groupToLocaleString", () {
+      test("returns correct DE string", () {
+        final response =
+            grouper.groupToLocaleString(AppLocalizationsDe(), true);
+        expect(response, "hat DLCs");
+      });
+      test("returns correct EN string", () {
+        final response =
+            grouper.groupToLocaleString(AppLocalizationsEn(), true);
+        expect(response, "has DLCs");
+      });
+    });
+  });
 }
