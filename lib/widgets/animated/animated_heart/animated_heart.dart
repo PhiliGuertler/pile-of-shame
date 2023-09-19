@@ -28,28 +28,29 @@ class AnimatedHeart extends StatelessWidget {
         generateRandomDoubleInRange(10.0, 15.0, rand);
     final upwardsMovement = generateRandomDoubleInRange(35.0, 45.0, rand);
 
-    final shakeDelay = generateRandomDoubleInRange(250.0, 450.0, rand);
-    final moveDelay = generateRandomDoubleInRange(0.0, 250.0, rand);
+    final scaleDelay = generateRandomDoubleInRange(250.0, 450.0, rand);
+    final shakeDelay = generateRandomDoubleInRange(150.0, 350.0, rand);
+    final moveDelay = generateRandomDoubleInRange(400.0, 500.0, rand);
 
     return const Icon(Icons.favorite, color: Colors.red)
         .animate(
-          target: isReverse ? 0 : 1,
+          target: isReverse ? 1 : 0,
           onComplete: (controller) {
             if (onComplete != null) {
               onComplete!();
             }
           },
-          autoPlay: false,
         )
         .scale(
-          begin: const Offset(1.0, 1.0),
-          end: const Offset(0.0, 0.0),
-          duration: 800.ms,
-          curve: Curves.easeIn,
+          begin: const Offset(0.0, 0.0),
+          end: const Offset(1.0, 1.0),
+          delay: scaleDelay.ms,
+          duration: (800 - scaleDelay).ms,
+          curve: Curves.easeOut,
         )
         .moveY(
-          begin: 0,
-          end: -upwardsMovement,
+          begin: -upwardsMovement,
+          end: 0,
           curve: Curves.easeInOut,
           delay: moveDelay.ms,
           duration: (800 - moveDelay).ms,
@@ -57,10 +58,10 @@ class AnimatedHeart extends StatelessWidget {
         .shakeX(
           hz: shakeFrequency,
           amount: shakeAmount,
-          curve: Curves.easeIn,
+          curve: Curves.easeOut,
           delay: shakeDelay.ms,
           duration: (800 - shakeDelay).ms,
         )
-        .fadeOut(duration: 800.ms);
+        .fadeIn(duration: 800.ms);
   }
 }

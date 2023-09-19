@@ -54,7 +54,7 @@ class _AnimatedHeartButtonState extends State<AnimatedHeartButton> {
                 curve: Curves.easeInOut,
                 duration: 100.ms,
               )
-              .fadeOut()
+              .fadeOut(duration: 100.ms)
               .swap(
                 delay: 100.ms,
                 builder: (context, child) {
@@ -69,7 +69,7 @@ class _AnimatedHeartButtonState extends State<AnimatedHeartButton> {
                         curve: Curves.easeInOut,
                         duration: 100.ms,
                       )
-                      .fadeIn();
+                      .fadeIn(duration: 100.ms);
                 },
               ),
           onPressed: widget.onPressed,
