@@ -108,6 +108,22 @@ class GameSorterByFavorites extends GameSorter {
   }
 }
 
+class GameSorterByHasNotes extends GameSorter {
+  const GameSorterByHasNotes();
+
+  @override
+  int compareGames(Game a, Game b, bool isAscending) {
+    final factor = isAscending ? 1 : -1;
+    final result = (((a.notes != null && a.notes!.isNotEmpty) ? 0 : 1) -
+            ((b.notes != null && b.notes!.isNotEmpty) ? 0 : 1)) *
+        factor;
+    if (result == 0) {
+      return const GameSorterByName().compareGames(a, b, isAscending);
+    }
+    return result;
+  }
+}
+
 enum SortStrategy {
   byName(sorter: GameSorterByName()),
   byPlayStatus(sorter: GameSorterByPlayStatus()),
@@ -116,6 +132,7 @@ enum SortStrategy {
   byPlatform(sorter: GameSorterByPlatform()),
   byLastModified(sorter: GameSorterByLastModified()),
   byFavorites(sorter: GameSorterByFavorites()),
+  byHasNotes(sorter: GameSorterByHasNotes()),
   ;
 
   String toLocaleString(BuildContext context) {
@@ -134,6 +151,8 @@ enum SortStrategy {
         return AppLocalizations.of(context)!.byLastModified;
       case SortStrategy.byFavorites:
         return AppLocalizations.of(context)!.byFavorites;
+      case SortStrategy.byHasNotes:
+        return AppLocalizations.of(context)!.byHasNotes;
     }
   }
 

@@ -29,6 +29,7 @@ void main() {
     lastModified: DateTime(2023, 9, 11),
     price: 19,
     usk: USK.usk6,
+    notes: "These are some notes",
   );
 
   bool isABeforeB(int comparison) {
@@ -201,6 +202,33 @@ void main() {
       final result2 = sorter.compareGames(
         a.copyWith(isFavorite: true),
         a.copyWith(isFavorite: true, name: 'bbbb'),
+        true,
+      );
+      expect(isABeforeB(result2), true);
+    });
+  });
+  group("GameSorterByHasNotes", () {
+    const sorter = GameSorterByHasNotes();
+
+    test("compares two games ascending correctly", () {
+      // null > "These are some notes"
+      final result = sorter.compareGames(a, b, true);
+      expect(isABeforeB(result), false);
+    });
+    test("compares two games descending correctly", () {
+      final result = sorter.compareGames(a, b, false);
+      expect(isABeforeB(result), true);
+    });
+    test("sorts by name if both games have the same lastModified date", () {
+      final result1 = sorter.compareGames(
+        a.copyWith(notes: "true", name: 'bbbb'),
+        a.copyWith(notes: "true"),
+        true,
+      );
+      expect(isABeforeB(result1), false);
+      final result2 = sorter.compareGames(
+        a.copyWith(notes: "true"),
+        a.copyWith(notes: "true", name: 'bbbb'),
         true,
       );
       expect(isABeforeB(result2), true);
