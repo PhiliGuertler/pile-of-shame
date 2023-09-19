@@ -39,6 +39,7 @@ class AnimatedHeart extends StatelessWidget {
               onComplete!();
             }
           },
+          autoPlay: false,
         )
         .scale(
           begin: const Offset(1.0, 1.0),
@@ -59,6 +60,7 @@ class AnimatedHeart extends StatelessWidget {
           curve: Curves.easeIn,
           delay: shakeDelay.ms,
           duration: (800 - shakeDelay).ms,
-        );
+        )
+        .fadeOut(duration: 800.ms);
   }
 }
