@@ -24,16 +24,18 @@ void main() {
   late MockFile gameFile;
 
   final Game testGame = Game(
-      id: "testGame",
-      name: "Test Game",
-      platform: GamePlatform.gameBoy,
-      status: PlayStatus.completed,
-      lastModified: DateTime(2023, 9, 12),
-      price: 19.99,
-      notes: "some notes");
+    id: "testGame",
+    name: "Test Game",
+    platform: GamePlatform.gameBoy,
+    status: PlayStatus.completed,
+    lastModified: DateTime(2023, 9, 12),
+    price: 19.99,
+    notes: "some notes",
+    isFavorite: true,
+  );
   final GamesList testGameList = GamesList(games: [testGame]);
   const String jsonGameList =
-      '{"games":[{"id":"testGame","name":"Test Game","platform":"GB","status":"completed","lastModified":"2023-09-12T00:00:00.000","price":19.99,"usk":"usk0","dlcs":[],"notes":"some notes"}]}';
+      '{"games":[{"id":"testGame","name":"Test Game","platform":"GB","status":"completed","lastModified":"2023-09-12T00:00:00.000","price":19.99,"usk":"usk0","dlcs":[],"notes":"some notes","isFavorite":true}]}';
 
   setUp(() {
     mockPathProviderPlatform = FakePathProviderPlatform();

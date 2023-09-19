@@ -39,7 +39,8 @@ void main() {
                     "status": "playing",
                     "lastModified": "2023-08-08",
                     "price": 23.99,
-                    "releaseDate": "2018-09-03"
+                    "releaseDate": "2018-09-03",
+                    "isFavorite": false
                 },
                 {
                     "id": "zelda-botw-die-ballade-der-recken",
@@ -47,11 +48,14 @@ void main() {
                     "status": "playing",
                     "lastModified": "2023-08-08",
                     "price": 23.99,
-                    "releaseDate": "2019-03-13"
+                    "releaseDate": "2019-03-13",
+                    "notes": "Story DLC that results in a motorbike for Link!",
+                    "isFavorite": false
                 }
             ],
             "releaseDate": "2017-04-20",
-            "coverArt": "https://cdn02.plentymarkets.com/qozbgypaugq8/item/images/1613/full/PSTR-ZELDA005.jpg"
+            "coverArt": "https://cdn02.plentymarkets.com/qozbgypaugq8/item/images/1613/full/PSTR-ZELDA005.jpg",
+            "isFavorite": true
         },
         {
             "id": "outer-wilds",
@@ -69,7 +73,8 @@ void main() {
                     "lastModified": "2023-08-08",
                     "price": 16.99
                 }
-            ]
+            ],
+            "notes": null
         },
         {
             "id": "sekiro",
