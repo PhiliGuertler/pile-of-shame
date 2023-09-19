@@ -67,6 +67,30 @@ class FavoriteFilter extends _$FavoriteFilter {
   }
 }
 
+@Riverpod(keepAlive: true)
+class HasNotesFilter extends _$HasNotesFilter {
+  @override
+  List<bool> build() {
+    return [true, false];
+  }
+
+  void setFilter(List<bool> filter) {
+    state = filter;
+  }
+}
+
+@Riverpod(keepAlive: true)
+class HasDLCsFilter extends _$HasDLCsFilter {
+  @override
+  List<bool> build() {
+    return [true, false];
+  }
+
+  void setFilter(List<bool> filter) {
+    state = filter;
+  }
+}
+
 @riverpod
 bool isAnyFilterActive(IsAnyFilterActiveRef ref) {
   final allPlatforms = ref.watch(activeGamePlatformsProvider);
@@ -79,12 +103,16 @@ bool isAnyFilterActive(IsAnyFilterActiveRef ref) {
   final playStatusFilter = ref.watch(playStatusFilterProvider);
   final ageRatingFilter = ref.watch(ageRatingFilterProvider);
   final favoriteFilter = ref.watch(favoriteFilterProvider);
+  final hasNotesFilter = ref.watch(hasNotesFilterProvider);
+  final hasDLCsFilter = ref.watch(hasDLCsFilterProvider);
 
   return (platformFilter.length < numAllPlatforms ||
       platformFamilyFilter.length < GamePlatformFamily.values.length ||
       playStatusFilter.length < PlayStatus.values.length ||
       ageRatingFilter.length < USK.values.length ||
-      favoriteFilter.length < 2);
+      favoriteFilter.length < 2 ||
+      hasNotesFilter.length < 2 ||
+      hasDLCsFilter.length < 2);
 }
 
 @riverpod
@@ -101,13 +129,17 @@ List<Game> applyGameFilters(ApplyGameFiltersRef ref, List<Game> games) {
   final playStatusFilter = ref.watch(playStatusFilterProvider);
   final ageRatingFilter = ref.watch(ageRatingFilterProvider);
   final favoriteFilter = ref.watch(favoriteFilterProvider);
+  final hasNotesFilter = ref.watch(hasNotesFilterProvider);
+  final hasDLCsFilter = ref.watch(hasDLCsFilterProvider);
 
   final result = games.where((Game game) {
     return allLogicalPlatforms.contains(game.platform) &&
         platformFamilyFilter.contains(game.platform.family) &&
         playStatusFilter.contains(game.status) &&
         ageRatingFilter.contains(game.usk) &&
-        favoriteFilter.contains(game.isFavorite);
+        favoriteFilter.contains(game.isFavorite) &&
+        hasNotesFilter.contains(game.notes != null && game.notes!.isNotEmpty) &&
+        hasDLCsFilter.contains(game.dlcs.isNotEmpty);
   }).toList();
 
   return result;
