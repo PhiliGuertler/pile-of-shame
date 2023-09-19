@@ -76,6 +76,8 @@
   "gamesThatAreNotInYourListWillBeImported": "Games that are not in your list will be imported.",
   "githubRepository": "Github repository",
   "groupGames": "Group games",
+  "hasNoNotes": "has no notes",
+  "hasNotes": "has notes",
   "imageCredit": "image credit",
   "imagesOfControllersHaveBeenCreatedUsingMidjourney": "Images of controllers have been created using midjourney.",
   "importAndOverride": "Import and override",
