@@ -6,9 +6,13 @@ import 'animated_heart.dart';
 class AnimatedHeartButton extends StatefulWidget {
   final bool isFilled;
   final VoidCallback onPressed;
+  final Color color;
 
   const AnimatedHeartButton(
-      {super.key, required this.isFilled, required this.onPressed});
+      {super.key,
+      required this.isFilled,
+      required this.onPressed,
+      this.color = Colors.red});
 
   @override
   State<AnimatedHeartButton> createState() => _AnimatedHeartButtonState();
@@ -36,14 +40,17 @@ class _AnimatedHeartButtonState extends State<AnimatedHeartButton> {
             });
           },
           seed: 123456,
+          color: widget.color,
         ),
         AnimatedHeart(
           isReverse: widget.isFilled,
           seed: 42,
+          color: widget.color,
         ),
         AnimatedHeart(
           isReverse: widget.isFilled,
           seed: 1337,
+          color: widget.color,
         ),
         IconButton(
           icon: const Icon(Icons.favorite_border)
@@ -58,9 +65,9 @@ class _AnimatedHeartButtonState extends State<AnimatedHeartButton> {
               .swap(
                 delay: 100.ms,
                 builder: (context, child) {
-                  return const Icon(
+                  return Icon(
                     Icons.favorite,
-                    color: Colors.red,
+                    color: widget.color,
                   )
                       .animate()
                       .scale(

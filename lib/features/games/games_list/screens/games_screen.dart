@@ -57,6 +57,7 @@ class GamesScreen extends ConsumerWidget {
               if (hasGames) const SliverContractSorterFilter(),
               if (hasGames)
                 ...groupedGames.when(
+                  skipLoadingOnReload: true,
                   data: (groupedGames) {
                     return groupedGames.entries
                         .map((group) => SliverGroupedGames(
