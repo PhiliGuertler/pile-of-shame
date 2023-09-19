@@ -121,10 +121,9 @@ class _SliverGameDetailsState extends ConsumerState<SliverGameDetails> {
             items: widget.game.dlcs
                 .map(
                   (dlc) => SegmentedActionCardItem(
+                    leading: PlayStatusIcon(playStatus: dlc.status),
                     title: Text(dlc.name),
-                    subtitle: SizedBox(
-                        height: 32.0,
-                        child: PlayStatusDisplay(playStatus: dlc.status)),
+                    subtitle: Text(currencyFormatter.format(dlc.price)),
                     openBuilderOnTap: (context, action) => DLCDetailsScreen(
                       game: widget.game,
                       dlcId: dlc.id,
