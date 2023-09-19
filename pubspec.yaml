@@ -32,6 +32,7 @@ dependencies:
   flutter_sticky_header: ^0.6.5
   url_launcher: ^6.1.14
   flutter_sharing_intent: ^1.1.0
+  flutter_slidable: ^3.0.0
 
 dev_dependencies:
   flutter_test:
