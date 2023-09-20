@@ -1,0 +1,4 @@
+Minor bug fixes
+- Editing games no longer removes the favorite state.
+- Editing a game no longer updates the modification date of its DLCs.
+- Leading and trailing spaces in names and notes are no longer saved.

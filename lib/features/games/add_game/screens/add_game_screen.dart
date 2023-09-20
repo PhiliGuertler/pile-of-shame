@@ -4,6 +4,7 @@ import 'package:pile_of_shame/features/games/add_game/providers/add_game_provide
 import 'package:pile_of_shame/features/games/add_game/widgets/game_platform_input_field.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/age_restriction.dart';
+import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/models/game_platforms.dart';
 import 'package:pile_of_shame/providers/games/game_platforms_provider.dart';
 import 'package:pile_of_shame/utils/constants.dart';
@@ -248,7 +249,10 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
                                     .notifier)
                                 .updateGame(
                                   editableGame.copyWith(
-                                    dlcs: [...editableGame.dlcs, result],
+                                    dlcs: [
+                                      ...editableGame.dlcs,
+                                      result.toDLC()
+                                    ],
                                   ),
                                 );
                           }
@@ -300,7 +304,7 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
                                     );
 
                                     if (result != null && result) {
-                                      final List<EditableDLC> updatedList =
+                                      final List<DLC> updatedList =
                                           List.from(editableGame.dlcs);
                                       updatedList.removeAt(index);
 
@@ -322,21 +326,21 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
                                   ),
                                 ),
                                 leading: const Icon(Icons.edit),
-                                title: Text(dlc.name ?? '???'),
+                                title: Text(dlc.name),
                                 onTap: () async {
                                   final EditableDLC? update =
                                       await Navigator.of(context).push(
                                     MaterialPageRoute(
                                       builder: (context) => AddDLCScreen(
-                                        initialValue: dlc,
+                                        initialValue: EditableDLC.fromDLC(dlc),
                                       ),
                                     ),
                                   );
 
                                   if (update != null) {
-                                    final List<EditableDLC> updatedList =
+                                    final List<DLC> updatedList =
                                         List.from(editableGame.dlcs);
-                                    updatedList[index] = update;
+                                    updatedList[index] = update.toDLC();
 
                                     ref
                                         .read(
