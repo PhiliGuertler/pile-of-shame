@@ -30,11 +30,27 @@ class SliverGameDetails extends ConsumerStatefulWidget {
 class _SliverGameDetailsState extends ConsumerState<SliverGameDetails> {
   bool shouldShowPriceSum = true;
 
+  // a working copy of currently dismissed dlcs.
+  // This is necessary for
+  List<String> dismissedDLCs = [];
+
   @override
   Widget build(BuildContext context) {
     final dateFormatter = ref.watch(dateFormatProvider(context));
     final timeFormatter = ref.watch(timeFormatProvider(context));
     final currencyFormatter = ref.watch(currencyFormatProvider(context));
+
+    for (int i = dismissedDLCs.length - 1; i >= 0; --i) {
+      String dismissed = dismissedDLCs[i];
+      if (!widget.game.dlcs.any(
+        (element) => element.id == dismissed,
+      )) {
+        // clean up the list of dismissed dlcs on every rerender
+        setState(() {
+          dismissedDLCs.remove(dismissed);
+        });
+      }
+    }
 
     final addDLCActionCardItem = SegmentedActionCardItem(
       key: const ValueKey("add_dlc"),
@@ -144,8 +160,10 @@ class _SliverGameDetailsState extends ConsumerState<SliverGameDetails> {
         SegmentedActionCard(
           items: [
             ...widget.game.dlcs
+                .where((element) => !dismissedDLCs.contains(element.id))
                 .map(
                   (dlc) => SegmentedActionCardItem(
+                    key: ValueKey(dlc.id),
                     leading: PlayStatusIcon(playStatus: dlc.status),
                     title: Text(dlc.name),
                     subtitle: Text(currencyFormatter.format(dlc.price)),
@@ -153,6 +171,23 @@ class _SliverGameDetailsState extends ConsumerState<SliverGameDetails> {
                       game: widget.game,
                       dlcId: dlc.id,
                     ),
+                    onDelete: () async {
+                      setState(() {
+                        dismissedDLCs.add(dlc.id);
+                      });
+
+                      final updatedGame = widget.game.copyWith(
+                          dlcs: widget.game.dlcs
+                              .where((element) => element.id != dlc.id)
+                              .toList());
+                      final gamesList = await ref.read(gamesProvider.future);
+                      final update =
+                          gamesList.updateGame(updatedGame.id, updatedGame);
+
+                      await ref
+                          .read(gameStorageProvider)
+                          .persistGamesList(update);
+                    },
                   ),
                 )
                 .toList(),
