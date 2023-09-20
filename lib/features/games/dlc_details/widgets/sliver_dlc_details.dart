@@ -27,6 +27,10 @@ class SliverDLCDetails extends ConsumerWidget {
 
     return SliverList.list(
       children: [
+        if (dlc.notes != null && dlc.notes!.isNotEmpty)
+          Note(
+            child: Text(dlc.notes!),
+          ),
         ListTile(
           title: Text(AppLocalizations.of(context)!.gameName),
           subtitle: Text(game.name),
@@ -91,10 +95,6 @@ class SliverDLCDetails extends ConsumerWidget {
           subtitle: Text(
               AppLocalizations.of(context)!.ratedN(game.usk.age.toString())),
         ),
-        if (dlc.notes != null && dlc.notes!.isNotEmpty)
-          Note(
-            child: Text(dlc.notes!),
-          ),
         const SizedBox(height: 48.0)
       ],
     );

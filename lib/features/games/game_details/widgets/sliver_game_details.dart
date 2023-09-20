@@ -79,6 +79,10 @@ class _SliverGameDetailsState extends ConsumerState<SliverGameDetails> {
 
     return SliverList.list(
       children: [
+        if (widget.game.notes != null && widget.game.notes!.isNotEmpty)
+          Note(
+            child: Text(widget.game.notes!),
+          ),
         ListTile(
           title: Text(AppLocalizations.of(context)!.gameName),
           subtitle: Text(widget.game.name),
@@ -145,10 +149,6 @@ class _SliverGameDetailsState extends ConsumerState<SliverGameDetails> {
           subtitle: Text(AppLocalizations.of(context)!
               .ratedN(widget.game.usk.age.toString())),
         ),
-        if (widget.game.notes != null && widget.game.notes!.isNotEmpty)
-          Note(
-            child: Text(widget.game.notes!),
-          ),
         Padding(
           padding: const EdgeInsets.only(
               left: defaultPaddingX, right: defaultPaddingX, top: 16.0),
