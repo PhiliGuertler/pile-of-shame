@@ -104,10 +104,10 @@ class _GameDetailsScreenState extends ConsumerState<GameDetailsScreen> {
                     alignment: Alignment.bottomCenter,
                     child: Padding(
                       padding: const EdgeInsets.only(
-                        top: 16.0,
+                        top: 32.0,
                         left: defaultPaddingX,
                         right: defaultPaddingX,
-                        bottom: 8.0,
+                        bottom: 16.0,
                       ),
                       child: TextButton.icon(
                         icon: const Icon(Icons.delete),

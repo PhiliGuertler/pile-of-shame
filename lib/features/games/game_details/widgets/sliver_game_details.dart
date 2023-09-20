@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pile_of_shame/features/games/add_or_edit_game/models/editable_game.dart';
+import 'package:pile_of_shame/features/games/add_or_edit_game/screens/add_or_edit_dlc_screen.dart';
 import 'package:pile_of_shame/features/games/dlc_details/screens/dlc_details_screen.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/game.dart';
@@ -33,6 +35,31 @@ class _SliverGameDetailsState extends ConsumerState<SliverGameDetails> {
     final dateFormatter = ref.watch(dateFormatProvider(context));
     final timeFormatter = ref.watch(timeFormatProvider(context));
     final currencyFormatter = ref.watch(currencyFormatProvider(context));
+
+    final addDLCActionCardItem = SegmentedActionCardItem(
+      key: const ValueKey("add_dlc"),
+      leading: const Icon(Icons.add),
+      title: Text(AppLocalizations.of(context)!.addDLC),
+      onTap: () async {
+        final EditableDLC? result =
+            await Navigator.of(context).push<EditableDLC?>(
+          MaterialPageRoute(
+            builder: (context) => const AddDLCScreen(),
+          ),
+        );
+
+        if (result != null) {
+          final updatedGame =
+              widget.game.copyWith(dlcs: [...widget.game.dlcs, result.toDLC()]);
+
+          final games = await ref.read(gamesProvider.future);
+          final update = games.updateGame(updatedGame.id, updatedGame);
+
+          final gameStorage = ref.read(gameStorageProvider);
+          await gameStorage.persistGamesList(update);
+        }
+      },
+    );
 
     return SliverList.list(
       children: [
@@ -106,18 +133,17 @@ class _SliverGameDetailsState extends ConsumerState<SliverGameDetails> {
           Note(
             child: Text(widget.game.notes!),
           ),
-        if (widget.game.dlcs.isNotEmpty)
-          Padding(
-            padding: const EdgeInsets.only(
-                left: defaultPaddingX, right: defaultPaddingX, top: 16.0),
-            child: Text(
-              "DLCs",
-              style: Theme.of(context).textTheme.headlineSmall,
-            ),
+        Padding(
+          padding: const EdgeInsets.only(
+              left: defaultPaddingX, right: defaultPaddingX, top: 16.0),
+          child: Text(
+            "DLCs",
+            style: Theme.of(context).textTheme.headlineSmall,
           ),
-        if (widget.game.dlcs.isNotEmpty)
-          SegmentedActionCard(
-            items: widget.game.dlcs
+        ),
+        SegmentedActionCard(
+          items: [
+            ...widget.game.dlcs
                 .map(
                   (dlc) => SegmentedActionCardItem(
                     leading: PlayStatusIcon(playStatus: dlc.status),
@@ -130,7 +156,9 @@ class _SliverGameDetailsState extends ConsumerState<SliverGameDetails> {
                   ),
                 )
                 .toList(),
-          ),
+            addDLCActionCardItem,
+          ],
+        ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: defaultPaddingX),
           child: Text(
