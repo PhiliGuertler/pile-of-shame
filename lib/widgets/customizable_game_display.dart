@@ -114,6 +114,16 @@ class CustomizableGameDisplay extends ConsumerWidget {
 
     const double favoriteSize = 32;
 
+    List<String> notes = [];
+    if (game.notes != null && game.notes!.isNotEmpty) {
+      notes.add(game.notes!);
+    }
+    for (var dlc in game.dlcs) {
+      if (dlc.notes != null && dlc.notes!.isNotEmpty) {
+        notes.add(dlc.notes!);
+      }
+    }
+
     return Slidable(
       endActionPane: ActionPane(
         motion: const ScrollMotion(),
@@ -133,7 +143,7 @@ class CustomizableGameDisplay extends ConsumerWidget {
           ),
         ],
       ),
-      startActionPane: game.notes != null && game.notes!.isNotEmpty
+      startActionPane: notes.isNotEmpty
           ? ActionPane(
               motion: const ScrollMotion(),
               extentRatio: 0.2,
@@ -143,12 +153,8 @@ class CustomizableGameDisplay extends ConsumerWidget {
                     showDialog(
                       context: context,
                       builder: (context) {
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: defaultPaddingX, vertical: 48.0),
-                          child: Note(
-                            child: Text(game.notes!),
-                          ),
+                        return NotesOverlay(
+                          notes: notes,
                         );
                       },
                     );
@@ -184,7 +190,7 @@ class CustomizableGameDisplay extends ConsumerWidget {
                 end: 0,
                 curve: Curves.easeInOutBack,
               ),
-          if (game.notes != null && game.notes!.isNotEmpty)
+          if (notes.isNotEmpty)
             Positioned(
               left: -favoriteSize * 0.4,
               child: Icon(
@@ -212,6 +218,69 @@ class CustomizableGameDisplay extends ConsumerWidget {
             onTap: onTap,
           ),
         ],
+      ),
+    );
+  }
+}
+
+class NotesOverlay extends StatefulWidget {
+  final List<String> notes;
+
+  const NotesOverlay({super.key, required this.notes});
+
+  @override
+  State<NotesOverlay> createState() => _NotesOverlayState();
+}
+
+class _NotesOverlayState extends State<NotesOverlay> {
+  late List<bool> wasTappedOutside;
+
+  @override
+  void initState() {
+    super.initState();
+
+    wasTappedOutside = widget.notes.map((e) => false).toList();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        horizontal: defaultPaddingX,
+        vertical: 48.0,
+      ),
+      child: GestureDetector(
+        onTap: () {
+          Future.delayed(30.ms, () {
+            if (wasTappedOutside.reduce((value, element) => value && element) &&
+                context.mounted) {
+              Navigator.of(context).pop();
+            }
+          });
+        },
+        child: ListView.builder(
+          itemBuilder: (context, index) {
+            return Padding(
+              padding: const EdgeInsets.symmetric(vertical: 16.0),
+              child: TapRegion(
+                onTapInside: (event) {
+                  setState(() {
+                    wasTappedOutside[index] = false;
+                  });
+                },
+                onTapOutside: (event) {
+                  setState(() {
+                    wasTappedOutside[index] = true;
+                  });
+                },
+                child: Note(
+                  child: Text(widget.notes[index]),
+                ),
+              ),
+            );
+          },
+          itemCount: widget.notes.length,
+        ),
       ),
     );
   }
