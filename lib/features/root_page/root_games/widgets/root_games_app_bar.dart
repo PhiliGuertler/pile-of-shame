@@ -80,6 +80,7 @@ class _RootGamesAppBarState extends ConsumerState<RootGamesAppBar> {
           key: const ValueKey("toggle_game_search"),
           onPressed: () {
             if (isSearchOpen) {
+              searchTextController.text = "";
               ref.invalidate(gameSearchProvider);
             }
             setState(() {
