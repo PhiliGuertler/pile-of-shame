@@ -54,3 +54,4 @@ secrets/
 **/*.g.dart
 **/*.freezed.dart
 **/*.mocks.dart
+/test/coverage_helper_test.dart
