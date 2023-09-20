@@ -28,6 +28,87 @@ class AddGameScreen extends ConsumerStatefulWidget {
 class _AddGameScreenState extends ConsumerState<AddGameScreen> {
   final _formKey = GlobalKey<FormState>();
 
+  SegmentedActionCardItem dlcToItem(
+      BuildContext context, DLC dlc, int index, EditableGame editableGame) {
+    final l10n = AppLocalizations.of(context)!;
+    return SegmentedActionCardItem(
+      trailing: IconButton(
+        onPressed: () async {
+          final bool? result = await showAdaptiveDialog(
+            context: context,
+            builder: (context) => AlertDialog.adaptive(
+              title: Text(l10n.deleteDLC),
+              content: Text(l10n.thisActionCannotBeUndone),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(false);
+                  },
+                  child: Text(l10n.cancel),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(true);
+                  },
+                  child: Text(
+                    l10n.delete,
+                    style:
+                        TextStyle(color: Theme.of(context).colorScheme.error),
+                  ),
+                ),
+              ],
+            ),
+          );
+
+          if (result != null && result) {
+            final List<DLC> updatedList = List.from(editableGame.dlcs);
+            updatedList.removeAt(index);
+
+            ref
+                .read(
+                  addGameProvider(widget.initialValue).notifier,
+                )
+                .updateGame(
+                  editableGame.copyWith(
+                    dlcs: updatedList,
+                  ),
+                );
+          }
+        },
+        icon: Icon(
+          Icons.delete,
+          color: Theme.of(context).colorScheme.error,
+        ),
+      ),
+      leading: const Icon(Icons.edit),
+      title: Text(dlc.name),
+      onTap: () async {
+        final EditableDLC? update = await Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => AddDLCScreen(
+              initialValue: EditableDLC.fromDLC(dlc),
+            ),
+          ),
+        );
+
+        if (update != null) {
+          final List<DLC> updatedList = List.from(editableGame.dlcs);
+          updatedList[index] = update.toDLC();
+
+          ref
+              .read(
+                addGameProvider(widget.initialValue).notifier,
+              )
+              .updateGame(
+                editableGame.copyWith(
+                  dlcs: updatedList,
+                ),
+              );
+        }
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final editableGame = ref.watch(addGameProvider(widget.initialValue));
@@ -156,98 +237,7 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
                           .map(
                             (index, dlc) => MapEntry(
                               index,
-                              SegmentedActionCardItem(
-                                trailing: IconButton(
-                                  onPressed: () async {
-                                    final bool? result =
-                                        await showAdaptiveDialog(
-                                      context: context,
-                                      builder: (context) =>
-                                          AlertDialog.adaptive(
-                                        title: Text(
-                                            AppLocalizations.of(context)!
-                                                .deleteDLC),
-                                        content: Text(
-                                            AppLocalizations.of(context)!
-                                                .thisActionCannotBeUndone),
-                                        actions: [
-                                          TextButton(
-                                            onPressed: () {
-                                              Navigator.of(context).pop(false);
-                                            },
-                                            child: Text(
-                                                AppLocalizations.of(context)!
-                                                    .cancel),
-                                          ),
-                                          TextButton(
-                                            onPressed: () {
-                                              Navigator.of(context).pop(true);
-                                            },
-                                            child: Text(
-                                              AppLocalizations.of(context)!
-                                                  .delete,
-                                              style: TextStyle(
-                                                  color: Theme.of(context)
-                                                      .colorScheme
-                                                      .error),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    );
-
-                                    if (result != null && result) {
-                                      final List<DLC> updatedList =
-                                          List.from(editableGame.dlcs);
-                                      updatedList.removeAt(index);
-
-                                      ref
-                                          .read(
-                                            addGameProvider(widget.initialValue)
-                                                .notifier,
-                                          )
-                                          .updateGame(
-                                            editableGame.copyWith(
-                                              dlcs: updatedList,
-                                            ),
-                                          );
-                                    }
-                                  },
-                                  icon: Icon(
-                                    Icons.delete,
-                                    color: Theme.of(context).colorScheme.error,
-                                  ),
-                                ),
-                                leading: const Icon(Icons.edit),
-                                title: Text(dlc.name),
-                                onTap: () async {
-                                  final EditableDLC? update =
-                                      await Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (context) => AddDLCScreen(
-                                        initialValue: EditableDLC.fromDLC(dlc),
-                                      ),
-                                    ),
-                                  );
-
-                                  if (update != null) {
-                                    final List<DLC> updatedList =
-                                        List.from(editableGame.dlcs);
-                                    updatedList[index] = update.toDLC();
-
-                                    ref
-                                        .read(
-                                          addGameProvider(widget.initialValue)
-                                              .notifier,
-                                        )
-                                        .updateGame(
-                                          editableGame.copyWith(
-                                            dlcs: updatedList,
-                                          ),
-                                        );
-                                  }
-                                },
-                              ),
+                              dlcToItem(context, dlc, index, editableGame),
                             ),
                           )
                           .values
