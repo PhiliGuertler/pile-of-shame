@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pile_of_shame/features/games/dlc_details/screens/dlc_details_screen.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
@@ -69,7 +68,7 @@ class _SliverGameDetailsState extends ConsumerState<SliverGameDetails> {
               });
             },
           ),
-        ).animate().fadeIn(),
+        ),
         ListTile(
           title: Text(AppLocalizations.of(context)!.lastModified),
           subtitle: Text(
@@ -78,7 +77,7 @@ class _SliverGameDetailsState extends ConsumerState<SliverGameDetails> {
               timeFormatter.format(widget.game.lastModified),
             ),
           ),
-        ).animate().fadeIn(),
+        ),
         ListTile(
           leading: PlayStatusIcon(
             playStatus: widget.game.status,
@@ -86,7 +85,7 @@ class _SliverGameDetailsState extends ConsumerState<SliverGameDetails> {
           title: Text(AppLocalizations.of(context)!.status),
           subtitle: Text(
               widget.game.status.toLocaleString(AppLocalizations.of(context)!)),
-        ).animate().fadeIn(),
+        ),
         ListTile(
           leading: GamePlatformIcon(
             platform: widget.game.platform,
@@ -94,7 +93,7 @@ class _SliverGameDetailsState extends ConsumerState<SliverGameDetails> {
           title: Text(AppLocalizations.of(context)!.platform),
           subtitle: Text(widget.game.platform
               .localizedName(AppLocalizations.of(context)!)),
-        ).animate().fadeIn(),
+        ),
         ListTile(
           leading: USKLogo(
             ageRestriction: widget.game.usk,
@@ -102,7 +101,7 @@ class _SliverGameDetailsState extends ConsumerState<SliverGameDetails> {
           title: Text(AppLocalizations.of(context)!.ageRating),
           subtitle: Text(AppLocalizations.of(context)!
               .ratedN(widget.game.usk.age.toString())),
-        ).animate().fadeIn(),
+        ),
         if (widget.game.notes != null && widget.game.notes!.isNotEmpty)
           Note(
             child: Text(widget.game.notes!),
@@ -115,7 +114,7 @@ class _SliverGameDetailsState extends ConsumerState<SliverGameDetails> {
               "DLCs",
               style: Theme.of(context).textTheme.headlineSmall,
             ),
-          ).animate().fadeIn(),
+          ),
         if (widget.game.dlcs.isNotEmpty)
           SegmentedActionCard(
             items: widget.game.dlcs
@@ -131,7 +130,7 @@ class _SliverGameDetailsState extends ConsumerState<SliverGameDetails> {
                   ),
                 )
                 .toList(),
-          ).animate().fadeIn(),
+          ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: defaultPaddingX),
           child: Text(

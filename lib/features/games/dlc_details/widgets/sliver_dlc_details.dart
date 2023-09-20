@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/game.dart';
@@ -75,7 +74,7 @@ class SliverDLCDetails extends ConsumerWidget {
           title: Text(AppLocalizations.of(context)!.status),
           subtitle:
               Text(dlc.status.toLocaleString(AppLocalizations.of(context)!)),
-        ).animate().fadeIn(),
+        ),
         ListTile(
           leading: GamePlatformIcon(
             platform: game.platform,
