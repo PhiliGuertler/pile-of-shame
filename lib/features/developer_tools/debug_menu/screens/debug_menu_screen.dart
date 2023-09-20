@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:pile_of_shame/features/developer_tools/debug_game_controller_assets/screens/debug_game_controller_assets_screen.dart';
-import 'package:pile_of_shame/features/developer_tools/debug_game_controller_shader/screens/debug_game_controller_shader_screen.dart';
 import 'package:pile_of_shame/features/developer_tools/debug_game_platform_icons/screens/debug_game_platform_icons_screen.dart';
 import 'package:pile_of_shame/utils/constants.dart';
 import 'package:pile_of_shame/widgets/app_scaffold.dart';
@@ -52,16 +51,6 @@ class DebugMenuScreen extends StatelessWidget {
                     Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) =>
                           const DebugGameControllerAssetsScreen(),
-                    ));
-                  },
-                ),
-                SegmentedActionCardItem.debug(
-                  leading: const Icon(Icons.bolt),
-                  title: const Text("Game-Platform Controllers"),
-                  subtitle: const Text("Display a fancy shader"),
-                  onTap: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => DebugGameControllerShaderScreen(),
                     ));
                   },
                 ),

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pile_of_shame/features/games/add_game/models/editable_game.dart';
-import 'package:pile_of_shame/features/games/add_game/screens/add_dlc_screen.dart';
+import 'package:pile_of_shame/features/games/add_or_edit_game/models/editable_game.dart';
+import 'package:pile_of_shame/features/games/add_or_edit_game/screens/add_or_edit_dlc_screen.dart';
 import 'package:pile_of_shame/features/games/dlc_details/widgets/sliver_dlc_details.dart';
 import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/models/game_platforms.dart';
@@ -96,7 +97,7 @@ class DLCDetailsScreen extends ConsumerWidget {
                   dlc: dlc,
                 ),
               ],
-            ),
+            ).animate().fadeIn(),
           ),
         ),
       ),

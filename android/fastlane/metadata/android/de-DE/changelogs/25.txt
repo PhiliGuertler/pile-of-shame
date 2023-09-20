@@ -1,0 +1,5 @@
+Kleinere Anpassungen unter der Haube und ein paar Schönheitsarbeiten.
+Außerdem sind folgende Features und Verbesserungen neu:
+- DLCs können nun direkt in den Details eines Spiels hinzugefügt werden.
+- DLCs können nun durch wischen nach links direkt in den Details eines Spiels gelöscht werden.
+- Notizen von DLCs können nun direkt in der Spiele-Liste angezeigt werden, indem nach rechts gewischt wird.

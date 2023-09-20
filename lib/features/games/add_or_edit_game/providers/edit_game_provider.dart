@@ -1,7 +1,7 @@
-import 'package:pile_of_shame/features/games/add_game/models/editable_game.dart';
+import 'package:pile_of_shame/features/games/add_or_edit_game/models/editable_game.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'add_game_provider.g.dart';
+part 'edit_game_provider.g.dart';
 
 @riverpod
 class AddGame extends _$AddGame {

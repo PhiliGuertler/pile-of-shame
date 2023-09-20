@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pile_of_shame/features/games/add_or_edit_game/models/editable_game.dart';
+import 'package:pile_of_shame/features/games/add_or_edit_game/screens/add_or_edit_dlc_screen.dart';
 import 'package:pile_of_shame/features/games/dlc_details/screens/dlc_details_screen.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/game.dart';
@@ -29,14 +30,59 @@ class SliverGameDetails extends ConsumerStatefulWidget {
 class _SliverGameDetailsState extends ConsumerState<SliverGameDetails> {
   bool shouldShowPriceSum = true;
 
+  // a working copy of currently dismissed dlcs.
+  // This is necessary for
+  List<String> dismissedDLCs = [];
+
   @override
   Widget build(BuildContext context) {
     final dateFormatter = ref.watch(dateFormatProvider(context));
     final timeFormatter = ref.watch(timeFormatProvider(context));
     final currencyFormatter = ref.watch(currencyFormatProvider(context));
 
+    for (int i = dismissedDLCs.length - 1; i >= 0; --i) {
+      String dismissed = dismissedDLCs[i];
+      if (!widget.game.dlcs.any(
+        (element) => element.id == dismissed,
+      )) {
+        // clean up the list of dismissed dlcs on every rerender
+        setState(() {
+          dismissedDLCs.remove(dismissed);
+        });
+      }
+    }
+
+    final addDLCActionCardItem = SegmentedActionCardItem(
+      key: const ValueKey("add_dlc"),
+      leading: const Icon(Icons.add),
+      title: Text(AppLocalizations.of(context)!.addDLC),
+      onTap: () async {
+        final EditableDLC? result =
+            await Navigator.of(context).push<EditableDLC?>(
+          MaterialPageRoute(
+            builder: (context) => const AddDLCScreen(),
+          ),
+        );
+
+        if (result != null) {
+          final updatedGame =
+              widget.game.copyWith(dlcs: [...widget.game.dlcs, result.toDLC()]);
+
+          final games = await ref.read(gamesProvider.future);
+          final update = games.updateGame(updatedGame.id, updatedGame);
+
+          final gameStorage = ref.read(gameStorageProvider);
+          await gameStorage.persistGamesList(update);
+        }
+      },
+    );
+
     return SliverList.list(
       children: [
+        if (widget.game.notes != null && widget.game.notes!.isNotEmpty)
+          Note(
+            child: Text(widget.game.notes!),
+          ),
         ListTile(
           title: Text(AppLocalizations.of(context)!.gameName),
           subtitle: Text(widget.game.name),
@@ -69,7 +115,7 @@ class _SliverGameDetailsState extends ConsumerState<SliverGameDetails> {
               });
             },
           ),
-        ).animate().fadeIn(),
+        ),
         ListTile(
           title: Text(AppLocalizations.of(context)!.lastModified),
           subtitle: Text(
@@ -78,7 +124,7 @@ class _SliverGameDetailsState extends ConsumerState<SliverGameDetails> {
               timeFormatter.format(widget.game.lastModified),
             ),
           ),
-        ).animate().fadeIn(),
+        ),
         ListTile(
           leading: PlayStatusIcon(
             playStatus: widget.game.status,
@@ -86,7 +132,7 @@ class _SliverGameDetailsState extends ConsumerState<SliverGameDetails> {
           title: Text(AppLocalizations.of(context)!.status),
           subtitle: Text(
               widget.game.status.toLocaleString(AppLocalizations.of(context)!)),
-        ).animate().fadeIn(),
+        ),
         ListTile(
           leading: GamePlatformIcon(
             platform: widget.game.platform,
@@ -94,7 +140,7 @@ class _SliverGameDetailsState extends ConsumerState<SliverGameDetails> {
           title: Text(AppLocalizations.of(context)!.platform),
           subtitle: Text(widget.game.platform
               .localizedName(AppLocalizations.of(context)!)),
-        ).animate().fadeIn(),
+        ),
         ListTile(
           leading: USKLogo(
             ageRestriction: widget.game.usk,
@@ -102,25 +148,22 @@ class _SliverGameDetailsState extends ConsumerState<SliverGameDetails> {
           title: Text(AppLocalizations.of(context)!.ageRating),
           subtitle: Text(AppLocalizations.of(context)!
               .ratedN(widget.game.usk.age.toString())),
-        ).animate().fadeIn(),
-        if (widget.game.notes != null && widget.game.notes!.isNotEmpty)
-          Note(
-            child: Text(widget.game.notes!),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(
+              left: defaultPaddingX, right: defaultPaddingX, top: 16.0),
+          child: Text(
+            "DLCs",
+            style: Theme.of(context).textTheme.headlineSmall,
           ),
-        if (widget.game.dlcs.isNotEmpty)
-          Padding(
-            padding: const EdgeInsets.only(
-                left: defaultPaddingX, right: defaultPaddingX, top: 16.0),
-            child: Text(
-              "DLCs",
-              style: Theme.of(context).textTheme.headlineSmall,
-            ),
-          ).animate().fadeIn(),
-        if (widget.game.dlcs.isNotEmpty)
-          SegmentedActionCard(
-            items: widget.game.dlcs
+        ),
+        SegmentedActionCard(
+          items: [
+            ...widget.game.dlcs
+                .where((element) => !dismissedDLCs.contains(element.id))
                 .map(
                   (dlc) => SegmentedActionCardItem(
+                    key: ValueKey(dlc.id),
                     leading: PlayStatusIcon(playStatus: dlc.status),
                     title: Text(dlc.name),
                     subtitle: Text(currencyFormatter.format(dlc.price)),
@@ -128,10 +171,29 @@ class _SliverGameDetailsState extends ConsumerState<SliverGameDetails> {
                       game: widget.game,
                       dlcId: dlc.id,
                     ),
+                    onDelete: () async {
+                      setState(() {
+                        dismissedDLCs.add(dlc.id);
+                      });
+
+                      final updatedGame = widget.game.copyWith(
+                          dlcs: widget.game.dlcs
+                              .where((element) => element.id != dlc.id)
+                              .toList());
+                      final gamesList = await ref.read(gamesProvider.future);
+                      final update =
+                          gamesList.updateGame(updatedGame.id, updatedGame);
+
+                      await ref
+                          .read(gameStorageProvider)
+                          .persistGamesList(update);
+                    },
                   ),
                 )
                 .toList(),
-          ).animate().fadeIn(),
+            addDLCActionCardItem,
+          ],
+        ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: defaultPaddingX),
           child: Text(
