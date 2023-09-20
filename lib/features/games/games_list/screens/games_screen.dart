@@ -35,8 +35,11 @@ class GamesScreen extends ConsumerWidget {
           child: CustomScrollView(
             keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
             controller: scrollController,
-            physics: const BouncingScrollPhysics(
-                parent: AlwaysScrollableScrollPhysics()),
+            physics: !hasGames
+                ? const BouncingScrollPhysics(
+                    parent: AlwaysScrollableScrollPhysics(),
+                  )
+                : null,
             slivers: [
               if (!hasGames)
                 const SliverFancyImageHeader(
