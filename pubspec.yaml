@@ -55,9 +55,6 @@ dev_dependencies:
 flutter:
   uses-material-design: true
 
-  shaders:
-    - shaders/game_controller_shader.frag
-
   assets:
     - assets/app/
     - assets/languages/
@@ -74,4 +71,3 @@ flutter:
     - assets/platforms/icons/pc/
     - assets/platforms/icons/sega/
     - assets/platforms/icons/sony/
-    - assets/platforms/shader/sony/
