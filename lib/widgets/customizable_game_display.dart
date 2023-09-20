@@ -174,7 +174,16 @@ class CustomizableGameDisplay extends ConsumerWidget {
               .animate(
                 target: game.isFavorite ? 1 : 0,
               )
-              .moveX(begin: favoriteSize, end: 0, curve: Curves.easeInOutBack),
+              .rotate(
+                begin: 0,
+                end: -0.04,
+                curve: Curves.easeInOutBack,
+              )
+              .moveX(
+                begin: favoriteSize,
+                end: 0,
+                curve: Curves.easeInOutBack,
+              ),
           if (game.notes != null && game.notes!.isNotEmpty)
             Positioned(
               left: -favoriteSize * 0.4,
@@ -182,8 +191,18 @@ class CustomizableGameDisplay extends ConsumerWidget {
                 Icons.note,
                 size: favoriteSize,
                 color: Theme.of(context).colorScheme.surfaceVariant,
-              ).animate().moveX(
-                  begin: -favoriteSize, end: 0, curve: Curves.easeInOutBack),
+              )
+                  .animate()
+                  .rotate(
+                    begin: 0,
+                    end: 0.02,
+                    curve: Curves.easeInOutBack,
+                  )
+                  .moveX(
+                    begin: -favoriteSize,
+                    end: 0,
+                    curve: Curves.easeInOutBack,
+                  ),
             ),
           ListTile(
             title: Text(game.name),
