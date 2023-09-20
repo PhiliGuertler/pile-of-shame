@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pile_of_shame/features/games/add_game/models/editable_game.dart';
-import 'package:pile_of_shame/features/games/add_game/screens/add_game_screen.dart';
+import 'package:pile_of_shame/features/games/add_or_edit_game/models/editable_game.dart';
+import 'package:pile_of_shame/features/games/add_or_edit_game/screens/add_or_edit_game_screen.dart';
 import 'package:pile_of_shame/features/games/game_details/widgets/sliver_game_details.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/game_platforms.dart';

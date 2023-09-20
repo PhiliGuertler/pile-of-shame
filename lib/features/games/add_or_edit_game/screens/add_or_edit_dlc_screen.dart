@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pile_of_shame/features/games/add_game/models/editable_game.dart';
-import 'package:pile_of_shame/features/games/add_game/providers/add_game_provider.dart';
+import 'package:pile_of_shame/features/games/add_or_edit_game/models/editable_game.dart';
+import 'package:pile_of_shame/features/games/add_or_edit_game/providers/edit_game_provider.dart';
+import 'package:pile_of_shame/features/games/add_or_edit_game/widgets/name_input_field.dart';
+import 'package:pile_of_shame/features/games/add_or_edit_game/widgets/notes_input_field.dart';
+import 'package:pile_of_shame/features/games/add_or_edit_game/widgets/price_input_field.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/utils/constants.dart';
-import 'package:pile_of_shame/utils/validators.dart';
 import 'package:pile_of_shame/widgets/app_scaffold.dart';
-import 'package:pile_of_shame/widgets/input/number_input_field.dart';
-import 'package:pile_of_shame/widgets/input/text_input_field.dart';
 
 import '../widgets/play_status_dropdown.dart';
 
@@ -44,16 +44,13 @@ class _AddDLCScreenState extends ConsumerState<AddDLCScreen> {
                 Padding(
                   padding: const EdgeInsets.symmetric(
                       horizontal: defaultPaddingX, vertical: 4.0),
-                  child: TextInputField(
-                    label: Text('${AppLocalizations.of(context)!.name}*'),
-                    textInputAction: TextInputAction.next,
-                    initialValue: editableDLC.name ?? '',
+                  child: NameInputField(
+                    value: editableDLC.name,
                     onChanged: (value) {
                       ref
                           .read(addDLCProvider(widget.initialValue).notifier)
                           .updateDLC(editableDLC.copyWith(name: value));
                     },
-                    validator: Validators.validateFieldIsRequired(context),
                   ),
                 ),
                 Padding(
@@ -71,27 +68,20 @@ class _AddDLCScreenState extends ConsumerState<AddDLCScreen> {
                 Padding(
                   padding:
                       const EdgeInsets.symmetric(horizontal: defaultPaddingX),
-                  child: NumberInputField(
-                    label: Text(AppLocalizations.of(context)!.price),
-                    textInputAction: TextInputAction.next,
-                    initialValue: editableDLC.price,
+                  child: PriceInputField(
+                    value: editableDLC.price,
                     onChanged: (value) {
                       ref
                           .read(addDLCProvider(widget.initialValue).notifier)
                           .updateDLC(editableDLC.copyWith(price: value));
                     },
-                    isCurrency: true,
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(
                       horizontal: defaultPaddingX, vertical: 4.0),
-                  child: TextInputField(
-                    key: const ValueKey("dlc_notes"),
-                    isMultiline: true,
-                    label: Text(AppLocalizations.of(context)!.notes),
-                    textInputAction: TextInputAction.newline,
-                    initialValue: editableDLC.notes ?? '',
+                  child: NotesInputField(
+                    value: editableDLC.notes,
                     onChanged: (value) {
                       ref
                           .read(addDLCProvider(widget.initialValue).notifier)

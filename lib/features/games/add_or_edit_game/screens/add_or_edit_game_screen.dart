@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pile_of_shame/features/games/add_game/providers/add_game_provider.dart';
-import 'package:pile_of_shame/features/games/add_game/widgets/game_platform_input_field.dart';
+import 'package:pile_of_shame/features/games/add_or_edit_game/providers/edit_game_provider.dart';
+import 'package:pile_of_shame/features/games/add_or_edit_game/widgets/game_platform_input_field.dart';
+import 'package:pile_of_shame/features/games/add_or_edit_game/widgets/name_input_field.dart';
+import 'package:pile_of_shame/features/games/add_or_edit_game/widgets/notes_input_field.dart';
+import 'package:pile_of_shame/features/games/add_or_edit_game/widgets/price_input_field.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/age_restriction.dart';
 import 'package:pile_of_shame/models/game.dart';
@@ -12,14 +15,12 @@ import 'package:pile_of_shame/utils/validators.dart';
 import 'package:pile_of_shame/widgets/app_scaffold.dart';
 import 'package:pile_of_shame/widgets/game_platform_icon.dart';
 import 'package:pile_of_shame/widgets/input/dropdown_search_field.dart';
-import 'package:pile_of_shame/widgets/input/number_input_field.dart';
-import 'package:pile_of_shame/widgets/input/text_input_field.dart';
 import 'package:pile_of_shame/widgets/segmented_action_card.dart';
 import 'package:pile_of_shame/widgets/usk_logo.dart';
 
 import '../models/editable_game.dart';
 import '../widgets/play_status_dropdown.dart';
-import 'add_dlc_screen.dart';
+import 'add_or_edit_dlc_screen.dart';
 
 class AddGameScreen extends ConsumerStatefulWidget {
   final EditableGame? initialValue;
@@ -68,17 +69,13 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
                 Padding(
                   padding: const EdgeInsets.symmetric(
                       horizontal: defaultPaddingX, vertical: 4.0),
-                  child: TextInputField(
-                    key: const ValueKey("game_name"),
-                    label: Text('${AppLocalizations.of(context)!.name}*'),
-                    textInputAction: TextInputAction.next,
-                    initialValue: editableGame.name ?? '',
+                  child: NameInputField(
+                    value: editableGame.name,
                     onChanged: (value) {
                       ref
                           .read(addGameProvider(widget.initialValue).notifier)
                           .updateGame(editableGame.copyWith(name: value));
                     },
-                    validator: Validators.validateFieldIsRequired(context),
                   ),
                 ),
                 Padding(
@@ -144,17 +141,13 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
                 Padding(
                   padding:
                       const EdgeInsets.symmetric(horizontal: defaultPaddingX),
-                  child: NumberInputField(
-                    key: const ValueKey("price"),
-                    label: Text(AppLocalizations.of(context)!.price),
-                    textInputAction: TextInputAction.next,
-                    initialValue: editableGame.price,
+                  child: PriceInputField(
+                    value: editableGame.price,
                     onChanged: (value) {
                       ref
                           .read(addGameProvider(widget.initialValue).notifier)
                           .updateGame(editableGame.copyWith(price: value));
                     },
-                    isCurrency: true,
                   ),
                 ),
                 Padding(
@@ -210,12 +203,8 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
                 Padding(
                   padding: const EdgeInsets.symmetric(
                       horizontal: defaultPaddingX, vertical: 4.0),
-                  child: TextInputField(
-                    key: const ValueKey("game_notes"),
-                    isMultiline: true,
-                    label: Text(AppLocalizations.of(context)!.notes),
-                    textInputAction: TextInputAction.newline,
-                    initialValue: editableGame.notes ?? '',
+                  child: NotesInputField(
+                    value: editableGame.notes,
                     onChanged: (value) {
                       ref
                           .read(addGameProvider(widget.initialValue).notifier)
