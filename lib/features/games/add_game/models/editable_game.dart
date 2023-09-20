@@ -17,6 +17,7 @@ class EditableDLC with _$EditableDLC {
     @Default(PlayStatus.onPileOfShame) PlayStatus status,
     double? price,
     String? notes,
+    @Default(false) bool isFavorite,
   }) = _EditableDLC;
 
   factory EditableDLC.fromDLC(DLC dlc) {
@@ -26,6 +27,7 @@ class EditableDLC with _$EditableDLC {
       price: dlc.price,
       status: dlc.status,
       notes: dlc.notes,
+      isFavorite: dlc.isFavorite,
     );
   }
 
@@ -39,10 +41,11 @@ class EditableDLC with _$EditableDLC {
     return DLC(
       id: uuid ?? const Uuid().v4(),
       lastModified: DateTime.now(),
-      name: name!,
+      name: name!.trim(),
       status: status,
       price: price ?? 0.0,
-      notes: notes,
+      notes: notes != null ? notes!.trim() : notes,
+      isFavorite: isFavorite,
     );
   }
 }
@@ -58,8 +61,9 @@ class EditableGame with _$EditableGame {
     @Default(PlayStatus.onPileOfShame) PlayStatus status,
     double? price,
     @Default(USK.usk0) USK usk,
-    @Default([]) List<EditableDLC> dlcs,
+    @Default([]) List<DLC> dlcs,
     String? notes,
+    @Default(false) bool isFavorite,
   }) = _EditableGame;
 
   factory EditableGame.fromGame(Game game) {
@@ -70,8 +74,9 @@ class EditableGame with _$EditableGame {
       price: game.price,
       status: game.status,
       usk: game.usk,
-      dlcs: game.dlcs.map((dlc) => EditableDLC.fromDLC(dlc)).toList(),
+      dlcs: game.dlcs,
       notes: game.notes,
+      isFavorite: game.isFavorite,
     );
   }
 
@@ -80,18 +85,20 @@ class EditableGame with _$EditableGame {
   }
 
   Game toGame() {
-    assert(isValid() && dlcs.every((element) => element.isValid()));
+    assert(isValid() &&
+        dlcs.every((element) => EditableDLC.fromDLC(element).isValid()));
 
     return Game(
       id: uuid ?? const Uuid().v4(),
-      name: name!,
+      name: name!.trim(),
       platform: platform!,
       status: status,
       lastModified: DateTime.now(),
       price: price ?? 0.0,
       usk: usk,
-      dlcs: dlcs.map((e) => e.toDLC()).toList(),
-      notes: notes,
+      dlcs: dlcs,
+      notes: notes != null ? notes!.trim() : notes,
+      isFavorite: isFavorite,
     );
   }
 }

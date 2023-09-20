@@ -1,0 +1,4 @@
+Kleinere Fehlerbehebungen
+- Beim Bearbeiten von Spielen wird nicht länger der Favoriten-Zustand entfernt.
+- Das Bearbeiten eines Spieles aktualisiert nicht mehr das Änderungsdatum seiner DLCs.
+- Führende und folgende Leerzeichen in Namen und Notizen werden nicht mehr gespeichert.
