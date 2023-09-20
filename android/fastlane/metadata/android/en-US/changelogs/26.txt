@@ -1,0 +1,5 @@
+Minor adjustments under the hood and a few beauty touches.
+Also, the following features and improvements are new:
+- DLCs can now be added directly in the details of a game.
+- DLCs can now be deleted by swiping to the left directly in the details of a game.
+- Notes from DLCs can now be displayed directly in the game list by swiping to the right.
