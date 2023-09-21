@@ -26,6 +26,7 @@ void main() {
         name: "a-dlc",
         status: PlayStatus.completed,
         lastModified: DateTime(2023, 9, 12),
+        price: 25,
       ),
     ],
   );
@@ -85,6 +86,32 @@ void main() {
   group("GameSorterByPrice", () {
     const sorter = GameSorterByPrice();
     test("compares two games ascending correctly", () {
+      // 15 + 25 > 19
+      final result = sorter.compareGames(a, b, true);
+      expect(isABeforeB(result), false);
+    });
+    test("compares two games descending correctly", () {
+      final result = sorter.compareGames(a, b, false);
+      expect(isABeforeB(result), true);
+    });
+    test("sorts by name if both games have the same price", () {
+      final result1 = sorter.compareGames(
+        a.copyWith(price: 15, name: 'bbbb'),
+        a.copyWith(price: 15),
+        true,
+      );
+      expect(isABeforeB(result1), false);
+      final result2 = sorter.compareGames(
+        a.copyWith(price: 15),
+        a.copyWith(price: 15, name: 'bbbb'),
+        true,
+      );
+      expect(isABeforeB(result2), true);
+    });
+  });
+  group("GameSorterByBasePrice", () {
+    const sorter = GameSorterByBasePrice();
+    test("compares two games ascending correctly", () {
       // 15 < 19
       final result = sorter.compareGames(a, b, true);
       expect(isABeforeB(result), true);
@@ -103,6 +130,32 @@ void main() {
       final result2 = sorter.compareGames(
         a.copyWith(price: 15),
         a.copyWith(price: 15, name: 'bbbb'),
+        true,
+      );
+      expect(isABeforeB(result2), true);
+    });
+  });
+  group("GameSorterByBasePrice", () {
+    const sorter = GameSorterByTotalDLCPrice();
+    test("compares two games ascending correctly", () {
+      // 25 > 0
+      final result = sorter.compareGames(a, b, true);
+      expect(isABeforeB(result), false);
+    });
+    test("compares two games descending correctly", () {
+      final result = sorter.compareGames(a, b, false);
+      expect(isABeforeB(result), true);
+    });
+    test("sorts by name if both games have the same price", () {
+      final result1 = sorter.compareGames(
+        a.copyWith(name: 'bbbb'),
+        a.copyWith(),
+        true,
+      );
+      expect(isABeforeB(result1), false);
+      final result2 = sorter.compareGames(
+        a.copyWith(),
+        a.copyWith(name: 'bbbb'),
         true,
       );
       expect(isABeforeB(result2), true);
