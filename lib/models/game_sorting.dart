@@ -42,12 +42,46 @@ class GameSorterByPrice extends GameSorter {
 
   @override
   int compareGames(Game a, Game b, bool isAscending) {
+    final difference = a.fullPrice() - b.fullPrice();
+    if (difference.abs() < 0.01) {
+      return const GameSorterByName().compareGames(a, b, isAscending);
+    }
+    final factor = isAscending ? 1 : -1;
+    final result = a.fullPrice().compareTo(b.fullPrice()) * factor;
+    return result;
+  }
+}
+
+class GameSorterByBasePrice extends GameSorter {
+  const GameSorterByBasePrice();
+
+  @override
+  int compareGames(Game a, Game b, bool isAscending) {
     final difference = a.price - b.price;
     if (difference.abs() < 0.01) {
       return const GameSorterByName().compareGames(a, b, isAscending);
     }
     final factor = isAscending ? 1 : -1;
     final result = a.price.compareTo(b.price) * factor;
+    return result;
+  }
+}
+
+class GameSorterByTotalDLCPrice extends GameSorter {
+  const GameSorterByTotalDLCPrice();
+
+  @override
+  int compareGames(Game a, Game b, bool isAscending) {
+    final aDLCPriceSum = a.dlcs
+        .fold(0.0, (previousValue, element) => previousValue + element.price);
+    final bDLCPriceSum = b.dlcs
+        .fold(0.0, (previousValue, element) => previousValue + element.price);
+    final difference = aDLCPriceSum - bDLCPriceSum;
+    if (difference.abs() < 0.01) {
+      return const GameSorterByName().compareGames(a, b, isAscending);
+    }
+    final factor = isAscending ? 1 : -1;
+    final result = aDLCPriceSum.compareTo(bDLCPriceSum) * factor;
     return result;
   }
 }
@@ -142,6 +176,8 @@ enum SortStrategy {
   byName(sorter: GameSorterByName()),
   byPlayStatus(sorter: GameSorterByPlayStatus()),
   byPrice(sorter: GameSorterByPrice()),
+  byBasePrice(sorter: GameSorterByBasePrice()),
+  byDLCPrice(sorter: GameSorterByTotalDLCPrice()),
   byAgeRating(sorter: GameSorterByAgeRating()),
   byPlatform(sorter: GameSorterByPlatform()),
   byLastModified(sorter: GameSorterByLastModified()),
@@ -158,6 +194,10 @@ enum SortStrategy {
         return AppLocalizations.of(context)!.byStatus;
       case SortStrategy.byPrice:
         return AppLocalizations.of(context)!.byPrice;
+      case SortStrategy.byBasePrice:
+        return AppLocalizations.of(context)!.byBasePrice;
+      case SortStrategy.byDLCPrice:
+        return AppLocalizations.of(context)!.byDLCPrice;
       case SortStrategy.byAgeRating:
         return AppLocalizations.of(context)!.byAgeRating;
       case SortStrategy.byPlatform:
