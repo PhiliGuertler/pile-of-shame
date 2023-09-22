@@ -5,28 +5,7 @@ import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 part 'custom_game_display_settings.freezed.dart';
 part 'custom_game_display_settings.g.dart';
 
-enum GameDisplayLeading {
-  platformIcon,
-  playStatusIcon,
-  ageRatingIcon,
-  none,
-  ;
-
-  String toLocaleString(BuildContext context) {
-    switch (this) {
-      case GameDisplayLeading.platformIcon:
-        return AppLocalizations.of(context)!.platform;
-      case GameDisplayLeading.playStatusIcon:
-        return AppLocalizations.of(context)!.status;
-      case GameDisplayLeading.ageRatingIcon:
-        return AppLocalizations.of(context)!.ageRating;
-      case GameDisplayLeading.none:
-        return AppLocalizations.of(context)!.none;
-    }
-  }
-}
-
-enum GameDisplayTrailing {
+enum GameDisplayLeadingTrailing {
   priceAndLastModified,
   priceOnly,
   lastModifiedOnly,
@@ -38,19 +17,19 @@ enum GameDisplayTrailing {
 
   String toLocaleString(BuildContext context) {
     switch (this) {
-      case GameDisplayTrailing.ageRatingIcon:
+      case GameDisplayLeadingTrailing.ageRatingIcon:
         return AppLocalizations.of(context)!.ageRating;
-      case GameDisplayTrailing.lastModifiedOnly:
+      case GameDisplayLeadingTrailing.lastModifiedOnly:
         return AppLocalizations.of(context)!.lastModified;
-      case GameDisplayTrailing.none:
+      case GameDisplayLeadingTrailing.none:
         return AppLocalizations.of(context)!.none;
-      case GameDisplayTrailing.platformIcon:
+      case GameDisplayLeadingTrailing.platformIcon:
         return AppLocalizations.of(context)!.platform;
-      case GameDisplayTrailing.playStatusIcon:
+      case GameDisplayLeadingTrailing.playStatusIcon:
         return AppLocalizations.of(context)!.status;
-      case GameDisplayTrailing.priceOnly:
+      case GameDisplayLeadingTrailing.priceOnly:
         return AppLocalizations.of(context)!.price;
-      case GameDisplayTrailing.priceAndLastModified:
+      case GameDisplayLeadingTrailing.priceAndLastModified:
         return AppLocalizations.of(context)!.priceAndLastModified;
     }
   }
@@ -85,9 +64,10 @@ class CustomGameDisplaySettings with _$CustomGameDisplaySettings {
   const CustomGameDisplaySettings._();
 
   const factory CustomGameDisplaySettings({
-    @Default(GameDisplayLeading.playStatusIcon) GameDisplayLeading leading,
-    @Default(GameDisplayTrailing.priceAndLastModified)
-    GameDisplayTrailing trailing,
+    @Default(GameDisplayLeadingTrailing.playStatusIcon)
+    GameDisplayLeadingTrailing leading,
+    @Default(GameDisplayLeadingTrailing.priceAndLastModified)
+    GameDisplayLeadingTrailing trailing,
     @Default(GameDisplaySecondary.platformText) GameDisplaySecondary secondary,
     @Default(true) bool hasFancyAnimations,
     @Default(false) bool hasRepeatingAnimations,

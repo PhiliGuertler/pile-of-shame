@@ -107,7 +107,7 @@ class GameDisplayScreen extends ConsumerWidget {
                 Padding(
                   padding:
                       const EdgeInsets.symmetric(horizontal: defaultPaddingX),
-                  child: DropdownButtonFormField<GameDisplayLeading>(
+                  child: DropdownButtonFormField<GameDisplayLeadingTrailing>(
                     decoration: InputDecoration(
                       label: Text(AppLocalizations.of(context)!.leftArea),
                       suffixIcon: const Icon(Icons.expand_more),
@@ -123,15 +123,16 @@ class GameDisplayScreen extends ConsumerWidget {
                       }
                     },
                     // Display the text of selected items only, as the prefix-icon takes care of the logo
-                    selectedItemBuilder: (context) => GameDisplayLeading.values
+                    selectedItemBuilder: (context) => GameDisplayLeadingTrailing
+                        .values
                         .map((l) => Text(l.toLocaleString(context)))
                         .toList(),
                     // Don't display the default icon, instead display nothing
                     icon: const SizedBox(),
                     value: settings.leading,
-                    items: GameDisplayLeading.values
+                    items: GameDisplayLeadingTrailing.values
                         .map(
-                          (l) => DropdownMenuItem<GameDisplayLeading>(
+                          (l) => DropdownMenuItem<GameDisplayLeadingTrailing>(
                             value: l,
                             child: Text(
                               l.toLocaleString(context),
@@ -145,7 +146,7 @@ class GameDisplayScreen extends ConsumerWidget {
                 Padding(
                   padding:
                       const EdgeInsets.symmetric(horizontal: defaultPaddingX),
-                  child: DropdownButtonFormField<GameDisplayTrailing>(
+                  child: DropdownButtonFormField<GameDisplayLeadingTrailing>(
                     decoration: InputDecoration(
                       label: Text(AppLocalizations.of(context)!.rightArea),
                       suffixIcon: const Icon(Icons.expand_more),
@@ -161,15 +162,16 @@ class GameDisplayScreen extends ConsumerWidget {
                       }
                     },
                     // Display the text of selected items only, as the prefix-icon takes care of the logo
-                    selectedItemBuilder: (context) => GameDisplayTrailing.values
+                    selectedItemBuilder: (context) => GameDisplayLeadingTrailing
+                        .values
                         .map((l) => Text(l.toLocaleString(context)))
                         .toList(),
                     // Don't display the default icon, instead display nothing
                     icon: const SizedBox(),
                     value: settings.trailing,
-                    items: GameDisplayTrailing.values
+                    items: GameDisplayLeadingTrailing.values
                         .map(
-                          (l) => DropdownMenuItem<GameDisplayTrailing>(
+                          (l) => DropdownMenuItem<GameDisplayLeadingTrailing>(
                             value: l,
                             child: Text(
                               l.toLocaleString(context),

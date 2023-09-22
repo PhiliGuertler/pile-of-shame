@@ -42,27 +42,52 @@ class CustomizableGameDisplay extends ConsumerWidget {
     settings.when(
         data: (settings) {
           switch (settings.leading) {
-            case GameDisplayLeading.ageRatingIcon:
+            case GameDisplayLeadingTrailing.ageRatingIcon:
               leadingWidget = USKLogo.fromGame(game: game);
-            case GameDisplayLeading.platformIcon:
+            case GameDisplayLeadingTrailing.platformIcon:
               leadingWidget = GamePlatformIcon.fromGame(game: game);
-            case GameDisplayLeading.playStatusIcon:
+            case GameDisplayLeadingTrailing.playStatusIcon:
               leadingWidget = PlayStatusIcon.fromGame(
                 game: game,
               );
-            case GameDisplayLeading.none:
+            case GameDisplayLeadingTrailing.priceAndLastModified:
+              leadingWidget = Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(currencyFormatter.format(game.fullPrice())),
+                  Text(dateFormatter.format(game.lastModified)),
+                ],
+              );
+            case GameDisplayLeadingTrailing.priceOnly:
+              leadingWidget = Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(currencyFormatter.format(game.fullPrice())),
+                ],
+              );
+            case GameDisplayLeadingTrailing.lastModifiedOnly:
+              leadingWidget = Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(dateFormatter.format(game.lastModified)),
+                ],
+              );
+            case GameDisplayLeadingTrailing.none:
               leadingWidget = null;
           }
           switch (settings.trailing) {
-            case GameDisplayTrailing.ageRatingIcon:
+            case GameDisplayLeadingTrailing.ageRatingIcon:
               trailingWidget = USKLogo.fromGame(game: game);
-            case GameDisplayTrailing.platformIcon:
+            case GameDisplayLeadingTrailing.platformIcon:
               trailingWidget = GamePlatformIcon.fromGame(game: game);
-            case GameDisplayTrailing.playStatusIcon:
+            case GameDisplayLeadingTrailing.playStatusIcon:
               trailingWidget = PlayStatusIcon.fromGame(
                 game: game,
               );
-            case GameDisplayTrailing.priceAndLastModified:
+            case GameDisplayLeadingTrailing.priceAndLastModified:
               trailingWidget = Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -71,7 +96,7 @@ class CustomizableGameDisplay extends ConsumerWidget {
                   Text(dateFormatter.format(game.lastModified)),
                 ],
               );
-            case GameDisplayTrailing.priceOnly:
+            case GameDisplayLeadingTrailing.priceOnly:
               trailingWidget = Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -79,7 +104,7 @@ class CustomizableGameDisplay extends ConsumerWidget {
                   Text(currencyFormatter.format(game.fullPrice())),
                 ],
               );
-            case GameDisplayTrailing.lastModifiedOnly:
+            case GameDisplayLeadingTrailing.lastModifiedOnly:
               trailingWidget = Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -87,7 +112,7 @@ class CustomizableGameDisplay extends ConsumerWidget {
                   Text(dateFormatter.format(game.lastModified)),
                 ],
               );
-            case GameDisplayTrailing.none:
+            case GameDisplayLeadingTrailing.none:
               trailingWidget = null;
           }
           switch (settings.secondary) {
