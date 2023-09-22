@@ -11,9 +11,12 @@ import 'package:pile_of_shame/providers/games/game_provider.dart';
 import 'package:pile_of_shame/utils/constants.dart';
 import 'package:pile_of_shame/widgets/age_rating_text_display.dart';
 import 'package:pile_of_shame/widgets/game_platform_icon.dart';
+import 'package:pile_of_shame/widgets/last_modified_display.dart';
 import 'package:pile_of_shame/widgets/note.dart';
 import 'package:pile_of_shame/widgets/play_status_display.dart';
 import 'package:pile_of_shame/widgets/play_status_icon.dart';
+import 'package:pile_of_shame/widgets/price_and_last_modified_display.dart';
+import 'package:pile_of_shame/widgets/price_only_display.dart';
 import 'package:pile_of_shame/widgets/skeletons/skeleton.dart';
 import 'package:pile_of_shame/widgets/skeletons/skeleton_image_container.dart';
 import 'package:pile_of_shame/widgets/usk_logo.dart';
@@ -31,7 +34,6 @@ class CustomizableGameDisplay extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final currencyFormatter = ref.watch(currencyFormatProvider(context));
-    final dateFormatter = ref.watch(dateFormatProvider(context));
 
     final settings = ref.watch(customizeGameDisplaysProvider);
 
@@ -42,52 +44,51 @@ class CustomizableGameDisplay extends ConsumerWidget {
     settings.when(
         data: (settings) {
           switch (settings.leading) {
-            case GameDisplayLeading.ageRatingIcon:
+            case GameDisplayLeadingTrailing.ageRatingIcon:
               leadingWidget = USKLogo.fromGame(game: game);
-            case GameDisplayLeading.platformIcon:
+            case GameDisplayLeadingTrailing.platformIcon:
               leadingWidget = GamePlatformIcon.fromGame(game: game);
-            case GameDisplayLeading.playStatusIcon:
+            case GameDisplayLeadingTrailing.playStatusIcon:
               leadingWidget = PlayStatusIcon.fromGame(
                 game: game,
               );
-            case GameDisplayLeading.none:
+            case GameDisplayLeadingTrailing.priceAndLastModified:
+              leadingWidget = PriceAndLastModifiedDisplay.fromGame(
+                game: game,
+              );
+            case GameDisplayLeadingTrailing.priceOnly:
+              leadingWidget = PriceOnlyDisplay.fromGame(
+                game: game,
+              );
+            case GameDisplayLeadingTrailing.lastModifiedOnly:
+              leadingWidget = LastModifiedDisplay.fromGame(
+                game: game,
+              );
+            case GameDisplayLeadingTrailing.none:
               leadingWidget = null;
           }
           switch (settings.trailing) {
-            case GameDisplayTrailing.ageRatingIcon:
+            case GameDisplayLeadingTrailing.ageRatingIcon:
               trailingWidget = USKLogo.fromGame(game: game);
-            case GameDisplayTrailing.platformIcon:
+            case GameDisplayLeadingTrailing.platformIcon:
               trailingWidget = GamePlatformIcon.fromGame(game: game);
-            case GameDisplayTrailing.playStatusIcon:
+            case GameDisplayLeadingTrailing.playStatusIcon:
               trailingWidget = PlayStatusIcon.fromGame(
                 game: game,
               );
-            case GameDisplayTrailing.priceAndLastModified:
-              trailingWidget = Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(currencyFormatter.format(game.fullPrice())),
-                  Text(dateFormatter.format(game.lastModified)),
-                ],
+            case GameDisplayLeadingTrailing.priceAndLastModified:
+              trailingWidget = PriceAndLastModifiedDisplay.fromGame(
+                game: game,
               );
-            case GameDisplayTrailing.priceOnly:
-              trailingWidget = Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(currencyFormatter.format(game.fullPrice())),
-                ],
+            case GameDisplayLeadingTrailing.priceOnly:
+              trailingWidget = PriceOnlyDisplay.fromGame(
+                game: game,
               );
-            case GameDisplayTrailing.lastModifiedOnly:
-              trailingWidget = Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(dateFormatter.format(game.lastModified)),
-                ],
+            case GameDisplayLeadingTrailing.lastModifiedOnly:
+              trailingWidget = LastModifiedDisplay.fromGame(
+                game: game,
               );
-            case GameDisplayTrailing.none:
+            case GameDisplayLeadingTrailing.none:
               trailingWidget = null;
           }
           switch (settings.secondary) {
