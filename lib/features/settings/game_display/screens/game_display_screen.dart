@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pile_of_shame/features/settings/game_display/widgets/draggable_game_display_leading_trailing.dart';
+import 'package:pile_of_shame/features/settings/game_display/widgets/draggable_game_display_secondary.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/age_restriction.dart';
 import 'package:pile_of_shame/models/custom_game_display_settings.dart';
@@ -7,11 +9,20 @@ import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/models/game_platforms.dart';
 import 'package:pile_of_shame/models/play_status.dart';
 import 'package:pile_of_shame/providers/custom_game_display.dart';
+import 'package:pile_of_shame/providers/format_provider.dart';
 import 'package:pile_of_shame/utils/constants.dart';
+import 'package:pile_of_shame/widgets/age_rating_text_display.dart';
 import 'package:pile_of_shame/widgets/app_scaffold.dart';
 import 'package:pile_of_shame/widgets/customizable_game_display.dart';
+import 'package:pile_of_shame/widgets/game_platform_icon.dart';
+import 'package:pile_of_shame/widgets/last_modified_display.dart';
+import 'package:pile_of_shame/widgets/play_status_display.dart';
+import 'package:pile_of_shame/widgets/play_status_icon.dart';
+import 'package:pile_of_shame/widgets/price_and_last_modified_display.dart';
+import 'package:pile_of_shame/widgets/price_only_display.dart';
 import 'package:pile_of_shame/widgets/skeletons/skeleton_game_display.dart';
 import 'package:pile_of_shame/widgets/skeletons/skeleton_list_tile.dart';
+import 'package:pile_of_shame/widgets/usk_logo.dart';
 
 class GameDisplayScreen extends ConsumerWidget {
   const GameDisplayScreen({super.key});
@@ -43,6 +54,16 @@ class GameDisplayScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final settings = ref.watch(customizeGameDisplaysProvider);
+    final currencyFormatter = ref.watch(currencyFormatProvider(context));
+    final exampleGame = Game(
+      id: "game-preview",
+      name: "Outer Wilds",
+      platform: GamePlatform.steam,
+      status: PlayStatus.playing,
+      usk: USK.usk12,
+      price: 29.99,
+      lastModified: DateTime(2023, 9, 24),
+    );
 
     return AppScaffold(
       appBar: AppBar(
@@ -87,6 +108,109 @@ class GameDisplayScreen extends ConsumerWidget {
                 ),
               ),
             ),
+          ),
+          SliverPadding(
+            padding: const EdgeInsets.symmetric(
+                horizontal: defaultPaddingX, vertical: 16.0),
+            sliver: SliverList.list(children: [
+              Wrap(
+                alignment: WrapAlignment.spaceEvenly,
+                spacing: 8.0,
+                runSpacing: 8.0,
+                children: [
+                  DraggableGameDisplayLeadingTrailing(
+                    value: GameDisplayLeadingTrailing.ageRatingIcon,
+                    child: USKLogo.fromGame(game: exampleGame),
+                  ),
+                  DraggableGameDisplayLeadingTrailing(
+                    value: GameDisplayLeadingTrailing.platformIcon,
+                    child: GamePlatformIcon.fromGame(game: exampleGame),
+                  ),
+                  DraggableGameDisplayLeadingTrailing(
+                    value: GameDisplayLeadingTrailing.playStatusIcon,
+                    child: PlayStatusIcon.fromGame(game: exampleGame),
+                  ),
+                  DraggableGameDisplayLeadingTrailing(
+                    width: 75.0,
+                    value: GameDisplayLeadingTrailing.priceAndLastModified,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8.0, vertical: 4.0),
+                      child: PriceAndLastModifiedDisplay.fromGame(
+                        game: exampleGame,
+                      ),
+                    ),
+                  ),
+                  DraggableGameDisplayLeadingTrailing(
+                    width: 75.0,
+                    value: GameDisplayLeadingTrailing.priceOnly,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8.0, vertical: 4.0),
+                      child: PriceOnlyDisplay.fromGame(
+                        game: exampleGame,
+                      ),
+                    ),
+                  ),
+                  DraggableGameDisplayLeadingTrailing(
+                    width: 75.0,
+                    value: GameDisplayLeadingTrailing.lastModifiedOnly,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8.0, vertical: 4.0),
+                      child: LastModifiedDisplay.fromGame(
+                        game: exampleGame,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ]),
+          ),
+          SliverPadding(
+            padding: const EdgeInsets.symmetric(
+                horizontal: defaultPaddingX, vertical: 16.0),
+            sliver: SliverList.list(children: [
+              Wrap(
+                alignment: WrapAlignment.spaceEvenly,
+                spacing: 8.0,
+                runSpacing: 8.0,
+                children: [
+                  DraggableGameDisplaySecondary(
+                    value: GameDisplaySecondary.ageRatingText,
+                    child: AgeRatingTextDisplay.fromGame(
+                      game: exampleGame,
+                    ),
+                  ),
+                  DraggableGameDisplaySecondary(
+                    value: GameDisplaySecondary.statusText,
+                    child: PlayStatusDisplay.fromGame(
+                      game: exampleGame,
+                    ),
+                  ),
+                  DraggableGameDisplaySecondary(
+                    value: GameDisplaySecondary.platformText,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8.0, vertical: 4.0),
+                      child: Text(
+                        exampleGame.platform
+                            .localizedName(AppLocalizations.of(context)!),
+                      ),
+                    ),
+                  ),
+                  DraggableGameDisplaySecondary(
+                    value: GameDisplaySecondary.price,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8.0, vertical: 4.0),
+                      child: Text(
+                          currencyFormatter.format(exampleGame.fullPrice())),
+                    ),
+                  ),
+                ],
+              ),
+            ]),
           ),
           SliverPadding(
             padding: const EdgeInsets.only(top: 16.0, bottom: 8.0),

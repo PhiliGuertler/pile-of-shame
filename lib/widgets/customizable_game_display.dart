@@ -11,9 +11,12 @@ import 'package:pile_of_shame/providers/games/game_provider.dart';
 import 'package:pile_of_shame/utils/constants.dart';
 import 'package:pile_of_shame/widgets/age_rating_text_display.dart';
 import 'package:pile_of_shame/widgets/game_platform_icon.dart';
+import 'package:pile_of_shame/widgets/last_modified_display.dart';
 import 'package:pile_of_shame/widgets/note.dart';
 import 'package:pile_of_shame/widgets/play_status_display.dart';
 import 'package:pile_of_shame/widgets/play_status_icon.dart';
+import 'package:pile_of_shame/widgets/price_and_last_modified_display.dart';
+import 'package:pile_of_shame/widgets/price_only_display.dart';
 import 'package:pile_of_shame/widgets/skeletons/skeleton.dart';
 import 'package:pile_of_shame/widgets/skeletons/skeleton_image_container.dart';
 import 'package:pile_of_shame/widgets/usk_logo.dart';
@@ -31,7 +34,6 @@ class CustomizableGameDisplay extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final currencyFormatter = ref.watch(currencyFormatProvider(context));
-    final dateFormatter = ref.watch(dateFormatProvider(context));
 
     final settings = ref.watch(customizeGameDisplaysProvider);
 
@@ -51,29 +53,16 @@ class CustomizableGameDisplay extends ConsumerWidget {
                 game: game,
               );
             case GameDisplayLeadingTrailing.priceAndLastModified:
-              leadingWidget = Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(currencyFormatter.format(game.fullPrice())),
-                  Text(dateFormatter.format(game.lastModified)),
-                ],
+              leadingWidget = PriceAndLastModifiedDisplay.fromGame(
+                game: game,
               );
             case GameDisplayLeadingTrailing.priceOnly:
-              leadingWidget = Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(currencyFormatter.format(game.fullPrice())),
-                ],
+              leadingWidget = PriceOnlyDisplay.fromGame(
+                game: game,
               );
             case GameDisplayLeadingTrailing.lastModifiedOnly:
-              leadingWidget = Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(dateFormatter.format(game.lastModified)),
-                ],
+              leadingWidget = LastModifiedDisplay.fromGame(
+                game: game,
               );
             case GameDisplayLeadingTrailing.none:
               leadingWidget = null;
@@ -88,29 +77,16 @@ class CustomizableGameDisplay extends ConsumerWidget {
                 game: game,
               );
             case GameDisplayLeadingTrailing.priceAndLastModified:
-              trailingWidget = Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(currencyFormatter.format(game.fullPrice())),
-                  Text(dateFormatter.format(game.lastModified)),
-                ],
+              trailingWidget = PriceAndLastModifiedDisplay.fromGame(
+                game: game,
               );
             case GameDisplayLeadingTrailing.priceOnly:
-              trailingWidget = Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(currencyFormatter.format(game.fullPrice())),
-                ],
+              trailingWidget = PriceOnlyDisplay.fromGame(
+                game: game,
               );
             case GameDisplayLeadingTrailing.lastModifiedOnly:
-              trailingWidget = Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(dateFormatter.format(game.lastModified)),
-                ],
+              trailingWidget = LastModifiedDisplay.fromGame(
+                game: game,
               );
             case GameDisplayLeadingTrailing.none:
               trailingWidget = null;
