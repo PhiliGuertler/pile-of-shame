@@ -3,15 +3,19 @@ import 'package:pile_of_shame/features/settings/game_display/widgets/feedback_co
 import 'package:pile_of_shame/models/custom_game_display_settings.dart';
 
 class DraggableGameDisplaySecondary extends StatelessWidget {
+  static const double width = 175.0;
+
   final GameDisplaySecondary value;
   final Widget child;
-  final double width;
+  final VoidCallback onDragStarted;
+  final VoidCallback onDragEnded;
 
   const DraggableGameDisplaySecondary({
     super.key,
     required this.value,
     required this.child,
-    this.width = 200.0,
+    required this.onDragStarted,
+    required this.onDragEnded,
   });
 
   @override
@@ -21,6 +25,10 @@ class DraggableGameDisplaySecondary extends StatelessWidget {
       height: 32.0,
       child: Draggable<GameDisplaySecondary>(
         data: value,
+        onDragStarted: onDragStarted,
+        onDragEnd: (details) {
+          onDragEnded();
+        },
         feedback: FeedbackContainer(
           child: SizedBox(
             width: width,
@@ -43,7 +51,15 @@ class DraggableGameDisplaySecondary extends StatelessWidget {
             ],
           ),
         ),
-        child: child,
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8.0),
+            border: Border.all(
+              color: Theme.of(context).colorScheme.primary.withOpacity(0.5),
+            ),
+          ),
+          child: child,
+        ),
       ),
     );
   }
