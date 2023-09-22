@@ -82,24 +82,31 @@ class _SwipeToTriggerState extends State<SwipeToTrigger>
         (_dragOffset.dx.abs() / size.width) / widget.triggerOffset;
 
     Widget background = Stack(
-      fit: StackFit.expand,
       children: [
-        if (widget.leftWidget != null && _dragOffset.dx > 0)
-          Align(
-            alignment: Alignment.centerLeft,
-            child: SizedBox(
-              height: double.infinity,
-              width: _dragOffset.dx.abs(),
-              child: widget.leftWidget!(progress),
+        if (widget.leftWidget != null && _dragOffset.dx > 1.0)
+          Positioned.fill(
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: ClipRect(
+                child: SizedBox(
+                  height: size.height,
+                  width: _dragOffset.dx.abs(),
+                  child: widget.leftWidget!(progress),
+                ),
+              ),
             ),
           ),
-        if (widget.rightWidget != null && _dragOffset.dx < 0)
-          Align(
-            alignment: Alignment.centerRight,
-            child: SizedBox(
-              height: double.infinity,
-              width: _dragOffset.dx.abs(),
-              child: widget.rightWidget!(progress),
+        if (widget.rightWidget != null && _dragOffset.dx < 1.0)
+          Positioned.fill(
+            child: Align(
+              alignment: Alignment.centerRight,
+              child: ClipRect(
+                child: SizedBox(
+                  height: size.height,
+                  width: _dragOffset.dx.abs(),
+                  child: widget.rightWidget!(progress),
+                ),
+              ),
             ),
           ),
         Transform.translate(
@@ -128,10 +135,12 @@ class _SwipeToTriggerState extends State<SwipeToTrigger>
       },
       onPanEnd: (details) {
         _runAnimation(details.velocity.pixelsPerSecond, size);
-        if (progress < -1.0 && widget.onTriggerRight != null) {
+        final signedProgress =
+            (_dragOffset.dx / size.width) / widget.triggerOffset;
+        if (signedProgress < -1.0 && widget.onTriggerRight != null) {
           widget.onTriggerRight!();
         }
-        if (progress > 1.0 && widget.onTriggerLeft != null) {
+        if (signedProgress > 1.0 && widget.onTriggerLeft != null) {
           widget.onTriggerLeft!();
         }
       },

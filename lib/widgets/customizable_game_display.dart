@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/custom_game_display_settings.dart';
 import 'package:pile_of_shame/models/game.dart';
@@ -19,6 +18,7 @@ import 'package:pile_of_shame/widgets/price_and_last_modified_display.dart';
 import 'package:pile_of_shame/widgets/price_only_display.dart';
 import 'package:pile_of_shame/widgets/skeletons/skeleton.dart';
 import 'package:pile_of_shame/widgets/skeletons/skeleton_image_container.dart';
+import 'package:pile_of_shame/widgets/swipe_to_trigger.dart';
 import 'package:pile_of_shame/widgets/usk_logo.dart';
 
 class CustomizableGameDisplay extends ConsumerWidget {
@@ -125,49 +125,62 @@ class CustomizableGameDisplay extends ConsumerWidget {
       }
     }
 
-    return Slidable(
-      endActionPane: ActionPane(
-        motion: const ScrollMotion(),
-        extentRatio: 0.2,
-        children: [
-          SlidableAction(
-            onPressed: (context) async {
-              final updatedGame = game.copyWith(isFavorite: !game.isFavorite);
-              final gamesList = await ref.read(gamesProvider.future);
-              final update = gamesList.updateGame(updatedGame.id, updatedGame);
-
-              await ref.read(gameStorageProvider).persistGamesList(update);
-            },
-            backgroundColor: Colors.red,
-            foregroundColor: Colors.white,
-            icon: game.isFavorite ? Icons.favorite : Icons.favorite_border,
+    return SwipeToTrigger(
+      triggerOffset: 0.3,
+      rightWidget: (triggerProgress) {
+        double triggerOvershoot =
+            (triggerProgress - 1.0).clamp(0, double.infinity);
+        double untilTrigger = triggerProgress.clamp(0.0, 1.0);
+        return Container(
+          color: Colors.red,
+          child: Transform.scale(
+            scale: 1.0 + triggerOvershoot,
+            child: Icon(
+              game.isFavorite ? Icons.heart_broken_sharp : Icons.favorite,
+              color: HSLColor.fromColor(Colors.red)
+                  .withLightness(0.5 + untilTrigger * 0.5)
+                  .toColor(),
+            ),
           ),
-        ],
-      ),
-      startActionPane: notes.isNotEmpty
-          ? ActionPane(
-              motion: const ScrollMotion(),
-              extentRatio: 0.2,
-              children: [
-                SlidableAction(
-                  onPressed: (context) {
-                    showDialog(
-                      context: context,
-                      builder: (context) {
-                        return NotesOverlay(
-                          notes: notes,
-                        );
-                      },
-                    );
-                  },
-                  backgroundColor: Theme.of(context).colorScheme.surfaceVariant,
-                  foregroundColor:
-                      Theme.of(context).colorScheme.onSurfaceVariant,
-                  icon: Icons.open_in_full,
+        );
+      },
+      onTriggerRight: () async {
+        final updatedGame = game.copyWith(isFavorite: !game.isFavorite);
+        final gamesList = await ref.read(gamesProvider.future);
+        final update = gamesList.updateGame(updatedGame.id, updatedGame);
+
+        await ref.read(gameStorageProvider).persistGamesList(update);
+      },
+      leftWidget: notes.isNotEmpty
+          ? (triggerProgress) {
+              double triggerOvershoot =
+                  (triggerProgress - 1.0).clamp(0, double.infinity);
+              double untilTrigger = triggerProgress.clamp(0.0, 1.0);
+              return Container(
+                color: Theme.of(context).colorScheme.surfaceVariant,
+                child: Transform.scale(
+                  scale: 1.0 + triggerOvershoot,
+                  child: Icon(
+                    Icons.open_in_full,
+                    color: HSLColor.fromColor(
+                            Theme.of(context).colorScheme.surfaceVariant)
+                        .withLightness(0.5 + untilTrigger * 0.5)
+                        .toColor(),
+                  ),
                 ),
-              ],
-            )
+              );
+            }
           : null,
+      onTriggerLeft: () {
+        showDialog(
+          context: context,
+          builder: (context) {
+            return NotesOverlay(
+              notes: notes,
+            );
+          },
+        );
+      },
       child: Stack(
         alignment: Alignment.centerLeft,
         children: [
