@@ -85,9 +85,23 @@ class _SwipeToTriggerState extends State<SwipeToTrigger>
       fit: StackFit.expand,
       children: [
         if (widget.leftWidget != null && _dragOffset.dx > 0)
-          widget.leftWidget!(progress),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: SizedBox(
+              height: double.infinity,
+              width: _dragOffset.dx.abs(),
+              child: widget.leftWidget!(progress),
+            ),
+          ),
         if (widget.rightWidget != null && _dragOffset.dx < 0)
-          widget.rightWidget!(progress),
+          Align(
+            alignment: Alignment.centerRight,
+            child: SizedBox(
+              height: double.infinity,
+              width: _dragOffset.dx.abs(),
+              child: widget.rightWidget!(progress),
+            ),
+          ),
         Transform.translate(
           offset: _dragOffset,
           child: widget.child,
