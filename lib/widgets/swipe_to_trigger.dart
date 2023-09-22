@@ -41,8 +41,7 @@ class _SwipeToTriggerState extends State<SwipeToTrigger>
     // Calculate the velocity relative to the unit interval, [0,1],
     // used by the animation controller.
     final unitsPerSecondX = pixelsPerSecond.dx / size.width;
-    final unitsPerSecondY = pixelsPerSecond.dy / size.height;
-    final unitsPerSecond = Offset(unitsPerSecondX, unitsPerSecondY);
+    final unitsPerSecond = Offset(unitsPerSecondX, 0);
     final unitVelocity = unitsPerSecond.distance;
 
     const spring = SpringDescription(
@@ -84,30 +83,16 @@ class _SwipeToTriggerState extends State<SwipeToTrigger>
     Widget background = Stack(
       children: [
         if (widget.leftWidget != null && _dragOffset.dx > 1.0)
-          Positioned.fill(
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: ClipRect(
-                child: SizedBox(
-                  height: size.height,
-                  width: _dragOffset.dx.abs(),
-                  child: widget.leftWidget!(progress),
-                ),
-              ),
-            ),
+          BackgroundPane(
+            height: size.height,
+            width: _dragOffset.dx.abs(),
+            child: widget.leftWidget!(progress),
           ),
         if (widget.rightWidget != null && _dragOffset.dx < 1.0)
-          Positioned.fill(
-            child: Align(
-              alignment: Alignment.centerRight,
-              child: ClipRect(
-                child: SizedBox(
-                  height: size.height,
-                  width: _dragOffset.dx.abs(),
-                  child: widget.rightWidget!(progress),
-                ),
-              ),
-            ),
+          BackgroundPane(
+            height: size.height,
+            width: _dragOffset.dx.abs(),
+            child: widget.rightWidget!(progress),
           ),
         Transform.translate(
           offset: _dragOffset,
@@ -145,6 +130,34 @@ class _SwipeToTriggerState extends State<SwipeToTrigger>
         }
       },
       child: background,
+    );
+  }
+}
+
+class BackgroundPane extends StatelessWidget {
+  const BackgroundPane(
+      {super.key,
+      required this.child,
+      required this.width,
+      required this.height});
+
+  final Widget child;
+  final double width;
+  final double height;
+
+  @override
+  Widget build(BuildContext context) {
+    return Positioned.fill(
+      child: Align(
+        alignment: Alignment.centerRight,
+        child: ClipRect(
+          child: SizedBox(
+            height: height,
+            width: width,
+            child: child,
+          ),
+        ),
+      ),
     );
   }
 }
