@@ -86,12 +86,14 @@ class _SwipeToTriggerState extends State<SwipeToTrigger>
           BackgroundPane(
             height: size.height,
             width: _dragOffset.dx.abs(),
+            alignment: Alignment.centerLeft,
             child: widget.leftWidget!(progress),
           ),
         if (widget.rightWidget != null && _dragOffset.dx < 1.0)
           BackgroundPane(
             height: size.height,
             width: _dragOffset.dx.abs(),
+            alignment: Alignment.centerRight,
             child: widget.rightWidget!(progress),
           ),
         Transform.translate(
@@ -135,21 +137,24 @@ class _SwipeToTriggerState extends State<SwipeToTrigger>
 }
 
 class BackgroundPane extends StatelessWidget {
-  const BackgroundPane(
-      {super.key,
-      required this.child,
-      required this.width,
-      required this.height});
+  const BackgroundPane({
+    super.key,
+    required this.child,
+    required this.width,
+    required this.height,
+    required this.alignment,
+  });
 
   final Widget child;
   final double width;
   final double height;
+  final Alignment alignment;
 
   @override
   Widget build(BuildContext context) {
     return Positioned.fill(
       child: Align(
-        alignment: Alignment.centerRight,
+        alignment: alignment,
         child: ClipRect(
           child: SizedBox(
             height: height,
