@@ -1,6 +1,7 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pile_of_shame/features/analytics/analytics_root_content/screens/analytics_root_content_screen.dart';
 import 'package:pile_of_shame/features/games/games_list/screens/games_screen.dart';
 import 'package:pile_of_shame/features/settings/root/screens/settings_screen.dart';
 import 'package:pile_of_shame/widgets/app_scaffold.dart';
@@ -28,15 +29,11 @@ class _RootPageState extends ConsumerState<RootPage> {
             duration: const Duration(milliseconds: 500),
             curve: Curves.easeInOut);
       }
-      setState(() {
-        activeTab = RootTabs.games;
-      });
     }
-    if (index == RootTabs.settings.index) {
-      setState(() {
-        activeTab = RootTabs.settings;
-      });
-    }
+
+    setState(() {
+      activeTab = RootTabs.values[index];
+    });
   }
 
   void handleScroll() {
@@ -65,11 +62,13 @@ class _RootPageState extends ConsumerState<RootPage> {
   Widget build(BuildContext context) {
     final destinations = [
       RootTabs.games.destination(context),
+      RootTabs.analytics.destination(context),
       RootTabs.settings.destination(context),
     ];
 
     final children = [
       GamesScreen(scrollController: _scrollControllerGames),
+      const AnalyticsRootContentScreen(),
       const SettingsScreen(),
     ];
 

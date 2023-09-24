@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pile_of_shame/features/games/games_list/widgets/drawers/game_filter_drawer.dart';
 import 'package:pile_of_shame/features/games/games_list/widgets/drawers/game_sorter_drawer.dart';
+import 'package:pile_of_shame/features/root_page/root_analytics/widgets/root_analytics_app_bar.dart';
+import 'package:pile_of_shame/features/root_page/root_analytics/widgets/root_analytics_destination.dart';
 
 import '../root_games/widgets/root_games_app_bar.dart';
 import '../root_games/widgets/root_games_destination.dart';
@@ -10,6 +12,7 @@ import '../root_settings/widgets/root_settings_destination.dart';
 
 enum RootTabs {
   games,
+  analytics,
   settings,
   ;
 
@@ -17,6 +20,10 @@ enum RootTabs {
     switch (this) {
       case RootTabs.games:
         return RootGamesAppBar(
+          scrollController: scrollController,
+        );
+      case RootTabs.analytics:
+        return RootAnalyticsAppBar(
           scrollController: scrollController,
         );
       case RootTabs.settings:
@@ -37,6 +44,8 @@ enum RootTabs {
     switch (this) {
       case RootTabs.games:
         return rootGamesDestination(context);
+      case RootTabs.analytics:
+        return rootAnalyticsDestination(context);
       case RootTabs.settings:
         return rootSettingsDestination(context);
     }
