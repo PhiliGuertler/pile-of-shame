@@ -8,8 +8,8 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'analytics_provider.g.dart';
 
 @riverpod
-FutureOr<List<DefaultPieChartData>> createPieChartDataByGrouper(
-    CreatePieChartDataByGrouperRef ref, GameGrouper grouper) async {
+FutureOr<List<DefaultPieChartData>> createGameAmountDataByGrouper(
+    CreateGameAmountDataByGrouperRef ref, GameGrouper grouper) async {
   final games = await ref.watch(gamesProvider.future);
   final l10n = ref.watch(l10nProvider);
 
@@ -46,9 +46,48 @@ FutureOr<List<DefaultPieChartData>> createPieChartDataByGrouper(
 }
 
 @riverpod
+FutureOr<List<DefaultPieChartData>> createPriceDataByGrouper(
+    CreatePriceDataByGrouperRef ref, GameGrouper grouper) async {
+  final games = await ref.watch(gamesProvider.future);
+  final l10n = ref.watch(l10nProvider);
+
+  final groupValues = grouper.values();
+  Map<String, List<Game>> grouped = Map.fromEntries(
+    groupValues.map(
+      (e) => MapEntry(grouper.groupToLocaleString(l10n, e), []),
+    ),
+  );
+  for (var game in games.games) {
+    for (var group in groupValues) {
+      if (grouper.matchesGroup(group, game)) {
+        grouped[grouper.groupToLocaleString(l10n, group)]!.add(game);
+      }
+    }
+  }
+
+  grouped.removeWhere((key, value) => value.isEmpty);
+
+  final List<DefaultPieChartData> result = [];
+  for (var i = 0; i < grouped.length; ++i) {
+    final entry = grouped.entries.elementAt(i);
+    result.add(DefaultPieChartData(
+      value: entry.value
+          .fold(0.0, (previousValue, element) => previousValue + element.price),
+      title: entry.key,
+    ));
+  }
+
+  result.sort(
+    (a, b) => a.value.compareTo(b.value),
+  );
+
+  return result;
+}
+
+@riverpod
 FutureOr<List<DefaultPieChartData>> gameAmountByPlatformFamily(
     GameAmountByPlatformFamilyRef ref) async {
-  return await ref.watch(createPieChartDataByGrouperProvider(
+  return await ref.watch(createGameAmountDataByGrouperProvider(
     const GameGrouperByPlatformFamily(),
   ).future);
 }
@@ -56,7 +95,7 @@ FutureOr<List<DefaultPieChartData>> gameAmountByPlatformFamily(
 @riverpod
 FutureOr<List<DefaultPieChartData>> gameAmountByPlatform(
     GameAmountByPlatformRef ref) async {
-  return await ref.watch(createPieChartDataByGrouperProvider(
+  return await ref.watch(createGameAmountDataByGrouperProvider(
     const GameGrouperByPlatform(),
   ).future);
 }
@@ -64,7 +103,15 @@ FutureOr<List<DefaultPieChartData>> gameAmountByPlatform(
 @riverpod
 FutureOr<List<DefaultPieChartData>> gameAmountByPlayStatus(
     GameAmountByPlayStatusRef ref) async {
-  return await ref.watch(createPieChartDataByGrouperProvider(
+  return await ref.watch(createGameAmountDataByGrouperProvider(
     const GameGrouperByPlayStatus(),
+  ).future);
+}
+
+@riverpod
+FutureOr<List<DefaultPieChartData>> priceByPlatformFamily(
+    PriceByPlatformFamilyRef ref) async {
+  return await ref.watch(createPriceDataByGrouperProvider(
+    const GameGrouperByPlatformFamily(),
   ).future);
 }

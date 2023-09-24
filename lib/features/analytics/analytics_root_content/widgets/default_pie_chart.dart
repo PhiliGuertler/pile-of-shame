@@ -9,12 +9,14 @@ class DefaultPieChart extends StatefulWidget {
   final List<DefaultPieChartData> data;
   final String? total;
   final String title;
+  final String Function(double data)? formatData;
 
   const DefaultPieChart({
     super.key,
     required this.data,
     required this.title,
     this.total,
+    this.formatData,
   });
 
   @override
@@ -33,10 +35,12 @@ class _DefaultPieChartState extends State<DefaultPieChart> {
       final color = ColorUtils.stringToColor(section.title);
       sections.add(PieChartSectionData(
         color: color,
-        title: (section.value == section.value.roundToDouble()
-                ? section.value.toInt()
-                : section.value)
-            .toString(),
+        title: widget.formatData != null
+            ? widget.formatData!(section.value)
+            : (section.value == section.value.roundToDouble()
+                    ? section.value.toInt()
+                    : section.value)
+                .toString(),
         value: section.value,
         titleStyle: TextStyle(
           color: color.computeLuminance() > 0.5 ? Colors.black : Colors.white,
@@ -50,14 +54,20 @@ class _DefaultPieChartState extends State<DefaultPieChart> {
 
     return Column(
       children: [
-        Text(
-          widget.title,
-          style: Theme.of(context).textTheme.headlineSmall,
+        Padding(
+          padding: const EdgeInsets.only(bottom: 8.0),
+          child: Text(
+            widget.title,
+            style: Theme.of(context).textTheme.headlineSmall,
+          ),
         ),
-        Wrap(
-          runSpacing: 4.0,
-          spacing: 8.0,
-          children: legend,
+        Padding(
+          padding: const EdgeInsets.only(bottom: 8.0),
+          child: Wrap(
+            runSpacing: 4.0,
+            spacing: 8.0,
+            children: legend,
+          ),
         ),
         SizedBox(
           height: 250.0,
@@ -94,7 +104,7 @@ class _DefaultPieChartState extends State<DefaultPieChart> {
                 Center(
                     child: Text(
                   widget.total!,
-                  style: Theme.of(context).textTheme.displaySmall,
+                  style: Theme.of(context).textTheme.headlineMedium,
                 )),
             ],
           ),
