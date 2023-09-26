@@ -16,7 +16,7 @@ enum RootTabs {
   settings,
   ;
 
-  PreferredSizeWidget appBar(ScrollController scrollController) {
+  PreferredSizeWidget appBar(ScrollController scrollController, bool hasGames) {
     switch (this) {
       case RootTabs.games:
         return RootGamesAppBar(
@@ -24,7 +24,7 @@ enum RootTabs {
         );
       case RootTabs.analytics:
         return RootAnalyticsAppBar(
-          scrollController: scrollController,
+          hasGames: hasGames,
         );
       case RootTabs.settings:
         return RootSettingsAppBar();

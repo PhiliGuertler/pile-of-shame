@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 
-class RootAnalyticsAppBar extends StatefulWidget
+class RootAnalyticsAppBar extends ConsumerStatefulWidget
     implements PreferredSizeWidget {
-  final ScrollController scrollController;
+  final bool hasGames;
 
   final preferredSizeAppBar = AppBar(
     title: const Text("Analytics"),
@@ -14,34 +15,43 @@ class RootAnalyticsAppBar extends StatefulWidget
     ]),
   );
 
-  RootAnalyticsAppBar({super.key, required this.scrollController});
+  final preferredSizeAppBarSmall = AppBar(
+    title: const Text("Analytics"),
+  );
+
+  RootAnalyticsAppBar({super.key, required this.hasGames});
 
   @override
-  Size get preferredSize => preferredSizeAppBar.preferredSize;
+  Size get preferredSize => hasGames
+      ? preferredSizeAppBar.preferredSize
+      : preferredSizeAppBarSmall.preferredSize;
 
   @override
-  State<RootAnalyticsAppBar> createState() => _RootAnalyticsAppBarState();
+  ConsumerState<RootAnalyticsAppBar> createState() =>
+      _RootAnalyticsAppBarState();
 }
 
-class _RootAnalyticsAppBarState extends State<RootAnalyticsAppBar> {
+class _RootAnalyticsAppBarState extends ConsumerState<RootAnalyticsAppBar> {
   @override
   Widget build(BuildContext context) {
     return AppBar(
       title: Text(AppLocalizations.of(context)!.analytics),
-      bottom: TabBar(
-        isScrollable: true,
-        tabs: [
-          Tab(
-            child: Text(AppLocalizations.of(context)!.byPlatformFamily),
-          ),
-          Tab(
-            child: Text(AppLocalizations.of(context)!.byPlatform),
-          ),
-          Tab(
-            child: Text(AppLocalizations.of(context)!.byStatus),
-          ),
-        ],
-      ),
+      bottom: widget.hasGames
+          ? TabBar(
+              isScrollable: true,
+              tabs: [
+                Tab(
+                  child: Text(AppLocalizations.of(context)!.byPlatformFamily),
+                ),
+                Tab(
+                  child: Text(AppLocalizations.of(context)!.byPlatform),
+                ),
+                Tab(
+                  child: Text(AppLocalizations.of(context)!.byStatus),
+                ),
+              ],
+            )
+          : null,
     );
   }
 }
