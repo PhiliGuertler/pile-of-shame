@@ -33,7 +33,7 @@ class GameGrouperByPlatform extends GameGrouper<GamePlatform> {
 
   @override
   String groupToLocaleString(AppLocalizations l10n, GamePlatform group) {
-    return group.localizedName(l10n);
+    return group.localizedAbbreviation(l10n);
   }
 }
 

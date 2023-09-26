@@ -27,6 +27,14 @@
       }
     }
   },
+  "@totalN": {
+    "placeholders": {
+      "n": {
+        "example": "300,00€",
+        "type": "String"
+      }
+    }
+  },
   "aboutThisApp": "About this app",
   "addDLC": "Add DLC",
   "addGame": "Add game",
@@ -130,6 +138,7 @@
   "pc": "PC",
   "personalizeGameDisplays": "Personalize game displays",
   "personalizeTheGameDisplayByDraggingEndPiecesOrBottomBarsIntoThePreview": "Personalize the game display by dragging end pieces or bottom bars into the preview.",
+  "phone": "Phone",
   "pileOfShameWhatAreYou": "With Pile of Shame you can save your game collection in a nice look, without any accounts, online constraints or ads. The app is completely open source! Do you have ideas for features that the app is still missing? Feel free to create an issue on the Github page of this project linked above.",
   "platform": "Platform",
   "platformFamilies": "Platform families",
@@ -157,6 +166,7 @@
   "systemLanguage": "System-Language",
   "thisActionCannotBeUndone": "This action cannot be undone.",
   "thisFieldIsRequired": "This field is required",
+  "totalN": "Total: {n}",
   "updateExistingGames": "Update existing games",
   "yes": "Yes",
   "yourPlatforms": "Your platforms",

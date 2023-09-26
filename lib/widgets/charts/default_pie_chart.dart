@@ -1,6 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/chart_data.dart';
 import 'package:pile_of_shame/utils/color_utils.dart';
 
@@ -42,7 +43,8 @@ class DefaultPieChart extends StatelessWidget {
     final total = formatData(
       data.fold(0.0, (previousValue, element) => previousValue + element.value),
     );
-    String totalLabel = total;
+    String totalLabel =
+        AppLocalizations.of(context)!.totalN(total).replaceFirst(": ", ":\n");
     try {
       final selected = data.singleWhere(
         (element) => element.isSelected,
@@ -53,9 +55,10 @@ class DefaultPieChart extends StatelessWidget {
     }
 
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Padding(
-          padding: const EdgeInsets.only(bottom: 8.0),
+          padding: const EdgeInsets.only(bottom: 16.0),
           child: Text(
             title,
             style: Theme.of(context).textTheme.headlineSmall,
@@ -65,12 +68,6 @@ class DefaultPieChart extends StatelessWidget {
           height: 250.0,
           child: Stack(
             children: [
-              Center(
-                  child: Text(
-                totalLabel,
-                style: Theme.of(context).textTheme.bodyLarge,
-                textAlign: TextAlign.center,
-              )),
               PieChart(
                 PieChartData(
                   centerSpaceRadius: double.infinity,
@@ -80,7 +77,8 @@ class DefaultPieChart extends StatelessWidget {
                   pieTouchData: PieTouchData(
                     touchCallback: (event, response) {
                       if (event.isInterestedForInteractions &&
-                          onTapSection != null) {
+                          onTapSection != null &&
+                          event.runtimeType == FlTapDownEvent) {
                         if (response == null ||
                             response.touchedSection == null ||
                             response.touchedSection!.touchedSectionIndex ==
@@ -98,6 +96,17 @@ class DefaultPieChart extends StatelessWidget {
                 ),
                 swapAnimationDuration: 250.ms,
                 swapAnimationCurve: Curves.easeOutBack,
+              ),
+              IgnorePointer(
+                child: Center(
+                    child: Text(
+                  totalLabel,
+                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                        backgroundColor:
+                            Theme.of(context).colorScheme.background,
+                      ),
+                  textAlign: TextAlign.center,
+                )),
               ),
             ],
           ),

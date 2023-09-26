@@ -4,6 +4,7 @@ import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/chart_data.dart';
 import 'package:pile_of_shame/providers/format_provider.dart';
 import 'package:pile_of_shame/utils/constants.dart';
+import 'package:pile_of_shame/widgets/charts/default_bar_chart.dart';
 import 'package:pile_of_shame/widgets/charts/default_pie_chart.dart';
 import 'package:pile_of_shame/widgets/charts/legend.dart';
 
@@ -84,7 +85,7 @@ class _AnalyticsState extends ConsumerState<Analytics> {
               return const SizedBox();
             },
             data: (data) {
-              return DefaultPieChart(
+              return DefaultBarChart(
                 title: AppLocalizations.of(context)!.price,
                 onTapSection: handleSectionChange,
                 data: data

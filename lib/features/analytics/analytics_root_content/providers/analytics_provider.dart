@@ -1,8 +1,8 @@
 import 'package:pile_of_shame/models/chart_data.dart';
 import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/models/game_grouping.dart';
-import 'package:pile_of_shame/models/game_platforms.dart';
 import 'package:pile_of_shame/models/play_status.dart';
+import 'package:pile_of_shame/providers/games/game_platforms_provider.dart';
 import 'package:pile_of_shame/providers/games/game_provider.dart';
 import 'package:pile_of_shame/providers/l10n_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -92,10 +92,13 @@ FutureOr<List<ChartData>> createPriceDataByGrouper(
 // ### Platform-Family Analytics ############################################ //
 
 @riverpod
-List<ChartData> platformFamilyLegend(PlatformFamilyLegendRef ref) {
+FutureOr<List<ChartData>> platformFamilyLegend(
+    PlatformFamilyLegendRef ref) async {
   final l10n = ref.watch(l10nProvider);
+  final activePlatformFamilies =
+      await ref.watch(activeGamePlatformFamiliesProvider.future);
 
-  return GamePlatformFamily.values
+  return activePlatformFamilies
       .map((e) => ChartData(title: e.toLocale(l10n), value: 0.0))
       .toList();
 }
@@ -119,10 +122,11 @@ FutureOr<List<ChartData>> priceByPlatformFamily(
 // ### Platform Analytics ################################################### //
 
 @riverpod
-List<ChartData> platformLegend(PlatformLegendRef ref) {
+FutureOr<List<ChartData>> platformLegend(PlatformLegendRef ref) async {
   final l10n = ref.watch(l10nProvider);
-  return GamePlatform.values
-      .map((e) => ChartData(title: e.localizedName(l10n), value: 0.0))
+  final activePlatforms = await ref.watch(activeGamePlatformsProvider.future);
+  return activePlatforms
+      .map((e) => ChartData(title: e.localizedAbbreviation(l10n), value: 0.0))
       .toList();
 }
 
