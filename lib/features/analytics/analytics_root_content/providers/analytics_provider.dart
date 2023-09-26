@@ -72,8 +72,8 @@ FutureOr<List<ChartData>> createPriceDataByGrouper(
   final List<ChartData> result = [];
   for (var i = 0; i < grouped.length; ++i) {
     final entry = grouped.entries.elementAt(i);
-    final sum = entry.value
-        .fold(0.0, (previousValue, element) => previousValue + element.price);
+    final sum = entry.value.fold(
+        0.0, (previousValue, element) => previousValue + element.fullPrice());
     if (sum > 0) {
       result.add(ChartData(
         value: sum,
