@@ -205,8 +205,9 @@ void main() {
       dlcs: [],
       usk: USK.usk12,
     );
-    test("correctly applies platform filters", () {
-      container
+    test("correctly applies platform filters", () async {
+      SharedPreferences.setMockInitialValues({});
+      await container
           .read(gamePlatformFilterProvider.notifier)
           .setFilter([GamePlatform.playStation2, GamePlatform.steam]);
 
@@ -221,8 +222,9 @@ void main() {
 
       expect(result, [gameDistance, gameSsx3]);
     });
-    test("correctly applies platform family filters", () {
-      container
+    test("correctly applies platform family filters", () async {
+      SharedPreferences.setMockInitialValues({});
+      await container
           .read(gamePlatformFamilyFilterProvider.notifier)
           .setFilter([GamePlatformFamily.sony, GamePlatformFamily.pc]);
 
@@ -237,7 +239,7 @@ void main() {
 
       expect(result, [gameDistance, gameSsx3, gameOriAndTheBlindForest]);
     });
-    test("correctly applies play status filters", () {
+    test("correctly applies play status filters", () async {
       container
           .read(playStatusFilterProvider.notifier)
           .setFilter([PlayStatus.completed, PlayStatus.onPileOfShame]);
