@@ -49,7 +49,21 @@ class _DefaultPieChartState extends State<DefaultPieChart> {
       ));
 
       legend.add(LegendEntry(
-          color: color, text: section.title, isSelected: selectedIndex == i));
+        color: color,
+        text: section.title,
+        onTap: () {
+          if (selectedIndex == i) {
+            setState(() {
+              selectedIndex = -1;
+            });
+          } else {
+            setState(() {
+              selectedIndex = i;
+            });
+          }
+        },
+        isSelected: selectedIndex == i,
+      ));
     }
 
     return Column(
@@ -73,6 +87,12 @@ class _DefaultPieChartState extends State<DefaultPieChart> {
           height: 250.0,
           child: Stack(
             children: [
+              if (widget.total != null)
+                Center(
+                    child: Text(
+                  widget.total!,
+                  style: Theme.of(context).textTheme.headlineMedium,
+                )),
               PieChart(
                 PieChartData(
                   centerSpaceRadius: double.infinity,
@@ -97,15 +117,9 @@ class _DefaultPieChartState extends State<DefaultPieChart> {
                     },
                   ),
                 ),
-                swapAnimationDuration: 150.ms,
-                swapAnimationCurve: Curves.easeInOut,
+                swapAnimationDuration: 250.ms,
+                swapAnimationCurve: Curves.easeOutBack,
               ),
-              if (widget.total != null)
-                Center(
-                    child: Text(
-                  widget.total!,
-                  style: Theme.of(context).textTheme.headlineMedium,
-                )),
             ],
           ),
         ),
