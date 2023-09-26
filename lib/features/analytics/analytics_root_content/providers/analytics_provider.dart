@@ -1,6 +1,8 @@
-import 'package:pile_of_shame/features/analytics/analytics_root_content/models/default_pie_chart_data.dart';
+import 'package:pile_of_shame/models/chart_data.dart';
 import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/models/game_grouping.dart';
+import 'package:pile_of_shame/models/game_platforms.dart';
+import 'package:pile_of_shame/models/play_status.dart';
 import 'package:pile_of_shame/providers/games/game_provider.dart';
 import 'package:pile_of_shame/providers/l10n_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -8,7 +10,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'analytics_provider.g.dart';
 
 @riverpod
-FutureOr<List<DefaultPieChartData>> createGameAmountDataByGrouper(
+FutureOr<List<ChartData>> createGameAmountDataByGrouper(
     CreateGameAmountDataByGrouperRef ref, GameGrouper grouper) async {
   final games = await ref.watch(gamesProvider.future);
   final l10n = ref.watch(l10nProvider);
@@ -29,10 +31,10 @@ FutureOr<List<DefaultPieChartData>> createGameAmountDataByGrouper(
 
   grouped.removeWhere((key, value) => value.isEmpty);
 
-  final List<DefaultPieChartData> result = [];
+  final List<ChartData> result = [];
   for (var i = 0; i < grouped.length; ++i) {
     final entry = grouped.entries.elementAt(i);
-    result.add(DefaultPieChartData(
+    result.add(ChartData(
       value: entry.value.length.toDouble(),
       title: entry.key,
     ));
@@ -46,7 +48,7 @@ FutureOr<List<DefaultPieChartData>> createGameAmountDataByGrouper(
 }
 
 @riverpod
-FutureOr<List<DefaultPieChartData>> createPriceDataByGrouper(
+FutureOr<List<ChartData>> createPriceDataByGrouper(
     CreatePriceDataByGrouperRef ref, GameGrouper grouper) async {
   final games = await ref.watch(gamesProvider.future);
   final l10n = ref.watch(l10nProvider);
@@ -67,13 +69,13 @@ FutureOr<List<DefaultPieChartData>> createPriceDataByGrouper(
 
   grouped.removeWhere((key, value) => value.isEmpty);
 
-  final List<DefaultPieChartData> result = [];
+  final List<ChartData> result = [];
   for (var i = 0; i < grouped.length; ++i) {
     final entry = grouped.entries.elementAt(i);
     final sum = entry.value
         .fold(0.0, (previousValue, element) => previousValue + element.price);
     if (sum > 0) {
-      result.add(DefaultPieChartData(
+      result.add(ChartData(
         value: sum,
         title: entry.key,
       ));
@@ -87,8 +89,19 @@ FutureOr<List<DefaultPieChartData>> createPriceDataByGrouper(
   return result;
 }
 
+// ### Platform-Family Analytics ############################################ //
+
 @riverpod
-FutureOr<List<DefaultPieChartData>> gameAmountByPlatformFamily(
+List<ChartData> platformFamilyLegend(PlatformFamilyLegendRef ref) {
+  final l10n = ref.watch(l10nProvider);
+
+  return GamePlatformFamily.values
+      .map((e) => ChartData(title: e.toLocale(l10n), value: 0.0))
+      .toList();
+}
+
+@riverpod
+FutureOr<List<ChartData>> gameAmountByPlatformFamily(
     GameAmountByPlatformFamilyRef ref) async {
   return await ref.watch(createGameAmountDataByGrouperProvider(
     const GameGrouperByPlatformFamily(),
@@ -96,7 +109,25 @@ FutureOr<List<DefaultPieChartData>> gameAmountByPlatformFamily(
 }
 
 @riverpod
-FutureOr<List<DefaultPieChartData>> gameAmountByPlatform(
+FutureOr<List<ChartData>> priceByPlatformFamily(
+    PriceByPlatformFamilyRef ref) async {
+  return await ref.watch(createPriceDataByGrouperProvider(
+    const GameGrouperByPlatformFamily(),
+  ).future);
+}
+
+// ### Platform Analytics ################################################### //
+
+@riverpod
+List<ChartData> platformLegend(PlatformLegendRef ref) {
+  final l10n = ref.watch(l10nProvider);
+  return GamePlatform.values
+      .map((e) => ChartData(title: e.localizedName(l10n), value: 0.0))
+      .toList();
+}
+
+@riverpod
+FutureOr<List<ChartData>> gameAmountByPlatform(
     GameAmountByPlatformRef ref) async {
   return await ref.watch(createGameAmountDataByGrouperProvider(
     const GameGrouperByPlatform(),
@@ -104,7 +135,25 @@ FutureOr<List<DefaultPieChartData>> gameAmountByPlatform(
 }
 
 @riverpod
-FutureOr<List<DefaultPieChartData>> gameAmountByPlayStatus(
+FutureOr<List<ChartData>> priceByPlatform(PriceByPlatformRef ref) async {
+  return await ref.watch(createPriceDataByGrouperProvider(
+    const GameGrouperByPlatform(),
+  ).future);
+}
+
+// ### PlayStatus Analytics ################################################# //
+
+@riverpod
+List<ChartData> playStatusLegend(PlayStatusLegendRef ref) {
+  final l10n = ref.watch(l10nProvider);
+
+  return PlayStatus.values
+      .map((e) => ChartData(title: e.toLocaleString(l10n), value: 0.0))
+      .toList();
+}
+
+@riverpod
+FutureOr<List<ChartData>> gameAmountByPlayStatus(
     GameAmountByPlayStatusRef ref) async {
   return await ref.watch(createGameAmountDataByGrouperProvider(
     const GameGrouperByPlayStatus(),
@@ -112,24 +161,7 @@ FutureOr<List<DefaultPieChartData>> gameAmountByPlayStatus(
 }
 
 @riverpod
-FutureOr<List<DefaultPieChartData>> priceByPlatformFamily(
-    PriceByPlatformFamilyRef ref) async {
-  return await ref.watch(createPriceDataByGrouperProvider(
-    const GameGrouperByPlatformFamily(),
-  ).future);
-}
-
-@riverpod
-FutureOr<List<DefaultPieChartData>> priceByPlatform(
-    PriceByPlatformRef ref) async {
-  return await ref.watch(createPriceDataByGrouperProvider(
-    const GameGrouperByPlatform(),
-  ).future);
-}
-
-@riverpod
-FutureOr<List<DefaultPieChartData>> priceByPlayStatus(
-    PriceByPlayStatusRef ref) async {
+FutureOr<List<ChartData>> priceByPlayStatus(PriceByPlayStatusRef ref) async {
   return await ref.watch(createPriceDataByGrouperProvider(
     const GameGrouperByPlayStatus(),
   ).future);

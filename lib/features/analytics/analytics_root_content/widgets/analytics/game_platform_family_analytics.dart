@@ -1,68 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pile_of_shame/features/analytics/analytics_root_content/providers/analytics_provider.dart';
-import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
-import 'package:pile_of_shame/providers/format_provider.dart';
-import 'package:pile_of_shame/utils/constants.dart';
+import 'package:pile_of_shame/features/analytics/analytics_root_content/widgets/analytics/analytics.dart';
 
-import '../default_pie_chart.dart';
-
-class GamePlatformFamilyAnalytics extends ConsumerWidget {
+class GamePlatformFamilyAnalytics extends ConsumerStatefulWidget {
   const GamePlatformFamilyAnalytics({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<GamePlatformFamilyAnalytics> createState() =>
+      _GamePlatformFamilyAnalyticsState();
+}
+
+class _GamePlatformFamilyAnalyticsState
+    extends ConsumerState<GamePlatformFamilyAnalytics> {
+  String? highlightedLabel;
+
+  void handleSectionChange(String? selection) {
+    if (highlightedLabel == selection) {
+      setState(() {
+        highlightedLabel = null;
+      });
+    } else {
+      setState(() {
+        highlightedLabel = selection;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final legend = ref.watch(platformFamilyLegendProvider);
     final gameCount = ref.watch(gameAmountByPlatformFamilyProvider);
     final price = ref.watch(priceByPlatformFamilyProvider);
-    final currencyFormatter = ref.watch(currencyFormatProvider(context));
-    return ListView(
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: defaultPaddingX,
-            vertical: 8.0,
-          ),
-          child: gameCount.maybeWhen(
-            orElse: () {
-              return const SizedBox();
-            },
-            data: (data) {
-              return DefaultPieChart(
-                title: AppLocalizations.of(context)!.gameCount,
-                data: data,
-                total: data
-                    .fold(
-                        0,
-                        (previousValue, element) =>
-                            previousValue + element.value.toInt())
-                    .toString(),
-              );
-            },
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: defaultPaddingX,
-            vertical: 8.0,
-          ),
-          child: price.maybeWhen(
-            orElse: () {
-              return const SizedBox();
-            },
-            data: (data) {
-              return DefaultPieChart(
-                title: AppLocalizations.of(context)!.price,
-                data: data,
-                total: currencyFormatter.format(data.fold(
-                    0,
-                    (previousValue, element) =>
-                        previousValue + element.value.toInt())),
-                formatData: (data) => currencyFormatter.format(data),
-              );
-            },
-          ),
-        ),
-      ],
-    );
+
+    return Analytics(legend: legend, gameCount: gameCount, price: price);
   }
 }
