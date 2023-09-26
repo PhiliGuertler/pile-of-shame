@@ -44,6 +44,9 @@ class _AnalyticsState extends ConsumerState<Analytics> {
     final currencyFormatter = ref.watch(currencyFormatProvider(context));
     return ListView(
       children: [
+        const SizedBox(
+          height: 16.0,
+        ),
         Padding(
           padding: const EdgeInsets.symmetric(
               horizontal: defaultPaddingX, vertical: 8.0),
@@ -108,6 +111,9 @@ class _AnalyticsState extends ConsumerState<Analytics> {
             ),
           ],
         ),
+        const SizedBox(
+          height: 16.0,
+        ),
       ],
     );
   }
@@ -120,6 +126,9 @@ class AnalyticsSkeleton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView(
       children: const [
+        SizedBox(
+          height: 16.0,
+        ),
         Padding(
           padding:
               EdgeInsets.symmetric(horizontal: defaultPaddingX, vertical: 8.0),
@@ -145,6 +154,9 @@ class AnalyticsSkeleton extends StatelessWidget {
               ),
             ),
           ],
+        ),
+        SizedBox(
+          height: 16.0,
         ),
       ],
     );
