@@ -16,6 +16,7 @@ import 'package:pile_of_shame/widgets/play_status_display.dart';
 import 'package:pile_of_shame/widgets/play_status_icon.dart';
 import 'package:pile_of_shame/widgets/price_and_last_modified_display.dart';
 import 'package:pile_of_shame/widgets/price_only_display.dart';
+import 'package:pile_of_shame/widgets/progressing_icon.dart';
 import 'package:pile_of_shame/widgets/skeletons/skeleton.dart';
 import 'package:pile_of_shame/widgets/skeletons/skeleton_image_container.dart';
 import 'package:pile_of_shame/widgets/swipe_to_trigger.dart';
@@ -135,11 +136,10 @@ class CustomizableGameDisplay extends ConsumerWidget {
           color: Colors.red,
           child: Transform.scale(
             scale: 1.0 + triggerOvershoot,
-            child: Icon(
-              game.isFavorite ? Icons.heart_broken_sharp : Icons.favorite,
-              color: HSLColor.fromColor(Colors.red)
-                  .withLightness(0.5 + untilTrigger * 0.5)
-                  .toColor(),
+            child: ProgressingIcon(
+              progress: untilTrigger,
+              icon: game.isFavorite ? Icons.heart_broken_sharp : Icons.favorite,
+              backgroundColor: Colors.red,
             ),
           ),
         );
@@ -160,12 +160,11 @@ class CustomizableGameDisplay extends ConsumerWidget {
                 color: Theme.of(context).colorScheme.surfaceVariant,
                 child: Transform.scale(
                   scale: 1.0 + triggerOvershoot,
-                  child: Icon(
-                    Icons.open_in_full,
-                    color: HSLColor.fromColor(
-                            Theme.of(context).colorScheme.surfaceVariant)
-                        .withLightness(0.5 + untilTrigger * 0.5)
-                        .toColor(),
+                  child: ProgressingIcon(
+                    progress: untilTrigger,
+                    icon: Icons.open_in_full,
+                    backgroundColor:
+                        Theme.of(context).colorScheme.surfaceVariant,
                   ),
                 ),
               );

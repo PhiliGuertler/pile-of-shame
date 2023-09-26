@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pile_of_shame/features/analytics/analytics_root_content/screens/analytics_root_content_screen.dart';
 import 'package:pile_of_shame/features/games/games_list/screens/games_screen.dart';
 import 'package:pile_of_shame/features/settings/root/screens/settings_screen.dart';
+import 'package:pile_of_shame/providers/games/game_provider.dart';
 import 'package:pile_of_shame/widgets/app_scaffold.dart';
 
 import 'models/root_page_models.dart';
@@ -60,6 +61,8 @@ class _RootPageState extends ConsumerState<RootPage> {
 
   @override
   Widget build(BuildContext context) {
+    final hasGames = ref.watch(hasGamesProvider);
+
     final destinations = [
       RootTabs.games.destination(context),
       RootTabs.analytics.destination(context),
@@ -85,7 +88,12 @@ class _RootPageState extends ConsumerState<RootPage> {
               key: ValueKey(activeTab.index), child: children[activeTab.index]),
         ),
         floatingActionButton: activeTab.fab(context, !isScrolled),
-        appBar: activeTab.appBar(_scrollControllerGames),
+        appBar: activeTab.appBar(
+            _scrollControllerGames,
+            hasGames.maybeWhen(
+              orElse: () => false,
+              data: (data) => data,
+            )),
         bottomNavigationBar: NavigationBar(
           selectedIndex: activeTab.index,
           onDestinationSelected: (index) =>

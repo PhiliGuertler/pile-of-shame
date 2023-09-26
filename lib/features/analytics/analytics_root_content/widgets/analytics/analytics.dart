@@ -44,6 +44,9 @@ class _AnalyticsState extends ConsumerState<Analytics> {
     final currencyFormatter = ref.watch(currencyFormatProvider(context));
     return ListView(
       children: [
+        const SizedBox(
+          height: 16.0,
+        ),
         Padding(
           padding: const EdgeInsets.symmetric(
               horizontal: defaultPaddingX, vertical: 8.0),
@@ -54,48 +57,106 @@ class _AnalyticsState extends ConsumerState<Analytics> {
                 .toList(),
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: defaultPaddingX,
-            vertical: 8.0,
-          ),
-          child: widget.gameCount.maybeWhen(
-            orElse: () {
-              return const SizedBox();
-            },
-            data: (data) {
-              return DefaultPieChart(
-                title: AppLocalizations.of(context)!.gameCount,
-                onTapSection: handleSectionChange,
-                data: data
-                    .map((e) =>
-                        e.copyWith(isSelected: highlightedLabel == e.title))
-                    .toList(),
-              );
-            },
-          ),
+        Wrap(
+          alignment: WrapAlignment.spaceEvenly,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: defaultPaddingX,
+                vertical: 8.0,
+              ),
+              child: widget.price.maybeWhen(
+                orElse: () {
+                  return const SizedBox();
+                },
+                data: (data) {
+                  return SizedBox(
+                    width: 350,
+                    child: DefaultBarChart(
+                      title: AppLocalizations.of(context)!.price,
+                      onTapSection: handleSectionChange,
+                      data: data
+                          .map((e) => e.copyWith(
+                              isSelected: highlightedLabel == e.title))
+                          .toList(),
+                      formatData: (data) => currencyFormatter.format(data),
+                    ),
+                  );
+                },
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: defaultPaddingX,
+                vertical: 8.0,
+              ),
+              child: widget.gameCount.maybeWhen(
+                orElse: () {
+                  return const SizedBox();
+                },
+                data: (data) {
+                  return SizedBox(
+                    width: 350,
+                    child: DefaultPieChart(
+                      title: AppLocalizations.of(context)!.gameCount,
+                      onTapSection: handleSectionChange,
+                      data: data
+                          .map((e) => e.copyWith(
+                              isSelected: highlightedLabel == e.title))
+                          .toList(),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(
+          height: 16.0,
+        ),
+      ],
+    );
+  }
+}
+
+class AnalyticsSkeleton extends StatelessWidget {
+  const AnalyticsSkeleton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      children: const [
+        SizedBox(
+          height: 16.0,
         ),
         Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: defaultPaddingX,
-            vertical: 8.0,
-          ),
-          child: widget.price.maybeWhen(
-            orElse: () {
-              return const SizedBox();
-            },
-            data: (data) {
-              return DefaultBarChart(
-                title: AppLocalizations.of(context)!.price,
-                onTapSection: handleSectionChange,
-                data: data
-                    .map((e) =>
-                        e.copyWith(isSelected: highlightedLabel == e.title))
-                    .toList(),
-                formatData: (data) => currencyFormatter.format(data),
-              );
-            },
-          ),
+          padding:
+              EdgeInsets.symmetric(horizontal: defaultPaddingX, vertical: 8.0),
+          child: LegendSkeleton(),
+        ),
+        Wrap(
+          alignment: WrapAlignment.spaceEvenly,
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(
+                  horizontal: defaultPaddingX, vertical: 8.0),
+              child: SizedBox(
+                width: 350,
+                child: DefaultBarChartSkeleton(),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(
+                  horizontal: defaultPaddingX, vertical: 8.0),
+              child: SizedBox(
+                width: 350,
+                child: DefaultPieChartSkeleton(),
+              ),
+            ),
+          ],
+        ),
+        SizedBox(
+          height: 16.0,
         ),
       ],
     );

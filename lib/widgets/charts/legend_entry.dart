@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:pile_of_shame/widgets/skeletons/skeleton.dart';
 
 class LegendEntry extends StatefulWidget {
   const LegendEntry({
@@ -48,25 +49,23 @@ class _LegendEntryState extends State<LegendEntry> {
       child: Stack(
         alignment: Alignment.centerLeft,
         children: <Widget>[
-          LayoutBuilder(builder: (context, constraints) {
-            return Padding(
-              padding: const EdgeInsets.only(left: 4.0),
-              child: AnimatedContainer(
-                duration: 150.ms,
-                curve: Curves.easeInOut,
-                width: widget.isSelected
-                    ? ((textSize?.width ?? widget.size) - 4.0)
-                    : widget.size,
-                height: widget.isSelected
-                    ? textSize?.height ?? widget.size
-                    : widget.size,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(4.0),
-                  color: widget.color,
-                ),
+          Padding(
+            padding: const EdgeInsets.only(left: 4.0),
+            child: AnimatedContainer(
+              duration: 150.ms,
+              curve: Curves.easeInOut,
+              width: widget.isSelected
+                  ? ((textSize?.width ?? widget.size) - 4.0)
+                  : widget.size,
+              height: widget.isSelected
+                  ? textSize?.height ?? widget.size
+                  : widget.size,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(4.0),
+                color: widget.color,
               ),
-            );
-          }),
+            ),
+          ),
           Padding(
             key: _textKey,
             padding: EdgeInsets.only(left: widget.size * 1.5 + 4.0, right: 4.0),
@@ -89,6 +88,41 @@ class _LegendEntryState extends State<LegendEntry> {
           ),
         ],
       ),
+    );
+  }
+}
+
+class LegendEntrySkeleton extends StatelessWidget {
+  const LegendEntrySkeleton({super.key, this.textWidth = 55.0});
+
+  final double textWidth;
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      alignment: Alignment.centerLeft,
+      children: <Widget>[
+        const Padding(
+          padding: EdgeInsets.only(left: 4.0),
+          child: SizedBox(
+            width: 16,
+            height: 16,
+            child: Skeleton(
+              height: 16,
+              widthFactor: 1.0,
+              borderRadius: 4.0,
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 16 * 1.5 + 4.0, right: 4.0),
+          child: SizedBox(
+              width: textWidth,
+              child: const Skeleton(
+                widthFactor: 1,
+              )),
+        ),
+      ],
     );
   }
 }

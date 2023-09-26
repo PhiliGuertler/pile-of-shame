@@ -16,7 +16,7 @@ enum RootTabs {
   settings,
   ;
 
-  PreferredSizeWidget appBar(ScrollController scrollController) {
+  PreferredSizeWidget appBar(ScrollController scrollController, bool hasGames) {
     switch (this) {
       case RootTabs.games:
         return RootGamesAppBar(
@@ -24,7 +24,7 @@ enum RootTabs {
         );
       case RootTabs.analytics:
         return RootAnalyticsAppBar(
-          scrollController: scrollController,
+          hasGames: hasGames,
         );
       case RootTabs.settings:
         return RootSettingsAppBar();
@@ -70,11 +70,7 @@ enum RootTabs {
   }
 
   Widget wrapper(Widget child) {
-    switch (this) {
-      case RootTabs.analytics:
-        return DefaultTabController(length: 3, child: child);
-      default:
-        return child;
-    }
+    // HACK: Even though this is only necessary for RootTabs.analytics, the fade through animations won't work correctly if the other tabs don't use this aswell
+    return DefaultTabController(length: 3, child: child);
   }
 }
