@@ -26,8 +26,14 @@ class GamePlatformFamilyFilter extends _$GamePlatformFamilyFilter {
     return GamePlatformFamily.values;
   }
 
-  void setFilter(List<GamePlatformFamily> filter) {
-    state = filter;
+  Future<void> setFilter(List<GamePlatformFamily> filter) async {
+    final activePlatformFamilies =
+        await ref.read(activeGamePlatformFamiliesProvider.future);
+    if (activePlatformFamilies.every((element) => filter.contains(element))) {
+      state = GamePlatformFamily.values;
+    } else {
+      state = filter;
+    }
   }
 }
 
@@ -38,8 +44,13 @@ class GamePlatformFilter extends _$GamePlatformFilter {
     return GamePlatform.values;
   }
 
-  void setFilter(List<GamePlatform> filter) {
-    state = filter;
+  Future<void> setFilter(List<GamePlatform> filter) async {
+    final activePlatforms = await ref.read(activeGamePlatformsProvider.future);
+    if (activePlatforms.every((element) => filter.contains(element))) {
+      state = GamePlatform.values;
+    } else {
+      state = filter;
+    }
   }
 }
 
@@ -93,12 +104,13 @@ class HasDLCsFilter extends _$HasDLCsFilter {
 
 @riverpod
 bool isAnyFilterActive(IsAnyFilterActiveRef ref) {
-  final allPlatforms = ref.watch(activeGamePlatformsProvider);
-  int numAllPlatforms = allPlatforms.maybeWhen(
-    data: (data) => data.length,
-    orElse: () => GamePlatform.values.length,
-  );
+  final allPlatforms = ref.watch(activeGamePlatformsProvider).maybeWhen(
+        data: (data) => data,
+        orElse: () => GamePlatform.values,
+      );
   final platformFilter = ref.watch(gamePlatformFilterProvider);
+  bool isPlatformFilterActive =
+      !allPlatforms.every((element) => platformFilter.contains(element));
   final platformFamilyFilter = ref.watch(gamePlatformFamilyFilterProvider);
   final playStatusFilter = ref.watch(playStatusFilterProvider);
   final ageRatingFilter = ref.watch(ageRatingFilterProvider);
@@ -106,7 +118,7 @@ bool isAnyFilterActive(IsAnyFilterActiveRef ref) {
   final hasNotesFilter = ref.watch(hasNotesFilterProvider);
   final hasDLCsFilter = ref.watch(hasDLCsFilterProvider);
 
-  return (platformFilter.length < numAllPlatforms ||
+  return (isPlatformFilterActive ||
       platformFamilyFilter.length < GamePlatformFamily.values.length ||
       playStatusFilter.length < PlayStatus.values.length ||
       ageRatingFilter.length < USK.values.length ||

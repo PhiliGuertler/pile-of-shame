@@ -53,7 +53,7 @@ void main() {
       test("returns correct DE string for a platform", () {
         final response = grouper.groupToLocaleString(
             AppLocalizationsDe(), GamePlatform.nintendoSwitch);
-        expect(response, "Nintendo Switch");
+        expect(response, "Switch");
       });
       test("returns correct DE string", () {
         final response = grouper.groupToLocaleString(
@@ -63,7 +63,7 @@ void main() {
       test("returns correct EN string for a platform", () {
         final response = grouper.groupToLocaleString(
             AppLocalizationsEn(), GamePlatform.nintendoSwitch);
-        expect(response, "Nintendo Switch");
+        expect(response, "Switch");
       });
       test("returns correct EN string", () {
         final response = grouper.groupToLocaleString(

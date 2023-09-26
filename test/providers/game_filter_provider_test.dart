@@ -5,8 +5,12 @@ import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/models/game_platforms.dart';
 import 'package:pile_of_shame/models/play_status.dart';
 import 'package:pile_of_shame/providers/games/game_filter_provider.dart';
+import 'package:pile_of_shame/providers/games/game_platforms_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
+
   late ProviderContainer container;
 
   setUp(() {
@@ -18,21 +22,129 @@ void main() {
 
       expect(isFilterActive, false);
     });
-    test("returns true if a platform filter is active", () {
-      container.read(gamePlatformFilterProvider.notifier).setFilter([]);
+    group("platform filters", () {
+      test("returns true if a platform filter is active", () async {
+        SharedPreferences.setMockInitialValues(
+          {},
+        );
+        await container
+            .read(gamePlatformFilterProvider.notifier)
+            .setFilter([GamePlatform.epicGames]);
 
-      final isFilterActive = container.read(isAnyFilterActiveProvider);
+        final isFilterActive = container.read(isAnyFilterActiveProvider);
 
-      expect(isFilterActive, true);
+        expect(isFilterActive, true);
+      });
+      test(
+          "returns false if a platform filter is active that is filtering inactive platforms",
+          () async {
+        SharedPreferences.setMockInitialValues(
+          {},
+        );
+        final List<GamePlatform> activePlatforms =
+            List.from(GamePlatform.values);
+        activePlatforms.remove(GamePlatform.epicGames);
+        await container
+            .read(activeGamePlatformsProvider.notifier)
+            .updatePlatforms(activePlatforms);
+        await container
+            .read(gamePlatformFilterProvider.notifier)
+            .setFilter(activePlatforms);
+
+        final isFilterActive = container.read(isAnyFilterActiveProvider);
+
+        expect(isFilterActive, false);
+      });
+      test(
+          "returns true if a platform filter is active that is filtering an active platform",
+          () async {
+        SharedPreferences.setMockInitialValues(
+          {},
+        );
+        final List<GamePlatform> activePlatforms =
+            List.from(GamePlatform.values);
+        activePlatforms.remove(GamePlatform.epicGames);
+        await container
+            .read(activeGamePlatformsProvider.notifier)
+            .updatePlatforms(activePlatforms);
+
+        final List<GamePlatform> filterPlatforms =
+            List.from(GamePlatform.values);
+        filterPlatforms.remove(GamePlatform.nintendoSwitch);
+        await container
+            .read(gamePlatformFilterProvider.notifier)
+            .setFilter(filterPlatforms);
+
+        final isFilterActive = container.read(isAnyFilterActiveProvider);
+
+        expect(isFilterActive, true);
+      });
     });
-    test("returns true if a platform family filter is active", () {
-      container
-          .read(gamePlatformFamilyFilterProvider.notifier)
-          .setFilter([GamePlatformFamily.nintendo]);
+    group("game platform family filters", () {
+      test("returns true if a platform family filter is active", () async {
+        SharedPreferences.setMockInitialValues(
+          {},
+        );
+        await container
+            .read(gamePlatformFamilyFilterProvider.notifier)
+            .setFilter([GamePlatformFamily.nintendo]);
 
-      final isFilterActive = container.read(isAnyFilterActiveProvider);
+        final isFilterActive = container.read(isAnyFilterActiveProvider);
 
-      expect(isFilterActive, true);
+        expect(isFilterActive, true);
+      });
+      test(
+          "returns false if a platform family filter is active that is filtering an inactive family",
+          () async {
+        SharedPreferences.setMockInitialValues(
+          {},
+        );
+        final List<GamePlatform> activePlatforms =
+            List.from(GamePlatform.values);
+        activePlatforms.removeWhere(
+          (element) => element.family == GamePlatformFamily.microsoft,
+        );
+        await container
+            .read(activeGamePlatformsProvider.notifier)
+            .updatePlatforms(activePlatforms);
+
+        final List<GamePlatformFamily> filter =
+            List.from(GamePlatformFamily.values);
+        filter.remove(GamePlatformFamily.microsoft);
+        await container
+            .read(gamePlatformFamilyFilterProvider.notifier)
+            .setFilter(filter);
+
+        final isFilterActive = container.read(isAnyFilterActiveProvider);
+
+        expect(isFilterActive, false);
+      });
+      test(
+          "returns true if a platform family filter is active that is filtering an active family",
+          () async {
+        SharedPreferences.setMockInitialValues(
+          {},
+        );
+        final List<GamePlatform> activePlatforms =
+            List.from(GamePlatform.values);
+        activePlatforms.removeWhere(
+          (element) => element.family == GamePlatformFamily.microsoft,
+        );
+        await container
+            .read(activeGamePlatformsProvider.notifier)
+            .updatePlatforms(activePlatforms);
+
+        final List<GamePlatformFamily> filter =
+            List.from(GamePlatformFamily.values);
+        filter.remove(GamePlatformFamily.nintendo);
+        await container
+            .read(gamePlatformFamilyFilterProvider.notifier)
+            .setFilter(filter);
+
+        final isFilterActive = container.read(isAnyFilterActiveProvider);
+
+        expect(isFilterActive, true);
+      });
     });
     test("returns true if a play status filter is active", () {
       container
@@ -93,8 +205,9 @@ void main() {
       dlcs: [],
       usk: USK.usk12,
     );
-    test("correctly applies platform filters", () {
-      container
+    test("correctly applies platform filters", () async {
+      SharedPreferences.setMockInitialValues({});
+      await container
           .read(gamePlatformFilterProvider.notifier)
           .setFilter([GamePlatform.playStation2, GamePlatform.steam]);
 
@@ -109,8 +222,9 @@ void main() {
 
       expect(result, [gameDistance, gameSsx3]);
     });
-    test("correctly applies platform family filters", () {
-      container
+    test("correctly applies platform family filters", () async {
+      SharedPreferences.setMockInitialValues({});
+      await container
           .read(gamePlatformFamilyFilterProvider.notifier)
           .setFilter([GamePlatformFamily.sony, GamePlatformFamily.pc]);
 
@@ -125,7 +239,7 @@ void main() {
 
       expect(result, [gameDistance, gameSsx3, gameOriAndTheBlindForest]);
     });
-    test("correctly applies play status filters", () {
+    test("correctly applies play status filters", () async {
       container
           .read(playStatusFilterProvider.notifier)
           .setFilter([PlayStatus.completed, PlayStatus.onPileOfShame]);

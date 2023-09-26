@@ -27,12 +27,22 @@
       }
     }
   },
+  "@totalN": {
+    "placeholders": {
+      "n": {
+        "example": "300,00€",
+        "type": "String"
+      }
+    }
+  },
   "aboutThisApp": "About this app",
   "addDLC": "Add DLC",
   "addGame": "Add game",
+  "addGamesToGenerateALibraryAnalysis": "Add games to generate a library analysis",
   "ageRating": "Age rating",
   "all": "all",
   "allGamesDeleted": "All games deleted",
+  "analytics": "Analytics",
   "appName": "Pile of shame",
   "appSettings": "App-Settings",
   "appearance": "Appearance",
@@ -84,6 +94,7 @@
   "fancyAnimations": "fancy animations",
   "favorites": "Favorites",
   "filterGames": "Filter games",
+  "gameCount": "Game count",
   "gameDisplay": "Game display",
   "gameName": "Game name",
   "games": "Games",
@@ -128,6 +139,7 @@
   "pc": "PC",
   "personalizeGameDisplays": "Personalize game displays",
   "personalizeTheGameDisplayByDraggingEndPiecesOrBottomBarsIntoThePreview": "Personalize the game display by dragging end pieces or bottom bars into the preview.",
+  "phone": "Phone",
   "pileOfShameWhatAreYou": "With Pile of Shame you can save your game collection in a nice look, without any accounts, online constraints or ads. The app is completely open source! Do you have ideas for features that the app is still missing? Feel free to create an issue on the Github page of this project linked above.",
   "platform": "Platform",
   "platformFamilies": "Platform families",
@@ -137,6 +149,7 @@
   "priceAndLastModified": "price and modification-date",
   "priceWithDLCs": "Price with DLCs",
   "ratedN": "Rated {n}",
+  "removeActiveFilters": "Remove active filters",
   "repeatAnimations": "repeat animations",
   "replaying": "Replaying",
   "rightArea": "right area",
@@ -155,6 +168,7 @@
   "systemLanguage": "System-Language",
   "thisActionCannotBeUndone": "This action cannot be undone.",
   "thisFieldIsRequired": "This field is required",
+  "totalN": "Total: {n}",
   "updateExistingGames": "Update existing games",
   "yes": "Yes",
   "yourPlatforms": "Your platforms",

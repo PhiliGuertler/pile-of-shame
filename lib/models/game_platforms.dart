@@ -358,4 +358,15 @@ enum GamePlatform {
         return name;
     }
   }
+
+  String localizedAbbreviation(AppLocalizations l10n) {
+    switch (this) {
+      case GamePlatform.unknown:
+        return l10n.misc;
+      case GamePlatform.smartphone:
+        return l10n.phone;
+      default:
+        return abbreviation;
+    }
+  }
 }
