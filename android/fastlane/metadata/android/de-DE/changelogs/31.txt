@@ -1,0 +1,7 @@
+Version 0.5.0
+
+Dieses Update führt neben einigen kleinen Fehlerkorrekturen den "Analysen"-Tab ein.
+Dort wird kann in kleinen Grafiken die Verteilung der Spiele dargestellt werden.
+In künftigen Updates wird dieser Bereich der App noch erweitert.
+
+Viel Spaß mit diesem Update!
