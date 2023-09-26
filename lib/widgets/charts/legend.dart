@@ -36,3 +36,32 @@ class Legend extends StatelessWidget {
     );
   }
 }
+
+class LegendSkeleton extends StatelessWidget {
+  const LegendSkeleton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Wrap(
+      runSpacing: 4.0,
+      spacing: 8.0,
+      children: [
+        LegendEntrySkeleton(
+          textWidth: 60.0,
+        ),
+        LegendEntrySkeleton(
+          textWidth: 75.0,
+        ),
+        LegendEntrySkeleton(
+          textWidth: 55.0,
+        ),
+        LegendEntrySkeleton(
+          textWidth: 90.0,
+        ),
+        LegendEntrySkeleton(
+          textWidth: 70.0,
+        ),
+      ],
+    );
+  }
+}
