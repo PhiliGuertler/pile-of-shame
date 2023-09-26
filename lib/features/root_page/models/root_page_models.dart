@@ -70,11 +70,7 @@ enum RootTabs {
   }
 
   Widget wrapper(Widget child) {
-    switch (this) {
-      case RootTabs.analytics:
-        return DefaultTabController(length: 3, child: child);
-      default:
-        return child;
-    }
+    // HACK: Even though this is only necessary for RootTabs.analytics, the fade through animations won't work correctly if the other tabs don't use this aswell
+    return DefaultTabController(length: 3, child: child);
   }
 }
