@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 
-class RootAnalyticsAppBar extends ConsumerWidget
+class RootAnalyticsAppBar extends StatefulWidget
     implements PreferredSizeWidget {
   final ScrollController scrollController;
 
-  final preferredSizeAppBar = AppBar();
+  final preferredSizeAppBar = AppBar(
+    title: const Text("Analytics"),
+    bottom: const TabBar(tabs: [
+      Tab(
+        child: Text("by status"),
+      )
+    ]),
+  );
 
   RootAnalyticsAppBar({super.key, required this.scrollController});
 
@@ -14,9 +20,28 @@ class RootAnalyticsAppBar extends ConsumerWidget
   Size get preferredSize => preferredSizeAppBar.preferredSize;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  State<RootAnalyticsAppBar> createState() => _RootAnalyticsAppBarState();
+}
+
+class _RootAnalyticsAppBarState extends State<RootAnalyticsAppBar> {
+  @override
+  Widget build(BuildContext context) {
     return AppBar(
       title: Text(AppLocalizations.of(context)!.analytics),
+      bottom: TabBar(
+        isScrollable: true,
+        tabs: [
+          Tab(
+            child: Text(AppLocalizations.of(context)!.byPlatformFamily),
+          ),
+          Tab(
+            child: Text(AppLocalizations.of(context)!.byPlatform),
+          ),
+          Tab(
+            child: Text(AppLocalizations.of(context)!.byStatus),
+          ),
+        ],
+      ),
     );
   }
 }

@@ -70,11 +70,14 @@ FutureOr<List<DefaultPieChartData>> createPriceDataByGrouper(
   final List<DefaultPieChartData> result = [];
   for (var i = 0; i < grouped.length; ++i) {
     final entry = grouped.entries.elementAt(i);
-    result.add(DefaultPieChartData(
-      value: entry.value
-          .fold(0.0, (previousValue, element) => previousValue + element.price),
-      title: entry.key,
-    ));
+    final sum = entry.value
+        .fold(0.0, (previousValue, element) => previousValue + element.price);
+    if (sum > 0) {
+      result.add(DefaultPieChartData(
+        value: sum,
+        title: entry.key,
+      ));
+    }
   }
 
   result.sort(
@@ -113,5 +116,21 @@ FutureOr<List<DefaultPieChartData>> priceByPlatformFamily(
     PriceByPlatformFamilyRef ref) async {
   return await ref.watch(createPriceDataByGrouperProvider(
     const GameGrouperByPlatformFamily(),
+  ).future);
+}
+
+@riverpod
+FutureOr<List<DefaultPieChartData>> priceByPlatform(
+    PriceByPlatformRef ref) async {
+  return await ref.watch(createPriceDataByGrouperProvider(
+    const GameGrouperByPlatform(),
+  ).future);
+}
+
+@riverpod
+FutureOr<List<DefaultPieChartData>> priceByPlayStatus(
+    PriceByPlayStatusRef ref) async {
+  return await ref.watch(createPriceDataByGrouperProvider(
+    const GameGrouperByPlayStatus(),
   ).future);
 }

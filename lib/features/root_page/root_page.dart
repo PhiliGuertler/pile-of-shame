@@ -72,26 +72,29 @@ class _RootPageState extends ConsumerState<RootPage> {
       const SettingsScreen(),
     ];
 
-    return AppScaffold(
-      body: PageTransitionSwitcher(
-        transitionBuilder: (child, primaryAnimation, secondaryAnimation) =>
-            FadeThroughTransition(
-          animation: primaryAnimation,
-          secondaryAnimation: secondaryAnimation,
-          child: child,
+    return activeTab.wrapper(
+      AppScaffold(
+        body: PageTransitionSwitcher(
+          transitionBuilder: (child, primaryAnimation, secondaryAnimation) =>
+              FadeThroughTransition(
+            animation: primaryAnimation,
+            secondaryAnimation: secondaryAnimation,
+            child: child,
+          ),
+          child: Container(
+              key: ValueKey(activeTab.index), child: children[activeTab.index]),
         ),
-        child: Container(
-            key: ValueKey(activeTab.index), child: children[activeTab.index]),
+        floatingActionButton: activeTab.fab(context, !isScrolled),
+        appBar: activeTab.appBar(_scrollControllerGames),
+        bottomNavigationBar: NavigationBar(
+          selectedIndex: activeTab.index,
+          onDestinationSelected: (index) =>
+              _handleRootTabChange(index, context),
+          destinations: destinations,
+        ),
+        drawer: activeTab.drawer(context),
+        endDrawer: activeTab.endDrawer(context),
       ),
-      floatingActionButton: activeTab.fab(context, !isScrolled),
-      appBar: activeTab.appBar(_scrollControllerGames),
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: activeTab.index,
-        onDestinationSelected: (index) => _handleRootTabChange(index, context),
-        destinations: destinations,
-      ),
-      drawer: activeTab.drawer(context),
-      endDrawer: activeTab.endDrawer(context),
     );
   }
 }

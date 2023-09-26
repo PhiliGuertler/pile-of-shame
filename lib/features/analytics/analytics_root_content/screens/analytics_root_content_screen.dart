@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pile_of_shame/features/analytics/analytics_root_content/providers/analytics_provider.dart';
-import 'package:pile_of_shame/features/analytics/analytics_root_content/widgets/default_pie_chart.dart';
-import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
-import 'package:pile_of_shame/providers/format_provider.dart';
-import 'package:pile_of_shame/utils/constants.dart';
+import 'package:pile_of_shame/features/analytics/analytics_root_content/widgets/analytics/game_platform_analytics.dart';
+import 'package:pile_of_shame/features/analytics/analytics_root_content/widgets/analytics/game_platform_family_analytics.dart';
+import 'package:pile_of_shame/features/analytics/analytics_root_content/widgets/analytics/play_status_analytics.dart';
 
 class AnalyticsRootContentScreen extends ConsumerStatefulWidget {
   const AnalyticsRootContentScreen({super.key});
@@ -20,107 +18,12 @@ class _AnalyticsRootContentScreenState
 
   @override
   Widget build(BuildContext context) {
-    final gameAmountByPlatformFamily =
-        ref.watch(gameAmountByPlatformFamilyProvider);
-    final gameAmountByPlatform = ref.watch(gameAmountByPlatformProvider);
-    final gameAmountByPlayStatus = ref.watch(gameAmountByPlayStatusProvider);
-    final priceByPlatformFamily = ref.watch(priceByPlatformFamilyProvider);
-    final currencyFormatter = ref.watch(currencyFormatProvider(context));
-
-    return SafeArea(
-      child: ListView(
+    return const SafeArea(
+      child: TabBarView(
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: defaultPaddingX,
-              vertical: 8.0,
-            ),
-            child: gameAmountByPlatformFamily.maybeWhen(
-              orElse: () {
-                return const SizedBox();
-              },
-              data: (data) {
-                return DefaultPieChart(
-                  title: AppLocalizations.of(context)!.platformFamilies,
-                  data: data,
-                  total: data
-                      .fold(
-                          0,
-                          (previousValue, element) =>
-                              previousValue + element.value.toInt())
-                      .toString(),
-                );
-              },
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: defaultPaddingX,
-              vertical: 8.0,
-            ),
-            child: gameAmountByPlatform.maybeWhen(
-              orElse: () {
-                return const SizedBox();
-              },
-              data: (data) {
-                return DefaultPieChart(
-                  title: AppLocalizations.of(context)!.platform,
-                  data: data,
-                  total: data
-                      .fold(
-                          0,
-                          (previousValue, element) =>
-                              previousValue + element.value.toInt())
-                      .toString(),
-                );
-              },
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: defaultPaddingX,
-              vertical: 8.0,
-            ),
-            child: gameAmountByPlayStatus.maybeWhen(
-              orElse: () {
-                return const SizedBox();
-              },
-              data: (data) {
-                return DefaultPieChart(
-                  title: AppLocalizations.of(context)!.status,
-                  data: data,
-                  total: data
-                      .fold(
-                          0,
-                          (previousValue, element) =>
-                              previousValue + element.value.toInt())
-                      .toString(),
-                );
-              },
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: defaultPaddingX,
-              vertical: 8.0,
-            ),
-            child: priceByPlatformFamily.maybeWhen(
-              orElse: () {
-                return const SizedBox();
-              },
-              data: (data) {
-                return DefaultPieChart(
-                  title: AppLocalizations.of(context)!.price,
-                  data: data,
-                  total: currencyFormatter.format(data.fold(
-                      0,
-                      (previousValue, element) =>
-                          previousValue + element.value.toInt())),
-                  formatData: (data) => currencyFormatter.format(data),
-                );
-              },
-            ),
-          ),
+          GamePlatformFamilyAnalytics(),
+          GamePlatformAnalytics(),
+          PlayStatusAnalytics(),
         ],
       ),
     );

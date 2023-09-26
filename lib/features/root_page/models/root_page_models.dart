@@ -68,4 +68,13 @@ enum RootTabs {
         return null;
     }
   }
+
+  Widget wrapper(Widget child) {
+    switch (this) {
+      case RootTabs.analytics:
+        return DefaultTabController(length: 3, child: child);
+      default:
+        return child;
+    }
+  }
 }
