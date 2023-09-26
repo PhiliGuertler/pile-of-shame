@@ -148,6 +148,7 @@
   "priceAndLastModified": "price and modification-date",
   "priceWithDLCs": "Price with DLCs",
   "ratedN": "Rated {n}",
+  "removeActiveFilters": "Remove active filters",
   "repeatAnimations": "repeat animations",
   "replaying": "Replaying",
   "rightArea": "right area",
