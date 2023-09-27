@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pile_of_shame/features/games/add_or_edit_game/providers/edit_game_provider.dart';
 import 'package:pile_of_shame/features/games/add_or_edit_game/widgets/name_input_field.dart';
@@ -164,13 +165,78 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
                 Padding(
                   padding:
                       const EdgeInsets.symmetric(horizontal: defaultPaddingX),
-                  child: PriceInputField(
-                    value: editableGame.price,
-                    onChanged: (value) {
-                      ref
-                          .read(addGameProvider(widget.initialValue).notifier)
-                          .updateGame(editableGame.copyWith(price: value));
-                    },
+                  child: IntrinsicHeight(
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Expanded(
+                          child: PriceInputField(
+                            enabled: !editableGame.wasGifted,
+                            value: editableGame.price,
+                            onChanged: (value) {
+                              ref
+                                  .read(addGameProvider(widget.initialValue)
+                                      .notifier)
+                                  .updateGame(
+                                      editableGame.copyWith(price: value));
+                            },
+                          ),
+                        ),
+                        InkWell(
+                          onTap: () {
+                            final newValue = !editableGame.wasGifted;
+                            ref
+                                .read(addGameProvider(widget.initialValue)
+                                    .notifier)
+                                .updateGame(editableGame.copyWith(
+                                  wasGifted: newValue,
+                                ));
+                          },
+                          child: SizedBox(
+                            width: 80.0,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Icon(
+                                  Icons.cake_sharp,
+                                  color: Theme.of(context).colorScheme.primary,
+                                )
+                                    .animate(
+                                        target: editableGame.wasGifted ? 0 : 1)
+                                    .shake()
+                                    .scale(
+                                        begin: const Offset(1.0, 1.0),
+                                        end: const Offset(1.2, 1.2),
+                                        curve: Curves.easeInOutBack)
+                                    .then()
+                                    .swap(
+                                      builder: (context, child) =>
+                                          const Icon(Icons.cake_outlined)
+                                              .animate()
+                                              .scale(
+                                                begin: const Offset(1.2, 1.2),
+                                                end: const Offset(1.0, 1.0),
+                                                curve: Curves.easeInOutBack,
+                                              ),
+                                    ),
+                                Text(
+                                  AppLocalizations.of(context)!.gift,
+                                  style: editableGame.wasGifted
+                                      ? Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium!
+                                          .copyWith(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .primary)
+                                      : null,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 Padding(

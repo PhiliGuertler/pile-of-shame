@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pile_of_shame/features/games/add_or_edit_game/models/editable_game.dart';
 import 'package:pile_of_shame/features/games/add_or_edit_game/providers/edit_game_provider.dart';
@@ -68,13 +69,78 @@ class _AddDLCScreenState extends ConsumerState<AddDLCScreen> {
                 Padding(
                   padding:
                       const EdgeInsets.symmetric(horizontal: defaultPaddingX),
-                  child: PriceInputField(
-                    value: editableDLC.price,
-                    onChanged: (value) {
-                      ref
-                          .read(addDLCProvider(widget.initialValue).notifier)
-                          .updateDLC(editableDLC.copyWith(price: value));
-                    },
+                  child: IntrinsicHeight(
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Expanded(
+                          child: PriceInputField(
+                            enabled: !editableDLC.wasGifted,
+                            value: editableDLC.price,
+                            onChanged: (value) {
+                              ref
+                                  .read(addDLCProvider(widget.initialValue)
+                                      .notifier)
+                                  .updateDLC(
+                                      editableDLC.copyWith(price: value));
+                            },
+                          ),
+                        ),
+                        InkWell(
+                          onTap: () {
+                            final newValue = !editableDLC.wasGifted;
+                            ref
+                                .read(addDLCProvider(widget.initialValue)
+                                    .notifier)
+                                .updateDLC(editableDLC.copyWith(
+                                  wasGifted: newValue,
+                                ));
+                          },
+                          child: SizedBox(
+                            width: 80.0,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Icon(
+                                  Icons.cake_sharp,
+                                  color: Theme.of(context).colorScheme.primary,
+                                )
+                                    .animate(
+                                        target: editableDLC.wasGifted ? 0 : 1)
+                                    .shake()
+                                    .scale(
+                                        begin: const Offset(1.0, 1.0),
+                                        end: const Offset(1.2, 1.2),
+                                        curve: Curves.easeInOutBack)
+                                    .then()
+                                    .swap(
+                                      builder: (context, child) =>
+                                          const Icon(Icons.cake_outlined)
+                                              .animate()
+                                              .scale(
+                                                begin: const Offset(1.2, 1.2),
+                                                end: const Offset(1.0, 1.0),
+                                                curve: Curves.easeInOutBack,
+                                              ),
+                                    ),
+                                Text(
+                                  AppLocalizations.of(context)!.gift,
+                                  style: editableDLC.wasGifted
+                                      ? Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium!
+                                          .copyWith(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .primary)
+                                      : null,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 Padding(

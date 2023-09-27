@@ -101,8 +101,9 @@ class CustomizableGameDisplay extends ConsumerWidget {
               secondaryWidget = Text(
                   game.platform.localizedName(AppLocalizations.of(context)!));
             case GameDisplaySecondary.price:
-              secondaryWidget =
-                  Text(currencyFormatter.format(game.fullPrice()));
+              secondaryWidget = Text(game.wasGifted && game.fullPrice() < 0.01
+                  ? AppLocalizations.of(context)!.gift
+                  : currencyFormatter.format(game.fullPrice()));
             case GameDisplaySecondary.none:
               secondaryWidget = null;
           }

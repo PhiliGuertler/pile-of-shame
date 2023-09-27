@@ -5,11 +5,16 @@ import 'package:pile_of_shame/providers/format_provider.dart';
 
 class PriceOnlyDisplay extends ConsumerWidget {
   final double price;
+  final bool wasGifted;
 
-  const PriceOnlyDisplay({super.key, required this.price});
+  const PriceOnlyDisplay(
+      {super.key, required this.price, required this.wasGifted});
 
   factory PriceOnlyDisplay.fromGame({required Game game}) {
-    return PriceOnlyDisplay(price: game.fullPrice());
+    return PriceOnlyDisplay(
+      price: game.fullPrice(),
+      wasGifted: game.wasGifted && game.fullPrice() < 0.01,
+    );
   }
 
   @override
@@ -22,7 +27,10 @@ class PriceOnlyDisplay extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.end,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(currencyFormatter.format(price)),
+          if (wasGifted)
+            Icon(Icons.cake_sharp,
+                color: Theme.of(context).colorScheme.primary),
+          if (!wasGifted) Text(currencyFormatter.format(price)),
         ],
       ),
     );

@@ -18,6 +18,7 @@ class EditableDLC with _$EditableDLC {
     double? price,
     String? notes,
     @Default(false) bool isFavorite,
+    @Default(false) bool wasGifted,
   }) = _EditableDLC;
 
   factory EditableDLC.fromDLC(DLC dlc) {
@@ -28,6 +29,7 @@ class EditableDLC with _$EditableDLC {
       status: dlc.status,
       notes: dlc.notes,
       isFavorite: dlc.isFavorite,
+      wasGifted: dlc.wasGifted,
     );
   }
 
@@ -43,9 +45,10 @@ class EditableDLC with _$EditableDLC {
       lastModified: DateTime.now(),
       name: name!.trim(),
       status: status,
-      price: price ?? 0.0,
+      price: wasGifted ? 0.0 : price ?? 0.0,
       notes: notes != null ? notes!.trim() : notes,
       isFavorite: isFavorite,
+      wasGifted: wasGifted,
     );
   }
 }
@@ -64,6 +67,7 @@ class EditableGame with _$EditableGame {
     @Default([]) List<DLC> dlcs,
     String? notes,
     @Default(false) bool isFavorite,
+    @Default(false) bool wasGifted,
   }) = _EditableGame;
 
   factory EditableGame.fromGame(Game game) {
@@ -77,6 +81,7 @@ class EditableGame with _$EditableGame {
       dlcs: game.dlcs,
       notes: game.notes,
       isFavorite: game.isFavorite,
+      wasGifted: game.wasGifted,
     );
   }
 
@@ -94,11 +99,12 @@ class EditableGame with _$EditableGame {
       platform: platform!,
       status: status,
       lastModified: DateTime.now(),
-      price: price ?? 0.0,
+      price: wasGifted ? 0.0 : price ?? 0.0,
       usk: usk,
       dlcs: dlcs,
       notes: notes != null ? notes!.trim() : notes,
       isFavorite: isFavorite,
+      wasGifted: wasGifted,
     );
   }
 }

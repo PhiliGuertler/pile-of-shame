@@ -55,7 +55,8 @@ void main() {
             ],
             "releaseDate": "2017-04-20",
             "coverArt": "https://cdn02.plentymarkets.com/qozbgypaugq8/item/images/1613/full/PSTR-ZELDA005.jpg",
-            "isFavorite": true
+            "isFavorite": true,
+            "wasGifted": true
         },
         {
             "id": "outer-wilds",
