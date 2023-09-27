@@ -10,6 +10,7 @@ import 'package:pile_of_shame/providers/games/game_provider.dart';
 import 'package:pile_of_shame/utils/constants.dart';
 import 'package:pile_of_shame/widgets/animated/animated_heart/animated_heart_button.dart';
 import 'package:pile_of_shame/widgets/game_platform_icon.dart';
+import 'package:pile_of_shame/widgets/image_container.dart';
 import 'package:pile_of_shame/widgets/note.dart';
 import 'package:pile_of_shame/widgets/play_status_display.dart';
 import 'package:pile_of_shame/widgets/play_status_icon.dart';
@@ -99,13 +100,23 @@ class _SliverGameDetailsState extends ConsumerState<SliverGameDetails> {
           ),
         ),
         ListTile(
+          leading: widget.game.wasGifted
+              ? ImageContainer(
+                  child: Icon(
+                    Icons.cake_sharp,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                )
+              : null,
           title: Text(shouldShowPriceSum
               ? AppLocalizations.of(context)!.priceWithDLCs
               : AppLocalizations.of(context)!.price),
           subtitle: Text(
-            currencyFormatter.format(shouldShowPriceSum
-                ? widget.game.fullPrice()
-                : widget.game.price),
+            widget.game.wasGifted && widget.game.fullPrice() < 0.01
+                ? AppLocalizations.of(context)!.gift
+                : currencyFormatter.format(shouldShowPriceSum
+                    ? widget.game.fullPrice()
+                    : widget.game.price),
           ),
           trailing: IconButton(
             icon: const Icon(Icons.swap_horiz),
@@ -166,7 +177,9 @@ class _SliverGameDetailsState extends ConsumerState<SliverGameDetails> {
                     key: ValueKey(dlc.id),
                     leading: PlayStatusIcon(playStatus: dlc.status),
                     title: Text(dlc.name),
-                    subtitle: Text(currencyFormatter.format(dlc.price)),
+                    subtitle: Text(dlc.wasGifted
+                        ? AppLocalizations.of(context)!.gift
+                        : currencyFormatter.format(dlc.price)),
                     openBuilderOnTap: (context, action) => DLCDetailsScreen(
                       game: widget.game,
                       dlcId: dlc.id,

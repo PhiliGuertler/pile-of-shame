@@ -101,6 +101,7 @@
   "games": "Games",
   "gamesInYourListThatAreOlderThanImportedGamesWillBeOverwritten": "Games in your list that are older than imported games will be overwritten.",
   "gamesThatAreNotInYourListWillBeImported": "Games that are not in your list will be imported.",
+  "gift": "Gift",
   "githubRepository": "Github repository",
   "groupGames": "Group games",
   "hasDLCs": "has DLCs",

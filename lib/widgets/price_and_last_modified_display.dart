@@ -5,14 +5,22 @@ import 'package:pile_of_shame/providers/format_provider.dart';
 
 class PriceAndLastModifiedDisplay extends ConsumerWidget {
   final double price;
+  final bool wasGifted;
   final DateTime lastModified;
 
-  const PriceAndLastModifiedDisplay(
-      {super.key, required this.price, required this.lastModified});
+  const PriceAndLastModifiedDisplay({
+    super.key,
+    required this.price,
+    required this.lastModified,
+    required this.wasGifted,
+  });
 
   factory PriceAndLastModifiedDisplay.fromGame({required Game game}) {
     return PriceAndLastModifiedDisplay(
-        price: game.fullPrice(), lastModified: game.lastModified);
+      price: game.fullPrice(),
+      lastModified: game.lastModified,
+      wasGifted: game.wasGifted && game.fullPrice() < 0.01,
+    );
   }
 
   @override
@@ -26,7 +34,10 @@ class PriceAndLastModifiedDisplay extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.end,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(currencyFormatter.format(price)),
+          if (wasGifted)
+            Icon(Icons.cake_sharp,
+                color: Theme.of(context).colorScheme.primary),
+          if (!wasGifted) Text(currencyFormatter.format(price)),
           Text(dateFormatter.format(lastModified)),
         ],
       ),

@@ -6,6 +6,7 @@ import 'package:pile_of_shame/providers/format_provider.dart';
 import 'package:pile_of_shame/providers/games/game_provider.dart';
 import 'package:pile_of_shame/widgets/animated/animated_heart/animated_heart_button.dart';
 import 'package:pile_of_shame/widgets/game_platform_icon.dart';
+import 'package:pile_of_shame/widgets/image_container.dart';
 import 'package:pile_of_shame/widgets/note.dart';
 import 'package:pile_of_shame/widgets/play_status_display.dart';
 import 'package:pile_of_shame/widgets/play_status_icon.dart';
@@ -57,9 +58,19 @@ class SliverDLCDetails extends ConsumerWidget {
           ),
         ),
         ListTile(
+          leading: dlc.wasGifted
+              ? ImageContainer(
+                  child: Icon(
+                    Icons.cake_sharp,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                )
+              : null,
           title: Text(AppLocalizations.of(context)!.price),
           subtitle: Text(
-            currencyFormatter.format(dlc.price),
+            dlc.wasGifted
+                ? AppLocalizations.of(context)!.gift
+                : currencyFormatter.format(dlc.price),
           ),
         ),
         ListTile(
