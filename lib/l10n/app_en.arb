@@ -46,6 +46,7 @@
   "appName": "Pile of shame",
   "appSettings": "App-Settings",
   "appearance": "Appearance",
+  "averagePrice": "Average price",
   "beforeYouImportGamesYouShouldExportYourPreviousGamesAsAPrecaution": "Before you import games, you should export your previous games as a precaution. Changes made by imports cannot be undone.",
   "bottomArea": "bottom area",
   "bottomBars": "Bottom bars",
