@@ -12,10 +12,16 @@ String defaultFormatData(double data) {
   return (data == data.roundToDouble() ? data.toInt() : data).toString();
 }
 
+double defaultComputeSum(List<ChartData> data) {
+  return data.fold(
+      0.0, (previousValue, element) => previousValue + element.value);
+}
+
 class DefaultBarChart extends StatefulWidget {
   final List<ChartData> data;
   final String title;
   final String Function(double data) formatData;
+  final double Function(List<ChartData> data) computeSum;
   final void Function(String? title)? onTapSection;
 
   const DefaultBarChart({
@@ -23,6 +29,7 @@ class DefaultBarChart extends StatefulWidget {
     required this.data,
     required this.title,
     this.formatData = defaultFormatData,
+    this.computeSum = defaultComputeSum,
     this.onTapSection,
   });
 
@@ -88,8 +95,7 @@ class _DefaultBarChartState extends State<DefaultBarChart> {
   @override
   Widget build(BuildContext context) {
     final total = widget.formatData(
-      widget.data
-          .fold(0.0, (previousValue, element) => previousValue + element.value),
+      widget.computeSum(widget.data),
     );
     String totalLabel = AppLocalizations.of(context)!.totalN(total);
     try {
