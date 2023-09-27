@@ -11,7 +11,17 @@ class PlayStatusAnalytics extends ConsumerWidget {
     final legend = ref.watch(playStatusLegendProvider);
     final gameCount = ref.watch(gameAmountByPlayStatusProvider);
     final price = ref.watch(priceByPlayStatusProvider);
+    final averagePrice = ref.watch(averagePriceByPlayStatusProvider);
 
-    return Analytics(legend: legend, gameCount: gameCount, price: price);
+    return legend.when(
+      data: (legend) => Analytics(
+        legend: legend,
+        gameCount: gameCount,
+        price: price,
+        averagePrice: averagePrice,
+      ),
+      loading: () => const AnalyticsSkeleton(),
+      error: (error, stackTrace) => Text(error.toString()),
+    );
   }
 }

@@ -89,6 +89,48 @@ FutureOr<List<ChartData>> createPriceDataByGrouper(
   return result;
 }
 
+@riverpod
+FutureOr<List<ChartData>> createAveragePriceDataByGrouper(
+    CreateAveragePriceDataByGrouperRef ref, GameGrouper grouper) async {
+  final games = await ref.watch(gamesProvider.future);
+  final l10n = ref.watch(l10nProvider);
+
+  final groupValues = grouper.values();
+  Map<String, List<Game>> grouped = Map.fromEntries(
+    groupValues.map(
+      (e) => MapEntry(grouper.groupToLocaleString(l10n, e), []),
+    ),
+  );
+  for (var game in games.games) {
+    for (var group in groupValues) {
+      if (grouper.matchesGroup(group, game)) {
+        grouped[grouper.groupToLocaleString(l10n, group)]!.add(game);
+      }
+    }
+  }
+
+  grouped.removeWhere((key, value) => value.isEmpty);
+
+  final List<ChartData> result = [];
+  for (var i = 0; i < grouped.length; ++i) {
+    final entry = grouped.entries.elementAt(i);
+    final sum = entry.value.fold(
+        0.0, (previousValue, element) => previousValue + element.fullPrice());
+    if (sum > 0) {
+      result.add(ChartData(
+        value: sum / entry.value.length,
+        title: entry.key,
+      ));
+    }
+  }
+
+  result.sort(
+    (a, b) => a.value.compareTo(b.value),
+  );
+
+  return result;
+}
+
 // ### Platform-Family Analytics ############################################ //
 
 @riverpod
@@ -98,7 +140,14 @@ FutureOr<List<ChartData>> platformFamilyLegend(
   final activePlatformFamilies =
       await ref.watch(activeGamePlatformFamiliesProvider.future);
 
+  final validGameAmounts =
+      await ref.watch(gameAmountByPlatformFamilyProvider.future);
+  final validGamePrices = await ref.watch(priceByPlatformFamilyProvider.future);
+
   return activePlatformFamilies
+      .where((element) =>
+          validGameAmounts.any((v) => v.title == element.toLocale(l10n)) ||
+          validGamePrices.any((v) => v.title == element.toLocale(l10n)))
       .map((e) => ChartData(title: e.toLocale(l10n), value: 0.0))
       .toList();
 }
@@ -119,13 +168,30 @@ FutureOr<List<ChartData>> priceByPlatformFamily(
   ).future);
 }
 
+@riverpod
+FutureOr<List<ChartData>> averagePriceByPlatformFamily(
+    AveragePriceByPlatformFamilyRef ref) async {
+  return await ref.watch(createAveragePriceDataByGrouperProvider(
+    const GameGrouperByPlatformFamily(),
+  ).future);
+}
+
 // ### Platform Analytics ################################################### //
 
 @riverpod
 FutureOr<List<ChartData>> platformLegend(PlatformLegendRef ref) async {
   final l10n = ref.watch(l10nProvider);
   final activePlatforms = await ref.watch(activeGamePlatformsProvider.future);
+
+  final validGameAmounts = await ref.watch(gameAmountByPlatformProvider.future);
+  final validGamePrices = await ref.watch(priceByPlatformProvider.future);
+
   return activePlatforms
+      .where((element) =>
+          validGameAmounts
+              .any((v) => v.title == element.localizedAbbreviation(l10n)) ||
+          validGamePrices
+              .any((v) => v.title == element.localizedAbbreviation(l10n)))
       .map((e) => ChartData(title: e.localizedAbbreviation(l10n), value: 0.0))
       .toList();
 }
@@ -145,13 +211,29 @@ FutureOr<List<ChartData>> priceByPlatform(PriceByPlatformRef ref) async {
   ).future);
 }
 
+@riverpod
+FutureOr<List<ChartData>> averagePriceByPlatform(
+    AveragePriceByPlatformRef ref) async {
+  return await ref.watch(createAveragePriceDataByGrouperProvider(
+    const GameGrouperByPlatform(),
+  ).future);
+}
+
 // ### PlayStatus Analytics ################################################# //
 
 @riverpod
-List<ChartData> playStatusLegend(PlayStatusLegendRef ref) {
+FutureOr<List<ChartData>> playStatusLegend(PlayStatusLegendRef ref) async {
   final l10n = ref.watch(l10nProvider);
 
+  final validGameAmounts =
+      await ref.watch(gameAmountByPlayStatusProvider.future);
+  final validGamePrices = await ref.watch(priceByPlayStatusProvider.future);
+
   return PlayStatus.values
+      .where((element) =>
+          validGameAmounts
+              .any((v) => v.title == element.toLocaleString(l10n)) ||
+          validGamePrices.any((v) => v.title == element.toLocaleString(l10n)))
       .map((e) => ChartData(title: e.toLocaleString(l10n), value: 0.0))
       .toList();
 }
@@ -167,6 +249,14 @@ FutureOr<List<ChartData>> gameAmountByPlayStatus(
 @riverpod
 FutureOr<List<ChartData>> priceByPlayStatus(PriceByPlayStatusRef ref) async {
   return await ref.watch(createPriceDataByGrouperProvider(
+    const GameGrouperByPlayStatus(),
+  ).future);
+}
+
+@riverpod
+FutureOr<List<ChartData>> averagePriceByPlayStatus(
+    AveragePriceByPlayStatusRef ref) async {
+  return await ref.watch(createAveragePriceDataByGrouperProvider(
     const GameGrouperByPlayStatus(),
   ).future);
 }

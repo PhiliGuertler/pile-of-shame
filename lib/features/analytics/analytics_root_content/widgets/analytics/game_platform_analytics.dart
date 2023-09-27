@@ -11,12 +11,14 @@ class GamePlatformAnalytics extends ConsumerWidget {
     final legend = ref.watch(platformLegendProvider);
     final gameCount = ref.watch(gameAmountByPlatformProvider);
     final price = ref.watch(priceByPlatformProvider);
+    final averagePrice = ref.watch(averagePriceByPlatformProvider);
 
     return legend.when(
       data: (legend) => Analytics(
         legend: legend,
         gameCount: gameCount,
         price: price,
+        averagePrice: averagePrice,
       ),
       loading: () => const AnalyticsSkeleton(),
       error: (error, stackTrace) => Text(error.toString()),

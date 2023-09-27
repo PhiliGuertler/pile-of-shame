@@ -78,7 +78,9 @@ class AppScaffold extends ConsumerWidget {
         appBar: appBar,
         backgroundColor: backgroundColor,
         bottomNavigationBar:
-            width <= mobileBreakpointWidth ? bottomNavigationBar : null,
+            (width <= mobileBreakpointWidth || navigationRail == null)
+                ? bottomNavigationBar
+                : null,
         bottomSheet: bottomSheet,
         drawer: drawer,
         drawerDragStartBehavior: drawerDragStartBehavior,

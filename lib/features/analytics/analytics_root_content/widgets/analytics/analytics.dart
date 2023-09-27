@@ -14,11 +14,13 @@ class Analytics extends ConsumerStatefulWidget {
     required this.legend,
     required this.gameCount,
     required this.price,
+    required this.averagePrice,
   });
 
   final List<ChartData> legend;
   final AsyncValue<List<ChartData>> gameCount;
   final AsyncValue<List<ChartData>> price;
+  final AsyncValue<List<ChartData>> averagePrice;
 
   @override
   ConsumerState<Analytics> createState() => _AnalyticsState();
@@ -90,6 +92,37 @@ class _AnalyticsState extends ConsumerState<Analytics> {
                 horizontal: defaultPaddingX,
                 vertical: 8.0,
               ),
+              child: widget.averagePrice.maybeWhen(
+                orElse: () {
+                  return const SizedBox();
+                },
+                data: (data) {
+                  return SizedBox(
+                    width: 350,
+                    child: DefaultBarChart(
+                      title: AppLocalizations.of(context)!.averagePrice,
+                      onTapSection: handleSectionChange,
+                      data: data
+                          .map((e) => e.copyWith(
+                              isSelected: highlightedLabel == e.title))
+                          .toList(),
+                      formatData: (data) => currencyFormatter.format(data),
+                      computeSum: (data) =>
+                          data.fold(
+                              0.0,
+                              (previousValue, element) =>
+                                  element.value + previousValue) /
+                          data.length,
+                    ),
+                  );
+                },
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: defaultPaddingX,
+                vertical: 8.0,
+              ),
               child: widget.gameCount.maybeWhen(
                 orElse: () {
                   return const SizedBox();
@@ -137,6 +170,14 @@ class AnalyticsSkeleton extends StatelessWidget {
         Wrap(
           alignment: WrapAlignment.spaceEvenly,
           children: [
+            Padding(
+              padding: EdgeInsets.symmetric(
+                  horizontal: defaultPaddingX, vertical: 8.0),
+              child: SizedBox(
+                width: 350,
+                child: DefaultBarChartSkeleton(),
+              ),
+            ),
             Padding(
               padding: EdgeInsets.symmetric(
                   horizontal: defaultPaddingX, vertical: 8.0),

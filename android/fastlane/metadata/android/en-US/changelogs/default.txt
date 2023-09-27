@@ -1,0 +1,7 @@
+Version 0.5.0
+
+This update introduces beside some small bug fixes the "Analytics" tab.
+There you can see the distribution of the games in small charts.
+In future updates this section of the app will be extended.
+
+Have fun with this update!
