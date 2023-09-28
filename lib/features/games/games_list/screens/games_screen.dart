@@ -11,8 +11,6 @@ import 'package:pile_of_shame/widgets/skeletons/skeleton.dart';
 import 'package:pile_of_shame/widgets/skeletons/skeleton_game_display.dart';
 import 'package:pile_of_shame/widgets/slivers/sliver_fancy_image_header.dart';
 
-import '../widgets/sliver_filter_by_family.dart';
-
 class GamesScreen extends ConsumerWidget {
   final ScrollController scrollController;
 
@@ -57,7 +55,6 @@ class GamesScreen extends ConsumerWidget {
                     ),
                   ),
                 ),
-              if (hasGames) const SliverContractSorterFilter(),
               if (hasGames)
                 ...groupedGames.when(
                   skipLoadingOnReload: true,
@@ -138,7 +135,6 @@ class GamesScreen extends ConsumerWidget {
         loading: () => CustomScrollView(
           physics: const NeverScrollableScrollPhysics(),
           slivers: [
-            const SliverContractSorterFilterSkeleton(),
             SliverList.builder(
               itemBuilder: (context, index) => const SkeletonGameDisplay(),
               itemCount: 10,
