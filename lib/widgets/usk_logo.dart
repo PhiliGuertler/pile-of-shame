@@ -4,10 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pile_of_shame/models/age_restriction.dart';
+import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/providers/custom_game_display.dart';
 import 'package:pile_of_shame/widgets/image_container.dart';
-
-import '../models/game.dart';
 
 class USKLogo extends ConsumerWidget {
   final USK ageRestriction;
@@ -29,37 +28,40 @@ class USKLogo extends ConsumerWidget {
     Widget ageText = Text(
       ageRestrictionText,
       style: TextStyle(
-          color: ageRestrictionColor.computeLuminance() > 0.5
-              ? Colors.black
-              : Colors.white,
-          fontWeight: FontWeight.bold,
-          fontSize: 15.0),
+        color: ageRestrictionColor.computeLuminance() > 0.5
+            ? Colors.black
+            : Colors.white,
+        fontWeight: FontWeight.bold,
+        fontSize: 15.0,
+      ),
     );
     settings.maybeWhen(
-        data: (settings) {
-          if (settings.hasFancyAnimations) {
-            Animate result = ageText
-                .animate(
-                  onPlay: settings.hasRepeatingAnimations
-                      ? (controller) => controller.repeat(reverse: true)
-                      : null,
-                )
-                .then(
-                    delay: settings.hasRepeatingAnimations
-                        ? animationWaitDuration
-                        : 0.ms)
-                .scale(
-                  begin: const Offset(1.0 / 2.0, 1.0 / 2.0),
-                  end: const Offset(1.0, 1.0),
-                  duration: animationDuration,
-                  curve: Curves.easeInOutBack,
-                )
-                .rotate(begin: -0.2, end: 0.0)
-                .then(delay: animationWaitDuration);
-            ageText = result;
-          }
-        },
-        orElse: () {});
+      data: (settings) {
+        if (settings.hasFancyAnimations) {
+          final Animate result = ageText
+              .animate(
+                onPlay: settings.hasRepeatingAnimations
+                    ? (controller) => controller.repeat(reverse: true)
+                    : null,
+              )
+              .then(
+                delay: settings.hasRepeatingAnimations
+                    ? animationWaitDuration
+                    : 0.ms,
+              )
+              .scale(
+                begin: const Offset(1.0 / 2.0, 1.0 / 2.0),
+                end: const Offset(1.0, 1.0),
+                duration: animationDuration,
+                curve: Curves.easeInOutBack,
+              )
+              .rotate(begin: -0.2, end: 0.0)
+              .then(delay: animationWaitDuration);
+          ageText = result;
+        }
+      },
+      orElse: () {},
+    );
 
     Widget clippedRectangle = ClipRRect(
       borderRadius: BorderRadius.circular(8.0),
@@ -78,31 +80,33 @@ class USKLogo extends ConsumerWidget {
       ),
     );
     settings.maybeWhen(
-        data: (settings) {
-          if (settings.hasFancyAnimations) {
-            Animate result = clippedRectangle
-                .animate(
-                  onPlay: settings.hasRepeatingAnimations
-                      ? (controller) => controller.repeat(reverse: true)
-                      : null,
-                )
-                .then(
-                    delay: settings.hasRepeatingAnimations
-                        ? animationWaitDuration
-                        : 0.ms)
-                .scale(
-                  begin: const Offset(2.0, 2.0),
-                  end: const Offset(1.0, 1.0),
-                  duration: animationDuration,
-                  curve: Curves.easeInOutBack,
-                )
-                .rotate(begin: 0.2, end: 0.0)
-                .then(delay: animationWaitDuration);
+      data: (settings) {
+        if (settings.hasFancyAnimations) {
+          final Animate result = clippedRectangle
+              .animate(
+                onPlay: settings.hasRepeatingAnimations
+                    ? (controller) => controller.repeat(reverse: true)
+                    : null,
+              )
+              .then(
+                delay: settings.hasRepeatingAnimations
+                    ? animationWaitDuration
+                    : 0.ms,
+              )
+              .scale(
+                begin: const Offset(2.0, 2.0),
+                end: const Offset(1.0, 1.0),
+                duration: animationDuration,
+                curve: Curves.easeInOutBack,
+              )
+              .rotate(begin: 0.2, end: 0.0)
+              .then(delay: animationWaitDuration);
 
-            clippedRectangle = result;
-          }
-        },
-        orElse: () {});
+          clippedRectangle = result;
+        }
+      },
+      orElse: () {},
+    );
 
     return SizedBox(
       width: ImageContainer.imageSize,

@@ -28,10 +28,12 @@ class SortGames extends _$SortGames with Persistable {
 
 @riverpod
 FutureOr<List<Game>> applyGameSorting(
-    ApplyGameSortingRef ref, List<Game> games) async {
+  ApplyGameSortingRef ref,
+  List<Game> games,
+) async {
   final sorting = await ref.watch(sortGamesProvider.future);
 
-  List<Game> result = List.from(games);
+  final List<Game> result = List.from(games);
 
   result.sort(
     (a, b) => sorting.sortStrategy.sorter.compareGames(

@@ -115,7 +115,9 @@ void main() {
     test("Assembles text-logo path as expected", () {
       final iconPath = GamePlatform.nintendo3DS.textLogoPath;
       expect(
-          iconPath, 'assets/platforms/text_logos/nintendo/nintendo_3ds.webp');
+        iconPath,
+        'assets/platforms/text_logos/nintendo/nintendo_3ds.webp',
+      );
     });
     test("Assembles controller-logo path as expected", () {
       final iconPath = GamePlatform.xbox360.controllerLogoPath;

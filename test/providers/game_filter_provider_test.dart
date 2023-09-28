@@ -167,7 +167,7 @@ void main() {
   group("applyGameFiltersProvider", () {
     final Game gameOuterWilds = Game(
       id: 'outer-wilds',
-      lastModified: DateTime(2023, 1, 1),
+      lastModified: DateTime(2023),
       name: 'Outer Wilds',
       platform: GamePlatform.xboxOne,
       price: 24.99,
@@ -183,7 +183,6 @@ void main() {
       price: 19.99,
       status: PlayStatus.playing,
       dlcs: [],
-      usk: USK.usk0,
     );
     final Game gameSsx3 = Game(
       id: 'ssx-3',
@@ -215,7 +214,7 @@ void main() {
         gameOuterWilds,
         gameDistance,
         gameSsx3,
-        gameOriAndTheBlindForest
+        gameOriAndTheBlindForest,
       ];
 
       final result = container.read(applyGameFiltersProvider(originalGames));
@@ -232,7 +231,7 @@ void main() {
         gameOuterWilds,
         gameDistance,
         gameSsx3,
-        gameOriAndTheBlindForest
+        gameOriAndTheBlindForest,
       ];
 
       final result = container.read(applyGameFiltersProvider(originalGames));
@@ -248,7 +247,7 @@ void main() {
         gameOuterWilds,
         gameDistance,
         gameSsx3,
-        gameOriAndTheBlindForest
+        gameOriAndTheBlindForest,
       ];
 
       final result = container.read(applyGameFiltersProvider(originalGames));
@@ -264,7 +263,7 @@ void main() {
         gameOuterWilds,
         gameDistance,
         gameSsx3,
-        gameOriAndTheBlindForest
+        gameOriAndTheBlindForest,
       ];
 
       final result = container.read(applyGameFiltersProvider(originalGames));
@@ -287,7 +286,7 @@ void main() {
         gameOuterWilds,
         gameDistance,
         gameSsx3,
-        gameOriAndTheBlindForest
+        gameOriAndTheBlindForest,
       ];
 
       final result = container.read(applyGameFiltersProvider(originalGames));

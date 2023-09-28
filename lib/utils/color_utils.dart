@@ -9,18 +9,18 @@ class ColorUtils {
   static Color stringToColor(String input) {
     final stringHash = sha256.convert(utf8.encode(input)).toString();
 
-    String hueSubstring = stringHash.substring(
+    final String hueSubstring = stringHash.substring(
       0,
       stringHash.length ~/ 2,
     );
-    String saturationSubstring = stringHash.substring(
+    final String saturationSubstring = stringHash.substring(
       stringHash.length ~/ 2,
       stringHash.length ~/ 4 + stringHash.length ~/ 2,
     );
-    String lightnessSubstring = stringHash.substring(
+    final String lightnessSubstring = stringHash.substring(
       stringHash.length ~/ 4 + stringHash.length ~/ 2,
     );
-    double hue = hueSubstring.runes
+    final double hue = hueSubstring.runes
             .fold(0, (previousValue, element) => previousValue + element)
             .toDouble() *
         10.0 %

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pile_of_shame/widgets/play_status_display.dart';
 
-import 'skeleton.dart';
-import 'skeleton_image_container.dart';
+import 'package:pile_of_shame/widgets/skeletons/skeleton.dart';
+import 'package:pile_of_shame/widgets/skeletons/skeleton_image_container.dart';
 
 class SkeletonGameDisplay extends StatelessWidget {
   static const Duration animationDuration = Duration(milliseconds: 800);
@@ -35,7 +35,6 @@ class SkeletonGameDisplay extends StatelessWidget {
             Padding(
               padding: EdgeInsets.only(bottom: 4.0),
               child: Skeleton(
-                widthFactor: 0.7,
                 alignment: Alignment.centerRight,
                 animationDuration: animationDuration,
               ),

@@ -3,6 +3,7 @@
 A simple offline list for games you want to play, are playing, or played in the past.
 Written in Flutter.
 
+[![style: lint](https://img.shields.io/badge/style-lint-4BC0F5.svg)](https://pub.dev/packages/lint)
 
 ## Setup
 Make sure to generate some files before hitting run.

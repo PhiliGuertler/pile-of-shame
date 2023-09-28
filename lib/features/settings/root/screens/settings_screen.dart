@@ -31,7 +31,11 @@ class SettingsScreen extends ConsumerWidget {
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.only(
-                  left: 24.0, right: 24.0, top: 24.0, bottom: 8.0),
+                left: 24.0,
+                right: 24.0,
+                top: 24.0,
+                bottom: 8.0,
+              ),
               child: Text(
                 AppLocalizations.of(context)!.appSettings,
                 style: Theme.of(context).textTheme.titleLarge,
@@ -71,7 +75,8 @@ class SettingsScreen extends ConsumerWidget {
                   leading: const Icon(Icons.sports_esports),
                   title: Text(AppLocalizations.of(context)!.gameDisplay),
                   subtitle: Text(
-                      AppLocalizations.of(context)!.personalizeGameDisplays),
+                    AppLocalizations.of(context)!.personalizeGameDisplays,
+                  ),
                   onTap: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
@@ -110,7 +115,11 @@ class SettingsScreen extends ConsumerWidget {
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.only(
-                  left: 24.0, right: 24.0, top: 24.0, bottom: 8.0),
+                left: 24.0,
+                right: 24.0,
+                top: 24.0,
+                bottom: 8.0,
+              ),
               child: Text(
                 AppLocalizations.of(context)!.importExport,
                 style: Theme.of(context).textTheme.titleLarge,
@@ -136,22 +145,28 @@ class SettingsScreen extends ConsumerWidget {
                   leading: const Icon(Icons.file_download),
                   title: Text(AppLocalizations.of(context)!.importGames),
                   subtitle: Text(
-                      AppLocalizations.of(context)!.importGamesFromAJSONFile),
+                    AppLocalizations.of(context)!.importGamesFromAJSONFile,
+                  ),
                   onTap: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const ImportGamesScreen(),
-                    ));
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const ImportGamesScreen(),
+                      ),
+                    );
                   },
                 ),
                 SegmentedActionCardItem(
                   leading: const Icon(Icons.file_upload),
                   title: Text(AppLocalizations.of(context)!.exportGames),
                   subtitle: Text(
-                      AppLocalizations.of(context)!.exportGamesToAJSONFile),
+                    AppLocalizations.of(context)!.exportGamesToAJSONFile,
+                  ),
                   onTap: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const ExportGamesScreen(),
-                    ));
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const ExportGamesScreen(),
+                      ),
+                    );
                   },
                 ),
                 SegmentedActionCardItem(
@@ -159,8 +174,10 @@ class SettingsScreen extends ConsumerWidget {
                     Icons.delete_forever,
                     color: onErrorContainer,
                   ),
-                  title: Text(AppLocalizations.of(context)!.deleteGames,
-                      style: TextStyle(color: onErrorContainer)),
+                  title: Text(
+                    AppLocalizations.of(context)!.deleteGames,
+                    style: TextStyle(color: onErrorContainer),
+                  ),
                   trailing: Icon(
                     Icons.warning,
                     color: onErrorContainer,
@@ -176,8 +193,10 @@ class SettingsScreen extends ConsumerWidget {
                       builder: (context) => AlertDialog.adaptive(
                         title:
                             Text(AppLocalizations.of(context)!.deleteAllGames),
-                        content: Text(AppLocalizations.of(context)!
-                            .thisActionCannotBeUndone),
+                        content: Text(
+                          AppLocalizations.of(context)!
+                              .thisActionCannotBeUndone,
+                        ),
                         actions: [
                           TextButton(
                             onPressed: () {
@@ -202,7 +221,8 @@ class SettingsScreen extends ConsumerWidget {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: Text(
-                                AppLocalizations.of(context)!.allGamesDeleted),
+                              AppLocalizations.of(context)!.allGamesDeleted,
+                            ),
                           ),
                         );
                       }

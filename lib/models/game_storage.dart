@@ -13,7 +13,7 @@ class GameStorage {
 
   Future<void> persistGamesList(GamesList gamesList, [File? outputFile]) async {
     final encodedList = jsonEncode(gamesList.toJson());
-    File output = outputFile ?? await ref.read(gameFileProvider.future);
+    final File output = outputFile ?? await ref.read(gameFileProvider.future);
     await output.writeAsString(encodedList);
     if (outputFile == null) {
       ref.invalidate(gameFileProvider);
@@ -24,7 +24,7 @@ class GameStorage {
 
   Future<GamesList> readGamesFromFile(File inputFile) async {
     final fileContents = await inputFile.readAsString();
-    final json = jsonDecode(fileContents);
+    final json = jsonDecode(fileContents) as Map<String, dynamic>;
     return GamesList.fromJson(json);
   }
 

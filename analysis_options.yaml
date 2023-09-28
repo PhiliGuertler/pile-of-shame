@@ -1,4 +1,4 @@
-include: package:flutter_lints/flutter.yaml
+include: package:lint/strict.yaml
 
 analyzer:
   plugins:
@@ -10,3 +10,4 @@ analyzer:
     - test/appium/**
     - coverage/**
     - build/**
+

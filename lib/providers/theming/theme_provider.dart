@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pile_of_shame/models/theming/theme.dart';
+import 'package:pile_of_shame/providers/mixins/persistable_mixin.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-import '../mixins/persistable_mixin.dart';
 
 part 'theme_provider.g.dart';
 
@@ -21,7 +20,7 @@ class AppThemeSettings extends _$AppThemeSettings with Persistable {
 
   Future<void> setPrimaryColor(Color primaryColor) async {
     state = await AsyncValue.guard(() async {
-      AppTheme update = state.maybeWhen(
+      final AppTheme update = state.maybeWhen(
         data: (data) => data.copyWith(primaryColor: primaryColor),
         orElse: () => AppTheme(primaryColor: primaryColor),
       );
@@ -32,7 +31,7 @@ class AppThemeSettings extends _$AppThemeSettings with Persistable {
 
   Future<void> setThemeMode(ThemeMode themeMode) async {
     state = await AsyncValue.guard(() async {
-      AppTheme update = state.maybeWhen(
+      final AppTheme update = state.maybeWhen(
         data: (data) => data.copyWith(themeMode: themeMode),
         orElse: () => AppTheme(themeMode: themeMode),
       );
@@ -43,7 +42,7 @@ class AppThemeSettings extends _$AppThemeSettings with Persistable {
 
   Future<void> setLocale(String? locale) async {
     state = await AsyncValue.guard(() async {
-      AppTheme update = state.maybeWhen(
+      final AppTheme update = state.maybeWhen(
         data: (data) => data.copyWith(locale: locale),
         orElse: () => AppTheme(locale: locale),
       );

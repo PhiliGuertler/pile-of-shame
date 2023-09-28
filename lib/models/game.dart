@@ -1,16 +1,13 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:pile_of_shame/models/age_restriction.dart';
 import 'package:pile_of_shame/models/game_platforms.dart';
 import 'package:pile_of_shame/models/play_status.dart';
-
-import 'age_restriction.dart';
 
 part 'game.freezed.dart';
 part 'game.g.dart';
 
 @freezed
 class DLC with _$DLC {
-  const DLC._();
-
   const factory DLC({
     required String id,
     required String name,
@@ -21,14 +18,13 @@ class DLC with _$DLC {
     @Default(false) bool isFavorite,
     @Default(false) bool wasGifted,
   }) = _DLC;
+  const DLC._();
 
   factory DLC.fromJson(Map<String, dynamic> json) => _$DLCFromJson(json);
 }
 
 @freezed
 class Game with _$Game {
-  const Game._();
-
   const factory Game({
     required String id,
     required String name,
@@ -42,6 +38,7 @@ class Game with _$Game {
     @Default(false) bool isFavorite,
     @Default(false) bool wasGifted,
   }) = _Game;
+  const Game._();
 
   factory Game.fromJson(Map<String, dynamic> json) => _$GameFromJson(json);
 
@@ -57,11 +54,10 @@ class Game with _$Game {
 
 @freezed
 class GamesList with _$GamesList {
-  const GamesList._();
-
   const factory GamesList({
     required List<Game> games,
   }) = _GamesList;
+  const GamesList._();
 
   factory GamesList.fromJson(Map<String, dynamic> json) =>
       _$GamesListFromJson(json);
@@ -81,8 +77,10 @@ class GamesList with _$GamesList {
   /// Removes a game from the list by its id
   /// If no game with the same id exists, an Exception is thrown.
   GamesList removeGame(String id) {
-    assert(games.indexWhere((element) => element.id == id) != -1,
-        "No Game with id '$id' found");
+    assert(
+      games.indexWhere((element) => element.id == id) != -1,
+      "No Game with id '$id' found",
+    );
 
     final List<Game> updatedGames = List.from(games);
     updatedGames.removeWhere((element) => element.id == id);
@@ -92,8 +90,10 @@ class GamesList with _$GamesList {
   /// Adds a game to the list
   /// If a game with the same id already exists, an Exception is thrown.
   GamesList addGame(Game game) {
-    assert(games.every((element) => element.id != game.id),
-        "Game with id '${game.id}' already exists. Did you mean to update an existing Game?");
+    assert(
+      games.every((element) => element.id != game.id),
+      "Game with id '${game.id}' already exists. Did you mean to update an existing Game?",
+    );
 
     final List<Game> updatedGames = List.from(games);
     updatedGames.add(game);
@@ -107,13 +107,13 @@ class GamesList with _$GamesList {
     final List<Game> updatedGames = List.from(games);
 
     for (int i = 0; i < updatedGames.length; ++i) {
-      Game game = updatedGames[i];
-      int possibleUpdateIndex =
+      final Game game = updatedGames[i];
+      final int possibleUpdateIndex =
           gamesList.games.indexWhere((update) => update.id == game.id);
       if (possibleUpdateIndex == -1) {
         continue;
       }
-      Game update = gamesList.games[possibleUpdateIndex];
+      final Game update = gamesList.games[possibleUpdateIndex];
       if (update.lastModified.compareTo(game.lastModified) > 0) {
         updatedGames[i] = update;
       }
@@ -128,8 +128,8 @@ class GamesList with _$GamesList {
     GamesList updatedGames = this;
 
     for (int i = 0; i < gamesList.games.length; ++i) {
-      Game possibleNewGame = gamesList.games[i];
-      int index =
+      final Game possibleNewGame = gamesList.games[i];
+      final int index =
           games.indexWhere((element) => element.id == possibleNewGame.id);
       if (index == -1) {
         updatedGames = addGame(possibleNewGame);

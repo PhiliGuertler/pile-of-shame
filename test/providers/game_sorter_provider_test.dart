@@ -11,7 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 void main() {
   final Game gameOuterWilds = Game(
     id: 'outer-wilds',
-    lastModified: DateTime(2023, 1, 1),
+    lastModified: DateTime(2023),
     name: 'Outer Wilds',
     platform: GamePlatform.xboxOne,
     price: 24.99,
@@ -27,7 +27,6 @@ void main() {
     price: 19.99,
     status: PlayStatus.playing,
     dlcs: [],
-    usk: USK.usk0,
   );
   final Game gameSsx3 = Game(
     id: 'ssx-3',
@@ -63,11 +62,12 @@ void main() {
       );
       final initialValue = await container.read(sortGamesProvider.future);
       expect(
-          initialValue,
-          const GameSorting(
-            isAscending: false,
-            sortStrategy: SortStrategy.byLastModified,
-          ));
+        initialValue,
+        const GameSorting(
+          isAscending: false,
+          sortStrategy: SortStrategy.byLastModified,
+        ),
+      );
     });
     test("falls back to default GameSorting if no persisted entry is found",
         () async {
@@ -92,8 +92,10 @@ void main() {
       expect(await container.read(sortGamesProvider.future), update);
 
       final SharedPreferences prefs = await SharedPreferences.getInstance();
-      expect(prefs.getString(SortGames.storageKey),
-          '{"isAscending":false,"sortStrategy":"byPlayStatus"}');
+      expect(
+        prefs.getString(SortGames.storageKey),
+        '{"isAscending":false,"sortStrategy":"byPlayStatus"}',
+      );
     });
   });
 
@@ -111,7 +113,9 @@ void main() {
     final sortedList =
         await container.read(applyGameSortingProvider(originalList).future);
 
-    expect(sortedList,
-        [gameSsx3, gamePokemonX, gameOuterWilds, gameOriAndTheBlindForest]);
+    expect(
+      sortedList,
+      [gameSsx3, gamePokemonX, gameOuterWilds, gameOriAndTheBlindForest],
+    );
   });
 }

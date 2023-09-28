@@ -17,7 +17,6 @@ class NameInputField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextInputField(
       label: Text('${AppLocalizations.of(context)!.name}*'),
-      textInputAction: TextInputAction.next,
       initialValue: value ?? '',
       onChanged: onChanged,
       validator: Validators.validateFieldIsRequired(context),

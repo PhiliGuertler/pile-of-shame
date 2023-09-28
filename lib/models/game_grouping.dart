@@ -190,11 +190,10 @@ enum GroupStrategy {
 
 @freezed
 class GameGrouping with _$GameGrouping {
-  const GameGrouping._();
-
   const factory GameGrouping({
     @Default(GroupStrategy.byNone) GroupStrategy groupStrategy,
   }) = _GameGrouping;
+  const GameGrouping._();
 
   factory GameGrouping.fromJson(Map<String, dynamic> json) =>
       _$GameGroupingFromJson(json);

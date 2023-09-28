@@ -42,7 +42,8 @@ class GamePlatformInputField extends StatelessWidget {
       validator: validator,
       controller: value != null
           ? TextEditingController(
-              text: value!.localizedName(AppLocalizations.of(context)!))
+              text: value!.localizedName(AppLocalizations.of(context)!),
+            )
           : null,
       onTap: onTap,
     );

@@ -11,8 +11,6 @@ import 'package:pile_of_shame/widgets/skeletons/skeleton.dart';
 import 'package:pile_of_shame/widgets/skeletons/skeleton_game_display.dart';
 import 'package:pile_of_shame/widgets/slivers/sliver_fancy_image_header.dart';
 
-import '../widgets/sliver_filter_by_family.dart';
-
 class GamesScreen extends ConsumerWidget {
   final ScrollController scrollController;
 
@@ -43,12 +41,16 @@ class GamesScreen extends ConsumerWidget {
             slivers: [
               if (!hasGames)
                 const SliverFancyImageHeader(
-                    imagePath: 'assets/misc/game_pile.webp', height: 300.0),
+                  imagePath: 'assets/misc/game_pile.webp',
+                  height: 300.0,
+                ),
               if (!hasGames)
                 SliverToBoxAdapter(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: defaultPaddingX, vertical: 16.0),
+                      horizontal: defaultPaddingX,
+                      vertical: 16.0,
+                    ),
                     child: Text(
                       AppLocalizations.of(context)!
                           .buildYourPileOfShameByAddingNewGames,
@@ -57,16 +59,16 @@ class GamesScreen extends ConsumerWidget {
                     ),
                   ),
                 ),
-              if (hasGames) const SliverContractSorterFilter(),
               if (hasGames)
                 ...groupedGames.when(
                   skipLoadingOnReload: true,
                   data: (groupedGames) {
-                    return groupedGames.entries
-                        .map((group) => SliverGroupedGames(
-                              games: group.value,
-                              groupName: group.key,
-                            ));
+                    return groupedGames.entries.map(
+                      (group) => SliverGroupedGames(
+                        games: group.value,
+                        groupName: group.key,
+                      ),
+                    );
                   },
                   error: (error, stackTrace) => [
                     SliverToBoxAdapter(
@@ -103,8 +105,8 @@ class GamesScreen extends ConsumerWidget {
                           width: 128,
                           child: totalGames.when(
                             data: (totalGames) => Text(
-                                AppLocalizations.of(context)!
-                                    .nGames(totalGames)),
+                              AppLocalizations.of(context)!.nGames(totalGames),
+                            ),
                             loading: () => const Skeleton(
                               widthFactor: 1,
                             ),
@@ -138,11 +140,10 @@ class GamesScreen extends ConsumerWidget {
         loading: () => CustomScrollView(
           physics: const NeverScrollableScrollPhysics(),
           slivers: [
-            const SliverContractSorterFilterSkeleton(),
             SliverList.builder(
               itemBuilder: (context, index) => const SkeletonGameDisplay(),
               itemCount: 10,
-            )
+            ),
           ],
         ).animate().fadeIn(),
         error: (error, stackTrace) => ErrorDisplay(

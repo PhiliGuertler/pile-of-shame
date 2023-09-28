@@ -21,13 +21,15 @@ class _ReceiveShareAppState extends ConsumerState<ReceiveShareApp> {
   void initState() {
     super.initState();
 // For sharing images coming from outside the app while the app is in the memory
-    _intentDataStreamSubscription = FlutterSharingIntent.instance
-        .getMediaStream()
-        .listen((List<SharedFile> value) {
-      ref.read(sharedContentProvider.notifier).setFiles(value);
-    }, onError: (err) {
-      throw Exception("Reading shared data failed");
-    });
+    _intentDataStreamSubscription =
+        FlutterSharingIntent.instance.getMediaStream().listen(
+      (List<SharedFile> value) {
+        ref.read(sharedContentProvider.notifier).setFiles(value);
+      },
+      onError: (err) {
+        throw Exception("Reading shared data failed");
+      },
+    );
 
     // For sharing images coming from outside the app while the app is closed
     FlutterSharingIntent.instance

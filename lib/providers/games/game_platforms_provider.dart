@@ -8,11 +8,10 @@ part 'game_platforms_provider.g.dart';
 
 @freezed
 class GamePlatformList with _$GamePlatformList {
-  const GamePlatformList._();
-
   const factory GamePlatformList({
     required List<GamePlatform> platforms,
   }) = _GamePlatformList;
+  const GamePlatformList._();
 
   factory GamePlatformList.fromJson(Map<String, dynamic> json) =>
       _$GamePlatformListFromJson(json);
@@ -35,7 +34,9 @@ class ActiveGamePlatforms extends _$ActiveGamePlatforms with Persistable {
   Future<void> updatePlatforms(List<GamePlatform> platforms) async {
     state = await AsyncValue.guard(() async {
       await persistJSON(
-          storageKey, GamePlatformList(platforms: platforms).toJson());
+        storageKey,
+        GamePlatformList(platforms: platforms).toJson(),
+      );
       return platforms;
     });
   }
@@ -43,12 +44,13 @@ class ActiveGamePlatforms extends _$ActiveGamePlatforms with Persistable {
 
 @riverpod
 FutureOr<List<GamePlatformFamily>> activeGamePlatformFamilies(
-    ActiveGamePlatformFamiliesRef ref) async {
+  ActiveGamePlatformFamiliesRef ref,
+) async {
   final activePlatforms = await ref.watch(activeGamePlatformsProvider.future);
 
-  List<GamePlatformFamily> families = [];
+  final List<GamePlatformFamily> families = [];
 
-  for (var platform in activePlatforms) {
+  for (final platform in activePlatforms) {
     if (!families.contains(platform.family)) {
       families.add(platform.family);
     }
@@ -59,10 +61,11 @@ FutureOr<List<GamePlatformFamily>> activeGamePlatformFamilies(
 
 @riverpod
 Map<GamePlatformFamily, List<GamePlatform>> gamePlatformsByFamily(
-    GamePlatformsByFamilyRef ref) {
-  Map<GamePlatformFamily, List<GamePlatform>> result = {};
+  GamePlatformsByFamilyRef ref,
+) {
+  final Map<GamePlatformFamily, List<GamePlatform>> result = {};
 
-  for (var family in GamePlatformFamily.values) {
+  for (final family in GamePlatformFamily.values) {
     result[family] = GamePlatform.values
         .where((platform) => platform.family == family)
         .toList();
@@ -77,9 +80,9 @@ FutureOr<Map<GamePlatformFamily, List<GamePlatform>>>
     activeGamePlatformsByFamily(ActiveGamePlatformsByFamilyRef ref) async {
   final activePlatforms = await ref.watch(activeGamePlatformsProvider.future);
 
-  Map<GamePlatformFamily, List<GamePlatform>> result = {};
+  final Map<GamePlatformFamily, List<GamePlatform>> result = {};
 
-  for (var family in GamePlatformFamily.values) {
+  for (final family in GamePlatformFamily.values) {
     result[family] =
         activePlatforms.where((platform) => platform.family == family).toList();
   }

@@ -1,3 +1,5 @@
+// ignore_for_file: use_setters_to_change_properties
+
 import 'package:pile_of_shame/models/age_restriction.dart';
 import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/models/game_platforms.dart';
@@ -109,7 +111,7 @@ bool isAnyFilterActive(IsAnyFilterActiveRef ref) {
         orElse: () => GamePlatform.values,
       );
   final platformFilter = ref.watch(gamePlatformFilterProvider);
-  bool isPlatformFilterActive =
+  final bool isPlatformFilterActive =
       !allPlatforms.every((element) => platformFilter.contains(element));
   final platformFamilyFilter = ref.watch(gamePlatformFamilyFilterProvider);
   final playStatusFilter = ref.watch(playStatusFilterProvider);
@@ -118,13 +120,13 @@ bool isAnyFilterActive(IsAnyFilterActiveRef ref) {
   final hasNotesFilter = ref.watch(hasNotesFilterProvider);
   final hasDLCsFilter = ref.watch(hasDLCsFilterProvider);
 
-  return (isPlatformFilterActive ||
+  return isPlatformFilterActive ||
       platformFamilyFilter.length < GamePlatformFamily.values.length ||
       playStatusFilter.length < PlayStatus.values.length ||
       ageRatingFilter.length < USK.values.length ||
       favoriteFilter.length < 2 ||
       hasNotesFilter.length < 2 ||
-      hasDLCsFilter.length < 2);
+      hasDLCsFilter.length < 2;
 }
 
 @riverpod

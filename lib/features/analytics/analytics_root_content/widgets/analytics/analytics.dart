@@ -51,7 +51,9 @@ class _AnalyticsState extends ConsumerState<Analytics> {
         ),
         Padding(
           padding: const EdgeInsets.symmetric(
-              horizontal: defaultPaddingX, vertical: 8.0),
+            horizontal: defaultPaddingX,
+            vertical: 8.0,
+          ),
           child: Legend(
             onChangeSelection: handleSectionChange,
             data: widget.legend
@@ -78,8 +80,11 @@ class _AnalyticsState extends ConsumerState<Analytics> {
                       title: AppLocalizations.of(context)!.price,
                       onTapSection: handleSectionChange,
                       data: data
-                          .map((e) => e.copyWith(
-                              isSelected: highlightedLabel == e.title))
+                          .map(
+                            (e) => e.copyWith(
+                              isSelected: highlightedLabel == e.title,
+                            ),
+                          )
                           .toList(),
                       formatData: (data) => currencyFormatter.format(data),
                     ),
@@ -103,15 +108,19 @@ class _AnalyticsState extends ConsumerState<Analytics> {
                       title: AppLocalizations.of(context)!.averagePrice,
                       onTapSection: handleSectionChange,
                       data: data
-                          .map((e) => e.copyWith(
-                              isSelected: highlightedLabel == e.title))
+                          .map(
+                            (e) => e.copyWith(
+                              isSelected: highlightedLabel == e.title,
+                            ),
+                          )
                           .toList(),
                       formatData: (data) => currencyFormatter.format(data),
                       computeSum: (data) =>
                           data.fold(
-                              0.0,
-                              (previousValue, element) =>
-                                  element.value + previousValue) /
+                            0.0,
+                            (previousValue, element) =>
+                                element.value + previousValue,
+                          ) /
                           data.length,
                     ),
                   );
@@ -134,8 +143,11 @@ class _AnalyticsState extends ConsumerState<Analytics> {
                       title: AppLocalizations.of(context)!.gameCount,
                       onTapSection: handleSectionChange,
                       data: data
-                          .map((e) => e.copyWith(
-                              isSelected: highlightedLabel == e.title))
+                          .map(
+                            (e) => e.copyWith(
+                              isSelected: highlightedLabel == e.title,
+                            ),
+                          )
                           .toList(),
                     ),
                   );
@@ -172,7 +184,9 @@ class AnalyticsSkeleton extends StatelessWidget {
           children: [
             Padding(
               padding: EdgeInsets.symmetric(
-                  horizontal: defaultPaddingX, vertical: 8.0),
+                horizontal: defaultPaddingX,
+                vertical: 8.0,
+              ),
               child: SizedBox(
                 width: 350,
                 child: DefaultBarChartSkeleton(),
@@ -180,7 +194,9 @@ class AnalyticsSkeleton extends StatelessWidget {
             ),
             Padding(
               padding: EdgeInsets.symmetric(
-                  horizontal: defaultPaddingX, vertical: 8.0),
+                horizontal: defaultPaddingX,
+                vertical: 8.0,
+              ),
               child: SizedBox(
                 width: 350,
                 child: DefaultBarChartSkeleton(),
@@ -188,7 +204,9 @@ class AnalyticsSkeleton extends StatelessWidget {
             ),
             Padding(
               padding: EdgeInsets.symmetric(
-                  horizontal: defaultPaddingX, vertical: 8.0),
+                horizontal: defaultPaddingX,
+                vertical: 8.0,
+              ),
               child: SizedBox(
                 width: 350,
                 child: DefaultPieChartSkeleton(),

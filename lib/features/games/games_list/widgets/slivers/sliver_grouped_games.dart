@@ -17,10 +17,10 @@ class SliverGroupedGames extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final Duration entryDuration = 130.ms;
-    final hasHeader = (groupName != null && groupName!.isNotEmpty);
+    final hasHeader = groupName != null && groupName!.isNotEmpty;
     return SliverList.builder(
       itemBuilder: (context, index) {
-        int effectiveIndex = hasHeader ? max(index - 1, 0) : index;
+        final int effectiveIndex = hasHeader ? max(index - 1, 0) : index;
         if (hasHeader && index == 0) {
           return Padding(
             padding: const EdgeInsets.only(

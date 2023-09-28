@@ -41,7 +41,7 @@ class DebugGameControllerAssetsScreen extends StatelessWidget {
                       child: Image.asset(
                         platform.controllerLogoPath,
                       ),
-                    )
+                    ),
                   ],
                 );
               },
@@ -50,10 +50,11 @@ class DebugGameControllerAssetsScreen extends StatelessWidget {
             SliverToBoxAdapter(
               child: Padding(
                 padding: const EdgeInsets.only(
-                    left: defaultPaddingX,
-                    right: defaultPaddingX,
-                    top: 16.0,
-                    bottom: 24.0),
+                  left: defaultPaddingX,
+                  right: defaultPaddingX,
+                  top: 16.0,
+                  bottom: 24.0,
+                ),
                 child: Text(
                   "Total Entries: ${GamePlatform.values.length}",
                   style: Theme.of(context).textTheme.headlineMedium,

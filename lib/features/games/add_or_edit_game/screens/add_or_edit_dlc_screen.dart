@@ -5,12 +5,11 @@ import 'package:pile_of_shame/features/games/add_or_edit_game/models/editable_ga
 import 'package:pile_of_shame/features/games/add_or_edit_game/providers/edit_game_provider.dart';
 import 'package:pile_of_shame/features/games/add_or_edit_game/widgets/name_input_field.dart';
 import 'package:pile_of_shame/features/games/add_or_edit_game/widgets/notes_input_field.dart';
+import 'package:pile_of_shame/features/games/add_or_edit_game/widgets/play_status_dropdown.dart';
 import 'package:pile_of_shame/features/games/add_or_edit_game/widgets/price_input_field.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/utils/constants.dart';
 import 'package:pile_of_shame/widgets/app_scaffold.dart';
-
-import '../widgets/play_status_dropdown.dart';
 
 class AddDLCScreen extends ConsumerStatefulWidget {
   final EditableDLC? initialValue;
@@ -44,7 +43,9 @@ class _AddDLCScreenState extends ConsumerState<AddDLCScreen> {
               children: [
                 Padding(
                   padding: const EdgeInsets.symmetric(
-                      horizontal: defaultPaddingX, vertical: 4.0),
+                    horizontal: defaultPaddingX,
+                    vertical: 4.0,
+                  ),
                   child: NameInputField(
                     value: editableDLC.name,
                     onChanged: (value) {
@@ -79,10 +80,13 @@ class _AddDLCScreenState extends ConsumerState<AddDLCScreen> {
                             value: editableDLC.price,
                             onChanged: (value) {
                               ref
-                                  .read(addDLCProvider(widget.initialValue)
-                                      .notifier)
+                                  .read(
+                                    addDLCProvider(widget.initialValue)
+                                        .notifier,
+                                  )
                                   .updateDLC(
-                                      editableDLC.copyWith(price: value));
+                                    editableDLC.copyWith(price: value),
+                                  );
                             },
                           ),
                         ),
@@ -90,11 +94,14 @@ class _AddDLCScreenState extends ConsumerState<AddDLCScreen> {
                           onTap: () {
                             final newValue = !editableDLC.wasGifted;
                             ref
-                                .read(addDLCProvider(widget.initialValue)
-                                    .notifier)
-                                .updateDLC(editableDLC.copyWith(
-                                  wasGifted: newValue,
-                                ));
+                                .read(
+                                  addDLCProvider(widget.initialValue).notifier,
+                                )
+                                .updateDLC(
+                                  editableDLC.copyWith(
+                                    wasGifted: newValue,
+                                  ),
+                                );
                           },
                           child: SizedBox(
                             width: 80.0,
@@ -106,12 +113,14 @@ class _AddDLCScreenState extends ConsumerState<AddDLCScreen> {
                                   color: Theme.of(context).colorScheme.primary,
                                 )
                                     .animate(
-                                        target: editableDLC.wasGifted ? 0 : 1)
+                                      target: editableDLC.wasGifted ? 0 : 1,
+                                    )
                                     .shake()
                                     .scale(
-                                        begin: const Offset(1.0, 1.0),
-                                        end: const Offset(1.2, 1.2),
-                                        curve: Curves.easeInOutBack)
+                                      begin: const Offset(1.0, 1.0),
+                                      end: const Offset(1.2, 1.2),
+                                      curve: Curves.easeInOutBack,
+                                    )
                                     .then()
                                     .swap(
                                       builder: (context, child) =>
@@ -130,9 +139,10 @@ class _AddDLCScreenState extends ConsumerState<AddDLCScreen> {
                                           .textTheme
                                           .bodyMedium!
                                           .copyWith(
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .primary)
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .primary,
+                                          )
                                       : null,
                                 ),
                               ],
@@ -145,7 +155,9 @@ class _AddDLCScreenState extends ConsumerState<AddDLCScreen> {
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(
-                      horizontal: defaultPaddingX, vertical: 4.0),
+                    horizontal: defaultPaddingX,
+                    vertical: 4.0,
+                  ),
                   child: NotesInputField(
                     value: editableDLC.notes,
                     onChanged: (value) {
@@ -153,7 +165,8 @@ class _AddDLCScreenState extends ConsumerState<AddDLCScreen> {
                           .read(addDLCProvider(widget.initialValue).notifier)
                           .updateDLC(
                             editableDLC.copyWith(
-                                notes: value.isEmpty ? null : value),
+                              notes: value.isEmpty ? null : value,
+                            ),
                           );
                     },
                   ),

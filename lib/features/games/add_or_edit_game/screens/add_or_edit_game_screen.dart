@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pile_of_shame/features/games/add_or_edit_game/models/editable_game.dart';
 import 'package:pile_of_shame/features/games/add_or_edit_game/providers/edit_game_provider.dart';
+import 'package:pile_of_shame/features/games/add_or_edit_game/screens/add_or_edit_dlc_screen.dart';
 import 'package:pile_of_shame/features/games/add_or_edit_game/widgets/name_input_field.dart';
 import 'package:pile_of_shame/features/games/add_or_edit_game/widgets/notes_input_field.dart';
 import 'package:pile_of_shame/features/games/add_or_edit_game/widgets/platform_dropdown.dart';
+import 'package:pile_of_shame/features/games/add_or_edit_game/widgets/play_status_dropdown.dart';
 import 'package:pile_of_shame/features/games/add_or_edit_game/widgets/price_input_field.dart';
 import 'package:pile_of_shame/features/games/add_or_edit_game/widgets/usk_dropdown.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
@@ -12,10 +15,6 @@ import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/utils/constants.dart';
 import 'package:pile_of_shame/widgets/app_scaffold.dart';
 import 'package:pile_of_shame/widgets/segmented_action_card.dart';
-
-import '../models/editable_game.dart';
-import '../widgets/play_status_dropdown.dart';
-import 'add_or_edit_dlc_screen.dart';
 
 class AddGameScreen extends ConsumerStatefulWidget {
   final EditableGame? initialValue;
@@ -30,7 +29,11 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
   final _formKey = GlobalKey<FormState>();
 
   SegmentedActionCardItem dlcToItem(
-      BuildContext context, DLC dlc, int index, EditableGame editableGame) {
+    BuildContext context,
+    DLC dlc,
+    int index,
+    EditableGame editableGame,
+  ) {
     final l10n = AppLocalizations.of(context)!;
     return SegmentedActionCardItem(
       trailing: IconButton(
@@ -116,9 +119,11 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
 
     return AppScaffold(
       appBar: AppBar(
-        title: Text(widget.initialValue == null
-            ? AppLocalizations.of(context)!.addGame
-            : AppLocalizations.of(context)!.editGame),
+        title: Text(
+          widget.initialValue == null
+              ? AppLocalizations.of(context)!.addGame
+              : AppLocalizations.of(context)!.editGame,
+        ),
       ),
       body: Form(
         key: _formKey,
@@ -128,7 +133,9 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
               children: [
                 Padding(
                   padding: const EdgeInsets.symmetric(
-                      horizontal: defaultPaddingX, vertical: 4.0),
+                    horizontal: defaultPaddingX,
+                    vertical: 4.0,
+                  ),
                   child: NameInputField(
                     value: editableGame.name,
                     onChanged: (value) {
@@ -175,10 +182,13 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
                             value: editableGame.price,
                             onChanged: (value) {
                               ref
-                                  .read(addGameProvider(widget.initialValue)
-                                      .notifier)
+                                  .read(
+                                    addGameProvider(widget.initialValue)
+                                        .notifier,
+                                  )
                                   .updateGame(
-                                      editableGame.copyWith(price: value));
+                                    editableGame.copyWith(price: value),
+                                  );
                             },
                           ),
                         ),
@@ -186,11 +196,14 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
                           onTap: () {
                             final newValue = !editableGame.wasGifted;
                             ref
-                                .read(addGameProvider(widget.initialValue)
-                                    .notifier)
-                                .updateGame(editableGame.copyWith(
-                                  wasGifted: newValue,
-                                ));
+                                .read(
+                                  addGameProvider(widget.initialValue).notifier,
+                                )
+                                .updateGame(
+                                  editableGame.copyWith(
+                                    wasGifted: newValue,
+                                  ),
+                                );
                           },
                           child: SizedBox(
                             width: 80.0,
@@ -202,12 +215,14 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
                                   color: Theme.of(context).colorScheme.primary,
                                 )
                                     .animate(
-                                        target: editableGame.wasGifted ? 0 : 1)
+                                      target: editableGame.wasGifted ? 0 : 1,
+                                    )
                                     .shake()
                                     .scale(
-                                        begin: const Offset(1.0, 1.0),
-                                        end: const Offset(1.2, 1.2),
-                                        curve: Curves.easeInOutBack)
+                                      begin: const Offset(1.0, 1.0),
+                                      end: const Offset(1.2, 1.2),
+                                      curve: Curves.easeInOutBack,
+                                    )
                                     .then()
                                     .swap(
                                       builder: (context, child) =>
@@ -226,9 +241,10 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
                                           .textTheme
                                           .bodyMedium!
                                           .copyWith(
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .primary)
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .primary,
+                                          )
                                       : null,
                                 ),
                               ],
@@ -253,7 +269,9 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(
-                      horizontal: defaultPaddingX, vertical: 4.0),
+                    horizontal: defaultPaddingX,
+                    vertical: 4.0,
+                  ),
                   child: NotesInputField(
                     value: editableGame.notes,
                     onChanged: (value) {
@@ -261,7 +279,8 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
                           .read(addGameProvider(widget.initialValue).notifier)
                           .updateGame(
                             editableGame.copyWith(
-                                notes: value.isEmpty ? null : value),
+                              notes: value.isEmpty ? null : value,
+                            ),
                           );
                     },
                   ),
@@ -285,13 +304,14 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
 
                           if (result != null) {
                             ref
-                                .read(addGameProvider(widget.initialValue)
-                                    .notifier)
+                                .read(
+                                  addGameProvider(widget.initialValue).notifier,
+                                )
                                 .updateGame(
                                   editableGame.copyWith(
                                     dlcs: [
                                       ...editableGame.dlcs,
-                                      result.toDLC()
+                                      result.toDLC(),
                                     ],
                                   ),
                                 );
@@ -306,8 +326,7 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
                               dlcToItem(context, dlc, index, editableGame),
                             ),
                           )
-                          .values
-                          .toList(),
+                          .values,
                     ],
                   ),
                 ),

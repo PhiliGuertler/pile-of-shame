@@ -20,33 +20,31 @@ class LanguageScreen extends ConsumerWidget {
       ),
       body: ListView(
         children: [
-          ...AppLocalizations.supportedLocales
-              .map(
-                (locale) => RadioListTile(
-                  title: Row(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(right: 16.0),
-                        child: SizedBox(
-                          width: flagDimension,
-                          height: flagDimension,
-                          child: Image.asset(locale.countryAssetPath()),
-                        ),
-                      ),
-                      Text(locale.fullName()),
-                    ],
+          ...AppLocalizations.supportedLocales.map(
+            (locale) => RadioListTile(
+              title: Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(right: 16.0),
+                    child: SizedBox(
+                      width: flagDimension,
+                      height: flagDimension,
+                      child: Image.asset(locale.countryAssetPath()),
+                    ),
                   ),
-                  onChanged: (value) {
-                    ref
-                        .read(appThemeSettingsProvider.notifier)
-                        .setLocale(locale.toLanguageTag());
-                  },
-                  controlAffinity: ListTileControlAffinity.trailing,
-                  groupValue: themeSettings.asData?.value.locale,
-                  value: locale.toLanguageTag(),
-                ),
-              )
-              .toList(),
+                  Text(locale.fullName()),
+                ],
+              ),
+              onChanged: (value) {
+                ref
+                    .read(appThemeSettingsProvider.notifier)
+                    .setLocale(locale.toLanguageTag());
+              },
+              controlAffinity: ListTileControlAffinity.trailing,
+              groupValue: themeSettings.asData?.value.locale,
+              value: locale.toLanguageTag(),
+            ),
+          ),
           RadioListTile(
             title: Row(
               children: [
@@ -60,9 +58,10 @@ class LanguageScreen extends ConsumerWidget {
                       borderRadius:
                           const BorderRadius.all(Radius.circular(4.0)),
                     ),
-                    child: Icon(Icons.settings_suggest_rounded,
-                        color:
-                            Theme.of(context).colorScheme.onPrimaryContainer),
+                    child: Icon(
+                      Icons.settings_suggest_rounded,
+                      color: Theme.of(context).colorScheme.onPrimaryContainer,
+                    ),
                   ),
                 ),
                 Text(AppLocalizations.of(context)!.systemLanguage),

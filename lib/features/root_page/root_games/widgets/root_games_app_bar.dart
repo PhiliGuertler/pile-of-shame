@@ -53,7 +53,8 @@ class _RootGamesAppBarState extends ConsumerState<RootGamesAppBar> {
                 ref.read(gameSearchProvider.notifier).setSearch(value);
               },
               decoration: InputDecoration.collapsed(
-                  hintText: AppLocalizations.of(context)!.searchGames),
+                hintText: AppLocalizations.of(context)!.searchGames,
+              ),
               autofocus: true,
             )
           : GestureDetector(
@@ -67,14 +68,17 @@ class _RootGamesAppBarState extends ConsumerState<RootGamesAppBar> {
                 );
               },
             ),
-      leading: Builder(builder: (context) {
-        return IconButton(
+      leading: Builder(
+        builder: (context) {
+          return IconButton(
             key: const ValueKey("sort_games"),
             icon: const Icon(Icons.sort),
             onPressed: () {
               Scaffold.of(context).openDrawer();
-            });
-      }),
+            },
+          );
+        },
+      ),
       actions: [
         IconButton(
           key: const ValueKey("toggle_game_search"),
@@ -103,7 +107,7 @@ class _RootGamesAppBarState extends ConsumerState<RootGamesAppBar> {
             if (isFilterActive) {
               result = ClipRRect(
                 borderRadius: BorderRadius.circular(16.0),
-                child: Container(
+                child: ColoredBox(
                   color: Theme.of(context).colorScheme.background,
                   child: result,
                 )

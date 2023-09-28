@@ -352,7 +352,9 @@ void main() {
               await TestUtils.setupBuildContextForLocale(widgetTester, "de");
 
           expect(
-              SortStrategy.byPlayStatus.toLocaleString(context), "nach Status");
+            SortStrategy.byPlayStatus.toLocaleString(context),
+            "nach Status",
+          );
         },
       );
       testWidgets(
@@ -362,7 +364,9 @@ void main() {
               await TestUtils.setupBuildContextForLocale(widgetTester, "en");
 
           expect(
-              SortStrategy.byPlayStatus.toLocaleString(context), "by status");
+            SortStrategy.byPlayStatus.toLocaleString(context),
+            "by status",
+          );
         },
       );
     });
@@ -393,8 +397,10 @@ void main() {
           final BuildContext context =
               await TestUtils.setupBuildContextForLocale(widgetTester, "de");
 
-          expect(SortStrategy.byAgeRating.toLocaleString(context),
-              "nach Altersfreigabe");
+          expect(
+            SortStrategy.byAgeRating.toLocaleString(context),
+            "nach Altersfreigabe",
+          );
         },
       );
       testWidgets(
@@ -403,8 +409,10 @@ void main() {
           final BuildContext context =
               await TestUtils.setupBuildContextForLocale(widgetTester, "en");
 
-          expect(SortStrategy.byAgeRating.toLocaleString(context),
-              "by age rating");
+          expect(
+            SortStrategy.byAgeRating.toLocaleString(context),
+            "by age rating",
+          );
         },
       );
     });
@@ -415,8 +423,10 @@ void main() {
           final BuildContext context =
               await TestUtils.setupBuildContextForLocale(widgetTester, "de");
 
-          expect(SortStrategy.byPlatform.toLocaleString(context),
-              "nach Plattform");
+          expect(
+            SortStrategy.byPlatform.toLocaleString(context),
+            "nach Plattform",
+          );
         },
       );
       testWidgets(
@@ -426,7 +436,9 @@ void main() {
               await TestUtils.setupBuildContextForLocale(widgetTester, "en");
 
           expect(
-              SortStrategy.byPlatform.toLocaleString(context), "by platform");
+            SortStrategy.byPlatform.toLocaleString(context),
+            "by platform",
+          );
         },
       );
     });
@@ -437,8 +449,10 @@ void main() {
           final BuildContext context =
               await TestUtils.setupBuildContextForLocale(widgetTester, "de");
 
-          expect(SortStrategy.byLastModified.toLocaleString(context),
-              "nach Änderungsdatum");
+          expect(
+            SortStrategy.byLastModified.toLocaleString(context),
+            "nach Änderungsdatum",
+          );
         },
       );
       testWidgets(
@@ -447,8 +461,10 @@ void main() {
           final BuildContext context =
               await TestUtils.setupBuildContextForLocale(widgetTester, "en");
 
-          expect(SortStrategy.byLastModified.toLocaleString(context),
-              "by modification date");
+          expect(
+            SortStrategy.byLastModified.toLocaleString(context),
+            "by modification date",
+          );
         },
       );
     });
@@ -457,7 +473,8 @@ void main() {
   group("GameSorting", () {
     test("toJson is readable", () {
       const GameSorting sorting = GameSorting(
-          isAscending: true, sortStrategy: SortStrategy.byLastModified);
+        sortStrategy: SortStrategy.byLastModified,
+      );
       final String json = jsonEncode(sorting.toJson());
 
       expect(json, '{"isAscending":true,"sortStrategy":"byLastModified"}');
@@ -466,7 +483,8 @@ void main() {
       const String jsonString =
           '{"isAscending":true,"sortStrategy":"byLastModified"}';
 
-      final GameSorting sorting = GameSorting.fromJson(jsonDecode(jsonString));
+      final GameSorting sorting =
+          GameSorting.fromJson(jsonDecode(jsonString) as Map<String, dynamic>);
 
       expect(sorting.isAscending, true);
       expect(sorting.sortStrategy, SortStrategy.byLastModified);

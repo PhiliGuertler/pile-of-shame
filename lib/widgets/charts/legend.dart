@@ -15,19 +15,21 @@ class Legend extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> legend = [];
+    final List<Widget> legend = [];
     for (var i = 0; i < data.length; ++i) {
       final section = data[i];
       final color = ColorUtils.stringToColor(section.title);
 
-      legend.add(LegendEntry(
-        color: color,
-        text: section.title,
-        onTap: () {
-          onChangeSelection(section.title);
-        },
-        isSelected: section.isSelected,
-      ));
+      legend.add(
+        LegendEntry(
+          color: color,
+          text: section.title,
+          onTap: () {
+            onChangeSelection(section.title);
+          },
+          isSelected: section.isSelected,
+        ),
+      );
     }
     return Wrap(
       runSpacing: 4.0,
@@ -52,9 +54,7 @@ class LegendSkeleton extends StatelessWidget {
         LegendEntrySkeleton(
           textWidth: 75.0,
         ),
-        LegendEntrySkeleton(
-          textWidth: 55.0,
-        ),
+        LegendEntrySkeleton(),
         LegendEntrySkeleton(
           textWidth: 90.0,
         ),

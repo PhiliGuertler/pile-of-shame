@@ -7,8 +7,11 @@ class PriceOnlyDisplay extends ConsumerWidget {
   final double price;
   final bool wasGifted;
 
-  const PriceOnlyDisplay(
-      {super.key, required this.price, required this.wasGifted});
+  const PriceOnlyDisplay({
+    super.key,
+    required this.price,
+    required this.wasGifted,
+  });
 
   factory PriceOnlyDisplay.fromGame({required Game game}) {
     return PriceOnlyDisplay(
@@ -28,8 +31,10 @@ class PriceOnlyDisplay extends ConsumerWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           if (wasGifted)
-            Icon(Icons.cake_sharp,
-                color: Theme.of(context).colorScheme.primary),
+            Icon(
+              Icons.cake_sharp,
+              color: Theme.of(context).colorScheme.primary,
+            ),
           if (!wasGifted) Text(currencyFormatter.format(price)),
         ],
       ),

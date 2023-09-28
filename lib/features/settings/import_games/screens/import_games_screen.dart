@@ -21,7 +21,8 @@ class _ImportGamesScreenState extends ConsumerState<ImportGamesScreen> {
   bool isLoading = false;
 
   Future<void> importGames(
-      Future<GamesList> Function(File file) processGames) async {
+    Future<GamesList> Function(File file) processGames,
+  ) async {
     setState(() {
       isLoading = true;
     });
@@ -67,7 +68,10 @@ class _ImportGamesScreenState extends ConsumerState<ImportGamesScreen> {
   Widget build(BuildContext context) {
     final trailing = isLoading
         ? const SizedBox(
-            width: 28, height: 28, child: CircularProgressIndicator())
+            width: 28,
+            height: 28,
+            child: CircularProgressIndicator(),
+          )
         : const Icon(Icons.file_download);
 
     return AppScaffold(
@@ -80,12 +84,15 @@ class _ImportGamesScreenState extends ConsumerState<ImportGamesScreen> {
             SliverToBoxAdapter(
               child: Padding(
                 padding: const EdgeInsets.only(
-                    left: defaultPaddingX,
-                    right: defaultPaddingX,
-                    top: 24.0,
-                    bottom: 16.0),
-                child: Text(AppLocalizations.of(context)!
-                    .beforeYouImportGamesYouShouldExportYourPreviousGamesAsAPrecaution),
+                  left: defaultPaddingX,
+                  right: defaultPaddingX,
+                  top: 24.0,
+                  bottom: 16.0,
+                ),
+                child: Text(
+                  AppLocalizations.of(context)!
+                      .beforeYouImportGamesYouShouldExportYourPreviousGamesAsAPrecaution,
+                ),
               ),
             ),
             SliverToBoxAdapter(
@@ -95,15 +102,17 @@ class _ImportGamesScreenState extends ConsumerState<ImportGamesScreen> {
                     trailing: trailing,
                     title:
                         Text(AppLocalizations.of(context)!.importAndOverride),
-                    subtitle: Text(AppLocalizations.of(context)!
-                        .yourPreviousGamesWillBeDeleted),
+                    subtitle: Text(
+                      AppLocalizations.of(context)!
+                          .yourPreviousGamesWillBeDeleted,
+                    ),
                     onTap: isLoading
                         ? null
                         : () => importGames(
                               (File pickedFile) async {
                                 final gameStorage =
                                     ref.read(gameStorageProvider);
-                                return await gameStorage
+                                return gameStorage
                                     .readGamesFromFile(pickedFile);
                               },
                             ),
@@ -112,7 +121,8 @@ class _ImportGamesScreenState extends ConsumerState<ImportGamesScreen> {
                     trailing: trailing,
                     title: Text(AppLocalizations.of(context)!.importAndUpdate),
                     subtitle: Text(
-                        "${AppLocalizations.of(context)!.gamesInYourListThatAreOlderThanImportedGamesWillBeOverwritten} ${AppLocalizations.of(context)!.gamesThatAreNotInYourListWillBeImported}"),
+                      "${AppLocalizations.of(context)!.gamesInYourListThatAreOlderThanImportedGamesWillBeOverwritten} ${AppLocalizations.of(context)!.gamesThatAreNotInYourListWillBeImported}",
+                    ),
                     onTap: isLoading
                         ? null
                         : () => importGames(
@@ -139,8 +149,10 @@ class _ImportGamesScreenState extends ConsumerState<ImportGamesScreen> {
                     trailing: trailing,
                     title:
                         Text(AppLocalizations.of(context)!.updateExistingGames),
-                    subtitle: Text(AppLocalizations.of(context)!
-                        .gamesInYourListThatAreOlderThanImportedGamesWillBeOverwritten),
+                    subtitle: Text(
+                      AppLocalizations.of(context)!
+                          .gamesInYourListThatAreOlderThanImportedGamesWillBeOverwritten,
+                    ),
                     onTap: isLoading
                         ? null
                         : () => importGames(
@@ -164,9 +176,12 @@ class _ImportGamesScreenState extends ConsumerState<ImportGamesScreen> {
                   SegmentedActionCardItem(
                     trailing: trailing,
                     title: Text(
-                        AppLocalizations.of(context)!.importMissingGamesOnly),
-                    subtitle: Text(AppLocalizations.of(context)!
-                        .gamesThatAreNotInYourListWillBeImported),
+                      AppLocalizations.of(context)!.importMissingGamesOnly,
+                    ),
+                    subtitle: Text(
+                      AppLocalizations.of(context)!
+                          .gamesThatAreNotInYourListWillBeImported,
+                    ),
                     onTap: isLoading
                         ? null
                         : () => importGames(

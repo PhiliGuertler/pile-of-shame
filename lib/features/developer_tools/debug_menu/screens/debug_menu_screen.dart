@@ -37,10 +37,12 @@ class DebugMenuScreen extends StatelessWidget {
                   title: const Text("Game-Platform Icons"),
                   subtitle: const Text("Display all Game-Platform Icon assets"),
                   onTap: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) =>
-                          const DebugGamePlatformIconsScreen(),
-                    ));
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            const DebugGamePlatformIconsScreen(),
+                      ),
+                    );
                   },
                 ),
                 SegmentedActionCardItem(
@@ -49,10 +51,12 @@ class DebugMenuScreen extends StatelessWidget {
                   subtitle:
                       const Text("Display all Game-Platform Controller assets"),
                   onTap: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) =>
-                          const DebugGameControllerAssetsScreen(),
-                    ));
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            const DebugGameControllerAssetsScreen(),
+                      ),
+                    );
                   },
                 ),
                 SegmentedActionCardItem(
@@ -60,9 +64,11 @@ class DebugMenuScreen extends StatelessWidget {
                   title: const Text("Swipe to Trigger"),
                   subtitle: const Text("Test Swipe to Trigger Widget"),
                   onTap: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const DebugSwipeToTriggerScreen(),
-                    ));
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const DebugSwipeToTriggerScreen(),
+                      ),
+                    );
                   },
                 ),
               ],

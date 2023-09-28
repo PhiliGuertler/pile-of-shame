@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../image_container.dart';
-import 'skeleton.dart';
+import 'package:pile_of_shame/widgets/image_container.dart';
+import 'package:pile_of_shame/widgets/skeletons/skeleton.dart';
 
 class ImageContainerSkeleton extends StatelessWidget {
   final Duration? animationDuration;

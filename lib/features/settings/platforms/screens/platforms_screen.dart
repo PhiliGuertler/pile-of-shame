@@ -22,14 +22,17 @@ class PlatformsScreen extends ConsumerWidget {
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.symmetric(
-                  horizontal: defaultPaddingX, vertical: 8.0),
-              child: Text(AppLocalizations.of(context)!
-                  .selectWhichGamePlatformsYouHaveOnlyEnabledPlatformsAreSelectableWhenAddingAndEditingGamesAlsoOnlyEnabledPlatformsCanBeUsedAsFiltersGamesFromDisabledPlatformsAreStillVisibleWhenNoPlatformFiltersAreActive),
+                horizontal: defaultPaddingX,
+                vertical: 8.0,
+              ),
+              child: Text(
+                AppLocalizations.of(context)!
+                    .selectWhichGamePlatformsYouHaveOnlyEnabledPlatformsAreSelectableWhenAddingAndEditingGamesAlsoOnlyEnabledPlatformsCanBeUsedAsFiltersGamesFromDisabledPlatformsAreStillVisibleWhenNoPlatformFiltersAreActive,
+              ),
             ),
           ),
           ...fullSelection.entries
-              .map((e) => PlatformFamilySliver(family: e.key))
-              .toList(),
+              .map((e) => PlatformFamilySliver(family: e.key)),
           const SliverPadding(padding: EdgeInsets.only(bottom: 16.0)),
         ],
       ),

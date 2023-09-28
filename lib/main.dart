@@ -11,8 +11,10 @@ void main() async {
 
   await initializer.initializeApp(providerContainer);
 
-  runApp(UncontrolledProviderScope(
-    container: providerContainer,
-    child: const ReceiveShareApp(),
-  ));
+  runApp(
+    UncontrolledProviderScope(
+      container: providerContainer,
+      child: const ReceiveShareApp(),
+    ),
+  );
 }

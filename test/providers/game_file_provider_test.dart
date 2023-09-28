@@ -21,7 +21,8 @@ void main() {
   test("correctly returns the game file", () async {
     final file = await container.read(gameFileProvider.future);
     expect(file.path, 'test_resources/game-store.json');
-    expect(file.readAsStringSync().replaceAll("\r", ""), """{
+    expect(file.readAsStringSync().replaceAll("\r", ""), """
+{
     "games": [
         {
             "name": "Outer Wilds",

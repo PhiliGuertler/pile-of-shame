@@ -3,11 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pile_of_shame/features/analytics/analytics_root_content/screens/analytics_root_content_screen.dart';
 import 'package:pile_of_shame/features/games/games_list/screens/games_screen.dart';
+import 'package:pile_of_shame/features/root_page/models/root_page_models.dart';
 import 'package:pile_of_shame/features/settings/root/screens/settings_screen.dart';
 import 'package:pile_of_shame/providers/games/game_provider.dart';
 import 'package:pile_of_shame/widgets/app_scaffold.dart';
-
-import 'models/root_page_models.dart';
 
 class RootPage extends ConsumerStatefulWidget {
   const RootPage({
@@ -26,9 +25,11 @@ class _RootPageState extends ConsumerState<RootPage> {
   void _handleRootTabChange(int index, BuildContext context) {
     if (index == RootTabs.games.index) {
       if (index == activeTab.index) {
-        _scrollControllerGames.animateTo(0.0,
-            duration: const Duration(milliseconds: 500),
-            curve: Curves.easeInOut);
+        _scrollControllerGames.animateTo(
+          0.0,
+          duration: const Duration(milliseconds: 500),
+          curve: Curves.easeInOut,
+        );
       }
     }
 
@@ -40,7 +41,7 @@ class _RootPageState extends ConsumerState<RootPage> {
   void handleScroll() {
     final offset = _scrollControllerGames.offset;
     final minScrollExtent = _scrollControllerGames.position.minScrollExtent;
-    bool result = offset > minScrollExtent;
+    final bool result = offset > minScrollExtent;
     setState(() {
       isScrolled = result;
     });
@@ -85,15 +86,18 @@ class _RootPageState extends ConsumerState<RootPage> {
             child: child,
           ),
           child: Container(
-              key: ValueKey(activeTab.index), child: children[activeTab.index]),
+            key: ValueKey(activeTab.index),
+            child: children[activeTab.index],
+          ),
         ),
         floatingActionButton: activeTab.fab(context, !isScrolled),
         appBar: activeTab.appBar(
-            _scrollControllerGames,
-            hasGames.maybeWhen(
-              orElse: () => false,
-              data: (data) => data,
-            )),
+          _scrollControllerGames,
+          hasGames.maybeWhen(
+            orElse: () => false,
+            data: (data) => data,
+          ),
+        ),
         bottomNavigationBar: NavigationBar(
           selectedIndex: activeTab.index,
           onDestinationSelected: (index) =>

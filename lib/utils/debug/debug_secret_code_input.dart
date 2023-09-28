@@ -62,7 +62,7 @@ class _DebugSecretCodeInputState extends State<DebugSecretCodeInput> {
   int secretInputProgress = 0;
   int secretInputCodeProgress = 0;
   List<MorseCode> secretInputs = [MorseCode.p, MorseCode.s];
-  Timer resetSecretTimer = Timer(const Duration(milliseconds: 0), () {});
+  Timer resetSecretTimer = Timer(Duration.zero, () {});
 
   void handleSecretInput(Morse press) {
     setState(() {
@@ -108,7 +108,8 @@ class _DebugSecretCodeInputState extends State<DebugSecretCodeInput> {
     }
     if (secretInputs.length > secretInputProgress) {
       debugPrint(
-          '$secretInputProgress / ${secretInputs.length} ($secretInputCodeProgress / ${secretInputs[secretInputProgress].code.length})');
+        '$secretInputProgress / ${secretInputs.length} ($secretInputCodeProgress / ${secretInputs[secretInputProgress].code.length})',
+      );
     }
   }
 

@@ -12,7 +12,7 @@ AppLocalizations l10n(L10nRef ref) {
   final appSettings = ref.watch(appThemeSettingsProvider);
 
   final platformLocale = Platform.localeName.split("_")[0];
-  String systemLocale =
+  final String systemLocale =
       AppLocalizations.delegate.isSupported(Locale(platformLocale))
           ? platformLocale
           : "en";

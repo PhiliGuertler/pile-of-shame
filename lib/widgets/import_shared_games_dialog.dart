@@ -37,7 +37,7 @@ class _ImportSharedGamesState extends ConsumerState<ImportSharedGames> {
       throw Exception("No shared file found");
     }
 
-    File sharedFile = File(sharedFiles.first.value!);
+    final File sharedFile = File(sharedFiles.first.value!);
     try {
       final gameStorage = ref.read(gameStorageProvider);
 
@@ -73,7 +73,10 @@ class _ImportSharedGamesState extends ConsumerState<ImportSharedGames> {
 
     final trailing = isLoading
         ? const SizedBox(
-            width: 28, height: 28, child: CircularProgressIndicator())
+            width: 28,
+            height: 28,
+            child: CircularProgressIndicator(),
+          )
         : const Icon(Icons.file_download);
 
     return BackdropFilter(
@@ -84,32 +87,38 @@ class _ImportSharedGamesState extends ConsumerState<ImportSharedGames> {
           child: CustomScrollView(
             slivers: [
               SliverPadding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: defaultPaddingX,
-                    vertical: 16.0,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: defaultPaddingX,
+                  vertical: 16.0,
+                ),
+                sliver: SliverToBoxAdapter(
+                  child: Text(
+                    AppLocalizations.of(context)!.importGames,
+                    style: Theme.of(context).textTheme.headlineSmall,
                   ),
-                  sliver: SliverToBoxAdapter(
-                    child: Text(
-                      AppLocalizations.of(context)!.importGames,
-                      style: Theme.of(context).textTheme.headlineSmall,
-                    ),
-                  )),
+                ),
+              ),
               SliverToBoxAdapter(
                 child: Padding(
                   padding: const EdgeInsets.only(
-                      left: defaultPaddingX,
-                      right: defaultPaddingX,
-                      top: 24.0,
-                      bottom: 16.0),
-                  child: Text(AppLocalizations.of(context)!
-                      .beforeYouImportGamesYouShouldExportYourPreviousGamesAsAPrecaution),
+                    left: defaultPaddingX,
+                    right: defaultPaddingX,
+                    top: 24.0,
+                    bottom: 16.0,
+                  ),
+                  child: Text(
+                    AppLocalizations.of(context)!
+                        .beforeYouImportGamesYouShouldExportYourPreviousGamesAsAPrecaution,
+                  ),
                 ),
               ),
               if (isDebugMode)
                 SliverList.builder(
                   itemBuilder: (context, index) => Padding(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: defaultPaddingX, vertical: 8.0),
+                      horizontal: defaultPaddingX,
+                      vertical: 8.0,
+                    ),
                     child: Text(sharedContent[index].value ?? 'unknown file'),
                   ),
                   itemCount: sharedContent.length,
@@ -121,15 +130,17 @@ class _ImportSharedGamesState extends ConsumerState<ImportSharedGames> {
                       trailing: trailing,
                       title:
                           Text(AppLocalizations.of(context)!.importAndOverride),
-                      subtitle: Text(AppLocalizations.of(context)!
-                          .yourPreviousGamesWillBeDeleted),
+                      subtitle: Text(
+                        AppLocalizations.of(context)!
+                            .yourPreviousGamesWillBeDeleted,
+                      ),
                       onTap: isLoading
                           ? null
                           : () => importSharedGames(
                                 (File pickedFile) async {
                                   final gameStorage =
                                       ref.read(gameStorageProvider);
-                                  return await gameStorage
+                                  return gameStorage
                                       .readGamesFromFile(pickedFile);
                                 },
                               ),
@@ -139,7 +150,8 @@ class _ImportSharedGamesState extends ConsumerState<ImportSharedGames> {
                       title:
                           Text(AppLocalizations.of(context)!.importAndUpdate),
                       subtitle: Text(
-                          "${AppLocalizations.of(context)!.gamesInYourListThatAreOlderThanImportedGamesWillBeOverwritten} ${AppLocalizations.of(context)!.gamesThatAreNotInYourListWillBeImported}"),
+                        "${AppLocalizations.of(context)!.gamesInYourListThatAreOlderThanImportedGamesWillBeOverwritten} ${AppLocalizations.of(context)!.gamesThatAreNotInYourListWillBeImported}",
+                      ),
                       onTap: isLoading
                           ? null
                           : () => importSharedGames(
@@ -165,9 +177,12 @@ class _ImportSharedGamesState extends ConsumerState<ImportSharedGames> {
                     SegmentedActionCardItem(
                       trailing: trailing,
                       title: Text(
-                          AppLocalizations.of(context)!.updateExistingGames),
-                      subtitle: Text(AppLocalizations.of(context)!
-                          .gamesInYourListThatAreOlderThanImportedGamesWillBeOverwritten),
+                        AppLocalizations.of(context)!.updateExistingGames,
+                      ),
+                      subtitle: Text(
+                        AppLocalizations.of(context)!
+                            .gamesInYourListThatAreOlderThanImportedGamesWillBeOverwritten,
+                      ),
                       onTap: isLoading
                           ? null
                           : () => importSharedGames(
@@ -191,9 +206,12 @@ class _ImportSharedGamesState extends ConsumerState<ImportSharedGames> {
                     SegmentedActionCardItem(
                       trailing: trailing,
                       title: Text(
-                          AppLocalizations.of(context)!.importMissingGamesOnly),
-                      subtitle: Text(AppLocalizations.of(context)!
-                          .gamesThatAreNotInYourListWillBeImported),
+                        AppLocalizations.of(context)!.importMissingGamesOnly,
+                      ),
+                      subtitle: Text(
+                        AppLocalizations.of(context)!
+                            .gamesThatAreNotInYourListWillBeImported,
+                      ),
                       onTap: isLoading
                           ? null
                           : () => importSharedGames(

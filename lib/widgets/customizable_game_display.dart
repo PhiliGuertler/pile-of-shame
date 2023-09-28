@@ -43,85 +43,89 @@ class CustomizableGameDisplay extends ConsumerWidget {
     Widget? secondaryWidget;
 
     settings.when(
-        data: (settings) {
-          switch (settings.leading) {
-            case GameDisplayLeadingTrailing.ageRatingIcon:
-              leadingWidget = USKLogo.fromGame(game: game);
-            case GameDisplayLeadingTrailing.platformIcon:
-              leadingWidget = GamePlatformIcon.fromGame(game: game);
-            case GameDisplayLeadingTrailing.playStatusIcon:
-              leadingWidget = PlayStatusIcon.fromGame(
-                game: game,
-              );
-            case GameDisplayLeadingTrailing.priceAndLastModified:
-              leadingWidget = PriceAndLastModifiedDisplay.fromGame(
-                game: game,
-              );
-            case GameDisplayLeadingTrailing.priceOnly:
-              leadingWidget = PriceOnlyDisplay.fromGame(
-                game: game,
-              );
-            case GameDisplayLeadingTrailing.lastModifiedOnly:
-              leadingWidget = LastModifiedDisplay.fromGame(
-                game: game,
-              );
-            case GameDisplayLeadingTrailing.none:
-              leadingWidget = null;
-          }
-          switch (settings.trailing) {
-            case GameDisplayLeadingTrailing.ageRatingIcon:
-              trailingWidget = USKLogo.fromGame(game: game);
-            case GameDisplayLeadingTrailing.platformIcon:
-              trailingWidget = GamePlatformIcon.fromGame(game: game);
-            case GameDisplayLeadingTrailing.playStatusIcon:
-              trailingWidget = PlayStatusIcon.fromGame(
-                game: game,
-              );
-            case GameDisplayLeadingTrailing.priceAndLastModified:
-              trailingWidget = PriceAndLastModifiedDisplay.fromGame(
-                game: game,
-              );
-            case GameDisplayLeadingTrailing.priceOnly:
-              trailingWidget = PriceOnlyDisplay.fromGame(
-                game: game,
-              );
-            case GameDisplayLeadingTrailing.lastModifiedOnly:
-              trailingWidget = LastModifiedDisplay.fromGame(
-                game: game,
-              );
-            case GameDisplayLeadingTrailing.none:
-              trailingWidget = null;
-          }
-          switch (settings.secondary) {
-            case GameDisplaySecondary.statusText:
-              secondaryWidget = PlayStatusDisplay.fromGame(game: game);
-            case GameDisplaySecondary.ageRatingText:
-              secondaryWidget = AgeRatingTextDisplay.fromGame(game: game);
-            case GameDisplaySecondary.platformText:
-              secondaryWidget = Text(
-                  game.platform.localizedName(AppLocalizations.of(context)!));
-            case GameDisplaySecondary.price:
-              secondaryWidget = Text(game.wasGifted && game.fullPrice() < 0.01
+      data: (settings) {
+        switch (settings.leading) {
+          case GameDisplayLeadingTrailing.ageRatingIcon:
+            leadingWidget = USKLogo.fromGame(game: game);
+          case GameDisplayLeadingTrailing.platformIcon:
+            leadingWidget = GamePlatformIcon.fromGame(game: game);
+          case GameDisplayLeadingTrailing.playStatusIcon:
+            leadingWidget = PlayStatusIcon.fromGame(
+              game: game,
+            );
+          case GameDisplayLeadingTrailing.priceAndLastModified:
+            leadingWidget = PriceAndLastModifiedDisplay.fromGame(
+              game: game,
+            );
+          case GameDisplayLeadingTrailing.priceOnly:
+            leadingWidget = PriceOnlyDisplay.fromGame(
+              game: game,
+            );
+          case GameDisplayLeadingTrailing.lastModifiedOnly:
+            leadingWidget = LastModifiedDisplay.fromGame(
+              game: game,
+            );
+          case GameDisplayLeadingTrailing.none:
+            leadingWidget = null;
+        }
+        switch (settings.trailing) {
+          case GameDisplayLeadingTrailing.ageRatingIcon:
+            trailingWidget = USKLogo.fromGame(game: game);
+          case GameDisplayLeadingTrailing.platformIcon:
+            trailingWidget = GamePlatformIcon.fromGame(game: game);
+          case GameDisplayLeadingTrailing.playStatusIcon:
+            trailingWidget = PlayStatusIcon.fromGame(
+              game: game,
+            );
+          case GameDisplayLeadingTrailing.priceAndLastModified:
+            trailingWidget = PriceAndLastModifiedDisplay.fromGame(
+              game: game,
+            );
+          case GameDisplayLeadingTrailing.priceOnly:
+            trailingWidget = PriceOnlyDisplay.fromGame(
+              game: game,
+            );
+          case GameDisplayLeadingTrailing.lastModifiedOnly:
+            trailingWidget = LastModifiedDisplay.fromGame(
+              game: game,
+            );
+          case GameDisplayLeadingTrailing.none:
+            trailingWidget = null;
+        }
+        switch (settings.secondary) {
+          case GameDisplaySecondary.statusText:
+            secondaryWidget = PlayStatusDisplay.fromGame(game: game);
+          case GameDisplaySecondary.ageRatingText:
+            secondaryWidget = AgeRatingTextDisplay.fromGame(game: game);
+          case GameDisplaySecondary.platformText:
+            secondaryWidget = Text(
+              game.platform.localizedName(AppLocalizations.of(context)!),
+            );
+          case GameDisplaySecondary.price:
+            secondaryWidget = Text(
+              game.wasGifted && game.fullPrice() < 0.01
                   ? AppLocalizations.of(context)!.gift
-                  : currencyFormatter.format(game.fullPrice()));
-            case GameDisplaySecondary.none:
-              secondaryWidget = null;
-          }
-        },
-        error: (error, stackTrace) {},
-        loading: () {
-          trailingWidget = const ImageContainerSkeleton();
-          leadingWidget = const ImageContainerSkeleton();
-          secondaryWidget = const Skeleton();
-        });
+                  : currencyFormatter.format(game.fullPrice()),
+            );
+          case GameDisplaySecondary.none:
+            secondaryWidget = null;
+        }
+      },
+      error: (error, stackTrace) {},
+      loading: () {
+        trailingWidget = const ImageContainerSkeleton();
+        leadingWidget = const ImageContainerSkeleton();
+        secondaryWidget = const Skeleton();
+      },
+    );
 
     const double favoriteSize = 32;
 
-    List<String> notes = [];
+    final List<String> notes = [];
     if (game.notes != null && game.notes!.isNotEmpty) {
       notes.add(game.notes!);
     }
-    for (var dlc in game.dlcs) {
+    for (final dlc in game.dlcs) {
       if (dlc.notes != null && dlc.notes!.isNotEmpty) {
         notes.add(dlc.notes!);
       }
@@ -130,10 +134,10 @@ class CustomizableGameDisplay extends ConsumerWidget {
     return SwipeToTrigger(
       triggerOffset: 0.3,
       rightWidget: (triggerProgress) {
-        double triggerOvershoot =
+        final double triggerOvershoot =
             (triggerProgress - 1.0).clamp(0, double.infinity);
-        double untilTrigger = triggerProgress.clamp(0.0, 1.0);
-        return Container(
+        final double untilTrigger = triggerProgress.clamp(0.0, 1.0);
+        return ColoredBox(
           color: Colors.red,
           child: Transform.scale(
             scale: 1.0 + triggerOvershoot,
@@ -154,10 +158,10 @@ class CustomizableGameDisplay extends ConsumerWidget {
       },
       leftWidget: notes.isNotEmpty
           ? (triggerProgress) {
-              double triggerOvershoot =
+              final double triggerOvershoot =
                   (triggerProgress - 1.0).clamp(0, double.infinity);
-              double untilTrigger = triggerProgress.clamp(0.0, 1.0);
-              return Container(
+              final double untilTrigger = triggerProgress.clamp(0.0, 1.0);
+              return ColoredBox(
                 color: Theme.of(context).colorScheme.surfaceVariant,
                 child: Transform.scale(
                   scale: 1.0 + triggerOvershoot,
@@ -185,12 +189,13 @@ class CustomizableGameDisplay extends ConsumerWidget {
         alignment: Alignment.centerLeft,
         children: [
           const Positioned(
-                  right: -favoriteSize * 0.4,
-                  child: Icon(
-                    Icons.favorite,
-                    size: favoriteSize,
-                    color: Colors.red,
-                  ))
+            right: -favoriteSize * 0.4,
+            child: Icon(
+              Icons.favorite,
+              size: favoriteSize,
+              color: Colors.red,
+            ),
+          )
               .animate(
                 target: game.isFavorite ? 1 : 0,
               )

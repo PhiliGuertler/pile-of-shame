@@ -14,7 +14,9 @@ class DecimalInputFormatter extends TextInputFormatter {
 
   @override
   TextEditingValue formatEditUpdate(
-      TextEditingValue oldValue, TextEditingValue newValue) {
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
     final regex = RegExp('^\\d*\\$decimalSeparator?\\d{0,2}\$');
     final String newString = regex.stringMatch(newValue.text) ?? "";
     return newString == newValue.text ? newValue : oldValue;
@@ -59,7 +61,6 @@ class NumberInputField extends ConsumerWidget {
 
     return TextFormField(
       keyboardType: const TextInputType.numberWithOptions(
-        signed: false,
         decimal: true,
       ),
       decoration: InputDecoration(

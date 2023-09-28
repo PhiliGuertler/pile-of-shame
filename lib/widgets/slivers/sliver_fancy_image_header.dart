@@ -58,8 +58,11 @@ class _SliverFancyImageHeaderDelegate extends SliverPersistentHeaderDelegate {
 
   @override
   Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
-    double currentExtent = math.max(height - shrinkOffset, minHeight);
+    BuildContext context,
+    double shrinkOffset,
+    bool overlapsContent,
+  ) {
+    final double currentExtent = math.max(height - shrinkOffset, minHeight);
     return FlexibleSpaceBar.createSettings(
       currentExtent: currentExtent,
       child: ClipRRect(
