@@ -61,8 +61,6 @@ enum GameDisplaySecondary {
 
 @freezed
 class CustomGameDisplaySettings with _$CustomGameDisplaySettings {
-  const CustomGameDisplaySettings._();
-
   const factory CustomGameDisplaySettings({
     @Default(GameDisplayLeadingTrailing.playStatusIcon)
     GameDisplayLeadingTrailing leading,
@@ -72,6 +70,7 @@ class CustomGameDisplaySettings with _$CustomGameDisplaySettings {
     @Default(true) bool hasFancyAnimations,
     @Default(false) bool hasRepeatingAnimations,
   }) = _CustomGameDisplaySettings;
+  const CustomGameDisplaySettings._();
 
   factory CustomGameDisplaySettings.fromJson(Map<String, dynamic> json) =>
       _$CustomGameDisplaySettingsFromJson(json);

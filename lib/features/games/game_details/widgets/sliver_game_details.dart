@@ -42,7 +42,7 @@ class _SliverGameDetailsState extends ConsumerState<SliverGameDetails> {
     final currencyFormatter = ref.watch(currencyFormatProvider(context));
 
     for (int i = dismissedDLCs.length - 1; i >= 0; --i) {
-      String dismissed = dismissedDLCs[i];
+      final String dismissed = dismissedDLCs[i];
       if (!widget.game.dlcs.any(
         (element) => element.id == dismissed,
       )) {
@@ -108,15 +108,19 @@ class _SliverGameDetailsState extends ConsumerState<SliverGameDetails> {
                   ),
                 )
               : null,
-          title: Text(shouldShowPriceSum
-              ? AppLocalizations.of(context)!.priceWithDLCs
-              : AppLocalizations.of(context)!.price),
+          title: Text(
+            shouldShowPriceSum
+                ? AppLocalizations.of(context)!.priceWithDLCs
+                : AppLocalizations.of(context)!.price,
+          ),
           subtitle: Text(
             widget.game.wasGifted && widget.game.fullPrice() < 0.01
                 ? AppLocalizations.of(context)!.gift
-                : currencyFormatter.format(shouldShowPriceSum
-                    ? widget.game.fullPrice()
-                    : widget.game.price),
+                : currencyFormatter.format(
+                    shouldShowPriceSum
+                        ? widget.game.fullPrice()
+                        : widget.game.price,
+                  ),
           ),
           trailing: IconButton(
             icon: const Icon(Icons.swap_horiz),
@@ -142,27 +146,34 @@ class _SliverGameDetailsState extends ConsumerState<SliverGameDetails> {
           ),
           title: Text(AppLocalizations.of(context)!.status),
           subtitle: Text(
-              widget.game.status.toLocaleString(AppLocalizations.of(context)!)),
+            widget.game.status.toLocaleString(AppLocalizations.of(context)!),
+          ),
         ),
         ListTile(
           leading: GamePlatformIcon(
             platform: widget.game.platform,
           ),
           title: Text(AppLocalizations.of(context)!.platform),
-          subtitle: Text(widget.game.platform
-              .localizedName(AppLocalizations.of(context)!)),
+          subtitle: Text(
+            widget.game.platform.localizedName(AppLocalizations.of(context)!),
+          ),
         ),
         ListTile(
           leading: USKLogo(
             ageRestriction: widget.game.usk,
           ),
           title: Text(AppLocalizations.of(context)!.ageRating),
-          subtitle: Text(AppLocalizations.of(context)!
-              .ratedN(widget.game.usk.age.toString())),
+          subtitle: Text(
+            AppLocalizations.of(context)!
+                .ratedN(widget.game.usk.age.toString()),
+          ),
         ),
         Padding(
           padding: const EdgeInsets.only(
-              left: defaultPaddingX, right: defaultPaddingX, top: 16.0),
+            left: defaultPaddingX,
+            right: defaultPaddingX,
+            top: 16.0,
+          ),
           child: Text(
             "DLCs",
             style: Theme.of(context).textTheme.headlineSmall,
@@ -177,9 +188,11 @@ class _SliverGameDetailsState extends ConsumerState<SliverGameDetails> {
                     key: ValueKey(dlc.id),
                     leading: PlayStatusIcon(playStatus: dlc.status),
                     title: Text(dlc.name),
-                    subtitle: Text(dlc.wasGifted
-                        ? AppLocalizations.of(context)!.gift
-                        : currencyFormatter.format(dlc.price)),
+                    subtitle: Text(
+                      dlc.wasGifted
+                          ? AppLocalizations.of(context)!.gift
+                          : currencyFormatter.format(dlc.price),
+                    ),
                     openBuilderOnTap: (context, action) => DLCDetailsScreen(
                       game: widget.game,
                       dlcId: dlc.id,
@@ -190,9 +203,10 @@ class _SliverGameDetailsState extends ConsumerState<SliverGameDetails> {
                       });
 
                       final updatedGame = widget.game.copyWith(
-                          dlcs: widget.game.dlcs
-                              .where((element) => element.id != dlc.id)
-                              .toList());
+                        dlcs: widget.game.dlcs
+                            .where((element) => element.id != dlc.id)
+                            .toList(),
+                      );
                       final gamesList = await ref.read(gamesProvider.future);
                       final update =
                           gamesList.updateGame(updatedGame.id, updatedGame);
@@ -202,8 +216,7 @@ class _SliverGameDetailsState extends ConsumerState<SliverGameDetails> {
                           .persistGamesList(update);
                     },
                   ),
-                )
-                .toList(),
+                ),
             addDLCActionCardItem,
           ],
         ),

@@ -35,8 +35,10 @@ class PriceAndLastModifiedDisplay extends ConsumerWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           if (wasGifted)
-            Icon(Icons.cake_sharp,
-                color: Theme.of(context).colorScheme.primary),
+            Icon(
+              Icons.cake_sharp,
+              color: Theme.of(context).colorScheme.primary,
+            ),
           if (!wasGifted) Text(currencyFormatter.format(price)),
           Text(dateFormatter.format(lastModified)),
         ],

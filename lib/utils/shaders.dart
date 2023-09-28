@@ -14,7 +14,7 @@ class ShaderUtils {
 
   Future<ui.Image> loadImage(String imageUrl) async {
     final ByteData data = await rootBundle.load(imageUrl);
-    return await decodeImageFromList(data.buffer.asUint8List());
+    return decodeImageFromList(data.buffer.asUint8List());
   }
 
   Future<ui.FragmentShader> loadShader(Size size) async {

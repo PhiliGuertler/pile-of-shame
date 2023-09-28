@@ -29,7 +29,9 @@ class GroupGames extends _$GroupGames with Persistable {
 
 @riverpod
 FutureOr<Map<String, List<Game>>> applyGameGroup(
-    ApplyGameGroupRef ref, List<Game> games) async {
+  ApplyGameGroupRef ref,
+  List<Game> games,
+) async {
   final activeGroup = await ref.watch(groupGamesProvider.future);
 
   final l10n = ref.watch(l10nProvider);
@@ -37,10 +39,11 @@ FutureOr<Map<String, List<Game>>> applyGameGroup(
   if (activeGroup.groupStrategy.grouper != null) {
     final grouper = activeGroup.groupStrategy.grouper!;
     final allValues = grouper.values();
-    Map<String, List<Game>> result = Map.fromEntries(allValues
-        .map((e) => MapEntry(grouper.groupToLocaleString(l10n, e), [])));
-    for (var game in games) {
-      for (var group in allValues) {
+    final Map<String, List<Game>> result = Map.fromEntries(
+      allValues.map((e) => MapEntry(grouper.groupToLocaleString(l10n, e), [])),
+    );
+    for (final game in games) {
+      for (final group in allValues) {
         if (grouper.matchesGroup(group, game)) {
           result[grouper.groupToLocaleString(l10n, group)]!.add(game);
         }

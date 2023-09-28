@@ -22,10 +22,11 @@ class GameSorterDrawer extends ConsumerWidget {
           slivers: [
             SliverPadding(
               padding: const EdgeInsets.only(
-                  left: defaultPaddingX,
-                  right: defaultPaddingX,
-                  top: 16.0,
-                  bottom: 16.0),
+                left: defaultPaddingX,
+                right: defaultPaddingX,
+                top: 16.0,
+                bottom: 16.0,
+              ),
               sliver: SliverToBoxAdapter(
                 child: Text(
                   AppLocalizations.of(context)!.sortGames,
@@ -44,7 +45,8 @@ class GameSorterDrawer extends ConsumerWidget {
                       title: Text(strategy.toLocaleString(context)),
                       onChanged: (value) {
                         ref.read(sortGamesProvider.notifier).setSorting(
-                            sorting.copyWith(sortStrategy: strategy));
+                              sorting.copyWith(sortStrategy: strategy),
+                            );
                       },
                       controlAffinity: ListTileControlAffinity.trailing,
                     );
@@ -82,10 +84,11 @@ class GameSorterDrawer extends ConsumerWidget {
             const SliverToBoxAdapter(child: Divider()),
             SliverPadding(
               padding: const EdgeInsets.only(
-                  left: defaultPaddingX,
-                  right: defaultPaddingX,
-                  top: 16.0,
-                  bottom: 16.0),
+                left: defaultPaddingX,
+                right: defaultPaddingX,
+                top: 16.0,
+                bottom: 16.0,
+              ),
               sliver: SliverToBoxAdapter(
                 child: Text(
                   AppLocalizations.of(context)!.groupGames,
@@ -101,11 +104,13 @@ class GameSorterDrawer extends ConsumerWidget {
                     return RadioListTile.adaptive(
                       groupValue: grouping.groupStrategy,
                       value: strategy,
-                      title: Text(strategy
-                          .toLocaleString(AppLocalizations.of(context)!)),
+                      title: Text(
+                        strategy.toLocaleString(AppLocalizations.of(context)!),
+                      ),
                       onChanged: (value) {
                         ref.read(groupGamesProvider.notifier).setGrouping(
-                            grouping.copyWith(groupStrategy: strategy));
+                              grouping.copyWith(groupStrategy: strategy),
+                            );
                       },
                       controlAffinity: ListTileControlAffinity.trailing,
                     );

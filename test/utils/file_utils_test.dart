@@ -22,7 +22,8 @@ void main() {
     final File result = await FileUtils().openFile("games_filled.json");
 
     expect(result.path, 'test_resources/games_filled.json');
-    expect(result.readAsStringSync().replaceAll('\r', ""), """{
+    expect(result.readAsStringSync().replaceAll('\r', ""), """
+{
     "games": [
         {
             "id": "zelda-botw",

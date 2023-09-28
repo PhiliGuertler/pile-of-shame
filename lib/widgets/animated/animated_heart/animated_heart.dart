@@ -9,12 +9,13 @@ class AnimatedHeart extends StatelessWidget {
   final int? seed;
   final Color color;
 
-  const AnimatedHeart(
-      {super.key,
-      required this.isReverse,
-      this.onComplete,
-      this.seed,
-      this.color = Colors.red});
+  const AnimatedHeart({
+    super.key,
+    required this.isReverse,
+    this.onComplete,
+    this.seed,
+    this.color = Colors.red,
+  });
 
   double generateRandomDoubleInRange(double min, double max, Random rand) {
     return (max - min) * rand.nextDouble() + min;
@@ -42,12 +43,12 @@ class AnimatedHeart extends StatelessWidget {
           target: isReverse ? 1 : 0,
           onComplete: (controller) {
             if (onComplete != null) {
-              onComplete!();
+              onComplete?.call();
             }
           },
         )
         .scale(
-          begin: const Offset(0.0, 0.0),
+          begin: Offset.zero,
           end: const Offset(1.0, 1.0),
           delay: scaleDelay.ms,
           duration: (800 - scaleDelay).ms,

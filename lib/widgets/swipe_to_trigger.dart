@@ -27,7 +27,7 @@ class _SwipeToTriggerState extends State<SwipeToTrigger>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
 
-  Offset _dragOffset = const Offset(0, 0);
+  Offset _dragOffset = Offset.zero;
 
   late Animation<Offset> _animation;
 
@@ -35,7 +35,7 @@ class _SwipeToTriggerState extends State<SwipeToTrigger>
     _animation = _controller.drive(
       Tween<Offset>(
         begin: _dragOffset,
-        end: const Offset(0, 0),
+        end: Offset.zero,
       ),
     );
     // Calculate the velocity relative to the unit interval, [0,1],
@@ -80,7 +80,7 @@ class _SwipeToTriggerState extends State<SwipeToTrigger>
     final double progress =
         (_dragOffset.dx.abs() / size.width) / widget.triggerOffset;
 
-    Widget background = Stack(
+    final Widget background = Stack(
       children: [
         if (widget.leftWidget != null && _dragOffset.dx > 1.0)
           BackgroundPane(
@@ -112,7 +112,7 @@ class _SwipeToTriggerState extends State<SwipeToTrigger>
         if (nextXValue > 0 && widget.leftWidget == null ||
             nextXValue < 0 && widget.rightWidget == null) {
           setState(() {
-            _dragOffset = const Offset(0, 0);
+            _dragOffset = Offset.zero;
           });
         } else {
           setState(() {

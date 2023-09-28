@@ -104,9 +104,10 @@ class SliverDLCDetails extends ConsumerWidget {
           ),
           title: Text(AppLocalizations.of(context)!.ageRating),
           subtitle: Text(
-              AppLocalizations.of(context)!.ratedN(game.usk.age.toString())),
+            AppLocalizations.of(context)!.ratedN(game.usk.age.toString()),
+          ),
         ),
-        const SizedBox(height: 48.0)
+        const SizedBox(height: 48.0),
       ],
     );
   }

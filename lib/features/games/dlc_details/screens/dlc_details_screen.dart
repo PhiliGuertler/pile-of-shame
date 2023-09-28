@@ -53,7 +53,8 @@ class DLCDetailsScreen extends ConsumerWidget {
             ),
             data: (dlc) => CustomScrollView(
               physics: const BouncingScrollPhysics(
-                  parent: AlwaysScrollableScrollPhysics()),
+                parent: AlwaysScrollableScrollPhysics(),
+              ),
               slivers: [
                 SliverFancyImageAppBar(
                   borderRadius: -defaultBorderRadius * 2,

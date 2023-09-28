@@ -18,7 +18,7 @@ class PlayStatusCompleted100PercentIcon extends ConsumerWidget {
     const completed100 = PlayStatus.completed100Percent;
     const completed = PlayStatus.completed;
 
-    Widget completed100Icon = Icon(
+    final Widget completed100Icon = Icon(
       completed100.icon,
       color: completed100.foregroundColor,
     );
@@ -28,7 +28,7 @@ class PlayStatusCompleted100PercentIcon extends ConsumerWidget {
     settings.maybeWhen(
       data: (settings) {
         if (settings.hasFancyAnimations) {
-          Animate completedIconAnimation = Icon(
+          final Animate completedIconAnimation = Icon(
             completed.icon,
             color: completed.foregroundColor,
           )
@@ -40,34 +40,38 @@ class PlayStatusCompleted100PercentIcon extends ConsumerWidget {
                     : null,
               )
               .moveX(
-                  begin: -10.0,
-                  end: 0.0,
-                  duration: 200.ms,
-                  curve: Curves.easeOutBack)
+                begin: -10.0,
+                end: 0.0,
+                duration: 200.ms,
+                curve: Curves.easeOutBack,
+              )
               .fadeIn(duration: 200.ms)
               .then(delay: 400.ms)
               .scale(
-                  begin: const Offset(1.0, 1.0),
-                  end: const Offset(1.3, 1.3),
-                  curve: Curves.easeOutBack,
-                  duration: 400.ms)
+                begin: const Offset(1.0, 1.0),
+                end: const Offset(1.3, 1.3),
+                curve: Curves.easeOutBack,
+                duration: 400.ms,
+              )
               .then()
               .shakeX(duration: 200.ms);
 
           Animate completed100IconAnimation = completed100Icon.animate().scale(
-              begin: const Offset(1.3, 1.3),
-              end: const Offset(1.0, 1.0),
-              curve: Curves.easeIn,
-              duration: 400.ms);
+                begin: const Offset(1.3, 1.3),
+                end: const Offset(1.0, 1.0),
+                curve: Curves.easeIn,
+                duration: 400.ms,
+              );
 
           if (settings.hasRepeatingAnimations) {
             completed100IconAnimation = completed100IconAnimation
                 .then(delay: 1.seconds)
                 .moveX(
-                    begin: 0.0,
-                    end: 10.0,
-                    duration: 200.ms,
-                    curve: Curves.easeInBack)
+                  begin: 0.0,
+                  end: 10.0,
+                  duration: 200.ms,
+                  curve: Curves.easeInBack,
+                )
                 .fadeOut(duration: 200.ms);
           }
 
@@ -117,10 +121,11 @@ class PlayStatusGrowIcon extends ConsumerWidget {
               )
               .then(delay: 300.ms)
               .scale(
-                  begin: const Offset(1.0, 1.0),
-                  end: const Offset(1.5, 1.5),
-                  curve: Curves.easeOutBack,
-                  duration: 500.ms)
+                begin: const Offset(1.0, 1.0),
+                end: const Offset(1.5, 1.5),
+                curve: Curves.easeOutBack,
+                duration: 500.ms,
+              )
               .then(delay: 500.ms);
         }
       },
@@ -161,15 +166,17 @@ class PlayStatusRotateIcon extends ConsumerWidget {
               )
               .then(delay: 500.ms)
               .rotate(
-                  begin: -0.5,
-                  end: 0,
-                  curve: Curves.easeInOutBack,
-                  duration: 500.ms)
+                begin: -0.5,
+                end: 0,
+                curve: Curves.easeInOutBack,
+                duration: 500.ms,
+              )
               .scale(
-                  begin: const Offset(1.0, 1.0),
-                  end: const Offset(1.5, 1.5),
-                  curve: Curves.easeInOutBack,
-                  duration: 400.ms)
+                begin: const Offset(1.0, 1.0),
+                end: const Offset(1.5, 1.5),
+                curve: Curves.easeInOutBack,
+                duration: 400.ms,
+              )
               .then(delay: 500.ms);
         }
       },
@@ -213,7 +220,7 @@ class PlayStatusShakeIcon extends ConsumerWidget {
     ],
   });
 
-  final Duration shakeDuration = const Duration(milliseconds: 100);
+  static const Duration shakeDuration = Duration(milliseconds: 100);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -242,18 +249,21 @@ class PlayStatusShakeIcon extends ConsumerWidget {
               }
               result = result
                   .scale(
-                      begin: const Offset(1.1, 1.1),
-                      end: const Offset(1.0, 1.0),
-                      duration: shakeDuration * 0.5)
+                    begin: const Offset(1.1, 1.1),
+                    end: const Offset(1.0, 1.0),
+                    duration: shakeDuration * 0.5,
+                  )
                   .scale(
-                      begin: const Offset(1.0, 1.0),
-                      end: const Offset(1.1, 1.1),
-                      delay: shakeDuration * 0.5,
-                      duration: shakeDuration * 0.5);
+                    begin: const Offset(1.0, 1.0),
+                    end: const Offset(1.1, 1.1),
+                    delay: shakeDuration * 0.5,
+                    duration: shakeDuration * 0.5,
+                  );
             } else {
               result = result.rotate(
-                  end: maxTilt * shake.tiltAmount * (shake.tiltsRight ? 1 : -1),
-                  duration: shakeDuration);
+                end: maxTilt * shake.tiltAmount * (shake.tiltsRight ? 1 : -1),
+                duration: shakeDuration,
+              );
             }
             if (i < shakes.length - 1) {
               result = result.then(delay: shakeDuration);
@@ -298,12 +308,12 @@ class PlayStatusIcon extends ConsumerWidget {
       icon = PlayStatusShakeIcon(
         playStatus: playStatus,
         shakes: const [
-          Shake(isHorizontal: false),
+          Shake(),
           Shake(),
           Shake(isShake: false),
           Shake(isShake: false, tiltsRight: false, tiltAmount: 3),
           Shake(),
-          Shake(isHorizontal: false),
+          Shake(),
           Shake(isShake: false, tiltAmount: 2),
         ],
       );
@@ -327,7 +337,7 @@ class PlayStatusIcon extends ConsumerWidget {
       icon = const PlayStatusCompleted100PercentIcon();
     }
 
-    Widget widget = ImageContainer(
+    final Widget widget = ImageContainer(
       backgroundColor: playStatus.backgroundColor,
       child: icon,
     );

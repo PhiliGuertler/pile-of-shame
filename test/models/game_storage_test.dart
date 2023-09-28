@@ -44,10 +44,12 @@ void main() {
 
     gameFile = MockFile();
 
-    container = ProviderContainer(overrides: [
-      gameFileProvider.overrideWith((ref) => gameFile),
-      gamesProvider.overrideWith((ref) => testGameList)
-    ]);
+    container = ProviderContainer(
+      overrides: [
+        gameFileProvider.overrideWith((ref) => gameFile),
+        gamesProvider.overrideWith((ref) => testGameList),
+      ],
+    );
   });
 
   group("persistGamesList", () {

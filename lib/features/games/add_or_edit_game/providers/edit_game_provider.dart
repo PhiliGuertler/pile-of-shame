@@ -1,3 +1,5 @@
+// ignore_for_file: use_setters_to_change_properties
+
 import 'package:pile_of_shame/features/games/add_or_edit_game/models/editable_game.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 

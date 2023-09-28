@@ -7,8 +7,11 @@ class PlayStatusDropdown extends StatelessWidget {
   final PlayStatus value;
   final void Function(PlayStatus selection) onSelect;
 
-  const PlayStatusDropdown(
-      {super.key, required this.value, required this.onSelect});
+  const PlayStatusDropdown({
+    super.key,
+    required this.value,
+    required this.onSelect,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -29,8 +32,10 @@ class PlayStatusDropdown extends StatelessWidget {
       },
       // Display the text of selected items only, as the prefix-icon takes care of the logo
       selectedItemBuilder: (context) => PlayStatus.values
-          .map((status) =>
-              Text(status.toLocaleString(AppLocalizations.of(context)!)))
+          .map(
+            (status) =>
+                Text(status.toLocaleString(AppLocalizations.of(context)!)),
+          )
           .toList(),
       // Don't display the default icon, instead display nothing
       icon: const SizedBox(),

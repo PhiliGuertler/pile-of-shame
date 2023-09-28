@@ -9,10 +9,11 @@ class GameDisplayDragTarget extends ConsumerStatefulWidget {
   final bool isEndPieceMoving;
   final bool isBottomBarMoving;
 
-  const GameDisplayDragTarget(
-      {super.key,
-      this.isEndPieceMoving = false,
-      this.isBottomBarMoving = false});
+  const GameDisplayDragTarget({
+    super.key,
+    this.isEndPieceMoving = false,
+    this.isBottomBarMoving = false,
+  });
 
   @override
   ConsumerState<GameDisplayDragTarget> createState() =>

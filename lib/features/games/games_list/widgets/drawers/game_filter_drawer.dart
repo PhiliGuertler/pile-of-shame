@@ -24,10 +24,11 @@ class GameFilterDrawer extends ConsumerWidget {
           slivers: [
             SliverPadding(
               padding: const EdgeInsets.only(
-                  left: defaultPaddingX,
-                  right: defaultPaddingX,
-                  top: 16.0,
-                  bottom: 16.0),
+                left: defaultPaddingX,
+                right: defaultPaddingX,
+                top: 16.0,
+                bottom: 16.0,
+              ),
               sliver: SliverToBoxAdapter(
                 child: Text(
                   AppLocalizations.of(context)!.filterGames,
@@ -37,31 +38,35 @@ class GameFilterDrawer extends ConsumerWidget {
             ),
             if (isAnyFilterActive)
               SliverPadding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: defaultPaddingX, vertical: 16.0),
-                  sliver: SliverToBoxAdapter(
-                    child: OutlinedButton.icon(
-                      icon: const Icon(Icons.delete),
-                      label: Text(
-                          AppLocalizations.of(context)!.removeActiveFilters),
-                      onPressed: () {
-                        ref.invalidate(playStatusFilterProvider);
-                        ref.read(playStatusFilterProvider);
-                        ref.invalidate(gamePlatformFilterProvider);
-                        ref.read(gamePlatformFilterProvider);
-                        ref.invalidate(gamePlatformFamilyFilterProvider);
-                        ref.read(gamePlatformFamilyFilterProvider);
-                        ref.invalidate(ageRatingFilterProvider);
-                        ref.read(ageRatingFilterProvider);
-                        ref.invalidate(favoriteFilterProvider);
-                        ref.read(favoriteFilterProvider);
-                        ref.invalidate(hasNotesFilterProvider);
-                        ref.read(hasNotesFilterProvider);
-                        ref.invalidate(hasDLCsFilterProvider);
-                        ref.read(hasDLCsFilterProvider);
-                      },
+                padding: const EdgeInsets.symmetric(
+                  horizontal: defaultPaddingX,
+                  vertical: 16.0,
+                ),
+                sliver: SliverToBoxAdapter(
+                  child: OutlinedButton.icon(
+                    icon: const Icon(Icons.delete),
+                    label: Text(
+                      AppLocalizations.of(context)!.removeActiveFilters,
                     ),
-                  )),
+                    onPressed: () {
+                      ref.invalidate(playStatusFilterProvider);
+                      ref.read(playStatusFilterProvider);
+                      ref.invalidate(gamePlatformFilterProvider);
+                      ref.read(gamePlatformFilterProvider);
+                      ref.invalidate(gamePlatformFamilyFilterProvider);
+                      ref.read(gamePlatformFamilyFilterProvider);
+                      ref.invalidate(ageRatingFilterProvider);
+                      ref.read(ageRatingFilterProvider);
+                      ref.invalidate(favoriteFilterProvider);
+                      ref.read(favoriteFilterProvider);
+                      ref.invalidate(hasNotesFilterProvider);
+                      ref.read(hasNotesFilterProvider);
+                      ref.invalidate(hasDLCsFilterProvider);
+                      ref.read(hasDLCsFilterProvider);
+                    },
+                  ),
+                ),
+              ),
             // Favorites
             const SliverFavoriteFilterOptions(),
             // Has Notes

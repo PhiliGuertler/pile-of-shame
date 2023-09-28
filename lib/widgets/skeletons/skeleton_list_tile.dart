@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 
-import 'skeleton.dart';
-import 'skeleton_image_container.dart';
+import 'package:pile_of_shame/widgets/skeletons/skeleton.dart';
+import 'package:pile_of_shame/widgets/skeletons/skeleton_image_container.dart';
 
 class ListTileSkeleton extends StatelessWidget {
   final bool hasLeading;
   final bool hasSubtitle;
 
-  const ListTileSkeleton(
-      {super.key, this.hasLeading = true, this.hasSubtitle = false});
+  const ListTileSkeleton({
+    super.key,
+    this.hasLeading = true,
+    this.hasSubtitle = false,
+  });
 
   @override
   Widget build(BuildContext context) {

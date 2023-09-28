@@ -38,7 +38,6 @@ class SegmentedActionCardItem with _$SegmentedActionCardItem {
     Key? key,
     Widget? title,
     Widget? subtitle,
-    Color? tileColor,
     Widget? leading,
     Widget? trailing = const Icon(Icons.navigate_next_rounded),
 
@@ -73,29 +72,31 @@ class SegmentedActionCard extends ConsumerWidget {
   const SegmentedActionCard({super.key, required this.items});
 
   Future<bool> askForDismiss(BuildContext context) async {
-    return await showAdaptiveDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog.adaptive(
-          title: Text(AppLocalizations.of(context)!.deleteDLC),
-          content: Text(AppLocalizations.of(context)!.thisActionCannotBeUndone),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(false);
-              },
-              child: Text(AppLocalizations.of(context)!.cancel),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(true);
-              },
-              child: Text(AppLocalizations.of(context)!.yes),
-            ),
-          ],
-        );
-      },
-    );
+    return await showAdaptiveDialog<bool>(
+          context: context,
+          builder: (context) {
+            return AlertDialog.adaptive(
+              title: Text(AppLocalizations.of(context)!.deleteDLC),
+              content:
+                  Text(AppLocalizations.of(context)!.thisActionCannotBeUndone),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(false);
+                  },
+                  child: Text(AppLocalizations.of(context)!.cancel),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(true);
+                  },
+                  child: Text(AppLocalizations.of(context)!.yes),
+                ),
+              ],
+            );
+          },
+        ) ??
+        false;
   }
 
   @override
@@ -117,9 +118,8 @@ class SegmentedActionCard extends ConsumerWidget {
           boxShadow: [
             BoxShadow(
               color: Theme.of(context).dividerColor,
-              spreadRadius: 0,
               blurRadius: 1,
-            )
+            ),
           ],
           color: Theme.of(context).colorScheme.surfaceVariant,
         ),
@@ -155,16 +155,17 @@ class SegmentedActionCard extends ConsumerWidget {
                     ),
                   );
                 } else {
-                  shape = const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.zero);
+                  shape = const RoundedRectangleBorder();
                 }
 
                 final item = filteredItems[index ~/ 2];
 
                 // Only allow either onTap or openBuilder to be set, not both at the same time
-                assert((item.onTap != null && item.openBuilderOnTap == null) ||
-                    (item.onTap == null && item.openBuilderOnTap != null) ||
-                    (item.onTap == null && item.openBuilderOnTap == null));
+                assert(
+                  (item.onTap != null && item.openBuilderOnTap == null) ||
+                      (item.onTap == null && item.openBuilderOnTap != null) ||
+                      (item.onTap == null && item.openBuilderOnTap == null),
+                );
 
                 late Widget content;
                 if (item.openBuilderOnTap != null) {
@@ -177,7 +178,8 @@ class SegmentedActionCard extends ConsumerWidget {
                     closedShape: shape,
                     closedBuilder: (context, openContainer) => ListTile(
                       contentPadding: const EdgeInsets.symmetric(
-                          horizontal: defaultPaddingX - 8.0),
+                        horizontal: defaultPaddingX - 8.0,
+                      ),
                       shape: shape,
                       leading: item.leading,
                       trailing: item.trailing,
@@ -192,7 +194,8 @@ class SegmentedActionCard extends ConsumerWidget {
                   content = ListTile(
                     key: item.key,
                     contentPadding: const EdgeInsets.symmetric(
-                        horizontal: defaultPaddingX - 8.0),
+                      horizontal: defaultPaddingX - 8.0,
+                    ),
                     shape: shape,
                     leading: item.leading,
                     trailing: item.trailing,
@@ -213,26 +216,30 @@ class SegmentedActionCard extends ConsumerWidget {
                             Expanded(
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(
-                                    horizontal: defaultPaddingX),
-                                child: Builder(builder: (context) {
-                                  return IconButton(
-                                    icon: Icon(
-                                      Icons.delete,
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onErrorContainer,
-                                    ),
-                                    onPressed: () async {
-                                      if (await askForDismiss(context) &&
-                                          context.mounted) {
-                                        Slidable.of(context)
-                                            ?.dismiss(ResizeRequest(100.ms, () {
-                                          item.onDelete!();
-                                        }));
-                                      }
-                                    },
-                                  );
-                                }),
+                                  horizontal: defaultPaddingX,
+                                ),
+                                child: Builder(
+                                  builder: (context) {
+                                    return IconButton(
+                                      icon: Icon(
+                                        Icons.delete,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onErrorContainer,
+                                      ),
+                                      onPressed: () async {
+                                        if (await askForDismiss(context) &&
+                                            context.mounted) {
+                                          Slidable.of(context)?.dismiss(
+                                            ResizeRequest(100.ms, () {
+                                              item.onDelete!();
+                                            }),
+                                          );
+                                        }
+                                      },
+                                    );
+                                  },
+                                ),
                               ),
                             ),
                           ],

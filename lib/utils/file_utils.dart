@@ -32,14 +32,17 @@ class FileUtils {
     final FilePickerResult? pickedFile = await FilePicker.platform.pickFiles();
 
     if (pickedFile != null && pickedFile.files.single.path != null) {
-      File result = File(pickedFile.files.single.path!);
+      final File result = File(pickedFile.files.single.path!);
       return result;
     }
     return null;
   }
 
   Future<bool> _exportFileDesktop(
-      File file, String fileName, String dialogTitle) async {
+    File file,
+    String fileName,
+    String dialogTitle,
+  ) async {
     final String? outputFilePath = await FilePicker.platform.saveFile(
       dialogTitle: dialogTitle,
       fileName: fileName,
@@ -58,7 +61,7 @@ class FileUtils {
   }
 
   Future<bool> shareFile(File file, String fileName, String dialogTitle) async {
-    File tmpFile = await createTemporaryFile(fileName);
+    final File tmpFile = await createTemporaryFile(fileName);
     await tmpFile.writeAsString(await file.readAsString());
 
     final xFile = XFile(
@@ -74,21 +77,28 @@ class FileUtils {
   }
 
   Future<bool> _exportFileMobile(
-      File file, String fileName, String dialogTitle) async {
+    File file,
+    String fileName,
+    String dialogTitle,
+  ) async {
     final response = await FlutterFileDialog.saveFile(
-        params: SaveFileDialogParams(
-      fileName: fileName,
-      sourceFilePath: file.path,
-    ));
+      params: SaveFileDialogParams(
+        fileName: fileName,
+        sourceFilePath: file.path,
+      ),
+    );
     return response != null;
   }
 
   Future<bool> exportFile(
-      File file, String fileName, String dialogTitle) async {
+    File file,
+    String fileName,
+    String dialogTitle,
+  ) async {
     if (Platform.isWindows || Platform.isMacOS || Platform.isLinux) {
-      return await _exportFileDesktop(file, fileName, dialogTitle);
+      return _exportFileDesktop(file, fileName, dialogTitle);
     } else {
-      return await _exportFileMobile(file, fileName, dialogTitle);
+      return _exportFileMobile(file, fileName, dialogTitle);
     }
   }
 }

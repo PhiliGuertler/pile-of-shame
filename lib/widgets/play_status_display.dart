@@ -15,7 +15,7 @@ class PlayStatusDisplay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget widget = Container(
+    final Widget widget = Container(
       height: height,
       decoration: BoxDecoration(
         color: playStatus.backgroundColor,

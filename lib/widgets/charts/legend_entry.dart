@@ -26,7 +26,7 @@ class _LegendEntryState extends State<LegendEntry> {
   Size? textSize;
 
   Size getTextSize(BuildContext context) {
-    final box = context.findRenderObject() as RenderBox;
+    final box = context.findRenderObject()! as RenderBox;
     return box.size;
   }
 
@@ -81,10 +81,11 @@ class _LegendEntryState extends State<LegendEntry> {
                     : null,
               ),
             ).animate(target: widget.isSelected ? 1 : 0).moveX(
-                begin: 0,
-                end: -widget.size * 1.5 * 0.5 + 2,
-                duration: 150.ms,
-                curve: Curves.easeInOut),
+                  begin: 0,
+                  end: -widget.size * 1.5 * 0.5 + 2,
+                  duration: 150.ms,
+                  curve: Curves.easeInOut,
+                ),
           ),
         ],
       ),
@@ -117,10 +118,11 @@ class LegendEntrySkeleton extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(left: 16 * 1.5 + 4.0, right: 4.0),
           child: SizedBox(
-              width: textWidth,
-              child: const Skeleton(
-                widthFactor: 1,
-              )),
+            width: textWidth,
+            child: const Skeleton(
+              widthFactor: 1,
+            ),
+          ),
         ),
       ],
     );

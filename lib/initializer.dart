@@ -13,7 +13,6 @@ class Initializer {
   void setupInitialization() {
     if (const bool.fromEnvironment(
       "FLUTTER_APPIUM_TEST",
-      defaultValue: false,
     )) {
       // FlutterDriverExtensions break keyboard inputs and should only be
       // enabled for integration tests that use the flutter_driver api!
@@ -22,7 +21,7 @@ class Initializer {
     } else {
       debugPrint("[AppInitializer] Disabling flutter driver extensions");
     }
-    WidgetsBinding binding = WidgetsFlutterBinding.ensureInitialized();
+    final WidgetsBinding binding = WidgetsFlutterBinding.ensureInitialized();
     FlutterNativeSplash.preserve(widgetsBinding: binding);
   }
 

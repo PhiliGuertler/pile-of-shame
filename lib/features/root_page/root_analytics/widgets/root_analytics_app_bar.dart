@@ -8,11 +8,13 @@ class RootAnalyticsAppBar extends ConsumerStatefulWidget
 
   final preferredSizeAppBar = AppBar(
     title: const Text("Analytics"),
-    bottom: const TabBar(tabs: [
-      Tab(
-        child: Text("by status"),
-      )
-    ]),
+    bottom: const TabBar(
+      tabs: [
+        Tab(
+          child: Text("by status"),
+        ),
+      ],
+    ),
   );
 
   final preferredSizeAppBarSmall = AppBar(

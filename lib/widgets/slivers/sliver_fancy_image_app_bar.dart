@@ -28,13 +28,11 @@ class InvertedCornerClipPath extends CustomClipper<Path> {
         size.height - borderRadius,
       ),
       radius: Radius.circular(borderRadius),
-      clockwise: true,
     )
     ..lineTo(size.width - borderRadius, size.height - borderRadius)
     ..arcToPoint(
       Offset(size.width, size.height),
       radius: Radius.circular(borderRadius),
-      clockwise: true,
     )
     ..lineTo(size.width, 0);
 
@@ -167,12 +165,17 @@ class _SliverFancyImageAppBarDelegate extends SliverPersistentHeaderDelegate {
 
   @override
   Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    BuildContext context,
+    double shrinkOffset,
+    bool overlapsContent,
+  ) {
     final safePadding = MediaQuery.of(context).padding;
 
-    double currentExtent = math.max(height - shrinkOffset, minHeight);
-    double currentOpacity = math.max(0.0,
-        0.8 - (shrinkOffset / (height - minimumToolbarHeight)).clamp(0.0, 0.8));
+    final double currentExtent = math.max(height - shrinkOffset, minHeight);
+    final double currentOpacity = math.max(
+      0.0,
+      0.8 - (shrinkOffset / (height - minimumToolbarHeight)).clamp(0.0, 0.8),
+    );
 
     return FlexibleSpaceBar.createSettings(
       currentExtent: currentExtent,
@@ -237,7 +240,6 @@ class _SliverFancyImageAppBarDelegate extends SliverPersistentHeaderDelegate {
                                     padding: const EdgeInsets.all(8.0),
                                     child: DefaultTextStyle(
                                       overflow: TextOverflow.ellipsis,
-                                      softWrap: true,
                                       style: AppBarTheme.of(context)
                                               .titleTextStyle ??
                                           Theme.of(context)
@@ -255,7 +257,6 @@ class _SliverFancyImageAppBarDelegate extends SliverPersistentHeaderDelegate {
                                 padding: const EdgeInsets.only(right: 8.0),
                                 child: Row(
                                   mainAxisSize: MainAxisSize.min,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
                                   children: actions!
                                       .map(
                                         (action) => Stack(
@@ -264,15 +265,17 @@ class _SliverFancyImageAppBarDelegate extends SliverPersistentHeaderDelegate {
                                               child: ClipRRect(
                                                 borderRadius:
                                                     BorderRadius.circular(
-                                                        overlayRadius),
+                                                  overlayRadius,
+                                                ),
                                                 child: Container(
                                                   color:
                                                       themeColor?.withOpacity(
-                                                          currentOpacity),
+                                                    currentOpacity,
+                                                  ),
                                                 ),
                                               ),
                                             ),
-                                            action
+                                            action,
                                           ],
                                         ),
                                       )

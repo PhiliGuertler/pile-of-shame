@@ -14,7 +14,9 @@ String defaultFormatData(double data) {
 
 double defaultComputeSum(List<ChartData> data) {
   return data.fold(
-      0.0, (previousValue, element) => previousValue + element.value);
+    0.0,
+    (previousValue, element) => previousValue + element.value,
+  );
 }
 
 class DefaultBarChart extends StatefulWidget {
@@ -43,40 +45,45 @@ class _DefaultBarChartState extends State<DefaultBarChart> {
   Stream<List<BarChartGroupData>> generateChartData(
     Color backgroundColor,
   ) async* {
-    List<BarChartGroupData> sections = [];
+    final List<BarChartGroupData> sections = [];
     final maxData = widget.data.fold(
-        0.0,
-        (previousValue, element) =>
-            element.value > previousValue ? element.value : previousValue);
+      0.0,
+      (previousValue, element) =>
+          element.value > previousValue ? element.value : previousValue,
+    );
     for (var i = 0; i < widget.data.length; ++i) {
       final section = widget.data[i];
       final color = ColorUtils.stringToColor(section.title);
-      sections.add(BarChartGroupData(
-        x: i,
-        barsSpace: 0,
-        barRods: [
-          BarChartRodData(
-            toY: section.value,
-            color: color,
-            width: section.isSelected ? 45.0 : 15.0,
-            borderRadius: BorderRadius.circular(4.0),
-            backDrawRodData: BackgroundBarChartRodData(
-              color:
-                  backgroundColor.withOpacity(section.isSelected ? 0.2 : 0.1),
-              fromY: 0,
-              toY: maxData,
-              show: true,
+      sections.add(
+        BarChartGroupData(
+          x: i,
+          barsSpace: 0,
+          barRods: [
+            BarChartRodData(
+              toY: section.value,
+              color: color,
+              width: section.isSelected ? 45.0 : 15.0,
+              borderRadius: BorderRadius.circular(4.0),
+              backDrawRodData: BackgroundBarChartRodData(
+                color:
+                    backgroundColor.withOpacity(section.isSelected ? 0.2 : 0.1),
+                fromY: 0,
+                toY: maxData,
+                show: true,
+              ),
             ),
-          ),
-        ],
-      ));
+          ],
+        ),
+      );
     }
-    List<BarChartGroupData> initialSections = [];
+    final List<BarChartGroupData> initialSections = [];
     final average = widget.data.fold(
-            0.0, (previousValue, element) => previousValue + element.value) /
+          0.0,
+          (previousValue, element) => previousValue + element.value,
+        ) /
         widget.data.length;
     for (int i = 0; i < sections.length; ++i) {
-      List<BarChartRodData> rods = List.from(sections[i].barRods);
+      final List<BarChartRodData> rods = List.from(sections[i].barRods);
       for (int k = 0; k < rods.length; ++k) {
         rods[k] = rods[k].copyWith(toY: average);
       }
@@ -120,76 +127,71 @@ class _DefaultBarChartState extends State<DefaultBarChart> {
         SizedBox(
           height: 250.0,
           child: StreamBuilder<List<BarChartGroupData>>(
-              stream: generateChartData(
-                  Theme.of(context).colorScheme.primaryContainer),
-              builder: (context, snapshot) {
-                return BarChart(
-                  BarChartData(
-                    minY: 0.0,
-                    maxY: widget.data.fold<double>(
-                        0.0,
-                        (previousValue, element) =>
-                            element.value > previousValue
-                                ? element.value
-                                : previousValue),
-                    alignment: BarChartAlignment.spaceAround,
-                    titlesData: const FlTitlesData(
-                      show: true,
-                      rightTitles: AxisTitles(
-                        sideTitles: SideTitles(showTitles: false),
-                      ),
-                      topTitles: AxisTitles(
-                        sideTitles: SideTitles(showTitles: false),
-                      ),
-                      bottomTitles: AxisTitles(
-                        sideTitles: SideTitles(showTitles: false),
-                      ),
-                    ),
-                    barGroups: snapshot.data,
-                    borderData: FlBorderData(show: false),
-                    barTouchData: BarTouchData(
-                      enabled: true,
-                      handleBuiltInTouches: false,
-                      touchTooltipData: BarTouchTooltipData(
-                        tooltipBgColor: Colors.transparent,
-                        tooltipPadding: EdgeInsets.zero,
-                        tooltipMargin: 8,
-                        getTooltipItem: (
-                          BarChartGroupData group,
-                          int groupIndex,
-                          BarChartRodData rod,
-                          int rodIndex,
-                        ) {
-                          return BarTooltipItem(
-                            widget.formatData(rod.toY),
-                            TextStyle(
-                              color: Theme.of(context).colorScheme.onBackground,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          );
-                        },
-                      ),
-                      touchCallback: (event, response) {
-                        if (event.isInterestedForInteractions &&
-                            widget.onTapSection != null &&
-                            event.runtimeType == FlTapDownEvent) {
-                          if (response != null && response.spot != null) {
-                            final index = response.spot!.touchedBarGroupIndex;
-                            final sectionName =
-                                index >= 0 ? widget.data[index].title : null;
-                            widget.onTapSection!(sectionName);
-                          } else {
-                            widget.onTapSection!(null);
-                          }
-                        }
+            stream: generateChartData(
+              Theme.of(context).colorScheme.primaryContainer,
+            ),
+            builder: (context, snapshot) {
+              return BarChart(
+                BarChartData(
+                  minY: 0.0,
+                  maxY: widget.data.fold<double>(
+                    0.0,
+                    (previousValue, element) => element.value > previousValue
+                        ? element.value
+                        : previousValue,
+                  ),
+                  alignment: BarChartAlignment.spaceAround,
+                  titlesData: const FlTitlesData(
+                    rightTitles: AxisTitles(),
+                    topTitles: AxisTitles(),
+                    bottomTitles: AxisTitles(),
+                  ),
+                  barGroups: snapshot.data,
+                  borderData: FlBorderData(show: false),
+                  barTouchData: BarTouchData(
+                    enabled: true,
+                    handleBuiltInTouches: false,
+                    touchTooltipData: BarTouchTooltipData(
+                      tooltipBgColor: Colors.transparent,
+                      tooltipPadding: EdgeInsets.zero,
+                      tooltipMargin: 8,
+                      getTooltipItem: (
+                        BarChartGroupData group,
+                        int groupIndex,
+                        BarChartRodData rod,
+                        int rodIndex,
+                      ) {
+                        return BarTooltipItem(
+                          widget.formatData(rod.toY),
+                          TextStyle(
+                            color: Theme.of(context).colorScheme.onBackground,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        );
                       },
                     ),
-                    gridData: const FlGridData(show: false),
+                    touchCallback: (event, response) {
+                      if (event.isInterestedForInteractions &&
+                          widget.onTapSection != null &&
+                          event.runtimeType == FlTapDownEvent) {
+                        if (response != null && response.spot != null) {
+                          final index = response.spot!.touchedBarGroupIndex;
+                          final sectionName =
+                              index >= 0 ? widget.data[index].title : null;
+                          widget.onTapSection!(sectionName);
+                        } else {
+                          widget.onTapSection!(null);
+                        }
+                      }
+                    },
                   ),
-                  swapAnimationDuration: 250.ms,
-                  swapAnimationCurve: Curves.easeInOutBack,
-                );
-              }),
+                  gridData: const FlGridData(show: false),
+                ),
+                swapAnimationDuration: 250.ms,
+                swapAnimationCurve: Curves.easeInOutBack,
+              );
+            },
+          ),
         ),
         Padding(
           padding: const EdgeInsets.only(bottom: 8.0, top: 8.0),
@@ -208,31 +210,33 @@ class DefaultBarChartSkeleton extends StatelessWidget {
   const DefaultBarChartSkeleton({super.key});
 
   Stream<List<BarChartGroupData>> randomChartSections(Color color) async* {
-    Random rand = Random();
+    final Random rand = Random();
 
     const maxData = 10.0;
     while (true) {
-      List<BarChartGroupData> result = [];
+      final List<BarChartGroupData> result = [];
       for (int i = 0; i < 6; ++i) {
         final value = rand.nextDouble() * 8.0 + 2.0;
-        result.add(BarChartGroupData(
-          x: i,
-          barsSpace: 0,
-          barRods: [
-            BarChartRodData(
-              toY: value,
-              color: color.withOpacity(rand.nextDouble() * 0.5 + 0.3),
-              width: 15.0,
-              borderRadius: BorderRadius.circular(4.0),
-              backDrawRodData: BackgroundBarChartRodData(
-                color: color.withOpacity(0.1),
-                fromY: 0,
-                toY: maxData,
-                show: true,
+        result.add(
+          BarChartGroupData(
+            x: i,
+            barsSpace: 0,
+            barRods: [
+              BarChartRodData(
+                toY: value,
+                color: color.withOpacity(rand.nextDouble() * 0.5 + 0.3),
+                width: 15.0,
+                borderRadius: BorderRadius.circular(4.0),
+                backDrawRodData: BackgroundBarChartRodData(
+                  color: color.withOpacity(0.1),
+                  fromY: 0,
+                  toY: maxData,
+                  show: true,
+                ),
               ),
-            ),
-          ],
-        ));
+            ],
+          ),
+        );
       }
       yield result;
 
@@ -252,37 +256,32 @@ class DefaultBarChartSkeleton extends StatelessWidget {
         SizedBox(
           height: 250.0,
           child: StreamBuilder<List<BarChartGroupData>>(
-                  stream: randomChartSections(
-                      Theme.of(context).colorScheme.primaryContainer),
-                  builder: (context, snapshot) {
-                    return BarChart(
-                      BarChartData(
-                        minY: 0.0,
-                        maxY: 10.0,
-                        alignment: BarChartAlignment.spaceAround,
-                        titlesData: const FlTitlesData(
-                          show: true,
-                          rightTitles: AxisTitles(
-                            sideTitles: SideTitles(showTitles: false),
-                          ),
-                          topTitles: AxisTitles(
-                            sideTitles: SideTitles(showTitles: false),
-                          ),
-                          bottomTitles: AxisTitles(
-                            sideTitles: SideTitles(showTitles: false),
-                          ),
-                        ),
-                        barGroups: snapshot.data,
-                        borderData: FlBorderData(show: false),
-                        barTouchData: BarTouchData(
-                          enabled: false,
-                        ),
-                        gridData: const FlGridData(show: false),
-                      ),
-                      swapAnimationDuration: 250.ms,
-                      swapAnimationCurve: Curves.easeInOutBack,
-                    );
-                  })
+            stream: randomChartSections(
+              Theme.of(context).colorScheme.primaryContainer,
+            ),
+            builder: (context, snapshot) {
+              return BarChart(
+                BarChartData(
+                  minY: 0.0,
+                  maxY: 10.0,
+                  alignment: BarChartAlignment.spaceAround,
+                  titlesData: const FlTitlesData(
+                    rightTitles: AxisTitles(),
+                    topTitles: AxisTitles(),
+                    bottomTitles: AxisTitles(),
+                  ),
+                  barGroups: snapshot.data,
+                  borderData: FlBorderData(show: false),
+                  barTouchData: BarTouchData(
+                    enabled: false,
+                  ),
+                  gridData: const FlGridData(show: false),
+                ),
+                swapAnimationDuration: 250.ms,
+                swapAnimationCurve: Curves.easeInOutBack,
+              );
+            },
+          )
               .animate(onPlay: (controller) => controller.repeat())
               .shimmer(
                 duration: Skeleton.defaultAnimationDuration,

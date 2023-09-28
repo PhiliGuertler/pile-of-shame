@@ -25,7 +25,8 @@ class PlatformFamilySliver extends ConsumerWidget {
         return SliverList.builder(
           itemBuilder: (context, index) {
             int effectiveIndex = index;
-            List<GamePlatform> selectedPlatforms = selection[family] ?? [];
+            final List<GamePlatform> selectedPlatforms =
+                selection[family] ?? [];
             if (index == 0) {
               // Display a listtile for the whole family
               return Padding(
@@ -57,20 +58,22 @@ class PlatformFamilySliver extends ConsumerWidget {
             } else {
               // Display a list tile for the platform
               effectiveIndex = effectiveIndex - 1;
-              GamePlatform platform = fullPlatforms[effectiveIndex];
+              final GamePlatform platform = fullPlatforms[effectiveIndex];
               return SwitchListTile.adaptive(
-                title: Row(children: [
-                  Padding(
-                    padding: const EdgeInsets.only(right: 16.0),
-                    child: GamePlatformIcon(platform: platform),
-                  ),
-                  Expanded(
-                    child: Text(
-                      platform.localizedName(AppLocalizations.of(context)!),
-                      overflow: TextOverflow.ellipsis,
+                title: Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(right: 16.0),
+                      child: GamePlatformIcon(platform: platform),
                     ),
-                  ),
-                ]),
+                    Expanded(
+                      child: Text(
+                        platform.localizedName(AppLocalizations.of(context)!),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                ),
                 value: selectedPlatforms.contains(platform),
                 onChanged: (value) async {
                   final currentActivePlatforms =
@@ -95,10 +98,12 @@ class PlatformFamilySliver extends ConsumerWidget {
         child: Text(error.toString()),
       ),
       loading: () {
-        return SliverList.list(children: [
-          for (int i = 0; i < fullSelection.length + 1; ++i)
-            const ListTileSkeleton(),
-        ]);
+        return SliverList.list(
+          children: [
+            for (int i = 0; i < fullSelection.length + 1; ++i)
+              const ListTileSkeleton(),
+          ],
+        );
       },
     );
   }

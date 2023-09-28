@@ -108,23 +108,27 @@ void main() {
 
   setUp(() {
     mockFileUtils = MockFileUtils();
-    container = ProviderContainer(overrides: [
-      fileUtilsProvider.overrideWithValue(mockFileUtils),
-    ]);
+    container = ProviderContainer(
+      overrides: [
+        fileUtilsProvider.overrideWithValue(mockFileUtils),
+      ],
+    );
     mockFile = MockFile();
   });
 
   group("gamesProvider", () {
     test('returns an empty list if the file is empty', () async {
       when(mockFileUtils.openFile(gameFileName)).thenAnswer(
-          (realInvocation) async => File('test_resources/games_empty.json'));
+        (realInvocation) async => File('test_resources/games_empty.json'),
+      );
 
       final result = await container.read(gamesProvider.future);
       expect(result.games, []);
     });
     test('returns a list of games if the file is not empty', () async {
       when(mockFileUtils.openFile(gameFileName)).thenAnswer(
-          (realInvocation) async => File('test_resources/games_filled.json'));
+        (realInvocation) async => File('test_resources/games_filled.json'),
+      );
 
       final result = await container.read(gamesProvider.future);
       expect(result.games, [
@@ -167,7 +171,8 @@ void main() {
   group("hasGamesProvider", () {
     test("returns false if there are no games", () async {
       when(mockFileUtils.openFile(gameFileName)).thenAnswer(
-          (realInvocation) async => File('test_resources/games_empty.json'));
+        (realInvocation) async => File('test_resources/games_empty.json'),
+      );
 
       final hasGames = await container.read(hasGamesProvider.future);
 
@@ -175,7 +180,8 @@ void main() {
     });
     test("returns true if there are games", () async {
       when(mockFileUtils.openFile(gameFileName)).thenAnswer(
-          (realInvocation) async => File('test_resources/games_filled.json'));
+        (realInvocation) async => File('test_resources/games_filled.json'),
+      );
 
       final hasGames = await container.read(hasGamesProvider.future);
 
@@ -186,19 +192,23 @@ void main() {
   group("gameByIdProvider", () {
     test("throws an exception if no game with the given id exists", () async {
       when(mockFileUtils.openFile(gameFileName)).thenAnswer(
-          (realInvocation) async => File('test_resources/games_filled.json'));
+        (realInvocation) async => File('test_resources/games_filled.json'),
+      );
       try {
         await container.read(gameByIdProvider("unknown-game-id").future);
       } catch (error) {
-        expect(error.toString(),
-            "Exception: No game with id 'unknown-game-id' found");
+        expect(
+          error.toString(),
+          "Exception: No game with id 'unknown-game-id' found",
+        );
         return;
       }
       fail("No exception thrown");
     });
     test("returns the game with the given id", () async {
       when(mockFileUtils.openFile(gameFileName)).thenAnswer(
-          (realInvocation) async => File('test_resources/games_filled.json'));
+        (realInvocation) async => File('test_resources/games_filled.json'),
+      );
       final Game game =
           await container.read(gameByIdProvider(gameZeldaBotw.id).future);
       expect(game, gameZeldaBotw);
@@ -207,43 +217,54 @@ void main() {
   group("dlcByGameAndIdProvider", () {
     test("throws an exception if no game with the given id exists", () async {
       when(mockFileUtils.openFile(gameFileName)).thenAnswer(
-          (realInvocation) async => File('test_resources/games_filled.json'));
+        (realInvocation) async => File('test_resources/games_filled.json'),
+      );
       try {
         await container.read(
-            dlcByGameAndIdProvider("unknown-game-id", "unknown-dlc-id").future);
+          dlcByGameAndIdProvider("unknown-game-id", "unknown-dlc-id").future,
+        );
       } catch (error) {
-        expect(error.toString(),
-            "Exception: No game with id 'unknown-game-id' found");
+        expect(
+          error.toString(),
+          "Exception: No game with id 'unknown-game-id' found",
+        );
         return;
       }
       fail("No exception thrown");
     });
     test("throws an exception if no dlc with the given id exists", () async {
       when(mockFileUtils.openFile(gameFileName)).thenAnswer(
-          (realInvocation) async => File('test_resources/games_filled.json'));
+        (realInvocation) async => File('test_resources/games_filled.json'),
+      );
       try {
         await container.read(
-            dlcByGameAndIdProvider(gameZeldaBotw.id, "unknown-dlc-id").future);
+          dlcByGameAndIdProvider(gameZeldaBotw.id, "unknown-dlc-id").future,
+        );
       } catch (error) {
-        expect(error.toString(),
-            "Exception: No dlc with id 'unknown-dlc-id' found");
+        expect(
+          error.toString(),
+          "Exception: No dlc with id 'unknown-dlc-id' found",
+        );
         return;
       }
       fail("No exception thrown");
     });
     test("returns the dlc with the given id", () async {
       when(mockFileUtils.openFile(gameFileName)).thenAnswer(
-          (realInvocation) async => File('test_resources/games_filled.json'));
+        (realInvocation) async => File('test_resources/games_filled.json'),
+      );
       final DLC game = await container.read(
-          dlcByGameAndIdProvider(gameZeldaBotw.id, gameZeldaBotw.dlcs[0].id)
-              .future);
+        dlcByGameAndIdProvider(gameZeldaBotw.id, gameZeldaBotw.dlcs[0].id)
+            .future,
+      );
       expect(game, gameZeldaBotw.dlcs[0]);
     });
   });
   group("gamesFilteredProvider", () {
     test("returns all games by default, sorted by name", () async {
       when(mockFileUtils.openFile(gameFileName)).thenAnswer(
-          (realInvocation) async => File('test_resources/games_filled.json'));
+        (realInvocation) async => File('test_resources/games_filled.json'),
+      );
       SharedPreferences.setMockInitialValues(
         {},
       );
@@ -259,7 +280,8 @@ void main() {
     });
     test("returns filtered games only, sorted by name", () async {
       when(mockFileUtils.openFile(gameFileName)).thenAnswer(
-          (realInvocation) async => File('test_resources/games_filled.json'));
+        (realInvocation) async => File('test_resources/games_filled.json'),
+      );
       SharedPreferences.setMockInitialValues(
         {},
       );
@@ -279,7 +301,8 @@ void main() {
     test("returns filtered games with active search, sorted by price",
         () async {
       when(mockFileUtils.openFile(gameFileName)).thenAnswer(
-          (realInvocation) async => File('test_resources/games_filled.json'));
+        (realInvocation) async => File('test_resources/games_filled.json'),
+      );
       SharedPreferences.setMockInitialValues(
         {},
       );
@@ -287,7 +310,6 @@ void main() {
       container.read(gameSearchProvider.notifier).setSearch("zelda");
       container.read(sortGamesProvider.notifier).setSorting(
             const GameSorting(
-              isAscending: true,
               sortStrategy: SortStrategy.byPrice,
             ),
           );
@@ -306,7 +328,8 @@ void main() {
   group("gamesFilteredProvider", () {
     test("returns the sum of prices of all games", () async {
       when(mockFileUtils.openFile(gameFileName)).thenAnswer(
-          (realInvocation) async => File('test_resources/games_filled.json'));
+        (realInvocation) async => File('test_resources/games_filled.json'),
+      );
       SharedPreferences.setMockInitialValues(
         {},
       );
@@ -318,7 +341,8 @@ void main() {
     });
     test("returns the sum prices of filtered games", () async {
       when(mockFileUtils.openFile(gameFileName)).thenAnswer(
-          (realInvocation) async => File('test_resources/games_filled.json'));
+        (realInvocation) async => File('test_resources/games_filled.json'),
+      );
       SharedPreferences.setMockInitialValues(
         {},
       );
@@ -336,7 +360,8 @@ void main() {
   group("gamesFilteredTotalAmountProvider", () {
     test("returns the amount of all games", () async {
       when(mockFileUtils.openFile(gameFileName)).thenAnswer(
-          (realInvocation) async => File('test_resources/games_filled.json'));
+        (realInvocation) async => File('test_resources/games_filled.json'),
+      );
       SharedPreferences.setMockInitialValues(
         {},
       );
@@ -348,7 +373,8 @@ void main() {
     });
     test("returns the amount of filtered games", () async {
       when(mockFileUtils.openFile(gameFileName)).thenAnswer(
-          (realInvocation) async => File('test_resources/games_filled.json'));
+        (realInvocation) async => File('test_resources/games_filled.json'),
+      );
       SharedPreferences.setMockInitialValues(
         {},
       );

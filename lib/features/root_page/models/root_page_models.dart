@@ -4,11 +4,11 @@ import 'package:pile_of_shame/features/games/games_list/widgets/drawers/game_sor
 import 'package:pile_of_shame/features/root_page/root_analytics/widgets/root_analytics_app_bar.dart';
 import 'package:pile_of_shame/features/root_page/root_analytics/widgets/root_analytics_destination.dart';
 
-import '../root_games/widgets/root_games_app_bar.dart';
-import '../root_games/widgets/root_games_destination.dart';
-import '../root_games/widgets/root_games_fab.dart';
-import '../root_settings/widgets/root_settings_app_bar.dart';
-import '../root_settings/widgets/root_settings_destination.dart';
+import 'package:pile_of_shame/features/root_page/root_games/widgets/root_games_app_bar.dart';
+import 'package:pile_of_shame/features/root_page/root_games/widgets/root_games_destination.dart';
+import 'package:pile_of_shame/features/root_page/root_games/widgets/root_games_fab.dart';
+import 'package:pile_of_shame/features/root_page/root_settings/widgets/root_settings_app_bar.dart';
+import 'package:pile_of_shame/features/root_page/root_settings/widgets/root_settings_destination.dart';
 
 enum RootTabs {
   games,

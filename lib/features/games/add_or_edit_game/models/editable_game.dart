@@ -9,8 +9,6 @@ part 'editable_game.freezed.dart';
 
 @freezed
 class EditableDLC with _$EditableDLC {
-  const EditableDLC._();
-
   const factory EditableDLC({
     String? uuid,
     String? name,
@@ -20,6 +18,7 @@ class EditableDLC with _$EditableDLC {
     @Default(false) bool isFavorite,
     @Default(false) bool wasGifted,
   }) = _EditableDLC;
+  const EditableDLC._();
 
   factory EditableDLC.fromDLC(DLC dlc) {
     return EditableDLC(
@@ -55,8 +54,6 @@ class EditableDLC with _$EditableDLC {
 
 @freezed
 class EditableGame with _$EditableGame {
-  const EditableGame._();
-
   const factory EditableGame({
     String? uuid,
     String? name,
@@ -69,6 +66,7 @@ class EditableGame with _$EditableGame {
     @Default(false) bool isFavorite,
     @Default(false) bool wasGifted,
   }) = _EditableGame;
+  const EditableGame._();
 
   factory EditableGame.fromGame(Game game) {
     return EditableGame(
@@ -90,8 +88,10 @@ class EditableGame with _$EditableGame {
   }
 
   Game toGame() {
-    assert(isValid() &&
-        dlcs.every((element) => EditableDLC.fromDLC(element).isValid()));
+    assert(
+      isValid() &&
+          dlcs.every((element) => EditableDLC.fromDLC(element).isValid()),
+    );
 
     return Game(
       id: uuid ?? const Uuid().v4(),

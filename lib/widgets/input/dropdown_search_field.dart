@@ -49,8 +49,10 @@ class _CategorySearchFieldState<T>
         searchTerm.split(" ").where((element) => element.isNotEmpty);
 
     return widget.options
-        .where((element) =>
-            searchTokens.every((token) => widget.filter(token, element)))
+        .where(
+          (element) =>
+              searchTokens.every((token) => widget.filter(token, element)),
+        )
         .toList();
   }
 
@@ -77,7 +79,8 @@ class _CategorySearchFieldState<T>
         if (result.isNotEmpty) {
           result.last = Padding(
             padding: EdgeInsets.only(
-                bottom: MediaQuery.of(context).viewInsets.bottom),
+              bottom: MediaQuery.of(context).viewInsets.bottom,
+            ),
             child: result.last,
           );
         }

@@ -33,8 +33,9 @@ class AppearanceColorPickerDialog extends ConsumerWidget {
             Colors.brown,
           ],
           pickerColor: themeSettings.maybeWhen(
-              data: (themeSettings) => themeSettings.primaryColor,
-              orElse: () => Colors.orange),
+            data: (themeSettings) => themeSettings.primaryColor,
+            orElse: () => Colors.orange,
+          ),
           onColorChanged: (value) {
             ref.read(appThemeSettingsProvider.notifier).setPrimaryColor(value);
           },

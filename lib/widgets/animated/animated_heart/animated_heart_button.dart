@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
-import 'animated_heart.dart';
+import 'package:pile_of_shame/widgets/animated/animated_heart/animated_heart.dart';
 
 class AnimatedHeartButton extends StatefulWidget {
   final bool isFilled;
   final VoidCallback onPressed;
   final Color color;
 
-  const AnimatedHeartButton(
-      {super.key,
-      required this.isFilled,
-      required this.onPressed,
-      this.color = Colors.red});
+  const AnimatedHeartButton({
+    super.key,
+    required this.isFilled,
+    required this.onPressed,
+    this.color = Colors.red,
+  });
 
   @override
   State<AnimatedHeartButton> createState() => _AnimatedHeartButtonState();

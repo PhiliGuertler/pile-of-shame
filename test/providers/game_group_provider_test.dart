@@ -14,7 +14,7 @@ void main() {
 
   final Game gameOuterWilds = Game(
     id: 'outer-wilds',
-    lastModified: DateTime(2023, 1, 1),
+    lastModified: DateTime(2023),
     name: 'Outer Wilds',
     platform: GamePlatform.steam,
     price: 24.99,
@@ -66,8 +66,10 @@ void main() {
         {"grouper": '{"groupStrategy":"byPlatform"}'},
       );
       final initialValue = await container.read(groupGamesProvider.future);
-      expect(initialValue,
-          const GameGrouping(groupStrategy: GroupStrategy.byPlatform));
+      expect(
+        initialValue,
+        const GameGrouping(groupStrategy: GroupStrategy.byPlatform),
+      );
     });
     test("falls back to default GameGrouping if no persisted entry is found",
         () async {
@@ -91,8 +93,10 @@ void main() {
       expect(await container.read(groupGamesProvider.future), update);
 
       final SharedPreferences prefs = await SharedPreferences.getInstance();
-      expect(prefs.getString(GroupGames.storageKey),
-          '{"groupStrategy":"byPlatformFamily"}');
+      expect(
+        prefs.getString(GroupGames.storageKey),
+        '{"groupStrategy":"byPlatformFamily"}',
+      );
     });
   });
   test("applyGameGroupProvider groups games by platform family as expected",
@@ -108,7 +112,8 @@ void main() {
     ];
 
     await container.read(groupGamesProvider.notifier).setGrouping(
-        const GameGrouping(groupStrategy: GroupStrategy.byPlatformFamily));
+          const GameGrouping(groupStrategy: GroupStrategy.byPlatformFamily),
+        );
     await container.read(appThemeSettingsProvider.notifier).setLocale("de");
 
     final groupedGames =
@@ -134,7 +139,7 @@ void main() {
 
     await container
         .read(groupGamesProvider.notifier)
-        .setGrouping(const GameGrouping(groupStrategy: GroupStrategy.byNone));
+        .setGrouping(const GameGrouping());
     await container.read(appThemeSettingsProvider.notifier).setLocale("de");
 
     final groupedGames =

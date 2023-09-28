@@ -43,7 +43,7 @@ class _GameDetailsScreenState extends ConsumerState<GameDetailsScreen> {
                 ),
                 SliverToBoxAdapter(
                   child: Text(error.toString()),
-                )
+                ),
               ],
             ).animate().fadeIn(),
             loading: () => const CustomScrollView(
@@ -117,16 +117,20 @@ class _GameDetailsScreenState extends ConsumerState<GameDetailsScreen> {
                             context: context,
                             builder: (context) => AlertDialog.adaptive(
                               title: Text(
-                                  AppLocalizations.of(context)!.deleteGame),
-                              content: Text(AppLocalizations.of(context)!
-                                  .thisActionCannotBeUndone),
+                                AppLocalizations.of(context)!.deleteGame,
+                              ),
+                              content: Text(
+                                AppLocalizations.of(context)!
+                                    .thisActionCannotBeUndone,
+                              ),
                               actions: [
                                 TextButton(
                                   onPressed: () {
                                     Navigator.of(context).pop(false);
                                   },
                                   child: Text(
-                                      AppLocalizations.of(context)!.cancel),
+                                    AppLocalizations.of(context)!.cancel,
+                                  ),
                                 ),
                                 TextButton(
                                   onPressed: () {
@@ -135,9 +139,9 @@ class _GameDetailsScreenState extends ConsumerState<GameDetailsScreen> {
                                   child: Text(
                                     AppLocalizations.of(context)!.delete,
                                     style: TextStyle(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .error),
+                                      color:
+                                          Theme.of(context).colorScheme.error,
+                                    ),
                                   ),
                                 ),
                               ],

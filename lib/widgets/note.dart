@@ -18,9 +18,10 @@ class Note extends StatelessWidget {
         child: Material(
           clipBehavior: Clip.antiAlias,
           shape: const BeveledRectangleBorder(
-              borderRadius:
-                  BorderRadius.only(topRight: Radius.circular(creaseSize))),
-          child: Container(
+            borderRadius:
+                BorderRadius.only(topRight: Radius.circular(creaseSize)),
+          ),
+          child: ColoredBox(
             color: Theme.of(context).colorScheme.surfaceVariant,
             child: Stack(
               children: [
@@ -42,8 +43,9 @@ class Note extends StatelessWidget {
                     child: Text(
                       AppLocalizations.of(context)!.notes,
                       style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                          color:
-                              Theme.of(context).colorScheme.onSurfaceVariant),
+                            color:
+                                Theme.of(context).colorScheme.onSurfaceVariant,
+                          ),
                     ),
                   ),
                 ),
@@ -56,7 +58,8 @@ class Note extends StatelessWidget {
                   ),
                   child: DefaultTextStyle(
                     style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                        color: Theme.of(context).colorScheme.onSurfaceVariant),
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        ),
                     child: child,
                   ),
                 ),

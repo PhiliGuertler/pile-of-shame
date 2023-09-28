@@ -7,52 +7,54 @@ environment:
   sdk: '>=3.0.0 <4.0.0'
 
 dependencies:
+  animations: ^2.0.7
+  crypto: ^3.0.3
+  dynamic_color: ^1.6.6
+  file_picker: ^5.3.3
+  fl_chart: ^0.63.0
   flutter:
     sdk: flutter
+  flutter_animate: ^4.2.0+1
+  flutter_colorpicker: ^1.0.3
+  flutter_file_dialog: ^3.0.2
   flutter_localizations:
     sdk: flutter
-  flutter_riverpod: ^2.3.6
-  json_annotation: ^4.8.1
-  freezed_annotation: ^2.4.1
-  intl: any
-  path_provider: ^2.1.0
-  riverpod_annotation: ^2.1.1
-  dynamic_color: ^1.6.6
-  shared_preferences: ^2.2.0
-  file_picker: ^5.3.3
-  flutter_animate: ^4.2.0+1
-  animations: ^2.0.7
-  flutter_colorpicker: ^1.0.3
-  transparent_image: ^2.0.1
   flutter_native_splash: ^2.3.2
-  package_info_plus: ^4.1.0
-  uuid: ^3.0.7
-  share_plus: ^7.1.0
-  flutter_file_dialog: ^3.0.2
-  flutter_sticky_header: ^0.6.5
-  url_launcher: ^6.1.14
+  flutter_riverpod: ^2.3.6
   flutter_sharing_intent: ^1.1.0
   flutter_slidable: ^3.0.0
-  fl_chart: ^0.63.0
-  crypto: ^3.0.3
+  flutter_sticky_header: ^0.6.5
+  freezed_annotation: ^2.4.1
+  intl: any
+  json_annotation: ^4.8.1
+  package_info_plus: ^4.1.0
+  path_provider: ^2.1.0
+  riverpod_annotation: ^2.1.1
+  share_plus: ^7.1.0
+  shared_preferences: ^2.2.0
+  transparent_image: ^2.0.1
+  url_launcher: ^6.1.14
+  uuid: ^3.0.7
 
 dev_dependencies:
-  flutter_test:
-    sdk: flutter
+  build_runner: ^2.4.6
+  custom_lint: any
   flutter_driver:
     sdk: flutter
+  flutter_launcher_icons: ^0.13.1
   flutter_lints: ^2.0.0
-  build_runner: ^2.4.6
+  flutter_test:
+    sdk: flutter
   freezed: any
   json_serializable: any
+  lint: ^2.1.2
+  mockito: any
+  # Testing path_provider requires these dependency
+  path_provider_platform_interface: ^2.1.0
+  # Testing path_provider requires this dependency
+  plugin_platform_interface: any
   riverpod_generator: any
   riverpod_lint: any
-  custom_lint: any
-  mockito: any
-  # Testing path_provider requires these dependencies
-  path_provider_platform_interface: ^2.1.0
-  plugin_platform_interface: any
-  flutter_launcher_icons: ^0.13.1
 
 flutter:
   uses-material-design: true

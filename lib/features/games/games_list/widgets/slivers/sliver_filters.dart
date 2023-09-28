@@ -21,7 +21,7 @@ class SliverFilters<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SliverStickyHeader(
-      header: Container(
+      header: ColoredBox(
         color: Theme.of(context).colorScheme.surface,
         child: CheckboxListTile(
           title: Text(
@@ -42,7 +42,7 @@ class SliverFilters<T> extends StatelessWidget {
             (option) => optionBuilder(
               option,
               (value) {
-                List<T> filters = List.from(selectedValues);
+                final List<T> filters = List.from(selectedValues);
                 if (value != null) {
                   if (value) {
                     filters.add(option);

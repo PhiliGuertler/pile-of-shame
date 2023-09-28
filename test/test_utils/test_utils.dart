@@ -6,13 +6,17 @@ class TestUtils {
   const TestUtils._();
 
   static Future<BuildContext> setupBuildContextForLocale(
-      WidgetTester tester, String locale) async {
-    await tester.pumpWidget(MaterialApp(
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
-      locale: Locale(locale),
-      supportedLocales: AppLocalizations.supportedLocales,
-      home: Container(),
-    ));
+    WidgetTester tester,
+    String locale,
+  ) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        locale: Locale(locale),
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: Container(),
+      ),
+    );
 
     return tester.element(find.byType(Container));
   }

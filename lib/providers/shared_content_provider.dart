@@ -1,3 +1,5 @@
+// ignore_for_file: use_setters_to_change_properties
+
 import 'package:flutter_sharing_intent/model/sharing_file.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 

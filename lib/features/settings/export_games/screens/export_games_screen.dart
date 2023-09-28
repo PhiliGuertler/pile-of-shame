@@ -19,8 +19,9 @@ class _ExportGamesScreenState extends ConsumerState<ExportGamesScreen> {
   bool isLoading = false;
 
   Future<void> handleExport(
-      Future<bool> Function(File inputFile, String fileName, String title)
-          callback) async {
+    Future<bool> Function(File inputFile, String fileName, String title)
+        callback,
+  ) async {
     setState(() {
       isLoading = true;
     });
@@ -33,7 +34,10 @@ class _ExportGamesScreenState extends ConsumerState<ExportGamesScreen> {
 
     try {
       final success = await callback(
-          gamesFile, 'games-$currentDateTime.json', exportGamesTitle);
+        gamesFile,
+        'games-$currentDateTime.json',
+        exportGamesTitle,
+      );
       if (success) {
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -57,18 +61,16 @@ class _ExportGamesScreenState extends ConsumerState<ExportGamesScreen> {
   }
 
   Future<void> exportGames() async {
-    return await handleExport(
-      (inputFile, fileName, title) async => await ref
-          .read(fileUtilsProvider)
-          .exportFile(inputFile, fileName, title),
+    return handleExport(
+      (inputFile, fileName, title) async =>
+          ref.read(fileUtilsProvider).exportFile(inputFile, fileName, title),
     );
   }
 
   Future<void> shareGames() async {
-    return await handleExport(
-      (inputFile, fileName, title) async => await ref
-          .read(fileUtilsProvider)
-          .shareFile(inputFile, fileName, title),
+    return handleExport(
+      (inputFile, fileName, title) async =>
+          ref.read(fileUtilsProvider).shareFile(inputFile, fileName, title),
     );
   }
 
@@ -89,11 +91,13 @@ class _ExportGamesScreenState extends ConsumerState<ExportGamesScreen> {
                         ? const SizedBox(
                             width: 28,
                             height: 28,
-                            child: CircularProgressIndicator())
+                            child: CircularProgressIndicator(),
+                          )
                         : const Icon(Icons.file_upload),
                     title: Text(AppLocalizations.of(context)!.exportAll),
-                    subtitle: Text(AppLocalizations.of(context)!
-                        .exportAllGamesIntoAJSONFile),
+                    subtitle: Text(
+                      AppLocalizations.of(context)!.exportAllGamesIntoAJSONFile,
+                    ),
                     onTap: isLoading ? null : () => exportGames(),
                   ),
                   SegmentedActionCardItem(
@@ -101,11 +105,13 @@ class _ExportGamesScreenState extends ConsumerState<ExportGamesScreen> {
                         ? const SizedBox(
                             width: 28,
                             height: 28,
-                            child: CircularProgressIndicator())
+                            child: CircularProgressIndicator(),
+                          )
                         : const Icon(Icons.share),
                     title: Text(AppLocalizations.of(context)!.shareGames),
                     subtitle: Text(
-                        AppLocalizations.of(context)!.shareGamesAsAJSONFile),
+                      AppLocalizations.of(context)!.shareGamesAsAJSONFile,
+                    ),
                     onTap: isLoading ? null : () => shareGames(),
                   ),
                 ],

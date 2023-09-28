@@ -74,53 +74,55 @@ class AppScaffold extends ConsumerWidget {
     final width = MediaQuery.of(context).size.width;
 
     final scaffold = Scaffold(
-        key: key,
-        appBar: appBar,
-        backgroundColor: backgroundColor,
-        bottomNavigationBar:
-            (width <= mobileBreakpointWidth || navigationRail == null)
-                ? bottomNavigationBar
-                : null,
-        bottomSheet: bottomSheet,
-        drawer: drawer,
-        drawerDragStartBehavior: drawerDragStartBehavior,
-        drawerEdgeDragWidth: drawerEdgeDragWidth,
-        drawerEnableOpenDragGesture: drawerEnableOpenDragGesture,
-        drawerScrimColor: drawerScrimColor,
-        endDrawer: endDrawer,
-        endDrawerEnableOpenDragGesture: endDrawerEnableOpenDragGesture,
-        extendBody: extendBody,
-        extendBodyBehindAppBar: extendBodyBehindAppBar,
-        floatingActionButton: floatingActionButton,
-        floatingActionButtonAnimator: floatingActionButtonAnimator,
-        floatingActionButtonLocation: floatingActionButtonLocation,
-        onDrawerChanged: onDrawerChanged,
-        onEndDrawerChanged: onEndDrawerChanged,
-        persistentFooterAlignment: persistentFooterAlignment,
-        persistentFooterButtons: persistentFooterButtons,
-        primary: primary,
-        resizeToAvoidBottomInset: resizeToAvoidBottomInset,
-        restorationId: restorationId,
-        body: body);
+      key: key,
+      appBar: appBar,
+      backgroundColor: backgroundColor,
+      bottomNavigationBar:
+          (width <= mobileBreakpointWidth || navigationRail == null)
+              ? bottomNavigationBar
+              : null,
+      bottomSheet: bottomSheet,
+      drawer: drawer,
+      drawerDragStartBehavior: drawerDragStartBehavior,
+      drawerEdgeDragWidth: drawerEdgeDragWidth,
+      drawerEnableOpenDragGesture: drawerEnableOpenDragGesture,
+      drawerScrimColor: drawerScrimColor,
+      endDrawer: endDrawer,
+      endDrawerEnableOpenDragGesture: endDrawerEnableOpenDragGesture,
+      extendBody: extendBody,
+      extendBodyBehindAppBar: extendBodyBehindAppBar,
+      floatingActionButton: floatingActionButton,
+      floatingActionButtonAnimator: floatingActionButtonAnimator,
+      floatingActionButtonLocation: floatingActionButtonLocation,
+      onDrawerChanged: onDrawerChanged,
+      onEndDrawerChanged: onEndDrawerChanged,
+      persistentFooterAlignment: persistentFooterAlignment,
+      persistentFooterButtons: persistentFooterButtons,
+      primary: primary,
+      resizeToAvoidBottomInset: resizeToAvoidBottomInset,
+      restorationId: restorationId,
+      body: body,
+    );
 
     return Stack(
       children: [
         LayoutBuilder(
-            builder: (BuildContext context, BoxConstraints constraints) {
-          if (constraints.maxWidth > mobileBreakpointWidth &&
-              navigationRail != null) {
-            return Row(
-              children: [
-                if (navigationRail != null && width > mobileBreakpointWidth)
-                  navigationRail!,
-                const VerticalDivider(thickness: 1, width: 1),
-                Expanded(child: scaffold),
-              ],
-            );
-          }
-          return scaffold;
-        }),
-        if (hasSharedContent) const ImportSharedGames()
+          builder: (BuildContext context, BoxConstraints constraints) {
+            if (constraints.maxWidth > mobileBreakpointWidth &&
+                navigationRail != null) {
+              return Row(
+                children: [
+                  if (navigationRail != null && width > mobileBreakpointWidth)
+                    navigationRail!,
+                  const VerticalDivider(thickness: 1, width: 1),
+                  Expanded(child: scaffold),
+                ],
+              );
+            }
+            return scaffold;
+          },
+        ),
+        if (hasSharedContent) const ImportSharedGames(),
       ],
     );
   }

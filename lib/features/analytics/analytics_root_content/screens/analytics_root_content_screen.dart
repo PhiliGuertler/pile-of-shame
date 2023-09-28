@@ -32,8 +32,9 @@ class _AnalyticsRootContentScreenState
           slivers: [
             SliverToBoxAdapter(
               child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: defaultPaddingX),
-                  child: Skeleton()),
+                padding: EdgeInsets.symmetric(horizontal: defaultPaddingX),
+                child: Skeleton(),
+              ),
             ),
           ],
         ),
@@ -53,14 +54,19 @@ class _AnalyticsRootContentScreenState
                 onRefresh: () => ref.refresh(gamesProvider.future),
                 child: CustomScrollView(
                   physics: const BouncingScrollPhysics(
-                      parent: AlwaysScrollableScrollPhysics()),
+                    parent: AlwaysScrollableScrollPhysics(),
+                  ),
                   slivers: [
                     const SliverFancyImageHeader(
-                        imagePath: 'assets/misc/pie_chart.webp', height: 300.0),
+                      imagePath: 'assets/misc/pie_chart.webp',
+                      height: 300.0,
+                    ),
                     SliverToBoxAdapter(
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: defaultPaddingX, vertical: 16.0),
+                          horizontal: defaultPaddingX,
+                          vertical: 16.0,
+                        ),
                         child: Text(
                           AppLocalizations.of(context)!
                               .addGamesToGenerateALibraryAnalysis,

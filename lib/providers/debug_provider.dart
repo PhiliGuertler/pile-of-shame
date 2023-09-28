@@ -11,6 +11,7 @@ class DebugFeatureAccess extends _$DebugFeatureAccess {
   }
 
   bool toggleDebugMode() {
+    // ignore: join_return_with_assignment
     state = !state;
     return state;
   }

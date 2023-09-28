@@ -7,7 +7,7 @@ mixin Persistable {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final String? json = prefs.getString(storageKey);
     if (json != null) {
-      return jsonDecode(json);
+      return jsonDecode(json) as Map<String, dynamic>;
     }
     return null;
   }
@@ -15,6 +15,6 @@ mixin Persistable {
   Future<bool> persistJSON(String storageKey, Map<String, dynamic> json) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final String stringifiedJson = jsonEncode(json);
-    return await prefs.setString(storageKey, stringifiedJson);
+    return prefs.setString(storageKey, stringifiedJson);
   }
 }

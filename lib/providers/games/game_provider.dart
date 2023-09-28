@@ -20,7 +20,7 @@ FutureOr<GamesList> games(GamesRef ref) async {
 
   final content = await gameFile.readAsString();
   if (content.isNotEmpty) {
-    return GamesList.fromJson(jsonDecode(content));
+    return GamesList.fromJson(jsonDecode(content) as Map<String, dynamic>);
   }
   return const GamesList(games: []);
 }
@@ -57,7 +57,10 @@ FutureOr<Game> gameById(GameByIdRef ref, String id) async {
 
 @riverpod
 FutureOr<DLC> dlcByGameAndId(
-    DlcByGameAndIdRef ref, String gameId, String dlcId) async {
+  DlcByGameAndIdRef ref,
+  String gameId,
+  String dlcId,
+) async {
   final game = await ref.watch(gameByIdProvider(gameId).future);
   try {
     return game.dlcs.singleWhere((element) => element.id == dlcId);

@@ -17,17 +17,16 @@ class ColorIntConv implements JsonConverter<Color, int> {
 
 @freezed
 class AppTheme with _$AppTheme {
-  const AppTheme._();
-
   factory AppTheme({
     @Default(ThemeMode.system) ThemeMode themeMode,
     @Default(null) String? locale,
     @Default(Color(0xFF3B0000)) @ColorIntConv() Color primaryColor,
   }) = _AppTheme;
+  const AppTheme._();
 
   ColorScheme computeColorScheme(bool isLightTheme) {
-    Color harmonizedColor = primaryColor.harmonizeWith(primaryColor);
-    ColorScheme result = ColorScheme.fromSeed(
+    final Color harmonizedColor = primaryColor.harmonizeWith(primaryColor);
+    final ColorScheme result = ColorScheme.fromSeed(
       seedColor: harmonizedColor,
       brightness: isLightTheme ? Brightness.light : Brightness.dark,
     );

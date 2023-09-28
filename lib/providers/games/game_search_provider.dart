@@ -12,6 +12,7 @@ class GameSearch extends _$GameSearch {
     return '';
   }
 
+  // ignore: use_setters_to_change_properties
   void setSearch(String search) {
     state = search;
   }
@@ -25,22 +26,20 @@ List<Game> applyGameSearch(ApplyGameSearchRef ref, List<Game> games) {
 
   final terms = searchTerm.prepareForCaseInsensitiveSearch().split(" ");
 
-  List<Game> result = List.from(games);
-  result = result.where((game) {
+  final List<Game> result = List.from(games);
+  return result.where((game) {
     return terms.every((term) {
-      bool matchesName =
+      final bool matchesName =
           game.name.prepareForCaseInsensitiveSearch().contains(term);
-      bool matchesPlatformAbbreviation = game.platform.abbreviation
+      final bool matchesPlatformAbbreviation = game.platform.abbreviation
           .prepareForCaseInsensitiveSearch()
           .contains(term);
 
-      bool matchesPlatform = game.platform
+      final bool matchesPlatform = game.platform
           .localizedName(l10n)
           .prepareForCaseInsensitiveSearch()
           .contains(term);
       return matchesName || matchesPlatformAbbreviation || matchesPlatform;
     });
   }).toList();
-
-  return result;
 }

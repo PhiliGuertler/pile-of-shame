@@ -50,11 +50,17 @@ class _DateInputFieldState extends State<DateInputField> {
 
   Future<void> _handleOpenDatePicker() async {
     final firstDate = widget.firstDate ??
-        DateTime(DateTime.now().year - 100, DateTime.now().month,
-            DateTime.now().day);
+        DateTime(
+          DateTime.now().year - 100,
+          DateTime.now().month,
+          DateTime.now().day,
+        );
     final lastDate = widget.lastDate ??
         DateTime(
-            DateTime.now().year - 18, DateTime.now().month, DateTime.now().day);
+          DateTime.now().year - 18,
+          DateTime.now().month,
+          DateTime.now().day,
+        );
 
     final result = await showDatePicker(
       context: context,

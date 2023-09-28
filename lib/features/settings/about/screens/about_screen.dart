@@ -22,12 +22,14 @@ class AboutScreen extends StatelessWidget {
                 SegmentedActionCardItem(
                   title: Text(AppLocalizations.of(context)!.githubRepository),
                   subtitle: const Text(
-                      "https://github.com/PhiliGuertler/pile-of-shame"),
+                    "https://github.com/PhiliGuertler/pile-of-shame",
+                  ),
                   trailing: const Icon(Icons.open_in_new),
                   onTap: () async {
                     if (!await launchUrl(
                       Uri.parse(
-                          "https://github.com/PhiliGuertler/pile-of-shame"),
+                        "https://github.com/PhiliGuertler/pile-of-shame",
+                      ),
                     )) {
                       throw Exception("Could not launch url");
                     }
@@ -42,7 +44,8 @@ class AboutScreen extends StatelessWidget {
                       showAboutDialog(
                         context: context,
                         applicationIcon: ImageContainer(
-                            child: Image.asset('assets/app/logo.png')),
+                          child: Image.asset('assets/app/logo.png'),
+                        ),
                         applicationName: info.appName,
                         applicationVersion:
                             "${info.version} (${info.buildNumber})",
@@ -57,7 +60,7 @@ class AboutScreen extends StatelessWidget {
                                 fit: BoxFit.cover,
                               ),
                             ),
-                          )
+                          ),
                         ],
                       );
                     }
@@ -65,8 +68,10 @@ class AboutScreen extends StatelessWidget {
                 ),
                 SegmentedActionCardItem(
                   title: Text(AppLocalizations.of(context)!.imageCredit),
-                  subtitle: Text(AppLocalizations.of(context)!
-                      .imagesOfControllersHaveBeenCreatedUsingMidjourney),
+                  subtitle: Text(
+                    AppLocalizations.of(context)!
+                        .imagesOfControllersHaveBeenCreatedUsingMidjourney,
+                  ),
                   trailing: const SizedBox(),
                 ),
               ],

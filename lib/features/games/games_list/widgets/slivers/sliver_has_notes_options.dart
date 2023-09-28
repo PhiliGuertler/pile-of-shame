@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pile_of_shame/features/games/games_list/widgets/slivers/sliver_filters.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/providers/games/game_filter_provider.dart';
-
-import 'sliver_filters.dart';
 
 class SliverHasNotesFilterOptions extends ConsumerWidget {
   const SliverHasNotesFilterOptions({super.key});

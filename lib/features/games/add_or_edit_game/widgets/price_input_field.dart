@@ -18,7 +18,6 @@ class PriceInputField extends StatelessWidget {
   Widget build(BuildContext context) {
     return NumberInputField(
       label: Text(AppLocalizations.of(context)!.price),
-      textInputAction: TextInputAction.next,
       initialValue: value,
       onChanged: onChanged,
       isCurrency: true,

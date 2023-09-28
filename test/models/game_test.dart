@@ -49,7 +49,7 @@ void main() {
   group('GamesList', () {
     final Game gameOuterWilds = Game(
       id: 'outer-wilds',
-      lastModified: DateTime(2023, 1, 1),
+      lastModified: DateTime(2023),
       name: 'Outer Wilds',
       platform: GamePlatform.steam,
       price: 24.99,
@@ -245,17 +245,24 @@ void main() {
     group("updateGamesByLastModified", () {
       test("correctly updates older games only", () {
         final GamesList original = GamesList(
-            games: [gameDistance, gameSsx3, gameOriAndTheBlindForest]);
+          games: [gameDistance, gameSsx3, gameOriAndTheBlindForest],
+        );
 
         final Game updatedDistance = gameDistance.copyWith(
-            usk: USK.usk18, lastModified: DateTime(2024, 9, 12));
+          usk: USK.usk18,
+          lastModified: DateTime(2024, 9, 12),
+        );
         final Game updatedOri = gameOriAndTheBlindForest.copyWith(
-            price: 999.95, lastModified: DateTime(2022, 1, 1));
+          price: 999.95,
+          lastModified: DateTime(2022),
+        );
 
-        final GamesList update = GamesList(games: [
-          updatedOri,
-          updatedDistance,
-        ]);
+        final GamesList update = GamesList(
+          games: [
+            updatedOri,
+            updatedDistance,
+          ],
+        );
 
         final GamesList result = original.updateGamesByLastModified(update);
 
@@ -270,12 +277,15 @@ void main() {
     group("addMissingGames", () {
       test("correctly adds missing games only", () {
         final GamesList original = GamesList(
-            games: [gameDistance, gameSsx3, gameOriAndTheBlindForest]);
+          games: [gameDistance, gameSsx3, gameOriAndTheBlindForest],
+        );
 
-        final GamesList update = GamesList(games: [
-          gameOuterWilds,
-          gameSsx3,
-        ]);
+        final GamesList update = GamesList(
+          games: [
+            gameOuterWilds,
+            gameSsx3,
+          ],
+        );
 
         final GamesList result = original.addMissingGames(update);
 

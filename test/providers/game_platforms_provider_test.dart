@@ -17,8 +17,10 @@ void main() {
       );
       final initialValue =
           await container.read(activeGamePlatformsProvider.future);
-      expect(initialValue,
-          [GamePlatform.nintendoSwitch, GamePlatform.playStation5]);
+      expect(
+        initialValue,
+        [GamePlatform.nintendoSwitch, GamePlatform.playStation5],
+      );
     });
     test("falls back to all GamePlatforms if no persisted entry is found",
         () async {
@@ -46,8 +48,10 @@ void main() {
       expect(await container.read(activeGamePlatformsProvider.future), update);
 
       final SharedPreferences prefs = await SharedPreferences.getInstance();
-      expect(prefs.getString(ActiveGamePlatforms.storageKey),
-          '{"platforms":["Switch","3DS"]}');
+      expect(
+        prefs.getString(ActiveGamePlatforms.storageKey),
+        '{"platforms":["Switch","3DS"]}',
+      );
     });
   });
   group("activeGamePlatformFamiliesProvider", () {

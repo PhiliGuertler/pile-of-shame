@@ -5,7 +5,8 @@ class Validators {
   const Validators._();
 
   static String? Function(String? value) validateFieldIsRequired(
-          BuildContext context) =>
+    BuildContext context,
+  ) =>
       (String? value) {
         if (value == null || value.isEmpty) {
           return AppLocalizations.of(context)!.thisFieldIsRequired;

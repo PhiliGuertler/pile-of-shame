@@ -21,10 +21,10 @@ class DebugSwipeToTriggerScreen extends StatelessWidget {
               child: const Icon(Icons.text_snippet),
             ),
             rightWidget: (triggerProgress) {
-              double triggerOvershoot =
+              final double triggerOvershoot =
                   (triggerProgress - 1.0).clamp(0, double.infinity);
-              double untilTrigger = triggerProgress.clamp(0.0, 1.0);
-              return Container(
+              final double untilTrigger = triggerProgress.clamp(0.0, 1.0);
+              return ColoredBox(
                 color: Colors.red,
                 child: Transform.scale(
                   scale: 1.0 + triggerOvershoot,
@@ -41,19 +41,18 @@ class DebugSwipeToTriggerScreen extends StatelessWidget {
               debugPrint("Heart!");
             },
             leftWidget: (triggerProgress) {
-              double triggerOvershoot =
+              final double triggerOvershoot =
                   (triggerProgress - 1.0).clamp(0, double.infinity);
-              double untilTrigger = triggerProgress.clamp(0.0, 1.0);
-              return Container(
+              final double untilTrigger = triggerProgress.clamp(0.0, 1.0);
+              return ColoredBox(
                 color: Theme.of(context).colorScheme.surfaceVariant,
                 child: Transform.scale(
                   scale: 1.0 + triggerOvershoot,
                   child: Icon(
                     Icons.open_in_full,
                     color: HSLColor.fromColor(
-                            Theme.of(context).colorScheme.surfaceVariant)
-                        .withLightness(0.5 + untilTrigger * 0.5)
-                        .toColor(),
+                      Theme.of(context).colorScheme.surfaceVariant,
+                    ).withLightness(0.5 + untilTrigger * 0.5).toColor(),
                   ),
                 ),
               );
@@ -71,10 +70,10 @@ class DebugSwipeToTriggerScreen extends StatelessWidget {
               child: const Icon(Icons.text_snippet),
             ),
             rightWidget: (triggerProgress) {
-              double triggerOvershoot =
+              final double triggerOvershoot =
                   (triggerProgress - 1.0).clamp(0, double.infinity);
-              double untilTrigger = triggerProgress.clamp(0.0, 1.0);
-              return Container(
+              final double untilTrigger = triggerProgress.clamp(0.0, 1.0);
+              return ColoredBox(
                 color: Colors.red,
                 child: Transform.scale(
                   scale: 1.0 + triggerOvershoot,
@@ -91,19 +90,18 @@ class DebugSwipeToTriggerScreen extends StatelessWidget {
               debugPrint("Heart!");
             },
             leftWidget: (triggerProgress) {
-              double triggerOvershoot =
+              final double triggerOvershoot =
                   (triggerProgress - 1.0).clamp(0, double.infinity);
-              double untilTrigger = triggerProgress.clamp(0.0, 1.0);
-              return Container(
+              final double untilTrigger = triggerProgress.clamp(0.0, 1.0);
+              return ColoredBox(
                 color: Theme.of(context).colorScheme.surfaceVariant,
                 child: Transform.scale(
                   scale: 1.0 + triggerOvershoot,
                   child: Icon(
                     Icons.open_in_full,
                     color: HSLColor.fromColor(
-                            Theme.of(context).colorScheme.surfaceVariant)
-                        .withLightness(0.5 + untilTrigger * 0.5)
-                        .toColor(),
+                      Theme.of(context).colorScheme.surfaceVariant,
+                    ).withLightness(0.5 + untilTrigger * 0.5).toColor(),
                   ),
                 ),
               );
@@ -121,10 +119,10 @@ class DebugSwipeToTriggerScreen extends StatelessWidget {
               child: const Icon(Icons.text_snippet),
             ),
             rightWidget: (triggerProgress) {
-              double triggerOvershoot =
+              final double triggerOvershoot =
                   (triggerProgress - 1.0).clamp(0, double.infinity);
-              double untilTrigger = triggerProgress.clamp(0.0, 1.0);
-              return Container(
+              final double untilTrigger = triggerProgress.clamp(0.0, 1.0);
+              return ColoredBox(
                 color: Colors.red,
                 child: Transform.scale(
                   scale: 1.0 + triggerOvershoot,
@@ -141,19 +139,18 @@ class DebugSwipeToTriggerScreen extends StatelessWidget {
               debugPrint("Heart!");
             },
             leftWidget: (triggerProgress) {
-              double triggerOvershoot =
+              final double triggerOvershoot =
                   (triggerProgress - 1.0).clamp(0, double.infinity);
-              double untilTrigger = triggerProgress.clamp(0.0, 1.0);
-              return Container(
+              final double untilTrigger = triggerProgress.clamp(0.0, 1.0);
+              return ColoredBox(
                 color: Theme.of(context).colorScheme.surfaceVariant,
                 child: Transform.scale(
                   scale: 1.0 + triggerOvershoot,
                   child: Icon(
                     Icons.open_in_full,
                     color: HSLColor.fromColor(
-                            Theme.of(context).colorScheme.surfaceVariant)
-                        .withLightness(0.5 + untilTrigger * 0.5)
-                        .toColor(),
+                      Theme.of(context).colorScheme.surfaceVariant,
+                    ).withLightness(0.5 + untilTrigger * 0.5).toColor(),
                   ),
                 ),
               );
@@ -169,10 +166,10 @@ class DebugSwipeToTriggerScreen extends StatelessWidget {
               child: Icon(Icons.text_snippet),
             ),
             rightWidget: (triggerProgress) {
-              double triggerOvershoot =
+              final double triggerOvershoot =
                   (triggerProgress - 1.0).clamp(0, double.infinity);
-              double untilTrigger = triggerProgress.clamp(0.0, 1.0);
-              return Container(
+              final double untilTrigger = triggerProgress.clamp(0.0, 1.0);
+              return ColoredBox(
                 color: Colors.red,
                 child: Transform.scale(
                   scale: 1.0 + triggerOvershoot,
@@ -189,19 +186,18 @@ class DebugSwipeToTriggerScreen extends StatelessWidget {
               debugPrint("Heart!");
             },
             leftWidget: (triggerProgress) {
-              double triggerOvershoot =
+              final double triggerOvershoot =
                   (triggerProgress - 1.0).clamp(0, double.infinity);
-              double untilTrigger = triggerProgress.clamp(0.0, 1.0);
-              return Container(
+              final double untilTrigger = triggerProgress.clamp(0.0, 1.0);
+              return ColoredBox(
                 color: Theme.of(context).colorScheme.surfaceVariant,
                 child: Transform.scale(
                   scale: 1.0 + triggerOvershoot,
                   child: Icon(
                     Icons.open_in_full,
                     color: HSLColor.fromColor(
-                            Theme.of(context).colorScheme.surfaceVariant)
-                        .withLightness(0.5 + untilTrigger * 0.5)
-                        .toColor(),
+                      Theme.of(context).colorScheme.surfaceVariant,
+                    ).withLightness(0.5 + untilTrigger * 0.5).toColor(),
                   ),
                 ),
               );
