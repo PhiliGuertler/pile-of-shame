@@ -284,8 +284,6 @@ class PlayStatusIcon extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final settings = ref.watch(customizeGameDisplaysProvider);
-
     Widget icon = Icon(
       playStatus.icon,
       color: playStatus.foregroundColor,
@@ -333,20 +331,6 @@ class PlayStatusIcon extends ConsumerWidget {
       backgroundColor: playStatus.backgroundColor,
       child: icon,
     );
-
-    settings.maybeWhen(
-        data: (settings) {
-          if (playStatus.isCompleted && settings.hasFancyAnimations) {
-            widget = widget
-                .animate(
-                  onPlay: settings.hasRepeatingAnimations
-                      ? (controller) => controller.repeat()
-                      : null,
-                )
-                .shimmer(duration: 1.seconds, delay: 2.seconds);
-          }
-        },
-        orElse: () {});
 
     return widget;
   }
