@@ -1,5 +1,4 @@
-import 'dart:ui';
-
+import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'chart_data.freezed.dart';
@@ -11,5 +10,6 @@ class ChartData with _$ChartData {
     required double value,
     @Default(false) bool isSelected,
     Color? color,
+    Widget? alternativeTitle,
   }) = _ChartData;
 }

@@ -41,12 +41,16 @@ class _DefaultPieChartState extends State<DefaultPieChart> {
       sections.add(
         PieChartSectionData(
           color: color,
-          title: widget.formatData(section.value),
+          title: section.alternativeTitle != null
+              ? ""
+              : widget.formatData(section.value),
           value: section.value,
           titleStyle: TextStyle(
             color: color.computeLuminance() > 0.5 ? Colors.black : Colors.white,
           ),
           radius: section.isSelected ? 70.0 : 60.0,
+          badgeWidget: section.alternativeTitle,
+          badgePositionPercentageOffset: 0.95,
         ),
       );
     }

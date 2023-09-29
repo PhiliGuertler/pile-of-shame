@@ -1,7 +1,8 @@
-import 'package:flutter/material.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/chart_data.dart';
 import 'package:pile_of_shame/models/game.dart';
+import 'package:pile_of_shame/models/play_status.dart';
+import 'package:pile_of_shame/widgets/play_status_icon.dart';
 
 class GameData {
   final List<Game> games;
@@ -39,15 +40,21 @@ class GameData {
         ChartData(
           title: l10n.completed,
           value: completedGamesCount.toDouble(),
-          color: Colors.green,
+          color: PlayStatus.completed.backgroundColor,
           isSelected: highlight == l10n.completed,
+          alternativeTitle: const PlayStatusIcon(
+            playStatus: PlayStatus.completed,
+          ),
         ),
       if (completedGamesCount < games.length)
         ChartData(
           title: l10n.incomplete,
           value: (games.length - completedGamesCount).toDouble(),
-          color: Colors.red,
+          color: PlayStatus.cancelled.backgroundColor,
           isSelected: highlight == l10n.incomplete,
+          alternativeTitle: const PlayStatusIcon(
+            playStatus: PlayStatus.cancelled,
+          ),
         ),
     ];
   }
