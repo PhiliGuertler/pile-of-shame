@@ -37,7 +37,7 @@ class _DefaultPieChartState extends State<DefaultPieChart> {
     final List<PieChartSectionData> sections = [];
     for (var i = 0; i < widget.data.length; ++i) {
       final section = widget.data[i];
-      final color = ColorUtils.stringToColor(section.title);
+      final color = section.color ?? ColorUtils.stringToColor(section.title);
       sections.add(
         PieChartSectionData(
           color: color,
