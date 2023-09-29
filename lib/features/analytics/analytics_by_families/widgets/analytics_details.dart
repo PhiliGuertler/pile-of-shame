@@ -73,6 +73,17 @@ class _SliverAnalyticsDetailsState
                 onTapSection: handleSectionChange,
               ),
             ),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: defaultPaddingX,
+                vertical: 8.0,
+              ),
+              child: DefaultPieChart(
+                data: data.toPlayStatusData(),
+                title: l10n.status,
+                onTapSection: handleSectionChange,
+              ),
+            ),
           ],
         ),
         const SizedBox(

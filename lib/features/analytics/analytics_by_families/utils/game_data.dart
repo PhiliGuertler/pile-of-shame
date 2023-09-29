@@ -2,6 +2,7 @@ import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/chart_data.dart';
 import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/models/play_status.dart';
+import 'package:pile_of_shame/utils/pair.dart';
 import 'package:pile_of_shame/widgets/play_status_icon.dart';
 
 class GameData {
@@ -57,5 +58,46 @@ class GameData {
           ),
         ),
     ];
+  }
+
+  List<ChartData> toPlayStatusData() {
+    final List<Pair<PlayStatus, int>> statusCount = [
+      for (var i = 0; i < PlayStatus.values.length; ++i)
+        Pair(PlayStatus.values[i], 0),
+    ];
+
+    for (final game in games) {
+      statusCount[game.status.index].second++;
+    }
+
+    // sort completed and not completed together
+    statusCount.sort(
+      (a, b) => a.first.isCompleted == b.first.isCompleted
+          ? 0
+          : a.first.isCompleted
+              ? -1
+              : 1,
+    );
+
+    final List<ChartData> result = [];
+    for (var i = 0; i < PlayStatus.values.length; ++i) {
+      final status = statusCount[i].first;
+      final count = statusCount[i].second;
+      result.add(
+        ChartData(
+          title: status.toLocaleString(l10n),
+          value: count.toDouble(),
+          color: status.backgroundColor,
+          isSelected: highlight == status.toLocaleString(l10n),
+          alternativeTitle: PlayStatusIcon(
+            playStatus: status,
+          ),
+        ),
+      );
+    }
+
+    result.removeWhere((element) => element.value < 0.01);
+
+    return result;
   }
 }
