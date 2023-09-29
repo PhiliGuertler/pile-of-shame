@@ -67,7 +67,7 @@ class _AnalyticsDetailsState extends ConsumerState<AnalyticsDetails> {
               ),
               child: DefaultPieChart(
                 data: data.toCompletedData(),
-                title: "Komplettierungsrate",
+                title: l10n.completionRate,
                 onTapSection: handleSectionChange,
               ),
             ),

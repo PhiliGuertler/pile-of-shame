@@ -37,17 +37,17 @@ class GameData {
     return [
       if (completedGamesCount > 0)
         ChartData(
-          title: "Durchgespielt",
+          title: l10n.completed,
           value: completedGamesCount.toDouble(),
           color: Colors.green,
-          isSelected: highlight == "Durchgespielt",
+          isSelected: highlight == l10n.completed,
         ),
       if (completedGamesCount < games.length)
         ChartData(
-          title: "Nicht Durchgespielt",
+          title: l10n.incomplete,
           value: (games.length - completedGamesCount).toDouble(),
           color: Colors.red,
-          isSelected: highlight == "Nicht Durchgespielt",
+          isSelected: highlight == l10n.incomplete,
         ),
     ];
   }
