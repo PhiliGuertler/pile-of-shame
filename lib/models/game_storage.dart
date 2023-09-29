@@ -31,6 +31,6 @@ class GameStorage {
   Future<void> persistCurrentGames() async {
     final games = await ref.read(gamesProvider.future);
     final gameFile = await ref.read(gameFileProvider.future);
-    await persistGamesList(games, gameFile);
+    await persistGamesList(GamesList(games: games), gameFile);
   }
 }

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pile_of_shame/features/games/add_or_edit_game/models/editable_game.dart';
 import 'package:pile_of_shame/features/games/add_or_edit_game/screens/add_or_edit_game_screen.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
+import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/providers/games/game_provider.dart';
 import 'package:pile_of_shame/widgets/collapsing_floating_action_button.dart';
 
@@ -26,7 +27,7 @@ class RootGamesFab extends ConsumerWidget {
         );
 
         if (result != null) {
-          final games = await ref.read(gamesProvider.future);
+          final games = GamesList(games: await ref.read(gamesProvider.future));
           final update = games.addGame(result.toGame());
 
           final gameStorage = ref.read(gameStorageProvider);

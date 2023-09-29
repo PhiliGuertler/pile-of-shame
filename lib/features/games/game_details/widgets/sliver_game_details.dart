@@ -69,7 +69,7 @@ class _SliverGameDetailsState extends ConsumerState<SliverGameDetails> {
           final updatedGame =
               widget.game.copyWith(dlcs: [...widget.game.dlcs, result.toDLC()]);
 
-          final games = await ref.read(gamesProvider.future);
+          final games = GamesList(games: await ref.read(gamesProvider.future));
           final update = games.updateGame(updatedGame.id, updatedGame);
 
           final gameStorage = ref.read(gameStorageProvider);
@@ -92,7 +92,8 @@ class _SliverGameDetailsState extends ConsumerState<SliverGameDetails> {
             onPressed: () async {
               final updatedGame =
                   widget.game.copyWith(isFavorite: !widget.game.isFavorite);
-              final gamesList = await ref.read(gamesProvider.future);
+              final gamesList =
+                  GamesList(games: await ref.read(gamesProvider.future));
               final update = gamesList.updateGame(updatedGame.id, updatedGame);
 
               await ref.read(gameStorageProvider).persistGamesList(update);
@@ -207,7 +208,9 @@ class _SliverGameDetailsState extends ConsumerState<SliverGameDetails> {
                             .where((element) => element.id != dlc.id)
                             .toList(),
                       );
-                      final gamesList = await ref.read(gamesProvider.future);
+                      final gamesList = GamesList(
+                        games: await ref.read(gamesProvider.future),
+                      );
                       final update =
                           gamesList.updateGame(updatedGame.id, updatedGame);
 

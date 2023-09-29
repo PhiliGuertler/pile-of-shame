@@ -47,7 +47,7 @@ void main() {
     container = ProviderContainer(
       overrides: [
         gameFileProvider.overrideWith((ref) => gameFile),
-        gamesProvider.overrideWith((ref) => testGameList),
+        gamesProvider.overrideWith((ref) => testGameList.games),
       ],
     );
   });

@@ -15,28 +15,29 @@ part 'game_provider.g.dart';
 GameStorage gameStorage(GameStorageRef ref) => GameStorage(ref: ref);
 
 @riverpod
-FutureOr<GamesList> games(GamesRef ref) async {
+FutureOr<List<Game>> games(GamesRef ref) async {
   final gameFile = await ref.watch(gameFileProvider.future);
 
   final content = await gameFile.readAsString();
   if (content.isNotEmpty) {
-    return GamesList.fromJson(jsonDecode(content) as Map<String, dynamic>);
+    return GamesList.fromJson(jsonDecode(content) as Map<String, dynamic>)
+        .games;
   }
-  return const GamesList(games: []);
+  return const [];
 }
 
 @riverpod
 FutureOr<bool> hasGames(HasGamesRef ref) async {
   final games = await ref.watch(gamesProvider.future);
 
-  return games.games.isNotEmpty;
+  return games.isNotEmpty;
 }
 
 @riverpod
 FutureOr<GamesList> gamesFiltered(GamesFilteredRef ref) async {
   final games = await ref.watch(gamesProvider.future);
 
-  final filteredGames = ref.watch(applyGameFiltersProvider(games.games));
+  final filteredGames = ref.watch(applyGameFiltersProvider(games));
   final searchedGames = ref.watch(applyGameSearchProvider(filteredGames));
   final sortedGames =
       await ref.watch(applyGameSortingProvider(searchedGames).future);
@@ -49,7 +50,7 @@ FutureOr<Game> gameById(GameByIdRef ref, String id) async {
   final games = await ref.watch(gamesProvider.future);
 
   try {
-    return games.games.singleWhere((element) => element.id == id);
+    return games.singleWhere((element) => element.id == id);
   } catch (error) {
     throw Exception("No game with id '$id' found");
   }

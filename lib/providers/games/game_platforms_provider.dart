@@ -99,7 +99,7 @@ FutureOr<List<GamePlatformFamily>> gamePlatformFamiliesWithSavedGames(
   final games = await ref.watch(gamesProvider.future);
 
   final Set<GamePlatformFamily> result = {};
-  for (final element in games.games) {
+  for (final element in games) {
     result.add(element.platform.family);
   }
 
