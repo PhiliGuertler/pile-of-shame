@@ -63,6 +63,7 @@ flutter:
     - assets/app/
     - assets/languages/
     - assets/misc/
+    - assets/platform_families/
     - assets/platforms/controllers/microsoft/
     - assets/platforms/controllers/misc/
     - assets/platforms/controllers/nintendo/
