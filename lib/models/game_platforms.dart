@@ -9,12 +9,12 @@ enum GamePlatformType {
 }
 
 enum GamePlatformFamily {
-  sony,
-  microsoft,
-  nintendo,
-  pc,
-  sega,
-  misc,
+  sony(image: ImageAssets.platformFamilySony),
+  microsoft(image: ImageAssets.platformFamilyMicrosoft),
+  nintendo(image: ImageAssets.platformFamilyNintendo),
+  pc(image: ImageAssets.platformFamilyPC),
+  sega(image: ImageAssets.platformFamilySega),
+  misc(image: ImageAssets.platformFamilyMisc),
   ;
 
   String toLocale(AppLocalizations l10n) {
@@ -33,6 +33,10 @@ enum GamePlatformFamily {
         return l10n.misc;
     }
   }
+
+  final ImageAssets image;
+
+  const GamePlatformFamily({required this.image});
 }
 
 @JsonEnum(valueField: 'abbreviation')
