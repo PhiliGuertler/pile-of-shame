@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pile_of_shame/features/analytics/analytics_by_families/screens/analytics_by_families_screen.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/assets.dart';
 import 'package:pile_of_shame/providers/games/game_platforms_provider.dart';
@@ -25,6 +26,13 @@ class AnalyticsSectionsScreen extends ConsumerWidget {
             child: ParallaxImageCard(
               imagePath: ImageAssets.library.value,
               title: AppLocalizations.of(context)!.gameLibrary,
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const AnalyticsByFamiliesScreen(),
+                  ),
+                );
+              },
             ),
           ),
           for (final family in families)
@@ -36,6 +44,14 @@ class AnalyticsSectionsScreen extends ConsumerWidget {
               child: ParallaxImageCard(
                 imagePath: family.image.value,
                 title: family.toLocale(AppLocalizations.of(context)!),
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          AnalyticsByFamiliesScreen(family: family),
+                    ),
+                  );
+                },
               ),
             ),
           const SizedBox(

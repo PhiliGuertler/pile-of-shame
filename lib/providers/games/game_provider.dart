@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:pile_of_shame/models/game.dart';
+import 'package:pile_of_shame/models/game_platforms.dart';
 import 'package:pile_of_shame/models/game_storage.dart';
 import 'package:pile_of_shame/providers/games/game_file_provider.dart';
 import 'package:pile_of_shame/providers/games/game_filter_provider.dart';
@@ -24,6 +25,26 @@ FutureOr<List<Game>> games(GamesRef ref) async {
         .games;
   }
   return const [];
+}
+
+@riverpod
+FutureOr<List<Game>> gamesByPlatform(
+  GamesByPlatformRef ref,
+  GamePlatform platform,
+) async {
+  final games = await ref.watch(gamesProvider.future);
+
+  return games.where((element) => element.platform == platform).toList();
+}
+
+@riverpod
+FutureOr<List<Game>> gamesByPlatformFamily(
+  GamesByPlatformFamilyRef ref,
+  GamePlatformFamily family,
+) async {
+  final games = await ref.watch(gamesProvider.future);
+
+  return games.where((element) => element.platform.family == family).toList();
 }
 
 @riverpod
