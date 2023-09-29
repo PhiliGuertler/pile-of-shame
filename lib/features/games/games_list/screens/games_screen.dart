@@ -3,6 +3,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pile_of_shame/features/games/games_list/widgets/slivers/sliver_grouped_games.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
+import 'package:pile_of_shame/models/assets.dart';
 import 'package:pile_of_shame/providers/format_provider.dart';
 import 'package:pile_of_shame/providers/games/game_provider.dart';
 import 'package:pile_of_shame/utils/constants.dart';
@@ -40,8 +41,8 @@ class GamesScreen extends ConsumerWidget {
                 : null,
             slivers: [
               if (!hasGames)
-                const SliverFancyImageHeader(
-                  imagePath: 'assets/misc/game_pile.webp',
+                SliverFancyImageHeader(
+                  imagePath: ImageAssets.gamePile.value,
                   height: 300.0,
                 ),
               if (!hasGames)

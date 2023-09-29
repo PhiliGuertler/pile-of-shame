@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pile_of_shame/features/games/add_or_edit_game/models/editable_game.dart';
 import 'package:pile_of_shame/features/games/add_or_edit_game/screens/add_or_edit_dlc_screen.dart';
 import 'package:pile_of_shame/features/games/dlc_details/widgets/sliver_dlc_details.dart';
+import 'package:pile_of_shame/models/assets.dart';
 import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/models/game_platforms.dart';
 import 'package:pile_of_shame/providers/games/game_provider.dart';
@@ -32,14 +33,14 @@ class DLCDetailsScreen extends ConsumerWidget {
           onRefresh: () => ref.refresh(gamesProvider.future),
           child: dlc.when(
             skipLoadingOnReload: true,
-            loading: () => const CustomScrollView(
-              physics: NeverScrollableScrollPhysics(),
+            loading: () => CustomScrollView(
+              physics: const NeverScrollableScrollPhysics(),
               slivers: [
                 SliverFancyImageAppBar(
                   borderRadius: -defaultBorderRadius * 2,
-                  imagePath: "assets/misc/loading.webp",
+                  imagePath: ImageAssets.loading.value,
                 ),
-                SliverDLCDetailsSkeleton(),
+                const SliverDLCDetailsSkeleton(),
               ],
             ),
             error: (error, stackTrace) => CustomScrollView(

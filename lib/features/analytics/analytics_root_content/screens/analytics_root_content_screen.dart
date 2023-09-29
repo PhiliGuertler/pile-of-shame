@@ -4,6 +4,7 @@ import 'package:pile_of_shame/features/analytics/analytics_root_content/widgets/
 import 'package:pile_of_shame/features/analytics/analytics_root_content/widgets/analytics/game_platform_family_analytics.dart';
 import 'package:pile_of_shame/features/analytics/analytics_root_content/widgets/analytics/play_status_analytics.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
+import 'package:pile_of_shame/models/assets.dart';
 import 'package:pile_of_shame/providers/games/game_provider.dart';
 import 'package:pile_of_shame/utils/constants.dart';
 import 'package:pile_of_shame/widgets/skeletons/skeleton.dart';
@@ -57,8 +58,8 @@ class _AnalyticsRootContentScreenState
                     parent: AlwaysScrollableScrollPhysics(),
                   ),
                   slivers: [
-                    const SliverFancyImageHeader(
-                      imagePath: 'assets/misc/pie_chart.webp',
+                    SliverFancyImageHeader(
+                      imagePath: ImageAssets.pieChart.value,
                       height: 300.0,
                     ),
                     SliverToBoxAdapter(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
+import 'package:pile_of_shame/models/assets.dart';
 import 'package:pile_of_shame/utils/constants.dart';
 import 'package:pile_of_shame/widgets/app_scaffold.dart';
 import 'package:pile_of_shame/widgets/image_container.dart';
@@ -44,7 +45,7 @@ class AboutScreen extends StatelessWidget {
                       showAboutDialog(
                         context: context,
                         applicationIcon: ImageContainer(
-                          child: Image.asset('assets/app/logo.png'),
+                          child: Image.asset(ImageAssets.appLogo.value),
                         ),
                         applicationName: info.appName,
                         applicationVersion:
@@ -56,7 +57,7 @@ class AboutScreen extends StatelessWidget {
                             child: SizedBox(
                               height: 200,
                               child: Image.asset(
-                                'assets/misc/loading.webp',
+                                ImageAssets.loading.value,
                                 fit: BoxFit.cover,
                               ),
                             ),

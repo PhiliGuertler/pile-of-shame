@@ -1,24 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
-import 'package:pile_of_shame/models/game_platforms.dart';
+import 'package:pile_of_shame/models/assets.dart';
 import 'package:pile_of_shame/utils/constants.dart';
 import 'package:pile_of_shame/widgets/app_scaffold.dart';
 
-class DebugGamePlatformIconsScreen extends StatelessWidget {
-  const DebugGamePlatformIconsScreen({super.key});
+class DebugImageAssetsScreen extends StatelessWidget {
+  const DebugImageAssetsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return AppScaffold(
       appBar: AppBar(
-        title: const Text("Game Platform Icons"),
+        title: const Text("ImageAssets"),
       ),
       body: SafeArea(
         child: CustomScrollView(
           slivers: [
             SliverList.builder(
               itemBuilder: (context, index) {
-                final platform = GamePlatform.values[index];
+                final asset = ImageAssets.values[index];
                 return ListView(
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
@@ -31,19 +30,19 @@ class DebugGamePlatformIconsScreen extends StatelessWidget {
                         bottom: 8.0,
                       ),
                       child: Text(
-                        platform.localizedName(AppLocalizations.of(context)!),
+                        asset.toString(),
                         style: Theme.of(context).textTheme.headlineSmall,
                       ),
                     ),
                     SizedBox(
                       width: double.infinity,
                       height: 300,
-                      child: Image.asset(platform.iconPath),
+                      child: Image.asset(asset.value),
                     ),
                   ],
                 );
               },
-              itemCount: GamePlatform.values.length,
+              itemCount: ImageAssets.values.length,
             ),
             SliverToBoxAdapter(
               child: Padding(
@@ -54,7 +53,7 @@ class DebugGamePlatformIconsScreen extends StatelessWidget {
                   bottom: 24.0,
                 ),
                 child: Text(
-                  "Total Entries: ${GamePlatform.values.length}",
+                  "Total Entries: ${ImageAssets.values.length}",
                   style: Theme.of(context).textTheme.headlineMedium,
                 ),
               ),

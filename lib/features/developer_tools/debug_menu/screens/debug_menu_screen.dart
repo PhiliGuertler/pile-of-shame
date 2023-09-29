@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pile_of_shame/features/developer_tools/debug_game_controller_assets/screens/debug_game_controller_assets_screen.dart';
 import 'package:pile_of_shame/features/developer_tools/debug_game_platform_icons/screens/debug_game_platform_icons_screen.dart';
 import 'package:pile_of_shame/features/developer_tools/debug_swipe_to_trigger/screens/debug_swipe_to_trigger_screen.dart';
 import 'package:pile_of_shame/utils/constants.dart';
@@ -34,27 +33,12 @@ class DebugMenuScreen extends StatelessWidget {
               items: [
                 SegmentedActionCardItem(
                   leading: const Icon(Icons.image),
-                  title: const Text("Game-Platform Icons"),
-                  subtitle: const Text("Display all Game-Platform Icon assets"),
+                  title: const Text("Image Assets"),
+                  subtitle: const Text("Display all Image Assets"),
                   onTap: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) =>
-                            const DebugGamePlatformIconsScreen(),
-                      ),
-                    );
-                  },
-                ),
-                SegmentedActionCardItem(
-                  leading: const Icon(Icons.sports_esports),
-                  title: const Text("Game-Platform Controllers"),
-                  subtitle:
-                      const Text("Display all Game-Platform Controller assets"),
-                  onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            const DebugGameControllerAssetsScreen(),
+                        builder: (context) => const DebugImageAssetsScreen(),
                       ),
                     );
                   },
