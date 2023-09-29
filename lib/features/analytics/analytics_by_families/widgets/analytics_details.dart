@@ -8,8 +8,8 @@ import 'package:pile_of_shame/widgets/charts/default_bar_chart.dart';
 import 'package:pile_of_shame/widgets/charts/default_pie_chart.dart';
 import 'package:pile_of_shame/widgets/charts/legend.dart';
 
-class AnalyticsDetails extends ConsumerStatefulWidget {
-  const AnalyticsDetails({
+class SliverAnalyticsDetails extends ConsumerStatefulWidget {
+  const SliverAnalyticsDetails({
     super.key,
     required this.games,
   });
@@ -17,10 +17,12 @@ class AnalyticsDetails extends ConsumerStatefulWidget {
   final List<Game> games;
 
   @override
-  ConsumerState<AnalyticsDetails> createState() => _AnalyticsDetailsState();
+  ConsumerState<SliverAnalyticsDetails> createState() =>
+      _SliverAnalyticsDetailsState();
 }
 
-class _AnalyticsDetailsState extends ConsumerState<AnalyticsDetails> {
+class _SliverAnalyticsDetailsState
+    extends ConsumerState<SliverAnalyticsDetails> {
   String? highlightedLabel;
 
   void handleSectionChange(String? selection) {
@@ -42,7 +44,7 @@ class _AnalyticsDetailsState extends ConsumerState<AnalyticsDetails> {
     final GameData data =
         GameData(games: widget.games, l10n: l10n, highlight: highlightedLabel);
 
-    return ListView(
+    return SliverList.list(
       children: [
         const SizedBox(
           height: 16.0,
@@ -81,12 +83,12 @@ class _AnalyticsDetailsState extends ConsumerState<AnalyticsDetails> {
   }
 }
 
-class AnalyticsDetailsSkeleton extends StatelessWidget {
-  const AnalyticsDetailsSkeleton({super.key});
+class SliverAnalyticsDetailsSkeleton extends StatelessWidget {
+  const SliverAnalyticsDetailsSkeleton({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
+    return SliverList.list(
       children: const [
         SizedBox(
           height: 16.0,
