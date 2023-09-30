@@ -1,5 +1,7 @@
 import 'dart:ui';
 
+import 'package:pile_of_shame/models/assets.dart';
+
 extension LanguageName on Locale {
   String fullName() {
     switch (languageCode) {
@@ -16,9 +18,9 @@ extension LanguageIcon on Locale {
   String countryAssetPath() {
     switch (languageCode) {
       case 'en':
-        return 'assets/languages/english.png';
+        return ImageAssets.languageEnglish.value;
       case 'de':
-        return 'assets/languages/german.png';
+        return ImageAssets.languageGerman.value;
     }
     throw Exception("Language '$languageCode' is not supported");
   }

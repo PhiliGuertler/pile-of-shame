@@ -133,8 +133,9 @@ class _ImportGamesScreenState extends ConsumerState<ImportGamesScreen> {
                                     await gameStorage
                                         .readGamesFromFile(pickedFile);
 
-                                final GamesList existingGames =
-                                    await ref.read(gamesProvider.future);
+                                final existingGames = GamesList(
+                                  games: await ref.read(gamesProvider.future),
+                                );
 
                                 final update1 = existingGames
                                     .updateGamesByLastModified(importedGames);
@@ -163,8 +164,9 @@ class _ImportGamesScreenState extends ConsumerState<ImportGamesScreen> {
                                     await gameStorage
                                         .readGamesFromFile(pickedFile);
 
-                                final GamesList existingGames =
-                                    await ref.read(gamesProvider.future);
+                                final GamesList existingGames = GamesList(
+                                  games: await ref.read(gamesProvider.future),
+                                );
 
                                 final update = existingGames
                                     .updateGamesByLastModified(importedGames);
@@ -192,8 +194,9 @@ class _ImportGamesScreenState extends ConsumerState<ImportGamesScreen> {
                                     await gameStorage
                                         .readGamesFromFile(pickedFile);
 
-                                final GamesList existingGames =
-                                    await ref.read(gamesProvider.future);
+                                final GamesList existingGames = GamesList(
+                                  games: await ref.read(gamesProvider.future),
+                                );
 
                                 final update = existingGames
                                     .addMissingGames(importedGames);

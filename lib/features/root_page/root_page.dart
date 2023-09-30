@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pile_of_shame/features/analytics/analytics_root_content/screens/analytics_root_content_screen.dart';
 import 'package:pile_of_shame/features/games/games_list/screens/games_screen.dart';
+import 'package:pile_of_shame/features/library/screens/library_screen.dart';
 import 'package:pile_of_shame/features/root_page/models/root_page_models.dart';
 import 'package:pile_of_shame/features/settings/root/screens/settings_screen.dart';
 import 'package:pile_of_shame/providers/games/game_provider.dart';
@@ -64,14 +65,12 @@ class _RootPageState extends ConsumerState<RootPage> {
   Widget build(BuildContext context) {
     final hasGames = ref.watch(hasGamesProvider);
 
-    final destinations = [
-      RootTabs.games.destination(context),
-      RootTabs.analytics.destination(context),
-      RootTabs.settings.destination(context),
-    ];
+    final destinations =
+        RootTabs.values.map((e) => e.destination(context)).toList();
 
     final children = [
       GamesScreen(scrollController: _scrollControllerGames),
+      const LibraryScreen(),
       const AnalyticsRootContentScreen(),
       const SettingsScreen(),
     ];

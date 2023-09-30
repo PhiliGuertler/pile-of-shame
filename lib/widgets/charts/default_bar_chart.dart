@@ -53,7 +53,7 @@ class _DefaultBarChartState extends State<DefaultBarChart> {
     );
     for (var i = 0; i < widget.data.length; ++i) {
       final section = widget.data[i];
-      final color = ColorUtils.stringToColor(section.title);
+      final color = section.color ?? ColorUtils.stringToColor(section.title);
       sections.add(
         BarChartGroupData(
           x: i,
@@ -92,9 +92,11 @@ class _DefaultBarChartState extends State<DefaultBarChart> {
     if (!skipAnimation) {
       yield initialSections;
       await Future.delayed(200.ms);
-      setState(() {
-        skipAnimation = true;
-      });
+      if (context.mounted) {
+        setState(() {
+          skipAnimation = true;
+        });
+      }
     }
     yield sections;
   }

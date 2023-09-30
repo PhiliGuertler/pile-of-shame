@@ -123,7 +123,7 @@ void main() {
       );
 
       final result = await container.read(gamesProvider.future);
-      expect(result.games, []);
+      expect(result, []);
     });
     test('returns a list of games if the file is not empty', () async {
       when(mockFileUtils.openFile(gameFileName)).thenAnswer(
@@ -131,7 +131,7 @@ void main() {
       );
 
       final result = await container.read(gamesProvider.future);
-      expect(result.games, [
+      expect(result, [
         gameZeldaBotw,
         gameOuterWilds,
         gameSekiro,
@@ -149,7 +149,7 @@ void main() {
       when(mockFile.readAsString()).thenAnswer((realInvocation) async => "");
       // the game file should have been opened exactly once
       verify(mockFileUtils.openFile(gameFileName)).called(1);
-      expect(initialValue.games, []);
+      expect(initialValue, []);
 
       // returns the stringified test games at the next invocation of readAsString() on mockFile
       // to stub the process of writing the list to a file
@@ -164,7 +164,7 @@ void main() {
       final finalValue = await container.read(gamesProvider.future);
       // the game file should have been opened once more
       verify(mockFileUtils.openFile(gameFileName));
-      expect(finalValue.games, [gameDarkSouls]);
+      expect(finalValue, [gameDarkSouls]);
     });
   });
 

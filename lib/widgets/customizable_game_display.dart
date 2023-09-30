@@ -151,7 +151,8 @@ class CustomizableGameDisplay extends ConsumerWidget {
       },
       onTriggerRight: () async {
         final updatedGame = game.copyWith(isFavorite: !game.isFavorite);
-        final gamesList = await ref.read(gamesProvider.future);
+        final gamesList =
+            GamesList(games: await ref.read(gamesProvider.future));
         final update = gamesList.updateGame(updatedGame.id, updatedGame);
 
         await ref.read(gameStorageProvider).persistGamesList(update);

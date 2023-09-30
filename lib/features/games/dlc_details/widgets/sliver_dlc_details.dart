@@ -50,7 +50,8 @@ class SliverDLCDetails extends ConsumerWidget {
               updatedDLCs[dlcIndex] = updatedDLC;
               final updatedGame = game.copyWith(dlcs: updatedDLCs);
 
-              final gamesList = await ref.read(gamesProvider.future);
+              final gamesList =
+                  GamesList(games: await ref.read(gamesProvider.future));
               final update = gamesList.updateGame(updatedGame.id, updatedGame);
 
               ref.read(gameStorageProvider).persistGamesList(update);

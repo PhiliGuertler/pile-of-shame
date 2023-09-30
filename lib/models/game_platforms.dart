@@ -1,9 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
-
-const String _iconBasePath = "assets/platforms/icons";
-const String _textLogoBasePath = "assets/platforms/text_logos";
-const String _controllerBasePath = "assets/platforms/controllers";
+import 'package:pile_of_shame/models/assets.dart';
 
 enum GamePlatformType {
   stationary,
@@ -12,12 +9,12 @@ enum GamePlatformType {
 }
 
 enum GamePlatformFamily {
-  sony,
-  microsoft,
-  nintendo,
-  pc,
-  sega,
-  misc,
+  sony(image: ImageAssets.platformFamilySony),
+  microsoft(image: ImageAssets.platformFamilyMicrosoft),
+  nintendo(image: ImageAssets.platformFamilyNintendo),
+  pc(image: ImageAssets.platformFamilyPC),
+  sega(image: ImageAssets.platformFamilySega),
+  misc(image: ImageAssets.platformFamilyMisc),
   ;
 
   String toLocale(AppLocalizations l10n) {
@@ -36,6 +33,10 @@ enum GamePlatformFamily {
         return l10n.misc;
     }
   }
+
+  final ImageAssets image;
+
+  const GamePlatformFamily({required this.image});
 }
 
 @JsonEnum(valueField: 'abbreviation')
@@ -45,310 +46,348 @@ enum GamePlatform {
   // ### Handhelds ########################################################## //
   gameAndWatch(
     family: GamePlatformFamily.nintendo,
-    assetPath: "game_and_watch",
     name: "Game & Watch",
     abbreviation: "Game & Watch",
     type: GamePlatformType.handheld,
+    controller: ImageAssets.controllerGameAndWatch,
+    icon: ImageAssets.iconGameAndWatch,
   ),
   gameBoy(
     family: GamePlatformFamily.nintendo,
-    assetPath: "game_boy",
     name: "GameBoy",
     abbreviation: "GB",
     type: GamePlatformType.handheld,
+    controller: ImageAssets.controllerGameBoy,
+    icon: ImageAssets.iconGameBoy,
   ),
   gameBoyColor(
     family: GamePlatformFamily.nintendo,
-    assetPath: "game_boy_color",
     name: "GameBoy Color",
     abbreviation: "GBC",
     type: GamePlatformType.handheld,
+    controller: ImageAssets.controllerGameBoyColor,
+    icon: ImageAssets.iconGameBoyColor,
   ),
   gameBoyAdvance(
     family: GamePlatformFamily.nintendo,
-    assetPath: "game_boy_advance",
     name: "GameBoy Advance",
     abbreviation: "GBA",
     type: GamePlatformType.handheld,
+    controller: ImageAssets.controllerGameBoyAdvance,
+    icon: ImageAssets.iconGameBoyAdvance,
   ),
   nintendoDS(
     family: GamePlatformFamily.nintendo,
-    assetPath: "nintendo_ds",
     name: "Nintendo DS",
     abbreviation: "NDS",
     type: GamePlatformType.handheld,
+    controller: ImageAssets.controllerNintendoDS,
+    icon: ImageAssets.iconNintendoDS,
   ),
   nintendoDSi(
     family: GamePlatformFamily.nintendo,
-    assetPath: "nintendo_dsi",
     name: "Nintendo DSi",
     abbreviation: "DSi",
     type: GamePlatformType.handheld,
+    controller: ImageAssets.controllerNintendoDSi,
+    icon: ImageAssets.iconNintendoDSi,
   ),
   nintendo3DS(
     family: GamePlatformFamily.nintendo,
-    assetPath: "nintendo_3ds",
     name: "Nintendo 3DS",
     abbreviation: "3DS",
     type: GamePlatformType.handheld,
+    controller: ImageAssets.controllerNintendo3DS,
+    icon: ImageAssets.iconNintendo3DS,
   ),
   newNintendo3DS(
     family: GamePlatformFamily.nintendo,
-    assetPath: "new_nintendo_3ds",
     name: "new Nintendo 3DS",
     abbreviation: "new 3DS",
     type: GamePlatformType.handheld,
+    controller: ImageAssets.controllerNewNintendo3DS,
+    icon: ImageAssets.iconNewNintendo3DS,
   ),
   // ### Stationaries ####################################################### //
   nes(
     family: GamePlatformFamily.nintendo,
-    assetPath: "nes",
     name: "Nintendo Entertainment System",
     abbreviation: "NES",
     type: GamePlatformType.stationary,
+    controller: ImageAssets.controllerNES,
+    icon: ImageAssets.iconNES,
   ),
   snes(
     family: GamePlatformFamily.nintendo,
-    assetPath: "super_nes",
     name: "Super Nintendo Entertainment System",
     abbreviation: "SNES",
     type: GamePlatformType.stationary,
+    controller: ImageAssets.controllerSNES,
+    icon: ImageAssets.iconSNES,
   ),
   nintendo64(
     family: GamePlatformFamily.nintendo,
-    assetPath: "nintendo_64",
     name: "Nintendo 64",
     abbreviation: "N64",
     type: GamePlatformType.stationary,
+    controller: ImageAssets.controllerNintendo64,
+    icon: ImageAssets.iconNintendo64,
   ),
   gameCube(
     family: GamePlatformFamily.nintendo,
-    assetPath: "game_cube",
     name: "Nintendo GameCube",
     abbreviation: "GCN",
     type: GamePlatformType.stationary,
+    controller: ImageAssets.controllerGameCube,
+    icon: ImageAssets.iconGameCube,
   ),
   wii(
     family: GamePlatformFamily.nintendo,
-    assetPath: "wii",
     name: "Nintendo Wii",
     abbreviation: "Wii",
     type: GamePlatformType.stationary,
+    controller: ImageAssets.controllerNintendoWii,
+    icon: ImageAssets.iconNintendoWii,
   ),
   wiiU(
     family: GamePlatformFamily.nintendo,
-    assetPath: "wii_u",
     name: "Nintendo Wii U",
     abbreviation: "Wii U",
     type: GamePlatformType.stationary,
+    controller: ImageAssets.controllerNintendoWiiU,
+    icon: ImageAssets.iconNintendoWiiU,
   ),
   nintendoSwitch(
     family: GamePlatformFamily.nintendo,
-    assetPath: "nintendo_switch",
     name: "Nintendo Switch",
     abbreviation: "Switch",
     type: GamePlatformType.stationary,
+    controller: ImageAssets.controllerNintendoSwitch,
+    icon: ImageAssets.iconNintendoSwitch,
   ),
   // #### Sony ############################################################## //
   // ### Handhelds ########################################################## //
   playStationPortable(
     family: GamePlatformFamily.sony,
-    assetPath: "psp",
     name: "PlayStation Portable",
     abbreviation: "PSP",
     type: GamePlatformType.handheld,
+    controller: ImageAssets.controllerPSP,
+    icon: ImageAssets.iconPSP,
   ),
   playStationVita(
     family: GamePlatformFamily.sony,
-    assetPath: "ps_vita",
     name: "PlayStation Vita",
     abbreviation: "PS Vita",
     type: GamePlatformType.handheld,
+    controller: ImageAssets.controllerPSVita,
+    icon: ImageAssets.iconPSVita,
   ),
   // ### Stationaries ####################################################### //
   playStation1(
     family: GamePlatformFamily.sony,
-    assetPath: "ps1",
     name: "PlayStation",
     abbreviation: "PSX",
     type: GamePlatformType.stationary,
+    controller: ImageAssets.controllerPS1,
+    icon: ImageAssets.iconPS1,
   ),
   playStation2(
     family: GamePlatformFamily.sony,
-    assetPath: "ps2",
     name: "PlayStation 2",
     abbreviation: "PS2",
     type: GamePlatformType.stationary,
+    controller: ImageAssets.controllerPS2,
+    icon: ImageAssets.iconPS2,
   ),
   playStation3(
     family: GamePlatformFamily.sony,
-    assetPath: "ps3",
     name: "PlayStation 3",
     abbreviation: "PS3",
     type: GamePlatformType.stationary,
+    controller: ImageAssets.controllerPS3,
+    icon: ImageAssets.iconPS3,
   ),
   playStation4(
     family: GamePlatformFamily.sony,
-    assetPath: "ps4",
     name: "PlayStation 4",
     abbreviation: "PS4",
     type: GamePlatformType.stationary,
+    controller: ImageAssets.controllerPS4,
+    icon: ImageAssets.iconPS4,
   ),
   playStation5(
     family: GamePlatformFamily.sony,
-    assetPath: "ps5",
     name: "PlayStation 5",
     abbreviation: "PS5",
     type: GamePlatformType.stationary,
+    controller: ImageAssets.controllerPS5,
+    icon: ImageAssets.iconPS5,
   ),
   // #### Microsoft ######################################################### //
   // ### Stationaries ####################################################### //
   xbox(
     family: GamePlatformFamily.microsoft,
-    assetPath: "xbox",
     name: "XBox",
     abbreviation: "XBox",
     type: GamePlatformType.stationary,
+    controller: ImageAssets.controllerXBox,
+    icon: ImageAssets.iconXBox,
   ),
   xbox360(
     family: GamePlatformFamily.microsoft,
-    assetPath: "xbox_360",
     name: "XBox 360",
     abbreviation: "XBox 360",
     type: GamePlatformType.stationary,
+    controller: ImageAssets.controllerXBox360,
+    icon: ImageAssets.iconXBox360,
   ),
   xboxOne(
     family: GamePlatformFamily.microsoft,
-    assetPath: "xbox_one",
     name: "XBox One",
     abbreviation: "XBone",
     type: GamePlatformType.stationary,
+    controller: ImageAssets.controllerXBoxOne,
+    icon: ImageAssets.iconXBoxOne,
   ),
   xboxSeries(
     family: GamePlatformFamily.microsoft,
-    assetPath: "xbox_series",
     name: "XBox Series",
     abbreviation: "XBox Series",
     type: GamePlatformType.stationary,
+    controller: ImageAssets.controllerXBoxSeries,
+    icon: ImageAssets.iconXBoxSeries,
   ),
   // #### SEGA ############################################################## //
   // ### Stationaries ####################################################### //
   segaMegaDrive(
     family: GamePlatformFamily.sega,
-    assetPath: "sega_mega_drive",
     name: "SEGA Mega Drive",
     abbreviation: "SMD",
     type: GamePlatformType.stationary,
+    controller: ImageAssets.controllerSegaMegaDrive,
+    icon: ImageAssets.iconSegaMegaDrive,
   ),
   segaGameGear(
     family: GamePlatformFamily.sega,
-    assetPath: "sega_game_gear",
     name: "SEGA Game Gear",
     abbreviation: "SGG",
     type: GamePlatformType.handheld,
+    controller: ImageAssets.controllerSegaGameGear,
+    icon: ImageAssets.iconSegaGameGear,
   ),
   segaSaturn(
     family: GamePlatformFamily.sega,
-    assetPath: "sega_saturn",
     name: "SEGA Saturn",
     abbreviation: "SS",
     type: GamePlatformType.stationary,
+    controller: ImageAssets.controllerSegaSaturn,
+    icon: ImageAssets.iconSegaSaturn,
   ),
   segaDreamcast(
     family: GamePlatformFamily.sega,
-    assetPath: "sega_dreamcast",
     name: "SEGA Dreamcast",
     abbreviation: "SD",
     type: GamePlatformType.stationary,
+    controller: ImageAssets.controllerSegaDreamcast,
+    icon: ImageAssets.iconSegaDreamcast,
   ),
   // #### PC ################################################################ //
   // ### Stationaries ####################################################### //
   pcMisc(
     family: GamePlatformFamily.pc,
-    assetPath: "pc",
     name: "PC",
     abbreviation: "PC",
     type: GamePlatformType.stationary,
+    controller: ImageAssets.controllerPC,
+    icon: ImageAssets.iconPC,
   ),
   gog(
     family: GamePlatformFamily.pc,
-    assetPath: "gog",
     name: "Gog",
     abbreviation: "Gog",
     type: GamePlatformType.stationary,
+    controller: ImageAssets.controllerGog,
+    icon: ImageAssets.iconGog,
   ),
   origin(
     family: GamePlatformFamily.pc,
-    assetPath: "origin",
     name: "Origin",
     abbreviation: "EA",
     type: GamePlatformType.stationary,
+    controller: ImageAssets.controllerOrigin,
+    icon: ImageAssets.iconOrigin,
   ),
   steam(
     family: GamePlatformFamily.pc,
-    assetPath: "steam",
     name: "Steam",
     abbreviation: "Steam",
     type: GamePlatformType.stationary,
+    controller: ImageAssets.controllerSteam,
+    icon: ImageAssets.iconSteam,
   ),
   ubisoftConnect(
     family: GamePlatformFamily.pc,
-    assetPath: "ubisoft_connect",
     name: "Ubisoft Connect",
     abbreviation: "Ubi",
     type: GamePlatformType.stationary,
+    controller: ImageAssets.controllerUbisoftConnect,
+    icon: ImageAssets.iconUbisoftConnect,
   ),
   epicGames(
     family: GamePlatformFamily.pc,
-    assetPath: "epic_games",
     name: "Epic",
     abbreviation: "Epic",
     type: GamePlatformType.stationary,
+    controller: ImageAssets.controllerEpic,
+    icon: ImageAssets.iconEpic,
   ),
   twitch(
     family: GamePlatformFamily.pc,
-    assetPath: "twitch",
     name: "Twitch",
     abbreviation: "Twitch",
     type: GamePlatformType.stationary,
+    controller: ImageAssets.controllerTwitch,
+    icon: ImageAssets.iconTwitch,
   ),
   // #### Misc ############################################################## //
   smartphone(
     family: GamePlatformFamily.misc,
     abbreviation: 'phone',
-    assetPath: 'smartphone',
     name: 'Smartphone',
     type: GamePlatformType.handheld,
+    controller: ImageAssets.controllerSmartphone,
+    icon: ImageAssets.iconSmartphone,
   ),
   unknown(
     abbreviation: 'unknown',
     family: GamePlatformFamily.misc,
-    assetPath: 'unknown',
     name: 'unknown',
     type: GamePlatformType.stationary,
+    controller: ImageAssets.controllerUnknown,
+    icon: ImageAssets.iconUnknown,
   ),
   ;
 
-  final String assetPath;
   final String name;
   final String abbreviation;
   final GamePlatformType type;
   final GamePlatformFamily family;
+  final ImageAssets controller;
+  final ImageAssets icon;
 
   const GamePlatform({
-    required this.assetPath,
     required this.name,
     required this.abbreviation,
     required this.type,
     required this.family,
+    required this.controller,
+    required this.icon,
   });
 
-  String get iconPath => "$_iconBasePath/${family.name}/$assetPath.webp";
-  String get textLogoPath =>
-      "$_textLogoBasePath/${family.name}/$assetPath.webp";
+  String get iconPath => icon.value;
 
-  String get controllerLogoPath =>
-      "$_controllerBasePath/${family.name}/$assetPath.webp";
+  String get controllerLogoPath => controller.value;
 
   String localizedName(AppLocalizations l10n) {
     switch (this) {

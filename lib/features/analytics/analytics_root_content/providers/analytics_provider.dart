@@ -23,7 +23,7 @@ FutureOr<List<ChartData>> createGameAmountDataByGrouper(
       (e) => MapEntry(grouper.groupToLocaleString(l10n, e), []),
     ),
   );
-  for (final game in games.games) {
+  for (final game in games) {
     for (final group in groupValues) {
       if (grouper.matchesGroup(group, game)) {
         grouped[grouper.groupToLocaleString(l10n, group)]!.add(game);
@@ -65,7 +65,7 @@ FutureOr<List<ChartData>> createPriceDataByGrouper(
       (e) => MapEntry(grouper.groupToLocaleString(l10n, e), []),
     ),
   );
-  for (final game in games.games) {
+  for (final game in games) {
     for (final group in groupValues) {
       if (grouper.matchesGroup(group, game)) {
         grouped[grouper.groupToLocaleString(l10n, group)]!.add(game);
@@ -113,7 +113,7 @@ FutureOr<List<ChartData>> createAveragePriceDataByGrouper(
       (e) => MapEntry(grouper.groupToLocaleString(l10n, e), []),
     ),
   );
-  for (final game in games.games) {
+  for (final game in games) {
     for (final group in groupValues) {
       if (grouper.matchesGroup(group, game)) {
         grouped[grouper.groupToLocaleString(l10n, group)]!.add(game);

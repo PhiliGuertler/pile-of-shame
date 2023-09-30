@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:pile_of_shame/models/game_platforms.dart';
+import 'package:pile_of_shame/providers/games/game_provider.dart';
 import 'package:pile_of_shame/providers/mixins/persistable_mixin.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -89,4 +90,18 @@ FutureOr<Map<GamePlatformFamily, List<GamePlatform>>>
   result.removeWhere((key, value) => value.isEmpty);
 
   return result;
+}
+
+@riverpod
+FutureOr<List<GamePlatformFamily>> gamePlatformFamiliesWithSavedGames(
+  GamePlatformFamiliesWithSavedGamesRef ref,
+) async {
+  final games = await ref.watch(gamesProvider.future);
+
+  final Set<GamePlatformFamily> result = {};
+  for (final element in games) {
+    result.add(element.platform.family);
+  }
+
+  return result.toList();
 }
