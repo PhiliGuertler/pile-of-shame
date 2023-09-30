@@ -92,9 +92,11 @@ class _DefaultBarChartState extends State<DefaultBarChart> {
     if (!skipAnimation) {
       yield initialSections;
       await Future.delayed(200.ms);
-      setState(() {
-        skipAnimation = true;
-      });
+      if (context.mounted) {
+        setState(() {
+          skipAnimation = true;
+        });
+      }
     }
     yield sections;
   }

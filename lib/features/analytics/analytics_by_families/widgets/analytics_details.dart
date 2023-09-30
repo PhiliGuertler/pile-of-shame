@@ -5,7 +5,9 @@ import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/utils/constants.dart';
 import 'package:pile_of_shame/widgets/charts/default_bar_chart.dart';
+import 'package:pile_of_shame/widgets/charts/default_line_chart.dart';
 import 'package:pile_of_shame/widgets/charts/default_pie_chart.dart';
+import 'package:pile_of_shame/widgets/charts/default_span_average_chart.dart';
 import 'package:pile_of_shame/widgets/charts/legend.dart';
 
 class SliverAnalyticsDetails extends ConsumerStatefulWidget {
@@ -44,28 +46,20 @@ class _SliverAnalyticsDetailsState
     final GameData data =
         GameData(games: widget.games, l10n: l10n, highlight: highlightedLabel);
 
+    final priceSpanWithGifts = data.toPriceSpanWithGifts();
+    final priceMedianWithGifts = data.toPriceMedianSpanWithGifts();
+    final priceSpanWithoutGifts = data.toPriceSpanWithoutGifts();
+    final priceMedianWithoutGifts = data.toPriceMedianSpanWithoutGifts();
+
     return SliverList.list(
       children: [
-        const SizedBox(
-          height: 16.0,
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: defaultPaddingX,
-            vertical: 8.0,
-          ),
-          child: Legend(
-            onChangeSelection: handleSectionChange,
-            data: data.toPlatformLegendData(highlightedLabel),
-          ),
-        ),
         Wrap(
           alignment: WrapAlignment.spaceEvenly,
           children: [
             Padding(
               padding: const EdgeInsets.symmetric(
                 horizontal: defaultPaddingX,
-                vertical: 8.0,
+                vertical: 16.0,
               ),
               child: DefaultPieChart(
                 data: data.toCompletedData(),
@@ -76,11 +70,83 @@ class _SliverAnalyticsDetailsState
             Padding(
               padding: const EdgeInsets.symmetric(
                 horizontal: defaultPaddingX,
-                vertical: 8.0,
+                vertical: 16.0,
               ),
               child: DefaultPieChart(
                 data: data.toPlayStatusData(),
                 title: l10n.status,
+                onTapSection: handleSectionChange,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: defaultPaddingX,
+                vertical: 16.0,
+              ),
+              child: DefaultSpanAverageChart(
+                min: priceSpanWithGifts.min,
+                max: priceSpanWithGifts.max,
+                average: priceSpanWithGifts.avg!,
+                title: l10n.averagePriceWithGifts,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: defaultPaddingX,
+                vertical: 16.0,
+              ),
+              child: DefaultSpanAverageChart(
+                min: priceMedianWithGifts.min,
+                max: priceMedianWithGifts.max,
+                average: priceMedianWithGifts.avg!,
+                title: l10n.medianPriceWithGifts,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: defaultPaddingX,
+                vertical: 16.0,
+              ),
+              child: DefaultSpanAverageChart(
+                min: priceSpanWithoutGifts.min,
+                max: priceSpanWithoutGifts.max,
+                average: priceSpanWithoutGifts.avg!,
+                title: l10n.averagePriceWithoutGifts,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: defaultPaddingX,
+                vertical: 16.0,
+              ),
+              child: DefaultSpanAverageChart(
+                min: priceMedianWithoutGifts.min,
+                max: priceMedianWithoutGifts.max,
+                average: priceMedianWithoutGifts.avg!,
+                title: l10n.medianPriceWithoutGifts,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: defaultPaddingX,
+                vertical: 16.0,
+              ),
+              child: DefaultLineChart(
+                data: data.toPriceAccumulation(),
+                interval: 15.0,
+                title: l10n.priceDistribution,
+                onTapSection: handleSectionChange,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: defaultPaddingX,
+                vertical: 16.0,
+              ),
+              child: DefaultLineChart(
+                data: data.toPriceDistribution(10.0),
+                interval: 15.0,
+                title: l10n.priceDistribution,
                 onTapSection: handleSectionChange,
               ),
             ),
