@@ -121,26 +121,10 @@ class GameData {
 
     final List<Pair<double, int>> priceDistribution = [];
 
-    final int numGifts = games.fold(
-      0,
-      (previousValue, element) =>
-          element.wasGifted ? previousValue + 1 : previousValue,
-    );
-    priceDistribution.add(Pair(double.negativeInfinity, numGifts));
-    final int totalGames = games.length;
-    int processedGames = numGifts;
-    final int numFreeGames = games.fold(
-      0,
-      (previousValue, element) => !element.wasGifted && element.price < 0.01
-          ? previousValue + 1
-          : previousValue,
-    );
-    priceDistribution.add(Pair(0, numGifts));
-    processedGames += numFreeGames;
-
+    int processedGames = 0;
     double priceCap = interval;
 
-    while (processedGames < totalGames) {
+    while (processedGames < games.length) {
       int matchingGames = games.fold(
         0,
         (previousValue, element) =>
@@ -156,10 +140,9 @@ class GameData {
     return priceDistribution
         .map(
           (e) => ChartData(
-            title: e.first == double.negativeInfinity ? "Gift" : "< ${e.first}",
+            title: "",
             value: e.second.toDouble(),
-            isSelected: highlight ==
-                (e.first == double.negativeInfinity ? "Gift" : "< ${e.first}"),
+            secondaryValue: e.first,
           ),
         )
         .toList();
