@@ -6,14 +6,14 @@ import 'package:pile_of_shame/features/root_page/root_analytics/widgets/root_ana
 import 'package:pile_of_shame/features/root_page/root_games/widgets/root_games_app_bar.dart';
 import 'package:pile_of_shame/features/root_page/root_games/widgets/root_games_destination.dart';
 import 'package:pile_of_shame/features/root_page/root_games/widgets/root_games_fab.dart';
-import 'package:pile_of_shame/features/root_page/root_platform_families/widgets/root_platform_families_app_bar.dart';
-import 'package:pile_of_shame/features/root_page/root_platform_families/widgets/root_platform_families_destination.dart';
+import 'package:pile_of_shame/features/root_page/root_library/widgets/root_library_app_bar.dart';
+import 'package:pile_of_shame/features/root_page/root_library/widgets/root_library_destination.dart';
 import 'package:pile_of_shame/features/root_page/root_settings/widgets/root_settings_app_bar.dart';
 import 'package:pile_of_shame/features/root_page/root_settings/widgets/root_settings_destination.dart';
 
 enum RootTabs {
   games,
-  platformFamilies,
+  library,
   analytics,
   settings,
   ;
@@ -24,8 +24,8 @@ enum RootTabs {
         return RootGamesAppBar(
           scrollController: scrollController,
         );
-      case RootTabs.platformFamilies:
-        return RootPlatformFamiliesAppBar();
+      case RootTabs.library:
+        return RootLibraryAppBar();
       case RootTabs.analytics:
         return RootAnalyticsAppBar(
           hasGames: hasGames,
@@ -48,8 +48,8 @@ enum RootTabs {
     switch (this) {
       case RootTabs.games:
         return rootGamesDestination(context);
-      case RootTabs.platformFamilies:
-        return rootPlatformFamiliesDestination(context);
+      case RootTabs.library:
+        return rootLibraryDestination(context);
       case RootTabs.analytics:
         return rootAnalyticsDestination(context);
       case RootTabs.settings:

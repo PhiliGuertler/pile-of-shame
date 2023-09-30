@@ -7,8 +7,8 @@ import 'package:pile_of_shame/providers/games/game_platforms_provider.dart';
 import 'package:pile_of_shame/utils/constants.dart';
 import 'package:pile_of_shame/widgets/parallax_image_card.dart';
 
-class AnalyticsSectionsScreen extends ConsumerWidget {
-  const AnalyticsSectionsScreen({super.key});
+class LibraryScreen extends ConsumerWidget {
+  const LibraryScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
