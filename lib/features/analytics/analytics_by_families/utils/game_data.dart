@@ -140,7 +140,7 @@ class GameData {
     final List<Pair<double, int>> priceDistribution = [];
 
     int processedGames = 0;
-    double priceCap = interval;
+    double priceCap = 0.001;
 
     while (processedGames < games.length) {
       int matchingGames = games.fold(
