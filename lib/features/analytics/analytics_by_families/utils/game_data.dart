@@ -102,20 +102,6 @@ class GameData {
     return result;
   }
 
-  List<ChartData> toPriceAccumulation() {
-    final List<double> prices = games.map((e) => e.fullPrice()).toList();
-    prices.sort((a, b) => a.compareTo(b));
-
-    final List<ChartData> result = [];
-    for (int i = 0; i < prices.length; ++i) {
-      final price = prices[i];
-      result.add(
-        ChartData(title: "", value: (i + 1).toDouble(), secondaryValue: price),
-      );
-    }
-    return result;
-  }
-
   List<ChartData> toPriceDistribution(double interval) {
     assert(interval > 0.0);
 
