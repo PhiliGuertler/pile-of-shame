@@ -97,7 +97,11 @@ class _DefaultComparisonChartState
                                 bottomLeft: Radius.circular(16.0),
                               ),
                               border: widget.left < widget.right
-                                  ? Border.all()
+                                  ? Border.all(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .background,
+                                    )
                                   : null,
                             ),
                             width: (maxWidth * progress).clamp(0.0, maxWidth),
@@ -139,7 +143,11 @@ class _DefaultComparisonChartState
                                 bottomRight: Radius.circular(16.0),
                               ),
                               border: widget.left > widget.right
-                                  ? Border.all()
+                                  ? Border.all(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .background,
+                                    )
                                   : null,
                             ),
                             width: (maxWidth * (1.0 - progress))
