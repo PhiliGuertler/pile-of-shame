@@ -121,6 +121,17 @@ class _SliverAnalyticsDetailsState
                 horizontal: defaultPaddingX,
                 vertical: 16.0,
               ),
+              child: DefaultPieChart(
+                data: data.toAgeRatingData(),
+                title: l10n.ageRating,
+                onTapSection: handleSectionChange,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: defaultPaddingX,
+                vertical: 16.0,
+              ),
               child: DefaultLineChart(
                 data: data.toPriceDistribution(10.0),
                 interval: 15.0,

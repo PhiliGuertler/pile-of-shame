@@ -1,9 +1,11 @@
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
+import 'package:pile_of_shame/models/age_restriction.dart';
 import 'package:pile_of_shame/models/chart_data.dart';
 import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/models/play_status.dart';
 import 'package:pile_of_shame/utils/pair.dart';
 import 'package:pile_of_shame/widgets/play_status_icon.dart';
+import 'package:pile_of_shame/widgets/usk_logo.dart';
 
 class GameData {
   final List<Game> games;
@@ -91,6 +93,37 @@ class GameData {
           isSelected: highlight == status.toLocaleString(l10n),
           alternativeTitle: PlayStatusIcon(
             playStatus: status,
+          ),
+        ),
+      );
+    }
+
+    result.removeWhere((element) => element.value < 0.01);
+
+    return result;
+  }
+
+  List<ChartData> toAgeRatingData() {
+    final List<Pair<USK, int>> ageRatings = [
+      for (var i = 0; i < USK.values.length; ++i) Pair(USK.values[i], 0),
+    ];
+
+    for (final game in games) {
+      ageRatings[game.usk.index].second++;
+    }
+
+    final List<ChartData> result = [];
+    for (var i = 0; i < USK.values.length; ++i) {
+      final usk = ageRatings[i].first;
+      final count = ageRatings[i].second;
+      result.add(
+        ChartData(
+          title: usk.toRatedString(l10n),
+          value: count.toDouble(),
+          color: usk.toBackgroundColor(),
+          isSelected: highlight == usk.toRatedString(l10n),
+          alternativeTitle: USKLogo(
+            ageRestriction: usk,
           ),
         ),
       );

@@ -20,4 +20,8 @@ enum USK {
   String toRatedString(AppLocalizations l10n) {
     return l10n.ratedN(age.toString());
   }
+
+  Color toBackgroundColor() {
+    return Color.alphaBlend(color.withOpacity(0.5), Colors.grey.shade500);
+  }
 }
