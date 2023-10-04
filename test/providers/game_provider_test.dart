@@ -58,6 +58,25 @@ void main() {
         TestGames.gameOriAndTheBlindForest,
       ]);
     });
+    test('migrates a list of games from v1 if the file is not empty', () async {
+      when(mockFileUtils.openFile(gameFileName)).thenAnswer(
+        (realInvocation) async => File('test_resources/game-store-v1.json'),
+      );
+
+      final result = await container.read(gamesProvider.future);
+      expect(result, [
+        TestGames.gameWitcher3.copyWith(
+          createdAt: TestGames.gameWitcher3.lastModified,
+          dlcs: TestGames.gameWitcher3.dlcs
+              .map((e) => e.copyWith(createdAt: e.lastModified))
+              .toList(),
+        ),
+        TestGames.gameSsx3.copyWith(createdAt: TestGames.gameSsx3.lastModified),
+        TestGames.gameOriAndTheBlindForest.copyWith(
+          createdAt: TestGames.gameOriAndTheBlindForest.lastModified,
+        ),
+      ]);
+    });
     test('Successfully writes a list of games to the games file', () async {
       when(mockFileUtils.openFile(gameFileName))
           .thenAnswer((realInvocation) async => mockFile);
