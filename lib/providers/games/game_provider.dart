@@ -8,6 +8,7 @@ import 'package:pile_of_shame/providers/games/game_filter_provider.dart';
 import 'package:pile_of_shame/providers/games/game_group_provider.dart';
 import 'package:pile_of_shame/providers/games/game_search_provider.dart';
 import 'package:pile_of_shame/providers/games/game_sorter_provider.dart';
+import 'package:pile_of_shame/utils/data_migration.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'game_provider.g.dart';
@@ -20,9 +21,12 @@ FutureOr<List<Game>> games(GamesRef ref) async {
   final gameFile = await ref.watch(gameFileProvider.future);
 
   final content = await gameFile.readAsString();
+
   if (content.isNotEmpty) {
-    return GamesList.fromJson(jsonDecode(content) as Map<String, dynamic>)
-        .games;
+    final Map<String, dynamic> jsonMap =
+        jsonDecode(content) as Map<String, dynamic>;
+    final games = GamesMigrator.loadAndMigrateGamesFromJson(jsonMap);
+    return games.games;
   }
   return const [];
 }
