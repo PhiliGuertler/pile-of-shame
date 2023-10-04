@@ -61,29 +61,23 @@ class _DefaultComparisonChartState
       children: [
         ClipRRect(
           borderRadius: BorderRadius.circular(16.0),
-          child: Stack(
-            alignment: Alignment.centerLeft,
-            children: [
-              Container(
-                color: Theme.of(context).colorScheme.primaryContainer,
-                height: height,
-              ),
-              LayoutBuilder(
-                builder: (context, constraints) {
-                  final maxWidth = constraints.maxWidth;
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              final maxWidth = constraints.maxWidth;
 
-                  final rightStyle =
-                      Theme.of(context).textTheme.bodyLarge?.copyWith(
-                            color: Theme.of(context).colorScheme.onSecondary,
-                          );
-                  final leftStyle =
-                      Theme.of(context).textTheme.bodyLarge?.copyWith(
-                            color: Theme.of(context).colorScheme.onPrimary,
-                          );
+              final rightStyle =
+                  Theme.of(context).textTheme.bodyLarge?.copyWith(
+                        color: Theme.of(context).colorScheme.onSecondary,
+                      );
+              final leftStyle = Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    color: Theme.of(context).colorScheme.onPrimary,
+                  );
 
-                  return SizedBox(
-                    width: maxWidth,
-                    child: Stack(
+              return SizedBox(
+                width: maxWidth,
+                child: Column(
+                  children: [
+                    Stack(
                       children: [
                         Align(
                           alignment: Alignment.centerLeft,
@@ -94,7 +88,6 @@ class _DefaultComparisonChartState
                               color: Theme.of(context).colorScheme.primary,
                               borderRadius: const BorderRadius.only(
                                 topLeft: Radius.circular(16.0),
-                                bottomLeft: Radius.circular(16.0),
                               ),
                               border: widget.left < widget.right
                                   ? Border.all(
@@ -106,29 +99,19 @@ class _DefaultComparisonChartState
                             ),
                             width: (maxWidth * progress).clamp(0.0, maxWidth),
                             height: height,
-                            child: Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  AnimatedCurrency(
-                                    currency: l,
-                                    duration: 250.ms,
-                                    formatCurrency: (value) =>
-                                        widget.formatValue != null
-                                            ? widget.formatValue!(value)
-                                            : currencyFormatter.format(value),
-                                    style: leftStyle,
-                                  ),
-                                  if (widget.leftText != null)
-                                    Text(
-                                      widget.leftText!,
+                            child: progress > 0.1
+                                ? Center(
+                                    child: AnimatedCurrency(
+                                      currency: l,
+                                      duration: 250.ms,
+                                      formatCurrency: (value) =>
+                                          widget.formatValue != null
+                                              ? widget.formatValue!(value)
+                                              : currencyFormatter.format(value),
                                       style: leftStyle,
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
                                     ),
-                                ],
-                              ),
-                            ),
+                                  )
+                                : null,
                           ),
                         ),
                         Align(
@@ -140,7 +123,6 @@ class _DefaultComparisonChartState
                               color: Theme.of(context).colorScheme.secondary,
                               borderRadius: const BorderRadius.only(
                                 topRight: Radius.circular(16.0),
-                                bottomRight: Radius.circular(16.0),
                               ),
                               border: widget.left > widget.right
                                   ? Border.all(
@@ -153,37 +135,63 @@ class _DefaultComparisonChartState
                             width: (maxWidth * (1.0 - progress))
                                 .clamp(0.0, maxWidth),
                             height: height,
-                            child: Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  AnimatedCurrency(
-                                    currency: r,
-                                    duration: 250.ms,
-                                    formatCurrency: (value) =>
-                                        widget.formatValue != null
-                                            ? widget.formatValue!(value)
-                                            : currencyFormatter.format(value),
-                                    style: rightStyle,
-                                  ),
-                                  if (widget.rightText != null)
-                                    Text(
-                                      widget.rightText!,
+                            child: progress < 0.9
+                                ? Center(
+                                    child: AnimatedCurrency(
+                                      currency: r,
+                                      duration: 250.ms,
+                                      formatCurrency: (value) =>
+                                          widget.formatValue != null
+                                              ? widget.formatValue!(value)
+                                              : currencyFormatter.format(value),
                                       style: rightStyle,
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
                                     ),
-                                ],
-                              ),
-                            ),
+                                  )
+                                : null,
                           ),
                         ),
                       ],
                     ),
-                  );
-                },
-              ),
-            ],
+                    Padding(
+                      padding: const EdgeInsets.only(top: 1.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [
+                              Theme.of(context).colorScheme.primary,
+                              Theme.of(context).colorScheme.primary,
+                              Theme.of(context).colorScheme.secondary,
+                              Theme.of(context).colorScheme.secondary,
+                            ],
+                            stops: const [0, 0.45, 0.55, 1.0],
+                          ),
+                        ),
+                        width: maxWidth,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(left: 8.0),
+                              child: Text(
+                                widget.leftText ?? "",
+                                style: leftStyle,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(right: 8.0),
+                              child: Text(
+                                widget.rightText ?? "",
+                                style: rightStyle,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
           ),
         ),
       ],
