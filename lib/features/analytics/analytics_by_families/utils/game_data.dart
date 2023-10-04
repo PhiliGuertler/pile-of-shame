@@ -1,10 +1,11 @@
-import 'package:pile_of_shame/features/analytics/analytics_by_families/models/price_span.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
+import 'package:pile_of_shame/models/age_restriction.dart';
 import 'package:pile_of_shame/models/chart_data.dart';
 import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/models/play_status.dart';
 import 'package:pile_of_shame/utils/pair.dart';
 import 'package:pile_of_shame/widgets/play_status_icon.dart';
+import 'package:pile_of_shame/widgets/usk_logo.dart';
 
 class GameData {
   final List<Game> games;
@@ -102,13 +103,44 @@ class GameData {
     return result;
   }
 
+  List<ChartData> toAgeRatingData() {
+    final List<Pair<USK, int>> ageRatings = [
+      for (var i = 0; i < USK.values.length; ++i) Pair(USK.values[i], 0),
+    ];
+
+    for (final game in games) {
+      ageRatings[game.usk.index].second++;
+    }
+
+    final List<ChartData> result = [];
+    for (var i = 0; i < USK.values.length; ++i) {
+      final usk = ageRatings[i].first;
+      final count = ageRatings[i].second;
+      result.add(
+        ChartData(
+          title: usk.toRatedString(l10n),
+          value: count.toDouble(),
+          color: usk.toBackgroundColor(),
+          isSelected: highlight == usk.toRatedString(l10n),
+          alternativeTitle: USKLogo(
+            ageRestriction: usk,
+          ),
+        ),
+      );
+    }
+
+    result.removeWhere((element) => element.value < 0.01);
+
+    return result;
+  }
+
   List<ChartData> toPriceDistribution(double interval) {
     assert(interval > 0.0);
 
     final List<Pair<double, int>> priceDistribution = [];
 
     int processedGames = 0;
-    double priceCap = interval;
+    double priceCap = 0.001;
 
     while (processedGames < games.length) {
       int matchingGames = games.fold(
@@ -134,86 +166,54 @@ class GameData {
         .toList();
   }
 
-  PriceSpan toPriceSpanWithGifts() {
-    final min = games.fold(
-      double.infinity,
-      (previousValue, element) => element.fullPrice() < previousValue
-          ? element.fullPrice()
-          : previousValue,
+  int toGameCount() {
+    return games.length;
+  }
+
+  int toDLCCount() {
+    return games.fold(
+      0,
+      (previousValue, element) => element.dlcs.length + previousValue,
     );
-    final max = games.fold(
-      double.negativeInfinity,
-      (previousValue, element) => element.fullPrice() > previousValue
-          ? element.fullPrice()
-          : previousValue,
-    );
-    final sum = games.fold(
+  }
+
+  double toTotalPrice() {
+    return games.fold(
       0.0,
       (previousValue, element) => element.fullPrice() + previousValue,
     );
-
-    return PriceSpan(min: min, max: max, avg: sum / games.length);
   }
 
-  PriceSpan toPriceSpanWithoutGifts() {
-    final nonGiftedGames = games.where((element) => !element.wasGifted);
-
-    final min = nonGiftedGames.fold(
-      double.infinity,
-      (previousValue, element) => element.fullPrice() < previousValue
-          ? element.fullPrice()
-          : previousValue,
-    );
-    final max = nonGiftedGames.fold(
-      double.negativeInfinity,
-      (previousValue, element) => element.fullPrice() > previousValue
-          ? element.fullPrice()
-          : previousValue,
-    );
-    final sum = nonGiftedGames.fold(
+  double toTotalBasePrice() {
+    return games.fold(
       0.0,
-      (previousValue, element) => element.fullPrice() + previousValue,
+      (previousValue, element) => element.price + previousValue,
     );
-
-    return PriceSpan(min: min, max: max, avg: sum / nonGiftedGames.length);
   }
 
-  PriceSpan toPriceMedianSpanWithGifts() {
-    final prices = games.map((e) => e.fullPrice()).toList();
-    prices.sort((a, b) => a.compareTo(b));
-
-    final min = prices.fold(
-      double.infinity,
+  double toTotalDLCPrice() {
+    return games.fold(
+      0.0,
       (previousValue, element) =>
-          element < previousValue ? element : previousValue,
+          element.dlcs.fold(
+            0.0,
+            (previousValue, element) => element.price + previousValue,
+          ) +
+          previousValue,
     );
-    final max = prices.fold(
-      double.negativeInfinity,
-      (previousValue, element) =>
-          element > previousValue ? element : previousValue,
-    );
-    final median = prices[prices.length ~/ 2];
-
-    return PriceSpan(min: min, max: max, avg: median);
   }
 
-  PriceSpan toPriceMedianSpanWithoutGifts() {
-    final nonGiftedGames = games.where((element) => !element.wasGifted);
-    final prices = nonGiftedGames.map((e) => e.fullPrice()).toList();
-    prices.sort((a, b) => a.compareTo(b));
+  double toAveragePrice() {
+    return toTotalPrice() / toGameCount();
+  }
 
-    final min = prices.fold(
-      double.infinity,
-      (previousValue, element) =>
-          element < previousValue ? element : previousValue,
-    );
-    final max = prices.fold(
-      double.negativeInfinity,
-      (previousValue, element) =>
-          element > previousValue ? element : previousValue,
-    );
-    final median = prices[prices.length ~/ 2];
+  double toMedianPrice() {
+    if (games.isEmpty) {
+      return 0.0;
+    }
+    final List<Game> sortedGames = List.from(games);
+    sortedGames.sort((a, b) => a.fullPrice().compareTo(b.fullPrice()));
 
-    return PriceSpan(min: min, max: max, avg: median);
+    return sortedGames[sortedGames.length ~/ 2].fullPrice();
   }
 }
