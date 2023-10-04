@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
-
 import 'package:pile_of_shame/models/game.dart';
 
 part 'game_sorting.freezed.dart';
@@ -128,6 +127,20 @@ class GameSorterByLastModified extends GameSorter {
   }
 }
 
+class GameSorterByCreatedAt extends GameSorter {
+  const GameSorterByCreatedAt();
+
+  @override
+  int compareGames(Game a, Game b, bool isAscending) {
+    final factor = isAscending ? 1 : -1;
+    final result = (a.createdAt.compareTo(b.createdAt)) * factor;
+    if (result == 0) {
+      return const GameSorterByName().compareGames(a, b, isAscending);
+    }
+    return result;
+  }
+}
+
 class GameSorterByFavorites extends GameSorter {
   const GameSorterByFavorites();
 
@@ -181,6 +194,7 @@ enum SortStrategy {
   byAgeRating(sorter: GameSorterByAgeRating()),
   byPlatform(sorter: GameSorterByPlatform()),
   byLastModified(sorter: GameSorterByLastModified()),
+  byCreatedAt(sorter: GameSorterByCreatedAt()),
   byFavorites(sorter: GameSorterByFavorites()),
   byHasNotes(sorter: GameSorterByHasNotes()),
   byDLCCount(sorter: GameSorterByDLCCount()),
@@ -204,6 +218,8 @@ enum SortStrategy {
         return AppLocalizations.of(context)!.byPlatform;
       case SortStrategy.byLastModified:
         return AppLocalizations.of(context)!.byLastModified;
+      case SortStrategy.byCreatedAt:
+        return AppLocalizations.of(context)!.byCreatedAt;
       case SortStrategy.byFavorites:
         return AppLocalizations.of(context)!.byFavorites;
       case SortStrategy.byHasNotes:
