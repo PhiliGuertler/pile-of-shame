@@ -6,12 +6,11 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
 import 'package:pile_of_shame/models/game.dart';
-import 'package:pile_of_shame/models/game_platforms.dart';
 import 'package:pile_of_shame/models/game_storage.dart';
-import 'package:pile_of_shame/models/play_status.dart';
 import 'package:pile_of_shame/providers/games/game_file_provider.dart';
 import 'package:pile_of_shame/providers/games/game_provider.dart';
 
+import '../../test_resources/test_games.dart';
 import '../test_utils/fake_path_provider.dart';
 @GenerateNiceMocks([MockSpec<File>()])
 import 'game_storage_test.mocks.dart';
@@ -23,20 +22,8 @@ void main() {
   late ProviderContainer container;
   late MockFile gameFile;
 
-  final Game testGame = Game(
-    id: "testGame",
-    name: "Test Game",
-    platform: GamePlatform.gameBoy,
-    status: PlayStatus.completed,
-    lastModified: DateTime(2023, 9, 12),
-    price: 19.99,
-    notes: "some notes",
-    isFavorite: true,
-    wasGifted: true,
-  );
-  final GamesList testGameList = GamesList(games: [testGame]);
-  const String jsonGameList =
-      '{"games":[{"id":"testGame","name":"Test Game","platform":"GB","status":"completed","lastModified":"2023-09-12T00:00:00.000","price":19.99,"usk":"usk0","dlcs":[],"notes":"some notes","isFavorite":true,"wasGifted":true}]}';
+  final GamesList testGameList = GamesList(games: [TestGames.gameWitcher3]);
+  const String jsonGameList = '{"games":[${TestGames.gameWitcher3Json}]}';
 
   setUp(() {
     mockPathProviderPlatform = FakePathProviderPlatform();

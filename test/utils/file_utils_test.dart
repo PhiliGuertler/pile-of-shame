@@ -19,74 +19,76 @@ void main() {
   test(
       "correctly concatenates the path of a file to the application directory path",
       () async {
-    final File result = await FileUtils().openFile("games_filled.json");
+    final File result = await FileUtils().openFile("game-store.json");
 
-    expect(result.path, 'test_resources/games_filled.json');
+    expect(result.path, 'test_resources/game-store.json');
     expect(result.readAsStringSync().replaceAll('\r', ""), """
 {
     "games": [
         {
-            "id": "zelda-botw",
-            "name": "The Legend of Zelda: Breath of the Wild",
-            "platform": "Switch",
-            "status": "playing",
-            "lastModified": "2023-08-08",
+            "id": "witcher-3",
+            "name": "The Witcher 3: Wild Hunt",
+            "platform": "Gog",
+            "status": "completed",
+            "lastModified": "2023-01-01T00:00:00.000",
+            "createdAt": "2015-05-19T00:00:00.000",
             "price": 59.99,
-            "usk": "usk12",
+            "usk": "usk18",
             "dlcs": [
                 {
-                    "id": "zelda-botw-die-legendaeren-pruefungen",
-                    "name": "Die legendären Prüfungen",
-                    "status": "playing",
-                    "lastModified": "2023-08-08",
-                    "price": 23.99,
-                    "releaseDate": "2018-09-03",
-                    "isFavorite": false
+                    "id": "witcher-3-hearts-of-stone",
+                    "name": "Hearts of Stone",
+                    "status": "completed",
+                    "lastModified": "2023-01-02T00:00:00.000",
+                    "createdAt": "2015-10-13T00:00:00.000",
+                    "price": 9.99,
+                    "notes": "This one contains Gaunter O'Dim",
+                    "isFavorite": false,
+                    "wasGifted": false
                 },
                 {
-                    "id": "zelda-botw-die-ballade-der-recken",
-                    "name": "Die Ballade der Recken",
+                    "id": "witcher-3-blood-and-wine",
+                    "name": "Hearts of Stone",
                     "status": "playing",
-                    "lastModified": "2023-08-08",
-                    "price": 23.99,
-                    "releaseDate": "2019-03-13",
-                    "notes": "Story DLC that results in a motorbike for Link!",
-                    "isFavorite": false
+                    "lastModified": "2023-01-02T00:00:00.000",
+                    "createdAt": "2016-05-31T00:00:00.000",
+                    "price": 19.99,
+                    "notes": "Let's head to Toussaint",
+                    "isFavorite": true,
+                    "wasGifted": false
                 }
             ],
-            "releaseDate": "2017-04-20",
-            "coverArt": "https://cdn02.plentymarkets.com/qozbgypaugq8/item/images/1613/full/PSTR-ZELDA005.jpg",
-            "isFavorite": true,
-            "wasGifted": true
+            "notes": null,
+            "isFavorite": false,
+            "wasGifted": false
         },
         {
-            "id": "outer-wilds",
-            "name": "Outer Wilds",
-            "platform": "Steam",
+            "id": "ssx-3",
+            "name": "SSX 3",
+            "platform": "PS2",
             "status": "completed100Percent",
-            "lastModified": "2023-08-04",
-            "price": 29.95,
-            "usk": "usk12",
-            "dlcs": [
-                {
-                    "id": "outer-wilds-echoes-of-the-eye",
-                    "name": "Echoes of the Eye",
-                    "status": "completed100Percent",
-                    "lastModified": "2023-08-08",
-                    "price": 16.99
-                }
-            ],
-            "notes": null
+            "lastModified": "2023-01-03T00:00:00.000",
+            "createdAt": "2022-08-08T00:00:00.000",
+            "price": 39.95,
+            "usk": "usk6",
+            "dlcs": [],
+            "notes": null,
+            "isFavorite": false,
+            "wasGifted": false
         },
         {
-            "id": "sekiro",
-            "name": "Sekiro",
+            "id": "ori-and-the-blind-forest",
+            "name": "Ori and the blind forest",
             "platform": "PS4",
-            "status": "completed",
-            "lastModified": "2023-08-04",
-            "price": 60.00,
-            "usk": "usk18",
-            "dlcs": []
+            "status": "onPileOfShame",
+            "lastModified": "2023-01-04T00:00:00.000",
+            "createdAt": "2022-08-08T00:00:00.000",
+            "price": 25.0,
+            "usk": "usk12",
+            "dlcs": [],
+            "notes": null,
+            "isFavorite": false,
+            "wasGifted": false
         }
     ]
 }""");

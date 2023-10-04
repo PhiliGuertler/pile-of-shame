@@ -1,12 +1,13 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pile_of_shame/models/age_restriction.dart';
-import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/models/game_platforms.dart';
 import 'package:pile_of_shame/models/play_status.dart';
 import 'package:pile_of_shame/providers/games/game_filter_provider.dart';
 import 'package:pile_of_shame/providers/games/game_platforms_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../test_resources/test_games.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -165,45 +166,6 @@ void main() {
   });
 
   group("applyGameFiltersProvider", () {
-    final Game gameOuterWilds = Game(
-      id: 'outer-wilds',
-      lastModified: DateTime(2023),
-      name: 'Outer Wilds',
-      platform: GamePlatform.xboxOne,
-      price: 24.99,
-      status: PlayStatus.completed,
-      dlcs: [],
-      usk: USK.usk12,
-    );
-    final Game gameDistance = Game(
-      id: 'distance',
-      lastModified: DateTime(2023, 1, 2),
-      name: 'Distance',
-      platform: GamePlatform.steam,
-      price: 19.99,
-      status: PlayStatus.playing,
-      dlcs: [],
-    );
-    final Game gameSsx3 = Game(
-      id: 'ssx-3',
-      lastModified: DateTime(2023, 1, 3),
-      name: 'SSX 3',
-      platform: GamePlatform.playStation2,
-      price: 39.95,
-      status: PlayStatus.completed100Percent,
-      dlcs: [],
-      usk: USK.usk6,
-    );
-    final Game gameOriAndTheBlindForest = Game(
-      id: 'ori-and-the-blind-forest',
-      lastModified: DateTime(2023, 1, 4),
-      name: 'Ori and the blind forest',
-      platform: GamePlatform.playStation4,
-      price: 25,
-      status: PlayStatus.onPileOfShame,
-      dlcs: [],
-      usk: USK.usk12,
-    );
     test("correctly applies platform filters", () async {
       SharedPreferences.setMockInitialValues({});
       await container
@@ -211,32 +173,39 @@ void main() {
           .setFilter([GamePlatform.playStation2, GamePlatform.steam]);
 
       final originalGames = [
-        gameOuterWilds,
-        gameDistance,
-        gameSsx3,
-        gameOriAndTheBlindForest,
+        TestGames.gameOuterWilds,
+        TestGames.gameDistance,
+        TestGames.gameSsx3,
+        TestGames.gameOriAndTheBlindForest,
       ];
 
       final result = container.read(applyGameFiltersProvider(originalGames));
 
-      expect(result, [gameDistance, gameSsx3]);
+      expect(result, [
+        TestGames.gameOuterWilds,
+        TestGames.gameDistance,
+        TestGames.gameSsx3,
+      ]);
     });
     test("correctly applies platform family filters", () async {
       SharedPreferences.setMockInitialValues({});
       await container
           .read(gamePlatformFamilyFilterProvider.notifier)
-          .setFilter([GamePlatformFamily.sony, GamePlatformFamily.pc]);
+          .setFilter([GamePlatformFamily.sony]);
 
       final originalGames = [
-        gameOuterWilds,
-        gameDistance,
-        gameSsx3,
-        gameOriAndTheBlindForest,
+        TestGames.gameOuterWilds,
+        TestGames.gameDistance,
+        TestGames.gameSsx3,
+        TestGames.gameOriAndTheBlindForest,
       ];
 
       final result = container.read(applyGameFiltersProvider(originalGames));
 
-      expect(result, [gameDistance, gameSsx3, gameOriAndTheBlindForest]);
+      expect(result, [
+        TestGames.gameSsx3,
+        TestGames.gameOriAndTheBlindForest,
+      ]);
     });
     test("correctly applies play status filters", () async {
       container
@@ -244,15 +213,18 @@ void main() {
           .setFilter([PlayStatus.completed, PlayStatus.onPileOfShame]);
 
       final originalGames = [
-        gameOuterWilds,
-        gameDistance,
-        gameSsx3,
-        gameOriAndTheBlindForest,
+        TestGames.gameOuterWilds,
+        TestGames.gameDistance,
+        TestGames.gameSsx3,
+        TestGames.gameOriAndTheBlindForest,
       ];
 
       final result = container.read(applyGameFiltersProvider(originalGames));
 
-      expect(result, [gameOuterWilds, gameOriAndTheBlindForest]);
+      expect(
+        result,
+        [TestGames.gameOuterWilds, TestGames.gameOriAndTheBlindForest],
+      );
     });
     test("correctly applies age rating filters", () {
       container
@@ -260,15 +232,15 @@ void main() {
           .setFilter([USK.usk0, USK.usk6]);
 
       final originalGames = [
-        gameOuterWilds,
-        gameDistance,
-        gameSsx3,
-        gameOriAndTheBlindForest,
+        TestGames.gameOuterWilds,
+        TestGames.gameDistance,
+        TestGames.gameSsx3,
+        TestGames.gameOriAndTheBlindForest,
       ];
 
       final result = container.read(applyGameFiltersProvider(originalGames));
 
-      expect(result, [gameDistance, gameSsx3]);
+      expect(result, [TestGames.gameDistance, TestGames.gameSsx3]);
     });
     test("correctly applies multiple filters", () {
       container.read(ageRatingFilterProvider.notifier).setFilter([USK.usk12]);
@@ -283,15 +255,15 @@ void main() {
           .setFilter([PlayStatus.onPileOfShame]);
 
       final originalGames = [
-        gameOuterWilds,
-        gameDistance,
-        gameSsx3,
-        gameOriAndTheBlindForest,
+        TestGames.gameOuterWilds,
+        TestGames.gameDistance,
+        TestGames.gameSsx3,
+        TestGames.gameOriAndTheBlindForest,
       ];
 
       final result = container.read(applyGameFiltersProvider(originalGames));
 
-      expect(result, [gameOriAndTheBlindForest]);
+      expect(result, [TestGames.gameOriAndTheBlindForest]);
     });
   });
 }

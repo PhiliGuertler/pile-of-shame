@@ -1,58 +1,14 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:pile_of_shame/models/age_restriction.dart';
-import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/models/game_grouping.dart';
-import 'package:pile_of_shame/models/game_platforms.dart';
-import 'package:pile_of_shame/models/play_status.dart';
 import 'package:pile_of_shame/providers/games/game_group_provider.dart';
 import 'package:pile_of_shame/providers/theming/theme_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../test_resources/test_games.dart';
+
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
-
-  final Game gameOuterWilds = Game(
-    id: 'outer-wilds',
-    lastModified: DateTime(2023),
-    name: 'Outer Wilds',
-    platform: GamePlatform.steam,
-    price: 24.99,
-    status: PlayStatus.completed,
-    dlcs: [],
-    usk: USK.usk12,
-    notes: "Outer Wilds can sadly only be played once...",
-  );
-  final Game gamePokemonX = Game(
-    id: 'pokemon-x',
-    lastModified: DateTime(2023, 1, 2),
-    name: 'Pokémon X',
-    platform: GamePlatform.steam,
-    price: 19.99,
-    status: PlayStatus.playing,
-    dlcs: [],
-    usk: USK.usk12,
-  );
-  final Game gameSsx3 = Game(
-    id: 'ssx-3',
-    lastModified: DateTime(2023, 1, 3),
-    name: 'SSX 3',
-    platform: GamePlatform.unknown,
-    price: 39.95,
-    status: PlayStatus.completed100Percent,
-    dlcs: [],
-    usk: USK.usk12,
-  );
-  final Game gameOriAndTheBlindForest = Game(
-    id: 'ori-and-the-blind-forest',
-    lastModified: DateTime(2023, 1, 4),
-    name: 'Ori and the blind forest',
-    platform: GamePlatform.unknown,
-    price: 25,
-    status: PlayStatus.onPileOfShame,
-    dlcs: [],
-    usk: USK.usk12,
-  );
 
   late ProviderContainer container;
 
@@ -105,10 +61,10 @@ void main() {
       {},
     );
     final games = [
-      gameOuterWilds,
-      gameSsx3,
-      gamePokemonX,
-      gameOriAndTheBlindForest,
+      TestGames.gameOuterWilds,
+      TestGames.gameWitcher3,
+      TestGames.gameSsx3,
+      TestGames.gameOriAndTheBlindForest,
     ];
 
     await container.read(groupGamesProvider.notifier).setGrouping(
@@ -120,8 +76,8 @@ void main() {
         await container.read(applyGameGroupProvider(games).future);
 
     expect(groupedGames, {
-      "PC": [gameOuterWilds, gamePokemonX],
-      "Sonstige": [gameSsx3, gameOriAndTheBlindForest],
+      "PC": [TestGames.gameOuterWilds, TestGames.gameWitcher3],
+      "Sony": [TestGames.gameSsx3, TestGames.gameOriAndTheBlindForest],
     });
   });
   test(
@@ -131,10 +87,10 @@ void main() {
       {},
     );
     final games = [
-      gameOuterWilds,
-      gameSsx3,
-      gamePokemonX,
-      gameOriAndTheBlindForest,
+      TestGames.gameOuterWilds,
+      TestGames.gameWitcher3,
+      TestGames.gameSsx3,
+      TestGames.gameOriAndTheBlindForest,
     ];
 
     await container

@@ -4,11 +4,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:pile_of_shame/models/age_restriction.dart';
 import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/models/game_platforms.dart';
 import 'package:pile_of_shame/models/game_sorting.dart';
-import 'package:pile_of_shame/models/play_status.dart';
 import 'package:pile_of_shame/providers/file_provider.dart';
 import 'package:pile_of_shame/providers/games/game_file_provider.dart';
 import 'package:pile_of_shame/providers/games/game_filter_provider.dart';
@@ -18,89 +16,12 @@ import 'package:pile_of_shame/providers/games/game_sorter_provider.dart';
 import 'package:pile_of_shame/utils/file_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../test_resources/test_games.dart';
 @GenerateNiceMocks([MockSpec<FileUtils>(), MockSpec<File>()])
 import 'game_provider_test.mocks.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
-
-  final gameZeldaBotw = Game(
-    id: 'zelda-botw',
-    name: "The Legend of Zelda: Breath of the Wild",
-    platform: GamePlatform.nintendoSwitch,
-    status: PlayStatus.playing,
-    lastModified: DateTime(2023, 8, 8),
-    price: 59.99,
-    usk: USK.usk12,
-    dlcs: [
-      DLC(
-        id: 'zelda-botw-die-legendaeren-pruefungen',
-        name: "Die legendären Prüfungen",
-        status: PlayStatus.playing,
-        lastModified: DateTime(2023, 8, 8),
-        price: 23.99,
-      ),
-      DLC(
-        id: 'zelda-botw-die-ballade-der-recken',
-        name: "Die Ballade der Recken",
-        status: PlayStatus.playing,
-        lastModified: DateTime(2023, 8, 8),
-        price: 23.99,
-        notes: "Story DLC that results in a motorbike for Link!",
-      ),
-    ],
-    isFavorite: true,
-    wasGifted: true,
-  );
-  final gameOuterWilds = Game(
-    id: 'outer-wilds',
-    name: "Outer Wilds",
-    platform: GamePlatform.steam,
-    status: PlayStatus.completed100Percent,
-    lastModified: DateTime(2023, 8, 4),
-    price: 29.95,
-    usk: USK.usk12,
-    dlcs: [
-      DLC(
-        id: 'outer-wilds-echoes-of-the-eye',
-        name: "Echoes of the Eye",
-        status: PlayStatus.completed100Percent,
-        lastModified: DateTime(2023, 8, 8),
-        price: 16.99,
-      ),
-    ],
-  );
-  final gameSekiro = Game(
-    id: 'sekiro',
-    name: "Sekiro",
-    platform: GamePlatform.playStation4,
-    status: PlayStatus.completed,
-    lastModified: DateTime(2023, 8, 4),
-    price: 60.00,
-    usk: USK.usk18,
-  );
-  final gameDarkSouls = Game(
-    id: 'dark-souls',
-    name: "Dark Souls",
-    platform: GamePlatform.steam,
-    status: PlayStatus.replaying,
-    lastModified: DateTime(2023, 4, 20),
-    price: 39.99,
-    usk: USK.usk16,
-    dlcs: [
-      DLC(
-        id: 'dark-souls-artorias-of-the-abyss',
-        name: "Artorias of the Abyss",
-        status: PlayStatus.onWishList,
-        lastModified: DateTime(2013, 7, 10),
-        price: 9.99,
-        notes: "DLC Notes",
-        isFavorite: true,
-        wasGifted: true,
-      ),
-    ],
-    notes: "Game Notes",
-  );
 
   late MockFileUtils mockFileUtils;
   late MockFile mockFile;
@@ -127,14 +48,14 @@ void main() {
     });
     test('returns a list of games if the file is not empty', () async {
       when(mockFileUtils.openFile(gameFileName)).thenAnswer(
-        (realInvocation) async => File('test_resources/games_filled.json'),
+        (realInvocation) async => File('test_resources/game-store.json'),
       );
 
       final result = await container.read(gamesProvider.future);
       expect(result, [
-        gameZeldaBotw,
-        gameOuterWilds,
-        gameSekiro,
+        TestGames.gameWitcher3,
+        TestGames.gameSsx3,
+        TestGames.gameOriAndTheBlindForest,
       ]);
     });
     test('Successfully writes a list of games to the games file', () async {
@@ -142,7 +63,7 @@ void main() {
           .thenAnswer((realInvocation) async => mockFile);
 
       const String stringifiedTestGameList =
-          '{"games":[{"id":"dark-souls","name":"Dark Souls","platform":"Steam","status":"replaying","lastModified":"2023-04-20T00:00:00.000","price":39.99,"usk":"usk16","dlcs":[{"id":"dark-souls-artorias-of-the-abyss","name":"Artorias of the Abyss","status":"onWishList","lastModified":"2013-07-10T00:00:00.000","price":9.99,"notes":"DLC Notes","isFavorite":true,"wasGifted":true}],"notes":"Game Notes","isFavorite":false,"wasGifted":false}]}';
+          '{"games":[${TestGames.gameWitcher3Json}]}';
 
       // starts with an empty list as the mockfile returns an empty string
       final initialValue = await container.read(gamesProvider.future);
@@ -156,7 +77,7 @@ void main() {
       when(mockFile.readAsString())
           .thenAnswer((realInvocation) async => stringifiedTestGameList);
       await container.read(gameStorageProvider).persistGamesList(
-            GamesList(games: [gameDarkSouls]),
+            GamesList(games: [TestGames.gameWitcher3]),
           );
       verify(mockFile.writeAsString(stringifiedTestGameList)).called(1);
 
@@ -164,7 +85,7 @@ void main() {
       final finalValue = await container.read(gamesProvider.future);
       // the game file should have been opened once more
       verify(mockFileUtils.openFile(gameFileName));
-      expect(finalValue, [gameDarkSouls]);
+      expect(finalValue, [TestGames.gameWitcher3]);
     });
   });
 
@@ -180,7 +101,7 @@ void main() {
     });
     test("returns true if there are games", () async {
       when(mockFileUtils.openFile(gameFileName)).thenAnswer(
-        (realInvocation) async => File('test_resources/games_filled.json'),
+        (realInvocation) async => File('test_resources/game-store.json'),
       );
 
       final hasGames = await container.read(hasGamesProvider.future);
@@ -192,7 +113,7 @@ void main() {
   group("gameByIdProvider", () {
     test("throws an exception if no game with the given id exists", () async {
       when(mockFileUtils.openFile(gameFileName)).thenAnswer(
-        (realInvocation) async => File('test_resources/games_filled.json'),
+        (realInvocation) async => File('test_resources/game-store.json'),
       );
       try {
         await container.read(gameByIdProvider("unknown-game-id").future);
@@ -207,17 +128,17 @@ void main() {
     });
     test("returns the game with the given id", () async {
       when(mockFileUtils.openFile(gameFileName)).thenAnswer(
-        (realInvocation) async => File('test_resources/games_filled.json'),
+        (realInvocation) async => File('test_resources/game-store.json'),
       );
-      final Game game =
-          await container.read(gameByIdProvider(gameZeldaBotw.id).future);
-      expect(game, gameZeldaBotw);
+      final Game game = await container
+          .read(gameByIdProvider(TestGames.gameWitcher3.id).future);
+      expect(game, TestGames.gameWitcher3);
     });
   });
   group("dlcByGameAndIdProvider", () {
     test("throws an exception if no game with the given id exists", () async {
       when(mockFileUtils.openFile(gameFileName)).thenAnswer(
-        (realInvocation) async => File('test_resources/games_filled.json'),
+        (realInvocation) async => File('test_resources/game-store.json'),
       );
       try {
         await container.read(
@@ -234,11 +155,12 @@ void main() {
     });
     test("throws an exception if no dlc with the given id exists", () async {
       when(mockFileUtils.openFile(gameFileName)).thenAnswer(
-        (realInvocation) async => File('test_resources/games_filled.json'),
+        (realInvocation) async => File('test_resources/game-store.json'),
       );
       try {
         await container.read(
-          dlcByGameAndIdProvider(gameZeldaBotw.id, "unknown-dlc-id").future,
+          dlcByGameAndIdProvider(TestGames.gameWitcher3.id, "unknown-dlc-id")
+              .future,
         );
       } catch (error) {
         expect(
@@ -251,19 +173,21 @@ void main() {
     });
     test("returns the dlc with the given id", () async {
       when(mockFileUtils.openFile(gameFileName)).thenAnswer(
-        (realInvocation) async => File('test_resources/games_filled.json'),
+        (realInvocation) async => File('test_resources/game-store.json'),
       );
       final DLC game = await container.read(
-        dlcByGameAndIdProvider(gameZeldaBotw.id, gameZeldaBotw.dlcs[0].id)
-            .future,
+        dlcByGameAndIdProvider(
+          TestGames.gameWitcher3.id,
+          TestGames.dlcWitcher3BloodAndWine.id,
+        ).future,
       );
-      expect(game, gameZeldaBotw.dlcs[0]);
+      expect(game, TestGames.gameWitcher3.dlcs[1]);
     });
   });
   group("gamesFilteredProvider", () {
     test("returns all games by default, sorted by name", () async {
       when(mockFileUtils.openFile(gameFileName)).thenAnswer(
-        (realInvocation) async => File('test_resources/games_filled.json'),
+        (realInvocation) async => File('test_resources/game-store.json'),
       );
       SharedPreferences.setMockInitialValues(
         {},
@@ -273,14 +197,14 @@ void main() {
           await container.read(gamesFilteredProvider.future);
 
       expect(games.games, [
-        gameOuterWilds,
-        gameSekiro,
-        gameZeldaBotw,
+        TestGames.gameOriAndTheBlindForest,
+        TestGames.gameSsx3,
+        TestGames.gameWitcher3,
       ]);
     });
     test("returns filtered games only, sorted by name", () async {
       when(mockFileUtils.openFile(gameFileName)).thenAnswer(
-        (realInvocation) async => File('test_resources/games_filled.json'),
+        (realInvocation) async => File('test_resources/game-store.json'),
       );
       SharedPreferences.setMockInitialValues(
         {},
@@ -288,26 +212,26 @@ void main() {
 
       container
           .read(gamePlatformFilterProvider.notifier)
-          .setFilter([GamePlatform.nintendoSwitch, GamePlatform.playStation4]);
+          .setFilter([GamePlatform.gog, GamePlatform.playStation4]);
 
       final GamesList games =
           await container.read(gamesFilteredProvider.future);
 
       expect(games.games, [
-        gameSekiro,
-        gameZeldaBotw,
+        TestGames.gameOriAndTheBlindForest,
+        TestGames.gameWitcher3,
       ]);
     });
     test("returns filtered games with active search, sorted by price",
         () async {
       when(mockFileUtils.openFile(gameFileName)).thenAnswer(
-        (realInvocation) async => File('test_resources/games_filled.json'),
+        (realInvocation) async => File('test_resources/game-store.json'),
       );
       SharedPreferences.setMockInitialValues(
         {},
       );
 
-      container.read(gameSearchProvider.notifier).setSearch("zelda");
+      container.read(gameSearchProvider.notifier).setSearch("witcher");
       container.read(sortGamesProvider.notifier).setSorting(
             const GameSorting(
               sortStrategy: SortStrategy.byPrice,
@@ -315,20 +239,20 @@ void main() {
           );
       container
           .read(gamePlatformFilterProvider.notifier)
-          .setFilter([GamePlatform.nintendoSwitch, GamePlatform.playStation4]);
+          .setFilter([GamePlatform.gog, GamePlatform.playStation4]);
 
       final GamesList games =
           await container.read(gamesFilteredProvider.future);
 
       expect(games.games, [
-        gameZeldaBotw,
+        TestGames.gameWitcher3,
       ]);
     });
   });
   group("gamesFilteredProvider", () {
     test("returns the sum of prices of all games", () async {
       when(mockFileUtils.openFile(gameFileName)).thenAnswer(
-        (realInvocation) async => File('test_resources/games_filled.json'),
+        (realInvocation) async => File('test_resources/game-store.json'),
       );
       SharedPreferences.setMockInitialValues(
         {},
@@ -337,11 +261,16 @@ void main() {
       final double totalPrice =
           await container.read(gamesFilteredTotalPriceProvider.future);
 
-      expect(totalPrice, 59.99 + 23.99 + 23.99 + 29.95 + 16.99 + 60.00);
+      expect(
+        totalPrice,
+        TestGames.gameWitcher3.fullPrice() +
+            TestGames.gameSsx3.fullPrice() +
+            TestGames.gameOriAndTheBlindForest.fullPrice(),
+      );
     });
     test("returns the sum prices of filtered games", () async {
       when(mockFileUtils.openFile(gameFileName)).thenAnswer(
-        (realInvocation) async => File('test_resources/games_filled.json'),
+        (realInvocation) async => File('test_resources/game-store.json'),
       );
       SharedPreferences.setMockInitialValues(
         {},
@@ -349,18 +278,18 @@ void main() {
 
       container
           .read(gamePlatformFilterProvider.notifier)
-          .setFilter([GamePlatform.nintendoSwitch]);
+          .setFilter([GamePlatform.gog]);
 
       final double totalPrice =
           await container.read(gamesFilteredTotalPriceProvider.future);
 
-      expect(totalPrice, 59.99 + 23.99 + 23.99);
+      expect(totalPrice, TestGames.gameWitcher3.fullPrice());
     });
   });
   group("gamesFilteredTotalAmountProvider", () {
     test("returns the amount of all games", () async {
       when(mockFileUtils.openFile(gameFileName)).thenAnswer(
-        (realInvocation) async => File('test_resources/games_filled.json'),
+        (realInvocation) async => File('test_resources/game-store.json'),
       );
       SharedPreferences.setMockInitialValues(
         {},
@@ -373,7 +302,7 @@ void main() {
     });
     test("returns the amount of filtered games", () async {
       when(mockFileUtils.openFile(gameFileName)).thenAnswer(
-        (realInvocation) async => File('test_resources/games_filled.json'),
+        (realInvocation) async => File('test_resources/game-store.json'),
       );
       SharedPreferences.setMockInitialValues(
         {},
@@ -381,7 +310,7 @@ void main() {
 
       container
           .read(gamePlatformFilterProvider.notifier)
-          .setFilter([GamePlatform.nintendoSwitch]);
+          .setFilter([GamePlatform.gog]);
 
       final int totalPrice =
           await container.read(gamesFilteredTotalAmountProvider.future);
