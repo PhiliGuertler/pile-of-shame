@@ -1,125 +1,54 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pile_of_shame/models/age_restriction.dart';
 import 'package:pile_of_shame/models/game.dart';
-import 'package:pile_of_shame/models/game_platforms.dart';
-import 'package:pile_of_shame/models/play_status.dart';
+
+import '../../test_resources/test_games.dart';
 
 void main() {
   group('Game', () {
     test("Correctly accumulates price of game without DLCs", () {
-      final testGame = Game(
-        id: 'test-game',
-        name: "Test",
-        platform: GamePlatform.gameCube,
-        status: PlayStatus.completed,
-        lastModified: DateTime(2023, 8, 8),
-        price: 49.99,
-      );
-      expect(testGame.fullPrice(), 49.99);
+      expect(TestGames.gameSsx3.fullPrice(), 39.95);
     });
     test("Correctly accumulates price of game with DLCs", () {
-      final testGame = Game(
-        id: 'test-game',
-        name: "DLC heavy game",
-        platform: GamePlatform.gog,
-        status: PlayStatus.onPileOfShame,
-        lastModified: DateTime(2023, 8, 8),
-        price: 79.99,
-        dlcs: [
-          DLC(
-            id: 'test-game-dlc1',
-            name: "DLC 1",
-            status: PlayStatus.onPileOfShame,
-            lastModified: DateTime(2023, 8, 8),
-            price: 9.99,
-          ),
-          DLC(
-            id: 'test-game-dlc2',
-            name: "DLC 2",
-            status: PlayStatus.onPileOfShame,
-            lastModified: DateTime(2023, 8, 8),
-            price: 14.49,
-          ),
-        ],
-      );
-      expect(testGame.fullPrice(), 79.99 + 9.99 + 14.49);
+      expect(TestGames.gameWitcher3.fullPrice(), 59.99 + 19.99 + 9.99);
     });
   });
 
   group('GamesList', () {
-    final Game gameOuterWilds = Game(
-      id: 'outer-wilds',
-      lastModified: DateTime(2023),
-      name: 'Outer Wilds',
-      platform: GamePlatform.steam,
-      price: 24.99,
-      status: PlayStatus.completed,
-      dlcs: [],
-      usk: USK.usk12,
-    );
-    final Game gameDistance = Game(
-      id: 'distance',
-      lastModified: DateTime(2023, 1, 2),
-      name: 'Distance',
-      platform: GamePlatform.steam,
-      price: 19.99,
-      status: PlayStatus.playing,
-      dlcs: [],
-      usk: USK.usk12,
-    );
-    final Game gameSsx3 = Game(
-      id: 'ssx-3',
-      lastModified: DateTime(2023, 1, 3),
-      name: 'SSX 3',
-      platform: GamePlatform.playStation2,
-      price: 39.95,
-      status: PlayStatus.completed100Percent,
-      dlcs: [],
-      usk: USK.usk6,
-    );
-    final Game gameOriAndTheBlindForest = Game(
-      id: 'ori-and-the-blind-forest',
-      lastModified: DateTime(2023, 1, 4),
-      name: 'Ori and the blind forest',
-      platform: GamePlatform.playStation4,
-      price: 25,
-      status: PlayStatus.onPileOfShame,
-      dlcs: [],
-      usk: USK.usk12,
-    );
-
     group('updateGame', () {
       test(
         'correctly updates an existing game',
         () {
           final GamesList gamesList = GamesList(
             games: [
-              gameOuterWilds,
-              gameDistance,
-              gameSsx3,
-              gameOriAndTheBlindForest,
+              TestGames.gameOuterWilds,
+              TestGames.gameDistance,
+              TestGames.gameSsx3,
+              TestGames.gameOriAndTheBlindForest,
             ],
           );
 
-          final Game updatedGameDistance = gameDistance.copyWith(
+          final Game updatedGameDistance = TestGames.gameDistance.copyWith(
             name: 'Distance Updated',
           );
 
           expect(gamesList.games, [
-            gameOuterWilds,
-            gameDistance,
-            gameSsx3,
-            gameOriAndTheBlindForest,
+            TestGames.gameOuterWilds,
+            TestGames.gameDistance,
+            TestGames.gameSsx3,
+            TestGames.gameOriAndTheBlindForest,
           ]);
 
-          final result =
-              gamesList.updateGame(gameDistance.id, updatedGameDistance);
+          final result = gamesList.updateGame(
+            TestGames.gameDistance.id,
+            updatedGameDistance,
+          );
 
           expect(result.games, [
-            gameOuterWilds,
+            TestGames.gameOuterWilds,
             updatedGameDistance,
-            gameSsx3,
-            gameOriAndTheBlindForest,
+            TestGames.gameSsx3,
+            TestGames.gameOriAndTheBlindForest,
           ]);
         },
       );
@@ -128,20 +57,23 @@ void main() {
         () {
           final GamesList gamesList = GamesList(
             games: [
-              gameOuterWilds,
+              TestGames.gameOuterWilds,
             ],
           );
 
-          final Game updatedGameDistance = gameDistance.copyWith(
+          final Game updatedGameDistance = TestGames.gameDistance.copyWith(
             name: 'Distance Updated',
           );
 
           expect(gamesList.games, [
-            gameOuterWilds,
+            TestGames.gameOuterWilds,
           ]);
 
           try {
-            gamesList.updateGame(gameDistance.id, updatedGameDistance);
+            gamesList.updateGame(
+              TestGames.gameDistance.id,
+              updatedGameDistance,
+            );
           } catch (error) {
             return;
           }
@@ -153,41 +85,41 @@ void main() {
       test('correctly removes an existing Game', () {
         final GamesList gamesList = GamesList(
           games: [
-            gameOuterWilds,
-            gameDistance,
-            gameSsx3,
-            gameOriAndTheBlindForest,
+            TestGames.gameOuterWilds,
+            TestGames.gameDistance,
+            TestGames.gameSsx3,
+            TestGames.gameOriAndTheBlindForest,
           ],
         );
 
         expect(gamesList.games, [
-          gameOuterWilds,
-          gameDistance,
-          gameSsx3,
-          gameOriAndTheBlindForest,
+          TestGames.gameOuterWilds,
+          TestGames.gameDistance,
+          TestGames.gameSsx3,
+          TestGames.gameOriAndTheBlindForest,
         ]);
 
-        final result = gamesList.removeGame(gameDistance.id);
+        final result = gamesList.removeGame(TestGames.gameDistance.id);
 
         expect(result.games, [
-          gameOuterWilds,
-          gameSsx3,
-          gameOriAndTheBlindForest,
+          TestGames.gameOuterWilds,
+          TestGames.gameSsx3,
+          TestGames.gameOriAndTheBlindForest,
         ]);
       });
       test('throws an exception if no game with the given id exists', () {
         final GamesList gamesList = GamesList(
           games: [
-            gameOuterWilds,
+            TestGames.gameOuterWilds,
           ],
         );
 
         expect(gamesList.games, [
-          gameOuterWilds,
+          TestGames.gameOuterWilds,
         ]);
 
         try {
-          gamesList.removeGame(gameDistance.id);
+          gamesList.removeGame(TestGames.gameDistance.id);
         } catch (error) {
           return;
         }
@@ -199,25 +131,25 @@ void main() {
       test('correctly adds a new Game', () {
         final GamesList gamesList = GamesList(
           games: [
-            gameOuterWilds,
-            gameDistance,
-            gameSsx3,
+            TestGames.gameOuterWilds,
+            TestGames.gameDistance,
+            TestGames.gameSsx3,
           ],
         );
 
         expect(gamesList.games, [
-          gameOuterWilds,
-          gameDistance,
-          gameSsx3,
+          TestGames.gameOuterWilds,
+          TestGames.gameDistance,
+          TestGames.gameSsx3,
         ]);
 
-        final result = gamesList.addGame(gameOriAndTheBlindForest);
+        final result = gamesList.addGame(TestGames.gameOriAndTheBlindForest);
 
         expect(result.games, [
-          gameOuterWilds,
-          gameDistance,
-          gameSsx3,
-          gameOriAndTheBlindForest,
+          TestGames.gameOuterWilds,
+          TestGames.gameDistance,
+          TestGames.gameSsx3,
+          TestGames.gameOriAndTheBlindForest,
         ]);
       });
       test(
@@ -225,16 +157,16 @@ void main() {
           () {
         final GamesList gamesList = GamesList(
           games: [
-            gameOuterWilds,
+            TestGames.gameOuterWilds,
           ],
         );
 
         expect(gamesList.games, [
-          gameOuterWilds,
+          TestGames.gameOuterWilds,
         ]);
 
         try {
-          gamesList.addGame(gameOuterWilds);
+          gamesList.addGame(TestGames.gameOuterWilds);
         } catch (error) {
           return;
         }
@@ -245,14 +177,18 @@ void main() {
     group("updateGamesByLastModified", () {
       test("correctly updates older games only", () {
         final GamesList original = GamesList(
-          games: [gameDistance, gameSsx3, gameOriAndTheBlindForest],
+          games: [
+            TestGames.gameDistance,
+            TestGames.gameSsx3,
+            TestGames.gameOriAndTheBlindForest,
+          ],
         );
 
-        final Game updatedDistance = gameDistance.copyWith(
+        final Game updatedDistance = TestGames.gameDistance.copyWith(
           usk: USK.usk18,
           lastModified: DateTime(2024, 9, 12),
         );
-        final Game updatedOri = gameOriAndTheBlindForest.copyWith(
+        final Game updatedOri = TestGames.gameOriAndTheBlindForest.copyWith(
           price: 999.95,
           lastModified: DateTime(2022),
         );
@@ -268,32 +204,36 @@ void main() {
 
         expect(result.games, [
           updatedDistance,
-          gameSsx3,
+          TestGames.gameSsx3,
           // the update-game is older, so this should not have been updated
-          gameOriAndTheBlindForest,
+          TestGames.gameOriAndTheBlindForest,
         ]);
       });
     });
     group("addMissingGames", () {
       test("correctly adds missing games only", () {
         final GamesList original = GamesList(
-          games: [gameDistance, gameSsx3, gameOriAndTheBlindForest],
+          games: [
+            TestGames.gameDistance,
+            TestGames.gameSsx3,
+            TestGames.gameOriAndTheBlindForest,
+          ],
         );
 
         final GamesList update = GamesList(
           games: [
-            gameOuterWilds,
-            gameSsx3,
+            TestGames.gameOuterWilds,
+            TestGames.gameSsx3,
           ],
         );
 
         final GamesList result = original.addMissingGames(update);
 
         expect(result.games, [
-          gameDistance,
-          gameSsx3,
-          gameOriAndTheBlindForest,
-          gameOuterWilds,
+          TestGames.gameDistance,
+          TestGames.gameSsx3,
+          TestGames.gameOriAndTheBlindForest,
+          TestGames.gameOuterWilds,
         ]);
       });
     });

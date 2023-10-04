@@ -48,6 +48,7 @@ class _GameDisplayScreenState extends ConsumerState<GameDisplayScreen> {
       usk: USK.usk12,
       price: 29.99,
       lastModified: DateTime(2023, 9, 24),
+      createdAt: DateTime(2022, 8, 8),
     );
 
     void onDragEndPiece() {

@@ -17,6 +17,7 @@ void main() {
     platform: GamePlatform.nintendo3DS,
     status: PlayStatus.onPileOfShame,
     lastModified: DateTime(2023, 9, 12),
+    createdAt: DateTime(2023, 9, 12),
     price: 15,
     usk: USK.usk12,
     isFavorite: true,
@@ -26,6 +27,7 @@ void main() {
         name: "a-dlc",
         status: PlayStatus.completed,
         lastModified: DateTime(2023, 9, 12),
+        createdAt: DateTime(2023, 9, 12),
         price: 25,
       ),
     ],
@@ -36,6 +38,7 @@ void main() {
     platform: GamePlatform.epicGames,
     status: PlayStatus.playing,
     lastModified: DateTime(2023, 9, 11),
+    createdAt: DateTime(2023, 9, 11),
     price: 19,
     usk: USK.usk6,
     notes: "These are some notes",
@@ -216,6 +219,33 @@ void main() {
   });
   group("GameSorterByLastModified", () {
     const sorter = GameSorterByLastModified();
+
+    test("compares two games ascending correctly", () {
+      // 2023-09-12 > 2023-09-11
+      final result = sorter.compareGames(a, b, true);
+      expect(isABeforeB(result), false);
+    });
+    test("compares two games descending correctly", () {
+      final result = sorter.compareGames(a, b, false);
+      expect(isABeforeB(result), true);
+    });
+    test("sorts by name if both games have the same lastModified date", () {
+      final result1 = sorter.compareGames(
+        a.copyWith(lastModified: DateTime(2023, 4, 4), name: 'bbbb'),
+        a.copyWith(lastModified: DateTime(2023, 4, 4)),
+        true,
+      );
+      expect(isABeforeB(result1), false);
+      final result2 = sorter.compareGames(
+        a.copyWith(lastModified: DateTime(2023, 4, 4)),
+        a.copyWith(lastModified: DateTime(2023, 4, 4), name: 'bbbb'),
+        true,
+      );
+      expect(isABeforeB(result2), true);
+    });
+  });
+  group("GameSorterByCreatedAt", () {
+    const sorter = GameSorterByCreatedAt();
 
     test("compares two games ascending correctly", () {
       // 2023-09-12 > 2023-09-11

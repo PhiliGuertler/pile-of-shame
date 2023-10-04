@@ -10,6 +10,7 @@ part 'editable_game.freezed.dart';
 @freezed
 class EditableDLC with _$EditableDLC {
   const factory EditableDLC({
+    DateTime? createdAt,
     String? uuid,
     String? name,
     @Default(PlayStatus.onPileOfShame) PlayStatus status,
@@ -22,6 +23,7 @@ class EditableDLC with _$EditableDLC {
 
   factory EditableDLC.fromDLC(DLC dlc) {
     return EditableDLC(
+      createdAt: dlc.createdAt,
       uuid: dlc.id,
       name: dlc.name,
       price: dlc.price,
@@ -41,6 +43,7 @@ class EditableDLC with _$EditableDLC {
 
     return DLC(
       id: uuid ?? const Uuid().v4(),
+      createdAt: createdAt ?? DateTime.now(),
       lastModified: DateTime.now(),
       name: name!.trim(),
       status: status,
@@ -55,6 +58,7 @@ class EditableDLC with _$EditableDLC {
 @freezed
 class EditableGame with _$EditableGame {
   const factory EditableGame({
+    DateTime? createdAt,
     String? uuid,
     String? name,
     GamePlatform? platform,
@@ -70,6 +74,7 @@ class EditableGame with _$EditableGame {
 
   factory EditableGame.fromGame(Game game) {
     return EditableGame(
+      createdAt: game.createdAt,
       uuid: game.id,
       name: game.name,
       platform: game.platform,
@@ -99,6 +104,7 @@ class EditableGame with _$EditableGame {
       platform: platform!,
       status: status,
       lastModified: DateTime.now(),
+      createdAt: createdAt ?? DateTime.now(),
       price: wasGifted ? 0.0 : price ?? 0.0,
       usk: usk,
       dlcs: dlcs,

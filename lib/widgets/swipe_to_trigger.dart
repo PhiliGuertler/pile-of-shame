@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/physics.dart';
+import 'package:flutter/services.dart';
 
 class SwipeToTrigger extends StatefulWidget {
   const SwipeToTrigger({
@@ -28,6 +29,7 @@ class _SwipeToTriggerState extends State<SwipeToTrigger>
   late AnimationController _controller;
 
   Offset _dragOffset = Offset.zero;
+  bool isTriggerable = false;
 
   late Animation<Offset> _animation;
 
@@ -104,23 +106,29 @@ class _SwipeToTriggerState extends State<SwipeToTrigger>
     );
 
     return GestureDetector(
-      onPanDown: (details) {
+      onHorizontalDragStart: (details) {
         _controller.stop();
       },
-      onPanUpdate: (details) {
-        final nextXValue = _dragOffset.dx + details.delta.dx;
+      onHorizontalDragUpdate: (details) {
+        double nextXValue = _dragOffset.dx + details.delta.dx;
+
+        bool nextTriggerableState =
+            (nextXValue.abs() / size.width) / widget.triggerOffset >= 1.0;
+
         if (nextXValue > 0 && widget.leftWidget == null ||
             nextXValue < 0 && widget.rightWidget == null) {
-          setState(() {
-            _dragOffset = Offset.zero;
-          });
-        } else {
-          setState(() {
-            _dragOffset = Offset(nextXValue, 0);
-          });
+          nextXValue = 0;
+          nextTriggerableState = false;
         }
+        if (nextTriggerableState && !isTriggerable) {
+          HapticFeedback.lightImpact();
+        }
+        setState(() {
+          _dragOffset = Offset(nextXValue, 0);
+          isTriggerable = nextTriggerableState;
+        });
       },
-      onPanEnd: (details) {
+      onHorizontalDragEnd: (details) {
         _runAnimation(details.velocity.pixelsPerSecond, size);
         final signedProgress =
             (_dragOffset.dx / size.width) / widget.triggerOffset;

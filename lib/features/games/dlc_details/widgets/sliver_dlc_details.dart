@@ -84,6 +84,15 @@ class SliverDLCDetails extends ConsumerWidget {
           ),
         ),
         ListTile(
+          title: Text(AppLocalizations.of(context)!.createdAt),
+          subtitle: Text(
+            AppLocalizations.of(context)!.dateAtTime(
+              dateFormatter.format(dlc.createdAt),
+              timeFormatter.format(dlc.createdAt),
+            ),
+          ),
+        ),
+        ListTile(
           leading: PlayStatusIcon(
             playStatus: dlc.status,
           ),

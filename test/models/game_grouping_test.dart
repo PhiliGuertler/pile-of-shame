@@ -2,34 +2,14 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations_de.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations_en.dart';
 import 'package:pile_of_shame/models/age_restriction.dart';
-import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/models/game_grouping.dart';
 import 'package:pile_of_shame/models/game_platforms.dart';
 import 'package:pile_of_shame/models/play_status.dart';
 
+import '../../test_resources/test_games.dart';
+
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
-
-  final gameDarkSouls = Game(
-    id: 'dark-souls',
-    name: "Dark Souls",
-    platform: GamePlatform.playStation4,
-    status: PlayStatus.replaying,
-    lastModified: DateTime(2023, 4, 20),
-    price: 39.99,
-    usk: USK.usk16,
-    dlcs: [
-      DLC(
-        id: 'dark-souls-artorias-of-the-abyss',
-        name: "Artorias of the Abyss",
-        status: PlayStatus.onWishList,
-        lastModified: DateTime(2013, 7, 10),
-        price: 9.99,
-        notes: "DLC Notes",
-      ),
-    ],
-    notes: "Game Notes",
-  );
 
   group("GameGrouperByPlatform", () {
     const GameGrouperByPlatform grouper = GameGrouperByPlatform();
@@ -37,14 +17,16 @@ void main() {
       test("returns true if the game platform matches the group", () {
         final response = grouper.matchesGroup(
           GamePlatform.nintendoSwitch,
-          gameDarkSouls.copyWith(platform: GamePlatform.nintendoSwitch),
+          TestGames.gameDarkSouls
+              .copyWith(platform: GamePlatform.nintendoSwitch),
         );
         expect(response, true);
       });
       test("returns false if the game platform does not match the group", () {
         final response = grouper.matchesGroup(
           GamePlatform.wii,
-          gameDarkSouls.copyWith(platform: GamePlatform.nintendoSwitch),
+          TestGames.gameDarkSouls
+              .copyWith(platform: GamePlatform.nintendoSwitch),
         );
         expect(response, false);
       });
@@ -90,7 +72,8 @@ void main() {
       test("returns true if the game platform family matches the group", () {
         final response = grouper.matchesGroup(
           GamePlatformFamily.nintendo,
-          gameDarkSouls.copyWith(platform: GamePlatform.nintendoSwitch),
+          TestGames.gameDarkSouls
+              .copyWith(platform: GamePlatform.nintendoSwitch),
         );
         expect(response, true);
       });
@@ -98,7 +81,8 @@ void main() {
           () {
         final response = grouper.matchesGroup(
           GamePlatformFamily.pc,
-          gameDarkSouls.copyWith(platform: GamePlatform.nintendoSwitch),
+          TestGames.gameDarkSouls
+              .copyWith(platform: GamePlatform.nintendoSwitch),
         );
         expect(response, false);
       });
@@ -144,14 +128,14 @@ void main() {
       test("returns true if the play status matches the group", () {
         final response = grouper.matchesGroup(
           PlayStatus.onPileOfShame,
-          gameDarkSouls.copyWith(status: PlayStatus.onPileOfShame),
+          TestGames.gameDarkSouls.copyWith(status: PlayStatus.onPileOfShame),
         );
         expect(response, true);
       });
       test("returns false if the play status does not match the group", () {
         final response = grouper.matchesGroup(
           PlayStatus.onWishList,
-          gameDarkSouls.copyWith(status: PlayStatus.onPileOfShame),
+          TestGames.gameDarkSouls.copyWith(status: PlayStatus.onPileOfShame),
         );
         expect(response, false);
       });
@@ -183,14 +167,14 @@ void main() {
       test("returns true if the age rating matches the group", () {
         final response = grouper.matchesGroup(
           USK.usk12,
-          gameDarkSouls.copyWith(usk: USK.usk12),
+          TestGames.gameDarkSouls.copyWith(usk: USK.usk12),
         );
         expect(response, true);
       });
       test("returns false if the age rating does not match the group", () {
         final response = grouper.matchesGroup(
           USK.usk16,
-          gameDarkSouls.copyWith(usk: USK.usk12),
+          TestGames.gameDarkSouls.copyWith(usk: USK.usk12),
         );
         expect(response, false);
       });
@@ -218,14 +202,14 @@ void main() {
       test("returns true if the favorite-flag matches the group", () {
         final response = grouper.matchesGroup(
           true,
-          gameDarkSouls.copyWith(isFavorite: true),
+          TestGames.gameDarkSouls.copyWith(isFavorite: true),
         );
         expect(response, true);
       });
       test("returns false if the favorite-flag does not match the group", () {
         final response = grouper.matchesGroup(
           true,
-          gameDarkSouls.copyWith(isFavorite: false),
+          TestGames.gameDarkSouls.copyWith(isFavorite: false),
         );
         expect(response, false);
       });
@@ -253,14 +237,14 @@ void main() {
       test("returns true if notes exist and the group is true", () {
         final response = grouper.matchesGroup(
           true,
-          gameDarkSouls.copyWith(notes: "some notes"),
+          TestGames.gameDarkSouls.copyWith(notes: "some notes"),
         );
         expect(response, true);
       });
       test("returns false if notes exist the group is false", () {
         final response = grouper.matchesGroup(
           false,
-          gameDarkSouls.copyWith(notes: "some notes"),
+          TestGames.gameDarkSouls.copyWith(notes: "some notes"),
         );
         expect(response, false);
       });
@@ -286,11 +270,11 @@ void main() {
     const GameGrouperByHasDLCs grouper = GameGrouperByHasDLCs();
     group("matchesGroup", () {
       test("returns true if DLCs exist and the group is true", () {
-        final response = grouper.matchesGroup(true, gameDarkSouls);
+        final response = grouper.matchesGroup(true, TestGames.gameDarkSouls);
         expect(response, true);
       });
       test("returns false if DLCs exist the group is false", () {
-        final response = grouper.matchesGroup(false, gameDarkSouls);
+        final response = grouper.matchesGroup(false, TestGames.gameDarkSouls);
         expect(response, false);
       });
     });

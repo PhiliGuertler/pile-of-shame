@@ -1,54 +1,12 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:pile_of_shame/models/age_restriction.dart';
-import 'package:pile_of_shame/models/game.dart';
-import 'package:pile_of_shame/models/game_platforms.dart';
 import 'package:pile_of_shame/models/game_sorting.dart';
-import 'package:pile_of_shame/models/play_status.dart';
 import 'package:pile_of_shame/providers/games/game_sorter_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
-  final Game gameOuterWilds = Game(
-    id: 'outer-wilds',
-    lastModified: DateTime(2023),
-    name: 'Outer Wilds',
-    platform: GamePlatform.xboxOne,
-    price: 24.99,
-    status: PlayStatus.completed,
-    dlcs: [],
-    usk: USK.usk12,
-  );
-  final Game gamePokemonX = Game(
-    id: 'pokemon-x',
-    lastModified: DateTime(2023, 1, 2),
-    name: 'Pokémon X',
-    platform: GamePlatform.steam,
-    price: 19.99,
-    status: PlayStatus.playing,
-    dlcs: [],
-  );
-  final Game gameSsx3 = Game(
-    id: 'ssx-3',
-    lastModified: DateTime(2023, 1, 3),
-    name: 'SSX 3',
-    platform: GamePlatform.playStation2,
-    price: 39.95,
-    status: PlayStatus.completed100Percent,
-    dlcs: [],
-    usk: USK.usk6,
-  );
-  final Game gameOriAndTheBlindForest = Game(
-    id: 'ori-and-the-blind-forest',
-    lastModified: DateTime(2023, 1, 4),
-    name: 'Ori and the blind forest',
-    platform: GamePlatform.playStation4,
-    price: 25,
-    status: PlayStatus.onPileOfShame,
-    dlcs: [],
-    usk: USK.usk12,
-  );
+import '../../test_resources/test_games.dart';
 
+void main() {
   late ProviderContainer container;
 
   setUp(() {
@@ -104,10 +62,10 @@ void main() {
       {"sorter": '{"isAscending":false,"sortStrategy":"byName"}'},
     );
     final originalList = [
-      gameOuterWilds,
-      gamePokemonX,
-      gameSsx3,
-      gameOriAndTheBlindForest,
+      TestGames.gameOuterWilds,
+      TestGames.gameWitcher3,
+      TestGames.gameSsx3,
+      TestGames.gameOriAndTheBlindForest,
     ];
 
     final sortedList =
@@ -115,7 +73,12 @@ void main() {
 
     expect(
       sortedList,
-      [gameSsx3, gamePokemonX, gameOuterWilds, gameOriAndTheBlindForest],
+      [
+        TestGames.gameWitcher3,
+        TestGames.gameSsx3,
+        TestGames.gameOuterWilds,
+        TestGames.gameOriAndTheBlindForest,
+      ],
     );
   });
 }
