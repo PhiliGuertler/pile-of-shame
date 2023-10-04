@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pile_of_shame/features/games/games_list/widgets/drawers/game_filter_drawer.dart';
 import 'package:pile_of_shame/features/games/games_list/widgets/drawers/game_sorter_drawer.dart';
-import 'package:pile_of_shame/features/root_page/root_analytics/widgets/root_analytics_app_bar.dart';
-import 'package:pile_of_shame/features/root_page/root_analytics/widgets/root_analytics_destination.dart';
 import 'package:pile_of_shame/features/root_page/root_games/widgets/root_games_app_bar.dart';
 import 'package:pile_of_shame/features/root_page/root_games/widgets/root_games_destination.dart';
 import 'package:pile_of_shame/features/root_page/root_games/widgets/root_games_fab.dart';
@@ -14,7 +12,6 @@ import 'package:pile_of_shame/features/root_page/root_settings/widgets/root_sett
 enum RootTabs {
   games,
   library,
-  analytics,
   settings,
   ;
 
@@ -26,10 +23,6 @@ enum RootTabs {
         );
       case RootTabs.library:
         return RootLibraryAppBar();
-      case RootTabs.analytics:
-        return RootAnalyticsAppBar(
-          hasGames: hasGames,
-        );
       case RootTabs.settings:
         return RootSettingsAppBar();
     }
@@ -50,8 +43,6 @@ enum RootTabs {
         return rootGamesDestination(context);
       case RootTabs.library:
         return rootLibraryDestination(context);
-      case RootTabs.analytics:
-        return rootAnalyticsDestination(context);
       case RootTabs.settings:
         return rootSettingsDestination(context);
     }
@@ -76,7 +67,6 @@ enum RootTabs {
   }
 
   Widget wrapper(Widget child) {
-    // HACK: Even though this is only necessary for RootTabs.analytics, the fade through animations won't work correctly if the other tabs don't use this aswell
-    return DefaultTabController(length: 3, child: child);
+    return child;
   }
 }
