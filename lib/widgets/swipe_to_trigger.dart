@@ -106,10 +106,10 @@ class _SwipeToTriggerState extends State<SwipeToTrigger>
     );
 
     return GestureDetector(
-      onPanDown: (details) {
+      onHorizontalDragStart: (details) {
         _controller.stop();
       },
-      onPanUpdate: (details) {
+      onHorizontalDragUpdate: (details) {
         double nextXValue = _dragOffset.dx + details.delta.dx;
 
         bool nextTriggerableState =
@@ -128,7 +128,7 @@ class _SwipeToTriggerState extends State<SwipeToTrigger>
           isTriggerable = nextTriggerableState;
         });
       },
-      onPanEnd: (details) {
+      onHorizontalDragEnd: (details) {
         _runAnimation(details.velocity.pixelsPerSecond, size);
         final signedProgress =
             (_dragOffset.dx / size.width) / widget.triggerOffset;
