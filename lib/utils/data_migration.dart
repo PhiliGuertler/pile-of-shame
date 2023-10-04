@@ -7,7 +7,7 @@ import 'package:pile_of_shame/models/play_status.dart';
 part 'data_migration.freezed.dart';
 part 'data_migration.g.dart';
 
-/// DLC without createdAt (before App-Version 0.7.0)
+/// DLC without createdAt (before App-Version 0.6.1)
 @freezed
 class DLCv1 with _$DLCv1 {
   const factory DLCv1({
@@ -25,7 +25,7 @@ class DLCv1 with _$DLCv1 {
   factory DLCv1.fromJson(Map<String, dynamic> json) => _$DLCv1FromJson(json);
 }
 
-/// Game without createdAt (before App-Version 0.7.0)
+/// Game without createdAt (before App-Version 0.6.1)
 @freezed
 class Gamev1 with _$Gamev1 {
   const factory Gamev1({
