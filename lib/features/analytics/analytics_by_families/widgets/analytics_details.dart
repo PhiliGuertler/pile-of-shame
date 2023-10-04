@@ -143,6 +143,38 @@ class _SliverAnalyticsDetailsState
                 onTapSection: handleSectionChange,
               ),
             ),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: defaultPaddingX,
+              ),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  l10n.platform,
+                  style: Theme.of(context).textTheme.headlineSmall,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: defaultPaddingX,
+                vertical: 8.0,
+              ),
+              child: Legend(
+                data: data.toPlatformLegendData(highlightedLabel),
+                onChangeSelection: handleSectionChange,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: defaultPaddingX,
+                vertical: 16.0,
+              ),
+              child: DefaultBarChart(
+                data: data.toPlatformDistribution(),
+                onTapSection: handleSectionChange,
+              ),
+            ),
           ],
         ),
         const SizedBox(

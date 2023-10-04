@@ -2,6 +2,7 @@ import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/age_restriction.dart';
 import 'package:pile_of_shame/models/chart_data.dart';
 import 'package:pile_of_shame/models/game.dart';
+import 'package:pile_of_shame/models/game_platforms.dart';
 import 'package:pile_of_shame/models/play_status.dart';
 import 'package:pile_of_shame/utils/pair.dart';
 import 'package:pile_of_shame/widgets/play_status_icon.dart';
@@ -164,6 +165,35 @@ class GameData {
           ),
         )
         .toList();
+  }
+
+  List<ChartData> toPlatformDistribution() {
+    final List<Pair<GamePlatform, int>> platformCounts = [
+      for (var i = 0; i < GamePlatform.values.length; ++i)
+        Pair(GamePlatform.values[i], 0),
+    ];
+    for (final game in games) {
+      platformCounts[game.platform.index].second++;
+    }
+
+    platformCounts.sort((a, b) => a.second.compareTo(b.second));
+
+    final List<ChartData> result = [];
+    for (var i = 0; i < GamePlatform.values.length; ++i) {
+      final platform = platformCounts[i].first;
+      final count = platformCounts[i].second;
+      result.add(
+        ChartData(
+          title: platform.localizedAbbreviation(l10n),
+          value: count.toDouble(),
+          isSelected: highlight == platform.localizedAbbreviation(l10n),
+        ),
+      );
+    }
+
+    result.removeWhere((element) => element.value < 0.01);
+
+    return result;
   }
 
   int toGameCount() {
