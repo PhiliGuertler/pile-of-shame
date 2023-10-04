@@ -10,12 +10,14 @@ import 'package:pile_of_shame/features/settings/import_games/screens/import_game
 import 'package:pile_of_shame/features/settings/language/screens/language_screen.dart';
 import 'package:pile_of_shame/features/settings/platforms/screens/platforms_screen.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
+import 'package:pile_of_shame/models/assets.dart';
 import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/providers/debug_provider.dart';
 import 'package:pile_of_shame/providers/games/game_provider.dart';
 import 'package:pile_of_shame/utils/constants.dart';
 import 'package:pile_of_shame/utils/debug/debug_secret_code_input.dart';
 import 'package:pile_of_shame/widgets/segmented_action_card.dart';
+import 'package:pile_of_shame/widgets/slivers/sliver_fancy_image_header.dart';
 
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
@@ -28,6 +30,10 @@ class SettingsScreen extends ConsumerWidget {
     return SafeArea(
       child: CustomScrollView(
         slivers: [
+          SliverFancyImageHeader(
+            imagePath: ImageAssets.gear.value,
+            height: 250,
+          ),
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.only(

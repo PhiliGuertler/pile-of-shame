@@ -21,7 +21,7 @@ double defaultComputeSum(List<ChartData> data) {
 
 class DefaultBarChart extends StatefulWidget {
   final List<ChartData> data;
-  final String title;
+  final String? title;
   final String Function(double data) formatData;
   final double Function(List<ChartData> data) computeSum;
   final void Function(String? title)? onTapSection;
@@ -29,7 +29,7 @@ class DefaultBarChart extends StatefulWidget {
   const DefaultBarChart({
     super.key,
     required this.data,
-    required this.title,
+    this.title,
     this.formatData = defaultFormatData,
     this.computeSum = defaultComputeSum,
     this.onTapSection,
@@ -119,13 +119,14 @@ class _DefaultBarChartState extends State<DefaultBarChart> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Padding(
-          padding: const EdgeInsets.only(bottom: 16.0),
-          child: Text(
-            widget.title,
-            style: Theme.of(context).textTheme.headlineSmall,
+        if (widget.title != null)
+          Padding(
+            padding: const EdgeInsets.only(bottom: 16.0),
+            child: Text(
+              widget.title!,
+              style: Theme.of(context).textTheme.headlineSmall,
+            ),
           ),
-        ),
         SizedBox(
           height: 250.0,
           child: StreamBuilder<List<BarChartGroupData>>(

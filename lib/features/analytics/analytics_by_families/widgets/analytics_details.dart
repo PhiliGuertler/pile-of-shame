@@ -66,9 +66,11 @@ class _SliverAnalyticsDetailsState
               ),
               subtitle: DefaultComparisonChart(
                 left: data.toTotalBasePrice(),
-                leftText: l10n.games,
+                leftText:
+                    "${currencyFormatter.format(data.toTotalBasePrice())} ${l10n.games}",
                 right: data.toTotalDLCPrice(),
-                rightText: l10n.dlcs,
+                rightText:
+                    "${currencyFormatter.format(data.toTotalDLCPrice())} ${l10n.dlcs}",
               ),
             ),
             ListTile(
@@ -77,9 +79,9 @@ class _SliverAnalyticsDetailsState
               ),
               subtitle: DefaultComparisonChart(
                 left: data.toGameCount().toDouble(),
-                leftText: l10n.game(data.toGameCount()),
+                leftText: l10n.nGames(data.toGameCount()),
                 right: data.toDLCCount().toDouble(),
-                rightText: l10n.dlc(data.toDLCCount()),
+                rightText: l10n.nDLCs(data.toDLCCount()),
                 formatValue: (value) => value.toStringAsFixed(0),
               ),
             ),
@@ -89,9 +91,11 @@ class _SliverAnalyticsDetailsState
               ),
               subtitle: DefaultComparisonChart(
                 left: data.toAveragePrice(),
-                leftText: l10n.average,
+                leftText:
+                    "${currencyFormatter.format(data.toAveragePrice())} ${l10n.average}",
                 right: data.toMedianPrice(),
-                rightText: l10n.median,
+                rightText:
+                    "${currencyFormatter.format(data.toMedianPrice())} ${l10n.median}",
               ),
             ),
             Padding(
@@ -136,6 +140,38 @@ class _SliverAnalyticsDetailsState
                 data: data.toPriceDistribution(10.0),
                 interval: 15.0,
                 title: l10n.priceDistribution,
+                onTapSection: handleSectionChange,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: defaultPaddingX,
+              ),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  l10n.platform,
+                  style: Theme.of(context).textTheme.headlineSmall,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: defaultPaddingX,
+                vertical: 8.0,
+              ),
+              child: Legend(
+                data: data.toPlatformLegendData(highlightedLabel),
+                onChangeSelection: handleSectionChange,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: defaultPaddingX,
+                vertical: 16.0,
+              ),
+              child: DefaultBarChart(
+                data: data.toPlatformDistribution(),
                 onTapSection: handleSectionChange,
               ),
             ),
