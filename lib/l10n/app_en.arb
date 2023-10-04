@@ -76,6 +76,7 @@
   "completed": "completed",
   "completed100Percent": "100% completed",
   "completionRate": "completion rate",
+  "createdAt": "Created at",
   "dark": "Dark",
   "dateAtTime": "{date} at {time} o'clock",
   "delete": "delete",

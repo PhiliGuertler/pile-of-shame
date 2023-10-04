@@ -142,6 +142,15 @@ class _SliverGameDetailsState extends ConsumerState<SliverGameDetails> {
           ),
         ),
         ListTile(
+          title: Text(AppLocalizations.of(context)!.createdAt),
+          subtitle: Text(
+            AppLocalizations.of(context)!.dateAtTime(
+              dateFormatter.format(widget.game.createdAt),
+              timeFormatter.format(widget.game.createdAt),
+            ),
+          ),
+        ),
+        ListTile(
           leading: PlayStatusIcon(
             playStatus: widget.game.status,
           ),

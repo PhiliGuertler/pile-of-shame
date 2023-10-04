@@ -40,6 +40,7 @@
   "completed": "Durchgespielt",
   "completed100Percent": "Durchgespielt zu 100%",
   "completionRate": "Durchspielrate",
+  "createdAt": "Erstellt am",
   "dark": "Dunkel",
   "dateAtTime": "{date} um {time} Uhr",
   "delete": "Löschen",
