@@ -8,20 +8,18 @@ import 'package:pile_of_shame/models/chart_data.dart';
 import 'package:pile_of_shame/utils/color_utils.dart';
 import 'package:pile_of_shame/widgets/skeletons/skeleton.dart';
 
-String defaultFormatData(double data) {
-  return (data == data.roundToDouble() ? data.toInt() : data).toString();
-}
-
 class DefaultPieChart extends StatefulWidget {
+  static String defaultFormatData(double data) {
+    return (data == data.roundToDouble() ? data.toInt() : data).toString();
+  }
+
   final List<ChartData> data;
-  final String title;
   final String Function(double data) formatData;
   final void Function(String? title)? onTapSection;
 
   const DefaultPieChart({
     super.key,
     required this.data,
-    required this.title,
     this.formatData = defaultFormatData,
     this.onTapSection,
   });
@@ -87,70 +85,57 @@ class _DefaultPieChartState extends State<DefaultPieChart> {
       // do nothing
     }
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(bottom: 16.0),
-          child: Text(
-            widget.title,
-            style: Theme.of(context).textTheme.headlineSmall,
-          ),
-        ),
-        SizedBox(
-          height: 250.0,
-          child: Stack(
-            children: [
-              StreamBuilder<List<PieChartSectionData>>(
-                stream: generateChartData(),
-                builder: (context, snapshot) {
-                  return PieChart(
-                    PieChartData(
-                      centerSpaceRadius: double.infinity,
-                      sections: snapshot.data,
-                      startDegreeOffset: 270,
-                      pieTouchData: PieTouchData(
-                        touchCallback: (event, response) {
-                          if (event.isInterestedForInteractions &&
-                              widget.onTapSection != null &&
-                              event.runtimeType == FlTapDownEvent) {
-                            if (response == null ||
-                                response.touchedSection == null ||
-                                response.touchedSection!.touchedSectionIndex ==
-                                    -1) {
-                              widget.onTapSection!(null);
-                            } else {
-                              final sectionTitle = widget
-                                  .data[response
-                                      .touchedSection!.touchedSectionIndex]
-                                  .title;
-                              widget.onTapSection!(sectionTitle);
-                            }
-                          }
-                        },
-                      ),
-                    ),
-                    swapAnimationDuration: 350.ms,
-                    swapAnimationCurve: Curves.easeInOutBack,
-                  );
-                },
-              ),
-              IgnorePointer(
-                child: Center(
-                  child: Text(
-                    totalLabel,
-                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                          backgroundColor:
-                              Theme.of(context).colorScheme.background,
-                        ),
-                    textAlign: TextAlign.center,
+    return SizedBox(
+      height: 250.0,
+      child: Stack(
+        children: [
+          StreamBuilder<List<PieChartSectionData>>(
+            stream: generateChartData(),
+            builder: (context, snapshot) {
+              return PieChart(
+                PieChartData(
+                  centerSpaceRadius: double.infinity,
+                  sections: snapshot.data,
+                  startDegreeOffset: 270,
+                  pieTouchData: PieTouchData(
+                    touchCallback: (event, response) {
+                      if (event.isInterestedForInteractions &&
+                          widget.onTapSection != null &&
+                          event.runtimeType == FlTapDownEvent) {
+                        if (response == null ||
+                            response.touchedSection == null ||
+                            response.touchedSection!.touchedSectionIndex ==
+                                -1) {
+                          widget.onTapSection!(null);
+                        } else {
+                          final sectionTitle = widget
+                              .data[
+                                  response.touchedSection!.touchedSectionIndex]
+                              .title;
+                          widget.onTapSection!(sectionTitle);
+                        }
+                      }
+                    },
                   ),
                 ),
-              ),
-            ],
+                swapAnimationDuration: 350.ms,
+                swapAnimationCurve: Curves.easeInOutBack,
+              );
+            },
           ),
-        ),
-      ],
+          IgnorePointer(
+            child: Center(
+              child: Text(
+                totalLabel,
+                style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                      backgroundColor: Theme.of(context).colorScheme.background,
+                    ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -180,60 +165,50 @@ class DefaultPieChartSkeleton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        const Padding(
-          padding: EdgeInsets.only(bottom: 16.0),
-          child: Skeleton(),
-        ),
-        SizedBox(
-          height: 250.0,
-          child: Stack(
-            children: [
-              StreamBuilder<List<PieChartSectionData>>(
-                stream: randomChartSections(
-                  Theme.of(context).colorScheme.primaryContainer,
+    return SizedBox(
+      height: 250.0,
+      child: Stack(
+        children: [
+          StreamBuilder<List<PieChartSectionData>>(
+            stream: randomChartSections(
+              Theme.of(context).colorScheme.primaryContainer,
+            ),
+            builder: (context, snapshot) {
+              return PieChart(
+                PieChartData(
+                  centerSpaceRadius: double.infinity,
+                  sections: snapshot.data,
+                  startDegreeOffset: 270,
+                  pieTouchData: PieTouchData(enabled: false),
                 ),
-                builder: (context, snapshot) {
-                  return PieChart(
-                    PieChartData(
-                      centerSpaceRadius: double.infinity,
-                      sections: snapshot.data,
-                      startDegreeOffset: 270,
-                      pieTouchData: PieTouchData(enabled: false),
-                    ),
-                    swapAnimationDuration: 350.ms,
-                    swapAnimationCurve: Curves.easeOutBack,
-                  );
-                },
+                swapAnimationDuration: 350.ms,
+                swapAnimationCurve: Curves.easeOutBack,
+              );
+            },
+          )
+              .animate(onPlay: (controller) => controller.repeat())
+              .shimmer(
+                duration: Skeleton.defaultAnimationDuration,
+                color: Theme.of(context).colorScheme.onPrimaryContainer,
               )
-                  .animate(onPlay: (controller) => controller.repeat())
-                  .shimmer(
-                    duration: Skeleton.defaultAnimationDuration,
-                    color: Theme.of(context).colorScheme.onPrimaryContainer,
-                  )
-                  .animate()
-                  .fadeIn(
-                    duration: Duration(
-                      milliseconds:
-                          (Skeleton.defaultAnimationDuration.inMilliseconds *
-                                  0.5)
-                              .toInt(),
-                    ),
-                  ),
-              const Center(
-                child: SizedBox(
-                  width: 80.0,
-                  child: Skeleton(
-                    widthFactor: 1,
-                  ),
+              .animate()
+              .fadeIn(
+                duration: Duration(
+                  milliseconds:
+                      (Skeleton.defaultAnimationDuration.inMilliseconds * 0.5)
+                          .toInt(),
                 ),
               ),
-            ],
+          const Center(
+            child: SizedBox(
+              width: 80.0,
+              child: Skeleton(
+                widthFactor: 1,
+              ),
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

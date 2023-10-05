@@ -9,9 +9,10 @@ import 'package:pile_of_shame/widgets/charts/default_bar_chart.dart';
 import 'package:pile_of_shame/widgets/charts/default_comparison_chart.dart';
 import 'package:pile_of_shame/widgets/charts/default_line_chart.dart';
 import 'package:pile_of_shame/widgets/charts/default_pie_chart.dart';
+import 'package:pile_of_shame/widgets/charts/highlightable_charts.dart';
 import 'package:pile_of_shame/widgets/charts/legend.dart';
 
-class SliverAnalyticsDetails extends ConsumerStatefulWidget {
+class SliverAnalyticsDetails extends ConsumerWidget {
   const SliverAnalyticsDetails({
     super.key,
     required this.games,
@@ -20,34 +21,15 @@ class SliverAnalyticsDetails extends ConsumerStatefulWidget {
   final List<Game> games;
 
   @override
-  ConsumerState<SliverAnalyticsDetails> createState() =>
-      _SliverAnalyticsDetailsState();
-}
-
-class _SliverAnalyticsDetailsState
-    extends ConsumerState<SliverAnalyticsDetails> {
-  String? highlightedLabel;
-
-  void handleSectionChange(String? selection) {
-    if (highlightedLabel == selection) {
-      setState(() {
-        highlightedLabel = null;
-      });
-    } else {
-      setState(() {
-        highlightedLabel = selection;
-      });
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
 
     final currencyFormatter = ref.watch(currencyFormatProvider(context));
 
-    final GameData data =
-        GameData(games: widget.games, l10n: l10n, highlight: highlightedLabel);
+    final GameData data = GameData(
+      games: games,
+      l10n: l10n,
+    );
 
     return SliverList.list(
       children: [
@@ -60,6 +42,7 @@ class _SliverAnalyticsDetailsState
                 children: [
                   Text(
                     l10n.priceDistribution,
+                    style: Theme.of(context).textTheme.headlineSmall,
                   ),
                   Text(currencyFormatter.format(data.toTotalPrice())),
                 ],
@@ -76,6 +59,7 @@ class _SliverAnalyticsDetailsState
             ListTile(
               title: Text(
                 l10n.gameAndDLCAmount,
+                style: Theme.of(context).textTheme.headlineSmall,
               ),
               subtitle: DefaultComparisonChart(
                 left: data.toGameCount().toDouble(),
@@ -88,6 +72,7 @@ class _SliverAnalyticsDetailsState
             ListTile(
               title: Text(
                 l10n.averagePrice,
+                style: Theme.of(context).textTheme.headlineSmall,
               ),
               subtitle: DefaultComparisonChart(
                 left: data.toAveragePrice(),
@@ -98,81 +83,65 @@ class _SliverAnalyticsDetailsState
                     "${currencyFormatter.format(data.toMedianPrice())} ${l10n.median}",
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: defaultPaddingX,
-                vertical: 16.0,
+            ListTile(
+              title: Text(
+                l10n.completionRate,
+                style: Theme.of(context).textTheme.headlineSmall,
               ),
-              child: DefaultPieChart(
-                data: data.toCompletedData(),
-                title: l10n.completionRate,
-                onTapSection: handleSectionChange,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: defaultPaddingX,
-                vertical: 16.0,
-              ),
-              child: DefaultPieChart(
-                data: data.toPlayStatusData(),
-                title: l10n.status,
-                onTapSection: handleSectionChange,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: defaultPaddingX,
-                vertical: 16.0,
-              ),
-              child: DefaultPieChart(
-                data: data.toAgeRatingData(),
-                title: l10n.ageRating,
-                onTapSection: handleSectionChange,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: defaultPaddingX,
-                vertical: 16.0,
-              ),
-              child: DefaultLineChart(
-                data: data.toPriceDistribution(10.0),
-                interval: 15.0,
-                title: l10n.priceDistribution,
-                onTapSection: handleSectionChange,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: defaultPaddingX,
-              ),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  l10n.platform,
-                  style: Theme.of(context).textTheme.headlineSmall,
+              subtitle: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 16.0),
+                child: HighlightablePieChart(
+                  data: data.toCompletedData(),
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: defaultPaddingX,
-                vertical: 8.0,
+            ListTile(
+              title: Text(
+                l10n.status,
+                style: Theme.of(context).textTheme.headlineSmall,
               ),
-              child: Legend(
-                data: data.toPlatformLegendData(highlightedLabel),
-                onChangeSelection: handleSectionChange,
+              subtitle: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 16.0),
+                child: HighlightablePieChart(
+                  data: data.toPlayStatusData(),
+                ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: defaultPaddingX,
-                vertical: 16.0,
+            ListTile(
+              title: Text(
+                l10n.ageRating,
+                style: Theme.of(context).textTheme.headlineSmall,
               ),
-              child: DefaultBarChart(
-                data: data.toPlatformDistribution(),
-                onTapSection: handleSectionChange,
+              subtitle: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 16.0),
+                child: HighlightablePieChart(
+                  data: data.toAgeRatingData(),
+                ),
+              ),
+            ),
+            ListTile(
+              title: Text(
+                l10n.priceDistribution,
+                style: Theme.of(context).textTheme.headlineSmall,
+              ),
+              subtitle: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 16.0),
+                child: DefaultLineChart(
+                  data: data.toPriceDistribution(10.0),
+                  interval: 15.0,
+                ),
+              ),
+            ),
+            ListTile(
+              title: Text(
+                l10n.platform,
+                style: Theme.of(context).textTheme.headlineSmall,
+              ),
+              subtitle: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 16.0),
+                child: HighlightableBarChart(
+                  data: data.toPlatformDistribution(),
+                ),
               ),
             ),
           ],

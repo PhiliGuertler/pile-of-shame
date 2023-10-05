@@ -11,27 +11,8 @@ import 'package:pile_of_shame/widgets/usk_logo.dart';
 class GameData {
   final List<Game> games;
   final AppLocalizations l10n;
-  final String? highlight;
 
-  const GameData({required this.games, required this.l10n, this.highlight});
-
-  List<ChartData> toPlatformLegendData(
-    String? highlightedLabel,
-  ) {
-    final Set<ChartData> result = {};
-    for (final element in games) {
-      final platformName = element.platform.localizedAbbreviation(l10n);
-
-      result.add(
-        ChartData(
-          title: platformName,
-          value: 0.0,
-          isSelected: highlightedLabel == platformName,
-        ),
-      );
-    }
-    return result.toList();
-  }
+  const GameData({required this.games, required this.l10n});
 
   List<ChartData> toCompletedData() {
     final completedGamesCount = games.fold(
@@ -45,7 +26,6 @@ class GameData {
           title: l10n.completed,
           value: completedGamesCount.toDouble(),
           color: PlayStatus.completed.backgroundColor,
-          isSelected: highlight == l10n.completed,
           alternativeTitle: const PlayStatusIcon(
             playStatus: PlayStatus.completed,
           ),
@@ -55,7 +35,6 @@ class GameData {
           title: l10n.incomplete,
           value: (games.length - completedGamesCount).toDouble(),
           color: PlayStatus.cancelled.backgroundColor,
-          isSelected: highlight == l10n.incomplete,
           alternativeTitle: const PlayStatusIcon(
             playStatus: PlayStatus.cancelled,
           ),
@@ -91,7 +70,6 @@ class GameData {
           title: status.toLocaleString(l10n),
           value: count.toDouble(),
           color: status.backgroundColor,
-          isSelected: highlight == status.toLocaleString(l10n),
           alternativeTitle: PlayStatusIcon(
             playStatus: status,
           ),
@@ -122,7 +100,6 @@ class GameData {
           title: usk.toRatedString(l10n),
           value: count.toDouble(),
           color: usk.toBackgroundColor(),
-          isSelected: highlight == usk.toRatedString(l10n),
           alternativeTitle: USKLogo(
             ageRestriction: usk,
           ),
@@ -176,7 +153,7 @@ class GameData {
       platformCounts[game.platform.index].second++;
     }
 
-    platformCounts.sort((a, b) => a.second.compareTo(b.second));
+    platformCounts.sort((a, b) => b.second.compareTo(a.second));
 
     final List<ChartData> result = [];
     for (var i = 0; i < GamePlatform.values.length; ++i) {
@@ -186,7 +163,6 @@ class GameData {
         ChartData(
           title: platform.localizedAbbreviation(l10n),
           value: count.toDouble(),
-          isSelected: highlight == platform.localizedAbbreviation(l10n),
         ),
       );
     }
