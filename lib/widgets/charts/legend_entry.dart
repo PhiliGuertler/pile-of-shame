@@ -8,7 +8,7 @@ class LegendEntry extends StatefulWidget {
     required this.color,
     required this.text,
     required this.isSelected,
-    this.size = 16,
+    this.size = 20,
     this.onTap,
   });
   final Color color;
@@ -49,30 +49,27 @@ class _LegendEntryState extends State<LegendEntry> {
       child: Stack(
         alignment: Alignment.centerLeft,
         children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(left: 4.0),
-            child: AnimatedContainer(
-              duration: 150.ms,
-              curve: Curves.easeInOut,
-              width: widget.isSelected
-                  ? ((textSize?.width ?? widget.size) - 4.0)
-                  : widget.size,
-              height: widget.isSelected
-                  ? textSize?.height ?? widget.size
-                  : widget.size,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(4.0),
-                color: widget.color,
-              ),
+          AnimatedContainer(
+            duration: 150.ms,
+            curve: Curves.easeInOut,
+            width: widget.isSelected
+                ? (textSize?.width ?? widget.size)
+                : widget.size,
+            height: widget.isSelected
+                ? (textSize?.height ?? widget.size)
+                : widget.size,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(4.0),
+              color: widget.color,
             ),
           ),
           Padding(
             key: _textKey,
-            padding: EdgeInsets.only(left: widget.size * 1.5 + 4.0, right: 4.0),
+            padding: EdgeInsets.only(left: widget.size + 4.0),
             child: Text(
               widget.text,
               style: TextStyle(
-                fontSize: 16,
+                fontSize: widget.size,
                 fontWeight: FontWeight.bold,
                 color: widget.isSelected
                     ? widget.color.computeLuminance() > 0.5
@@ -82,7 +79,7 @@ class _LegendEntryState extends State<LegendEntry> {
               ),
             ).animate(target: widget.isSelected ? 1 : 0).moveX(
                   begin: 0,
-                  end: -widget.size * 1.5 * 0.5 + 2,
+                  end: -widget.size * 0.5 - 2,
                   duration: 150.ms,
                   curve: Curves.easeInOut,
                 ),
