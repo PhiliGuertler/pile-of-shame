@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pile_of_shame/providers/theming/theme_provider.dart';
 import 'package:pile_of_shame/utils/constants.dart';
 import 'package:transparent_image/transparent_image.dart';
 
@@ -67,15 +66,11 @@ class SliverFancyImageAppBar extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final appThemeSettings = ref.watch(appThemeSettingsProvider);
-
     final safePadding = MediaQuery.of(context).padding;
-    final minHeight = safePadding.top +
-        overlayRadius +
-        -math.min(borderRadius, 0) +
-        minimumScrollTriggerOffset;
+    final minHeight = safePadding.top + minimumToolbarHeight;
 
     return SliverPersistentHeader(
+      pinned: true,
       delegate: _SliverFancyImageAppBarDelegate(
         borderRadius: borderRadius,
         imagePath: imagePath,
@@ -88,11 +83,7 @@ class SliverFancyImageAppBar extends ConsumerWidget {
         stretchModes: stretchModes,
         title: title,
         actions: actions,
-        themeColor: appThemeSettings.when(
-          data: (data) => Theme.of(context).colorScheme.primaryContainer,
-          error: (error, stackTrace) => null,
-          loading: () => null,
-        ),
+        themeColor: Theme.of(context).colorScheme.primaryContainer,
       ),
     );
   }
@@ -176,11 +167,17 @@ class _SliverFancyImageAppBarDelegate extends SliverPersistentHeaderDelegate {
       0.0,
       0.8 - (shrinkOffset / (height - minimumToolbarHeight)).clamp(0.0, 0.8),
     );
+    final double currentBackgroundBlend = 1.0 -
+        math.max(
+          0.0,
+          1.0 -
+              (shrinkOffset / (height - minimumToolbarHeight)).clamp(0.0, 1.0),
+        );
 
     return FlexibleSpaceBar.createSettings(
       currentExtent: currentExtent,
       child: ClipDecider(
-        borderRadius: borderRadius,
+        borderRadius: borderRadius * (1.0 - currentBackgroundBlend),
         child: FlexibleSpaceBar(
           stretchModes: stretchModes,
           background: SizedBox(
@@ -199,90 +196,95 @@ class _SliverFancyImageAppBarDelegate extends SliverPersistentHeaderDelegate {
                     image: AssetImage(imagePath),
                   ).animate(delay: 200.ms).fadeIn(),
                 ),
-                Padding(
-                  padding: EdgeInsets.only(top: safePadding.top),
-                  child: Align(
-                    alignment: Alignment.topCenter,
-                    child: SizedBox(
-                      height: minimumToolbarHeight,
-                      child: NavigationToolbar(
-                        middleSpacing: AppBarTheme.of(context).titleSpacing ??
-                            NavigationToolbar.kMiddleSpacing,
-                        leading: Navigator.of(context).canPop()
-                            ? Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 8.0),
-                                    child: ClipRRect(
-                                      borderRadius:
-                                          BorderRadius.circular(overlayRadius),
-                                      child: Container(
-                                        color: themeColor
-                                            ?.withOpacity(currentOpacity),
-                                        child: const BackButton(),
+                Material(
+                  color: themeColor?.withOpacity(currentBackgroundBlend),
+                  elevation: currentBackgroundBlend * 4.0,
+                  child: Padding(
+                    padding: EdgeInsets.only(top: safePadding.top),
+                    child: Align(
+                      alignment: Alignment.topCenter,
+                      child: SizedBox(
+                        height: minimumToolbarHeight,
+                        child: NavigationToolbar(
+                          middleSpacing: AppBarTheme.of(context).titleSpacing ??
+                              NavigationToolbar.kMiddleSpacing,
+                          leading: Navigator.of(context).canPop()
+                              ? Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 8.0),
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(
+                                          overlayRadius,
+                                        ),
+                                        child: Container(
+                                          color: themeColor
+                                              ?.withOpacity(currentOpacity),
+                                          child: const BackButton(),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              : null,
+                          centerMiddle:
+                              _getEffectiveCenterTitle(Theme.of(context)),
+                          middle: title != null
+                              ? ClipRRect(
+                                  borderRadius:
+                                      BorderRadius.circular(overlayRadius),
+                                  child: Container(
+                                    color:
+                                        themeColor?.withOpacity(currentOpacity),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: DefaultTextStyle(
+                                        overflow: TextOverflow.ellipsis,
+                                        style: AppBarTheme.of(context)
+                                                .titleTextStyle ??
+                                            Theme.of(context)
+                                                .textTheme
+                                                .titleLarge ??
+                                            const TextStyle(),
+                                        child: title!,
                                       ),
                                     ),
                                   ),
-                                ],
-                              )
-                            : null,
-                        centerMiddle:
-                            _getEffectiveCenterTitle(Theme.of(context)),
-                        middle: title != null
-                            ? ClipRRect(
-                                borderRadius:
-                                    BorderRadius.circular(overlayRadius),
-                                child: Container(
-                                  color:
-                                      themeColor?.withOpacity(currentOpacity),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: DefaultTextStyle(
-                                      overflow: TextOverflow.ellipsis,
-                                      style: AppBarTheme.of(context)
-                                              .titleTextStyle ??
-                                          Theme.of(context)
-                                              .textTheme
-                                              .titleLarge ??
-                                          const TextStyle(),
-                                      child: title!,
-                                    ),
-                                  ),
-                                ),
-                              )
-                            : null,
-                        trailing: actions != null
-                            ? Padding(
-                                padding: const EdgeInsets.only(right: 8.0),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: actions!
-                                      .map(
-                                        (action) => Stack(
-                                          children: [
-                                            Positioned.fill(
-                                              child: ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                  overlayRadius,
-                                                ),
-                                                child: Container(
-                                                  color:
-                                                      themeColor?.withOpacity(
-                                                    currentOpacity,
+                                )
+                              : null,
+                          trailing: actions != null
+                              ? Padding(
+                                  padding: const EdgeInsets.only(right: 8.0),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: actions!
+                                        .map(
+                                          (action) => Stack(
+                                            children: [
+                                              Positioned.fill(
+                                                child: ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                    overlayRadius,
+                                                  ),
+                                                  child: Container(
+                                                    color:
+                                                        themeColor?.withOpacity(
+                                                      currentOpacity,
+                                                    ),
                                                   ),
                                                 ),
                                               ),
-                                            ),
-                                            action,
-                                          ],
-                                        ),
-                                      )
-                                      .toList(),
-                                ),
-                              )
-                            : null,
+                                              action,
+                                            ],
+                                          ),
+                                        )
+                                        .toList(),
+                                  ),
+                                )
+                              : null,
+                        ),
                       ),
                     ),
                   ),
