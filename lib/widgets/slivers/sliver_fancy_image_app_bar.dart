@@ -9,7 +9,6 @@ import 'package:transparent_image/transparent_image.dart';
 
 const overlayRadius = 50.0;
 
-const minimumScrollTriggerOffset = 8.0;
 const minimumToolbarHeight = 50.0;
 
 // Creates a drawer-like gap at the bottom of the clipped area
