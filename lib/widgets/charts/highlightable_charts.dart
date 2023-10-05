@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pile_of_shame/models/chart_data.dart';
+import 'package:pile_of_shame/widgets/charts/compact_bar_chart.dart';
 import 'package:pile_of_shame/widgets/charts/default_bar_chart.dart';
 import 'package:pile_of_shame/widgets/charts/default_pie_chart.dart';
 import 'package:pile_of_shame/widgets/charts/legend.dart';
@@ -64,6 +65,52 @@ class _HighlightableBarChartState extends State<HighlightableBarChart>
           onTapSection: handleSectionChange,
         ),
       ],
+    );
+  }
+}
+
+class HighlightableCompactBarChart extends StatefulWidget {
+  final List<ChartData> data;
+  final String Function(double data) formatData;
+  final bool showBackground;
+
+  const HighlightableCompactBarChart({
+    super.key,
+    required this.data,
+    this.formatData = DefaultBarChart.defaultFormatData,
+    this.showBackground = false,
+  });
+
+  @override
+  State<HighlightableCompactBarChart> createState() =>
+      _HighlightableCompactBarChartState();
+}
+
+class _HighlightableCompactBarChartState
+    extends State<HighlightableCompactBarChart> with HighlightableChart {
+  @override
+  List<ChartData> highlightData(List<ChartData> data) {
+    return data
+        .map(
+          (e) => e.copyWith(
+            isSelected: e.title == highlightedLabel,
+            color: e.title == highlightedLabel
+                ? Theme.of(context).colorScheme.primary
+                : Theme.of(context).colorScheme.primary.withOpacity(0.6),
+          ),
+        )
+        .toList();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final highlightedData = highlightData(widget.data);
+
+    return CompactBarChart(
+      data: highlightedData,
+      formatData: widget.formatData,
+      onTapSection: handleSectionChange,
+      showBackground: widget.showBackground,
     );
   }
 }

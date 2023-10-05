@@ -7,7 +7,6 @@ import 'package:pile_of_shame/providers/format_provider.dart';
 import 'package:pile_of_shame/utils/constants.dart';
 import 'package:pile_of_shame/widgets/charts/default_bar_chart.dart';
 import 'package:pile_of_shame/widgets/charts/default_comparison_chart.dart';
-import 'package:pile_of_shame/widgets/charts/default_line_chart.dart';
 import 'package:pile_of_shame/widgets/charts/default_pie_chart.dart';
 import 'package:pile_of_shame/widgets/charts/highlightable_charts.dart';
 import 'package:pile_of_shame/widgets/charts/legend.dart';
@@ -29,6 +28,7 @@ class SliverAnalyticsDetails extends ConsumerWidget {
     final GameData data = GameData(
       games: games,
       l10n: l10n,
+      currencyFormatter: currencyFormatter,
     );
 
     return SliverList.list(
@@ -126,9 +126,10 @@ class SliverAnalyticsDetails extends ConsumerWidget {
               ),
               subtitle: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 16.0),
-                child: DefaultLineChart(
-                  data: data.toPriceDistribution(10.0),
-                  interval: 15.0,
+                child: HighlightableCompactBarChart(
+                  data: data.toPriceDistribution(
+                    5.0,
+                  ),
                 ),
               ),
             ),

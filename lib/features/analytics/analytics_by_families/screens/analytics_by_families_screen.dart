@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pile_of_shame/features/analytics/analytics_by_families/widgets/analytics_details.dart';
+import 'package:pile_of_shame/features/games/games_list/widgets/slivers/sliver_grouped_games.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/assets.dart';
 import 'package:pile_of_shame/models/game.dart';
+import 'package:pile_of_shame/models/game_grouping.dart';
 import 'package:pile_of_shame/models/game_platforms.dart';
+import 'package:pile_of_shame/models/game_sorting.dart';
 import 'package:pile_of_shame/providers/games/game_provider.dart';
 import 'package:pile_of_shame/utils/constants.dart';
+import 'package:pile_of_shame/utils/grouper_utils.dart';
 import 'package:pile_of_shame/widgets/app_scaffold.dart';
 import 'package:pile_of_shame/widgets/slivers/sliver_fancy_image_app_bar.dart';
 
@@ -44,6 +48,31 @@ class AnalyticsByFamiliesScreen extends ConsumerWidget {
               child: Text(error.toString()),
             ),
             loading: () => const SliverAnalyticsDetailsSkeleton(),
+          ),
+          ...games.when(
+            data: (games) {
+              final groups = GameGrouperUtils(l10n: l10n).groupAndSortGames(
+                games,
+                GroupStrategy.byPlatform,
+                const GameSorting(),
+              );
+
+              return groups.entries.map(
+                (group) => SliverGroupedGames(
+                  games: group.value,
+                  groupName: group.key,
+                ),
+              );
+            },
+            error: (error, stackTrace) => [
+              SliverToBoxAdapter(
+                child: Text(error.toString()),
+              ),
+            ],
+            loading: () => [const SliverAnalyticsDetailsSkeleton()],
+          ),
+          const SliverToBoxAdapter(
+            child: SizedBox(height: 48.0),
           ),
         ],
       ),
