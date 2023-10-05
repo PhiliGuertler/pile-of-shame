@@ -1,6 +1,7 @@
 import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/models/game_sorting.dart';
 import 'package:pile_of_shame/providers/mixins/persistable_mixin.dart';
+import 'package:pile_of_shame/utils/sorter_utils.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'game_sorter_provider.g.dart';
@@ -33,15 +34,5 @@ FutureOr<List<Game>> applyGameSorting(
 ) async {
   final sorting = await ref.watch(sortGamesProvider.future);
 
-  final List<Game> result = List.from(games);
-
-  result.sort(
-    (a, b) => sorting.sortStrategy.sorter.compareGames(
-      a,
-      b,
-      sorting.isAscending,
-    ),
-  );
-
-  return result;
+  return const GameSorterUtils().sortGames(games, sorting);
 }

@@ -2,6 +2,7 @@ import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/models/game_grouping.dart';
 import 'package:pile_of_shame/providers/l10n_provider.dart';
 import 'package:pile_of_shame/providers/mixins/persistable_mixin.dart';
+import 'package:pile_of_shame/utils/grouper_utils.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'game_group_provider.g.dart';
@@ -36,22 +37,6 @@ FutureOr<Map<String, List<Game>>> applyGameGroup(
 
   final l10n = ref.watch(l10nProvider);
 
-  if (activeGroup.groupStrategy.grouper != null) {
-    final grouper = activeGroup.groupStrategy.grouper!;
-    final allValues = grouper.values();
-    final Map<String, List<Game>> result = Map.fromEntries(
-      allValues.map((e) => MapEntry(grouper.groupToLocaleString(l10n, e), [])),
-    );
-    for (final game in games) {
-      for (final group in allValues) {
-        if (grouper.matchesGroup(group, game)) {
-          result[grouper.groupToLocaleString(l10n, group)]!.add(game);
-        }
-      }
-    }
-    result.removeWhere((key, value) => value.isEmpty);
-    return result;
-  } else {
-    return {"": games};
-  }
+  final GameGrouperUtils grouperUtils = GameGrouperUtils(l10n: l10n);
+  return grouperUtils.groupGames(games, activeGroup.groupStrategy);
 }
