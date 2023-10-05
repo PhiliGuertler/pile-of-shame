@@ -8,20 +8,19 @@ import 'package:pile_of_shame/models/chart_data.dart';
 import 'package:pile_of_shame/utils/color_utils.dart';
 import 'package:pile_of_shame/widgets/skeletons/skeleton.dart';
 
-String defaultFormatData(double data) {
-  return (data == data.roundToDouble() ? data.toInt() : data).toString();
-}
-
-double defaultComputeSum(List<ChartData> data) {
-  return data.fold(
-    0.0,
-    (previousValue, element) => previousValue + element.value,
-  );
-}
-
 class DefaultBarChart extends StatefulWidget {
+  static String defaultFormatData(double data) {
+    return (data == data.roundToDouble() ? data.toInt() : data).toString();
+  }
+
+  static double defaultComputeSum(List<ChartData> data) {
+    return data.fold(
+      0.0,
+      (previousValue, element) => previousValue + element.value,
+    );
+  }
+
   final List<ChartData> data;
-  final String? title;
   final String Function(double data) formatData;
   final double Function(List<ChartData> data) computeSum;
   final void Function(String? title)? onTapSection;
@@ -29,7 +28,6 @@ class DefaultBarChart extends StatefulWidget {
   const DefaultBarChart({
     super.key,
     required this.data,
-    this.title,
     this.formatData = defaultFormatData,
     this.computeSum = defaultComputeSum,
     this.onTapSection,
@@ -119,14 +117,6 @@ class _DefaultBarChartState extends State<DefaultBarChart> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        if (widget.title != null)
-          Padding(
-            padding: const EdgeInsets.only(bottom: 16.0),
-            child: Text(
-              widget.title!,
-              style: Theme.of(context).textTheme.headlineSmall,
-            ),
-          ),
         SizedBox(
           height: 250.0,
           child: StreamBuilder<List<BarChartGroupData>>(
@@ -252,10 +242,6 @@ class DefaultBarChartSkeleton extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        const Padding(
-          padding: EdgeInsets.only(bottom: 16.0),
-          child: Skeleton(),
-        ),
         SizedBox(
           height: 250.0,
           child: StreamBuilder<List<BarChartGroupData>>(

@@ -16,7 +16,6 @@ double defaultComputeSum(List<ChartData> data) {
 
 class DefaultLineChart extends StatefulWidget {
   final List<ChartData> data;
-  final String title;
   final double interval;
   final String Function(double data) formatData;
   final double Function(List<ChartData> data) computeSum;
@@ -25,7 +24,6 @@ class DefaultLineChart extends StatefulWidget {
   const DefaultLineChart({
     super.key,
     required this.data,
-    required this.title,
     required this.interval,
     this.formatData = defaultFormatData,
     this.computeSum = defaultComputeSum,
@@ -105,48 +103,36 @@ class _DefaultLineChartState extends State<DefaultLineChart> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(bottom: 16.0),
-          child: Text(
-            widget.title,
-            style: Theme.of(context).textTheme.headlineSmall,
-          ),
+    return SizedBox(
+      height: 250.0,
+      child: StreamBuilder<LineChartBarData>(
+        stream: generateChartData(
+          Theme.of(context).colorScheme.primaryContainer,
         ),
-        SizedBox(
-          height: 250.0,
-          child: StreamBuilder<LineChartBarData>(
-            stream: generateChartData(
-              Theme.of(context).colorScheme.primaryContainer,
+        builder: (context, snapshot) {
+          return LineChart(
+            LineChartData(
+              minY: 0.0,
+              maxY: widget.data.fold<double>(
+                0.0,
+                (previousValue, element) => element.value > previousValue
+                    ? element.value
+                    : previousValue,
+              ),
+              lineBarsData: snapshot.hasData ? [snapshot.data!] : [],
+              gridData: const FlGridData(show: false),
+              titlesData: const FlTitlesData(
+                rightTitles: AxisTitles(),
+                topTitles: AxisTitles(),
+                leftTitles: AxisTitles(),
+              ),
+              borderData: FlBorderData(show: false),
             ),
-            builder: (context, snapshot) {
-              return LineChart(
-                LineChartData(
-                  minY: 0.0,
-                  maxY: widget.data.fold<double>(
-                    0.0,
-                    (previousValue, element) => element.value > previousValue
-                        ? element.value
-                        : previousValue,
-                  ),
-                  lineBarsData: snapshot.hasData ? [snapshot.data!] : [],
-                  gridData: const FlGridData(show: false),
-                  titlesData: const FlTitlesData(
-                    rightTitles: AxisTitles(),
-                    topTitles: AxisTitles(),
-                    leftTitles: AxisTitles(),
-                  ),
-                  borderData: FlBorderData(show: false),
-                ),
-                duration: 150.ms,
-                curve: Curves.easeInOutBack,
-              );
-            },
-          ),
-        ),
-      ],
+            duration: 150.ms,
+            curve: Curves.easeInOutBack,
+          );
+        },
+      ),
     );
   }
 }
