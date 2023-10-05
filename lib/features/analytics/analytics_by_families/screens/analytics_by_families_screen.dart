@@ -13,6 +13,7 @@ import 'package:pile_of_shame/utils/constants.dart';
 import 'package:pile_of_shame/utils/grouper_utils.dart';
 import 'package:pile_of_shame/widgets/app_scaffold.dart';
 import 'package:pile_of_shame/widgets/slivers/sliver_fancy_image_app_bar.dart';
+import 'package:pile_of_shame/widgets/slivers/sliver_fancy_image_header.dart';
 
 class AnalyticsByFamiliesScreen extends ConsumerWidget {
   const AnalyticsByFamiliesScreen({super.key, this.family});
@@ -42,12 +43,40 @@ class AnalyticsByFamiliesScreen extends ConsumerWidget {
               family != null ? family!.toLocale(l10n) : l10n.gameLibrary,
             ),
           ),
-          games.when(
-            data: (games) => SliverAnalyticsDetails(games: games),
-            error: (error, stackTrace) => SliverToBoxAdapter(
-              child: Text(error.toString()),
-            ),
-            loading: () => const SliverAnalyticsDetailsSkeleton(),
+          ...games.when(
+            data: (games) => games.isNotEmpty
+                ? [SliverAnalyticsDetails(games: games)]
+                : [
+                    SliverPadding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: defaultPaddingX,
+                      ),
+                      sliver: SliverFancyImageHeader(
+                        imagePath: ImageAssets.gamePile.value,
+                        height: 250,
+                      ),
+                    ),
+                    SliverToBoxAdapter(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: defaultPaddingX,
+                          vertical: 16.0,
+                        ),
+                        child: Text(
+                          AppLocalizations.of(context)!
+                              .buildYourPileOfShameByAddingNewGamesInTheMainMenu,
+                          style: Theme.of(context).textTheme.bodyLarge,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                  ],
+            error: (error, stackTrace) => [
+              SliverToBoxAdapter(
+                child: Text(error.toString()),
+              ),
+            ],
+            loading: () => [const SliverAnalyticsDetailsSkeleton()],
           ),
           ...games.when(
             data: (games) {
