@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/age_restriction.dart';
 import 'package:pile_of_shame/models/chart_data.dart';
@@ -11,8 +12,13 @@ import 'package:pile_of_shame/widgets/usk_logo.dart';
 class GameData {
   final List<Game> games;
   final AppLocalizations l10n;
+  final NumberFormat currencyFormatter;
 
-  const GameData({required this.games, required this.l10n});
+  const GameData({
+    required this.games,
+    required this.l10n,
+    required this.currencyFormatter,
+  });
 
   List<ChartData> toCompletedData() {
     final completedGamesCount = games.fold(
@@ -133,15 +139,20 @@ class GameData {
       priceCap += interval;
     }
 
-    return priceDistribution
-        .map(
-          (e) => ChartData(
-            title: "",
-            value: e.second.toDouble(),
-            secondaryValue: e.first,
-          ),
-        )
-        .toList();
+    return priceDistribution.map((e) {
+      String title = "";
+      final previousInterval = e.first - interval + 0.01;
+      if (previousInterval >= 0) {
+        title = "${currencyFormatter.format(previousInterval)} -";
+      }
+      title = "$title ${currencyFormatter.format(e.first)}";
+
+      return ChartData(
+        title: title,
+        value: e.second.toDouble(),
+        secondaryValue: e.first,
+      );
+    }).toList();
   }
 
   List<ChartData> toPlatformDistribution() {

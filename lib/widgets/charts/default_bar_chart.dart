@@ -44,11 +44,6 @@ class _DefaultBarChartState extends State<DefaultBarChart> {
     Color backgroundColor,
   ) async* {
     final List<BarChartGroupData> sections = [];
-    final maxData = widget.data.fold(
-      0.0,
-      (previousValue, element) =>
-          element.value > previousValue ? element.value : previousValue,
-    );
     for (var i = 0; i < widget.data.length; ++i) {
       final section = widget.data[i];
       final color = section.color ?? ColorUtils.stringToColor(section.title);
@@ -62,13 +57,6 @@ class _DefaultBarChartState extends State<DefaultBarChart> {
               color: color,
               width: section.isSelected ? 45.0 : 15.0,
               borderRadius: BorderRadius.circular(4.0),
-              backDrawRodData: BackgroundBarChartRodData(
-                color:
-                    backgroundColor.withOpacity(section.isSelected ? 0.2 : 0.1),
-                fromY: 0,
-                toY: maxData,
-                show: true,
-              ),
             ),
           ],
         ),
