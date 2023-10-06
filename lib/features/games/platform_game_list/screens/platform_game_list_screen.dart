@@ -3,12 +3,15 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pile_of_shame/features/games/games_list/widgets/slivers/sliver_grouped_games.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
+import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/models/game_platforms.dart';
+import 'package:pile_of_shame/models/game_sorting.dart';
 import 'package:pile_of_shame/providers/games/game_provider.dart';
 import 'package:pile_of_shame/utils/constants.dart';
 import 'package:pile_of_shame/widgets/app_scaffold.dart';
 import 'package:pile_of_shame/widgets/skeletons/skeleton_game_display.dart';
 import 'package:pile_of_shame/widgets/slivers/sliver_fancy_image_app_bar.dart';
+import 'package:pile_of_shame/widgets/slivers/sliver_list_summary.dart';
 
 class PlatformGameListScreen extends ConsumerWidget {
   const PlatformGameListScreen({super.key, required this.platform});
@@ -32,17 +35,38 @@ class PlatformGameListScreen extends ConsumerWidget {
             title: Text(platform.localizedName(l10n)),
             borderRadius: -defaultBorderRadius * 2.0,
           ),
-          games.when(
-            data: (games) => SliverGroupedGames(games: games),
-            loading: () => SliverList.builder(
-              itemBuilder: (context, index) => const SkeletonGameDisplay()
-                  .animate()
-                  .fade(curve: Curves.easeOut, duration: 130.ms),
-              itemCount: 10,
-            ),
-            error: (error, stackTrace) => SliverToBoxAdapter(
-              child: Text(error.toString()),
-            ),
+          ...games.when(
+            skipLoadingOnReload: true,
+            data: (games) {
+              final List<Game> sortedGames = List.from(games);
+              sortedGames.sort(
+                (a, b) => SortStrategy.byName.sorter.compareGames(a, b, true),
+              );
+              return [
+                SliverGroupedGames(games: sortedGames),
+                SliverListSummary(
+                  gameCount: sortedGames.length,
+                  totalPrice: sortedGames.fold<double>(
+                    0.0,
+                    (previousValue, element) =>
+                        element.fullPrice() + previousValue,
+                  ),
+                ),
+              ];
+            },
+            loading: () => [
+              SliverList.builder(
+                itemBuilder: (context, index) => const SkeletonGameDisplay()
+                    .animate()
+                    .fade(curve: Curves.easeOut, duration: 130.ms),
+                itemCount: 10,
+              ),
+            ],
+            error: (error, stackTrace) => [
+              SliverToBoxAdapter(
+                child: Text(error.toString()),
+              ),
+            ],
           ),
         ],
       ),

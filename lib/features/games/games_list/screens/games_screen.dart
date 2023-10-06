@@ -4,13 +4,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pile_of_shame/features/games/games_list/widgets/slivers/sliver_grouped_games.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/assets.dart';
-import 'package:pile_of_shame/providers/format_provider.dart';
 import 'package:pile_of_shame/providers/games/game_provider.dart';
 import 'package:pile_of_shame/utils/constants.dart';
 import 'package:pile_of_shame/widgets/error_display.dart';
-import 'package:pile_of_shame/widgets/skeletons/skeleton.dart';
 import 'package:pile_of_shame/widgets/skeletons/skeleton_game_display.dart';
 import 'package:pile_of_shame/widgets/slivers/sliver_fancy_image_header.dart';
+import 'package:pile_of_shame/widgets/slivers/sliver_list_summary.dart';
 
 class GamesScreen extends ConsumerWidget {
   final ScrollController scrollController;
@@ -21,7 +20,6 @@ class GamesScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final hasGames = ref.watch(hasGamesProvider);
     final totalPrice = ref.watch(gamesFilteredTotalPriceProvider);
-    final currencyFormatter = ref.watch(currencyFormatProvider(context));
     final totalGames = ref.watch(gamesFilteredTotalAmountProvider);
 
     final groupedGames = ref.watch(gamesGroupedProvider);
@@ -90,50 +88,17 @@ class GamesScreen extends ConsumerWidget {
                   ],
                 ),
               if (hasGames)
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                      top: 16.0,
-                      left: defaultPaddingX,
-                      right: defaultPaddingX,
-                      bottom: 80.0,
-                    ),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        SizedBox(
-                          width: 128,
-                          child: totalGames.when(
-                            data: (totalGames) => Text(
-                              AppLocalizations.of(context)!.nGames(totalGames),
-                            ),
-                            loading: () => const Skeleton(
-                              widthFactor: 1,
-                            ),
-                            error: (error, stackTrace) =>
-                                Text(error.toString()),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 128,
-                          child: Align(
-                            alignment: Alignment.centerRight,
-                            child: totalPrice.when(
-                              data: (totalPrice) =>
-                                  Text(currencyFormatter.format(totalPrice)),
-                              loading: () => const Skeleton(
-                                widthFactor: 1,
-                                alignment: Alignment.centerRight,
-                              ),
-                              error: (error, stackTrace) =>
-                                  Text(error.toString()),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ).animate().fadeIn(),
+                SliverListSummary(
+                  gameCount: totalGames.when(
+                    data: (totalGames) => totalGames,
+                    loading: () => null,
+                    error: (error, stackTrace) => -1,
+                  ),
+                  totalPrice: totalPrice.when(
+                    data: (totalPrice) => totalPrice,
+                    loading: () => null,
+                    error: (error, stackTrace) => -1,
+                  ),
                 ),
             ],
           ),
