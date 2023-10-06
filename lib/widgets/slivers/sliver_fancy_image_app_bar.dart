@@ -82,7 +82,8 @@ class SliverFancyImageAppBar extends ConsumerWidget {
         stretchModes: stretchModes,
         title: title,
         actions: actions,
-        themeColor: Theme.of(context).colorScheme.primaryContainer,
+        themeColor: Theme.of(context).colorScheme.surface,
+        tintColor: Theme.of(context).colorScheme.surfaceTint,
       ),
     );
   }
@@ -126,7 +127,8 @@ class _SliverFancyImageAppBarDelegate extends SliverPersistentHeaderDelegate {
   final Widget? title;
   final List<Widget>? actions;
   final double borderRadius;
-  final Color? themeColor;
+  final Color themeColor;
+  final Color tintColor;
 
   const _SliverFancyImageAppBarDelegate({
     required this.imagePath,
@@ -137,7 +139,8 @@ class _SliverFancyImageAppBarDelegate extends SliverPersistentHeaderDelegate {
     required this.title,
     required this.actions,
     required this.borderRadius,
-    this.themeColor,
+    required this.themeColor,
+    required this.tintColor,
   });
 
   bool _getEffectiveCenterTitle(ThemeData theme) {
@@ -196,8 +199,14 @@ class _SliverFancyImageAppBarDelegate extends SliverPersistentHeaderDelegate {
                   ).animate(delay: 200.ms).fadeIn(),
                 ),
                 Material(
-                  color: themeColor?.withOpacity(currentBackgroundBlend),
-                  elevation: currentBackgroundBlend * 4.0,
+                  color: ElevationOverlay.applySurfaceTint(
+                    themeColor,
+                    tintColor,
+                    currentBackgroundBlend * 4.0,
+                  ).withOpacity(
+                    math.pow(currentBackgroundBlend, 5.0).toDouble(),
+                  ),
+                  elevation: 4.0,
                   child: Padding(
                     padding: EdgeInsets.only(top: safePadding.top),
                     child: Align(
@@ -217,9 +226,9 @@ class _SliverFancyImageAppBarDelegate extends SliverPersistentHeaderDelegate {
                                         borderRadius: BorderRadius.circular(
                                           overlayRadius,
                                         ),
-                                        child: Container(
+                                        child: ColoredBox(
                                           color: themeColor
-                                              ?.withOpacity(currentOpacity),
+                                              .withOpacity(currentOpacity),
                                           child: const BackButton(),
                                         ),
                                       ),
@@ -233,9 +242,9 @@ class _SliverFancyImageAppBarDelegate extends SliverPersistentHeaderDelegate {
                               ? ClipRRect(
                                   borderRadius:
                                       BorderRadius.circular(overlayRadius),
-                                  child: Container(
+                                  child: ColoredBox(
                                     color:
-                                        themeColor?.withOpacity(currentOpacity),
+                                        themeColor.withOpacity(currentOpacity),
                                     child: Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: DefaultTextStyle(
@@ -269,7 +278,7 @@ class _SliverFancyImageAppBarDelegate extends SliverPersistentHeaderDelegate {
                                                   ),
                                                   child: Container(
                                                     color:
-                                                        themeColor?.withOpacity(
+                                                        themeColor.withOpacity(
                                                       currentOpacity,
                                                     ),
                                                   ),
