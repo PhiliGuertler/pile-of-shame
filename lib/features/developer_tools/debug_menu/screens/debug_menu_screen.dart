@@ -106,11 +106,8 @@ class DebugMenuScreen extends StatelessWidget {
                   child: ImageListTile(
                     imagePath: ImageAssets.controllerGameCube.value,
                     heroTag: "GCN",
-                    child: const ListTile(
-                      contentPadding: EdgeInsets.symmetric(horizontal: 16.0),
-                      title: Text("Title"),
-                      subtitle: Text("Subtitle"),
-                    ),
+                    title: const Text("Title"),
+                    subtitle: const Text("Subtitle"),
                   ),
                 ),
               ],

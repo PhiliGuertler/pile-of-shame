@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pile_of_shame/features/analytics/analytics_by_families/widgets/analytics_details.dart';
-import 'package:pile_of_shame/features/games/games_list/widgets/slivers/sliver_grouped_games.dart';
+import 'package:pile_of_shame/features/games/platform_game_list/screens/platform_game_list_screen.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/assets.dart';
 import 'package:pile_of_shame/models/game.dart';
@@ -12,6 +12,7 @@ import 'package:pile_of_shame/providers/games/game_provider.dart';
 import 'package:pile_of_shame/utils/constants.dart';
 import 'package:pile_of_shame/utils/grouper_utils.dart';
 import 'package:pile_of_shame/widgets/app_scaffold.dart';
+import 'package:pile_of_shame/widgets/image_list_tile.dart';
 import 'package:pile_of_shame/widgets/slivers/sliver_fancy_image_app_bar.dart';
 import 'package:pile_of_shame/widgets/slivers/sliver_fancy_image_header.dart';
 
@@ -86,12 +87,27 @@ class AnalyticsByFamiliesScreen extends ConsumerWidget {
                 const GameSorting(),
               );
 
-              return groups.entries.map(
-                (group) => SliverGroupedGames(
-                  games: group.value,
-                  groupName: group.key,
-                ),
-              );
+              return groups.entries.map((group) {
+                final GamePlatform platform = GamePlatform.values.firstWhere(
+                  (element) => element.localizedAbbreviation(l10n) == group.key,
+                );
+                return SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: defaultPaddingX,
+                      vertical: 8.0,
+                    ),
+                    child: ImageListTile(
+                      imagePath: platform.controllerLogoPath,
+                      heroTag: group.key,
+                      title: Text(platform.localizedName(l10n)),
+                      subtitle: Text(l10n.nGames(group.value.length)),
+                      openBuilderOnTap: (context, action) =>
+                          PlatformGameListScreen(platform: platform),
+                    ),
+                  ),
+                );
+              });
             },
             error: (error, stackTrace) => [
               SliverToBoxAdapter(
