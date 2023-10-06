@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:pile_of_shame/models/assets.dart';
 
 class ImageListTile extends StatelessWidget {
   const ImageListTile({
     super.key,
-    required this.image,
+    required this.imagePath,
     required this.heroTag,
     this.onTap,
     this.child,
   });
 
-  final ImageAssets image;
+  final String imagePath;
   final String heroTag;
   final VoidCallback? onTap;
   final Widget? child;
@@ -35,7 +34,7 @@ class ImageListTile extends StatelessWidget {
                       topLeft: Radius.circular(15.0),
                     ),
                     child: Image.asset(
-                      image.value,
+                      imagePath,
                       fit: BoxFit.cover,
                     ),
                   ),

@@ -5,9 +5,11 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:pile_of_shame/features/developer_tools/debug_game_platform_icons/screens/debug_game_platform_icons_screen.dart';
 import 'package:pile_of_shame/features/developer_tools/debug_platform_family_cards/screens/debug_platform_family_cards_screen.dart';
 import 'package:pile_of_shame/features/developer_tools/debug_swipe_to_trigger/screens/debug_swipe_to_trigger_screen.dart';
+import 'package:pile_of_shame/models/assets.dart';
 import 'package:pile_of_shame/utils/constants.dart';
 import 'package:pile_of_shame/widgets/animated/animated_rolling_number.dart';
 import 'package:pile_of_shame/widgets/app_scaffold.dart';
+import 'package:pile_of_shame/widgets/image_list_tile.dart';
 import 'package:pile_of_shame/widgets/segmented_action_card.dart';
 
 Stream<int> randomIntStream() async* {
@@ -93,6 +95,23 @@ class DebugMenuScreen extends StatelessWidget {
                       trailing: const SizedBox(),
                     ),
                   ],
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    left: defaultPaddingX,
+                    right: defaultPaddingX,
+                    top: 16.0,
+                    bottom: 8.0,
+                  ),
+                  child: ImageListTile(
+                    imagePath: ImageAssets.controllerGameCube.value,
+                    heroTag: "GCN",
+                    child: const ListTile(
+                      contentPadding: EdgeInsets.symmetric(horizontal: 16.0),
+                      title: Text("Title"),
+                      subtitle: Text("Subtitle"),
+                    ),
+                  ),
                 ),
               ],
             ),
