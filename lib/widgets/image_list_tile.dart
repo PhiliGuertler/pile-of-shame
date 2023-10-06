@@ -29,9 +29,17 @@ class ImageListTile extends StatelessWidget {
     if (openBuilderOnTap != null) {
       wrapper = OpenContainer(
         transitionDuration: const Duration(milliseconds: 500),
-        openColor: Theme.of(context).colorScheme.background,
+        openColor: ElevationOverlay.applySurfaceTint(
+          Theme.of(context).colorScheme.surface,
+          Theme.of(context).colorScheme.surfaceTint,
+          1.0,
+        ),
         closedBuilder: builder,
-        closedColor: Theme.of(context).colorScheme.background,
+        closedColor: ElevationOverlay.applySurfaceTint(
+          Theme.of(context).colorScheme.surface,
+          Theme.of(context).colorScheme.surfaceTint,
+          1.0,
+        ),
         closedShape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(
             Radius.circular(15.0),

@@ -73,9 +73,17 @@ class ParallaxImageCard extends StatelessWidget {
     if (openBuilderOnTap != null) {
       wrapper = OpenContainer(
         transitionDuration: const Duration(milliseconds: 500),
-        openColor: Theme.of(context).colorScheme.background,
+        openColor: ElevationOverlay.applySurfaceTint(
+          Theme.of(context).colorScheme.surface,
+          Theme.of(context).colorScheme.surfaceTint,
+          1.0,
+        ),
         closedBuilder: builder,
-        closedColor: Theme.of(context).colorScheme.background,
+        closedColor: ElevationOverlay.applySurfaceTint(
+          Theme.of(context).colorScheme.surface,
+          Theme.of(context).colorScheme.surfaceTint,
+          1.0,
+        ),
         closedShape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(
             Radius.circular(15.0),
@@ -94,6 +102,7 @@ class ParallaxImageCard extends StatelessWidget {
     return wrapMe(
       context,
       (context, openContainer) => Card(
+        shadowColor: Colors.transparent,
         margin: EdgeInsets.zero,
         child: InkWell(
           borderRadius: BorderRadius.circular(16.0),
