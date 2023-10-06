@@ -9,6 +9,7 @@ import 'package:pile_of_shame/models/assets.dart';
 import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/models/game_platforms.dart';
 import 'package:pile_of_shame/providers/games/game_provider.dart';
+import 'package:pile_of_shame/transitions/material_page_slide_route.dart';
 import 'package:pile_of_shame/utils/constants.dart';
 import 'package:pile_of_shame/widgets/app_scaffold.dart';
 import 'package:pile_of_shame/widgets/slivers/sliver_fancy_image_app_bar.dart';
@@ -74,7 +75,7 @@ class _GameDetailsScreenState extends ConsumerState<GameDetailsScreen> {
                       onPressed: () async {
                         final result =
                             await Navigator.of(context).push<EditableGame?>(
-                          MaterialPageRoute(
+                          MaterialPageSlideRoute(
                             builder: (context) => AddGameScreen(
                               initialValue: EditableGame.fromGame(game),
                             ),
