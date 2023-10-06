@@ -21,9 +21,6 @@ class DebugPlatformFamilyCardsScreen extends StatelessWidget {
             child: ParallaxImageCard(
               imagePath: ImageAssets.platformFamilyMicrosoft.value,
               title: "Microsoft",
-              onTap: () {
-                debugPrint("Lets gooo");
-              },
             ),
           ),
           Padding(

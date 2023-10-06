@@ -1,24 +1,47 @@
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 
-class ParallaxBackground extends StatelessWidget {
-  ParallaxBackground({super.key, required this.imagePath});
+class ParallaxBackground extends StatefulWidget {
+  const ParallaxBackground({super.key, required this.imagePath});
 
   final String imagePath;
 
+  @override
+  State<ParallaxBackground> createState() => _ParallaxBackgroundState();
+}
+
+class _ParallaxBackgroundState extends State<ParallaxBackground> {
   final GlobalKey _backgroundImageKey = GlobalKey();
+  double previousScrollFraction = 0.0;
 
   @override
   Widget build(BuildContext context) {
+    ScrollableState? scroll;
+    try {
+      scroll = Scrollable.of(context);
+    } catch (error) {
+      scroll = null;
+    }
+
     return Flow(
       delegate: ParallaxFlowDelegate(
-        scrollable: Scrollable.of(context),
+        scrollable: scroll,
         listItemContext: context,
         backgroundImageKey: _backgroundImageKey,
         parallaxFactor: 0.7,
+        updatePreviousScrollFraction: (value) {
+          SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+            setState(() {
+              previousScrollFraction = value;
+            });
+          });
+        },
+        previousScrollFraction: previousScrollFraction,
       ),
       children: [
         Image.asset(
-          imagePath,
+          widget.imagePath,
           key: _backgroundImageKey,
           fit: BoxFit.cover,
         ),
@@ -32,51 +55,84 @@ class ParallaxImageCard extends StatelessWidget {
     super.key,
     required this.imagePath,
     required this.title,
-    this.onTap,
+    this.openBuilderOnTap,
   });
 
   final String imagePath;
   final String title;
-  final VoidCallback? onTap;
+
+  /// Tap handler that triggers a transition to the returned widget of this function.
+  final Widget Function(BuildContext, void Function({Object? returnValue}))?
+      openBuilderOnTap;
+
+  Widget wrapMe(
+    BuildContext context,
+    Widget Function(BuildContext context, VoidCallback? openContainer) builder,
+  ) {
+    late Widget wrapper;
+    if (openBuilderOnTap != null) {
+      wrapper = OpenContainer(
+        transitionDuration: const Duration(milliseconds: 500),
+        openColor: Theme.of(context).colorScheme.background,
+        closedBuilder: builder,
+        closedColor: Theme.of(context).colorScheme.background,
+        closedShape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(15.0),
+          ),
+        ),
+        openBuilder: openBuilderOnTap!,
+      );
+    } else {
+      wrapper = builder(context, null);
+    }
+    return wrapper;
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: InkWell(
-        borderRadius: BorderRadius.circular(16.0),
-        onTap: onTap,
-        child: Column(
-          children: [
-            AspectRatio(
-              aspectRatio: 16 / 9,
-              child: ShaderMask(
-                shaderCallback: (bounds) {
-                  return LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      Colors.white.withOpacity(0.8),
-                      Colors.white.withOpacity(0.8),
-                      Colors.white.withOpacity(0.3),
-                      Colors.transparent,
-                    ],
-                    stops: const [0.0, 0.7, 0.9, 1.0],
-                  ).createShader(bounds);
-                },
-                child: ClipRRect(
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(16),
-                    topRight: Radius.circular(16),
+    return wrapMe(
+      context,
+      (context, openContainer) => Card(
+        margin: EdgeInsets.zero,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(16.0),
+          onTap: openContainer,
+          child: Column(
+            children: [
+              AspectRatio(
+                aspectRatio: 16 / 9,
+                child: ShaderMask(
+                  shaderCallback: (bounds) {
+                    return LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        Colors.white.withOpacity(0.8),
+                        Colors.white.withOpacity(0.8),
+                        Colors.white.withOpacity(0.3),
+                        Colors.transparent,
+                      ],
+                      stops: const [0.0, 0.7, 0.9, 1.0],
+                    ).createShader(bounds);
+                  },
+                  child: ClipRRect(
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(16),
+                      topRight: Radius.circular(16),
+                    ),
+                    child: ParallaxBackground(imagePath: imagePath),
                   ),
-                  child: ParallaxBackground(imagePath: imagePath),
                 ),
               ),
-            ),
-            ListTile(
-              title: Text(title),
-              trailing: onTap != null ? const Icon(Icons.navigate_next) : null,
-            ),
-          ],
+              ListTile(
+                title: Text(title),
+                trailing: openBuilderOnTap != null
+                    ? const Icon(Icons.navigate_next)
+                    : null,
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -89,12 +145,16 @@ class ParallaxFlowDelegate extends FlowDelegate {
     required this.scrollable,
     required this.listItemContext,
     required this.backgroundImageKey,
-  }) : super(repaint: scrollable.position);
+    required this.updatePreviousScrollFraction,
+    required this.previousScrollFraction,
+  }) : super(repaint: scrollable?.position);
 
   final double parallaxFactor;
-  final ScrollableState scrollable;
+  final ScrollableState? scrollable;
   final BuildContext listItemContext;
   final GlobalKey backgroundImageKey;
+  final void Function(double value) updatePreviousScrollFraction;
+  final double previousScrollFraction;
 
   @override
   BoxConstraints getConstraintsForChild(int i, BoxConstraints constraints) {
@@ -106,7 +166,7 @@ class ParallaxFlowDelegate extends FlowDelegate {
   @override
   void paintChildren(FlowPaintingContext context) {
     // Calculate the position of this list item within the viewport.
-    final scrollableBox = scrollable.context.findRenderObject()! as RenderBox;
+    final scrollableBox = scrollable?.context.findRenderObject() as RenderBox?;
     final listItemBox = listItemContext.findRenderObject()! as RenderBox;
     final listItemOffset = listItemBox.localToGlobal(
       listItemBox.size.centerLeft(Offset.zero),
@@ -115,9 +175,12 @@ class ParallaxFlowDelegate extends FlowDelegate {
 
     // Determine the percent position of this list item within the
     // scrollable area.
-    final viewportDimension = scrollable.position.viewportDimension;
-    final scrollFraction =
-        (listItemOffset.dy / viewportDimension).clamp(0.0, 1.0);
+    final viewportDimension = scrollable?.position.viewportDimension;
+    double scrollFraction = previousScrollFraction;
+    if (viewportDimension != null) {
+      scrollFraction = (listItemOffset.dy / viewportDimension).clamp(0.0, 1.0);
+    }
+    updatePreviousScrollFraction(scrollFraction);
 
     // Calculate the vertical alignment of the background
     // based on the scroll percent.

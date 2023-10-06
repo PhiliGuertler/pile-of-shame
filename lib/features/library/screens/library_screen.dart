@@ -26,13 +26,8 @@ class LibraryScreen extends ConsumerWidget {
             child: ParallaxImageCard(
               imagePath: ImageAssets.library.value,
               title: AppLocalizations.of(context)!.gameLibrary,
-              onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => const AnalyticsByFamiliesScreen(),
-                  ),
-                );
-              },
+              openBuilderOnTap: (context, openContainer) =>
+                  const AnalyticsByFamiliesScreen(),
             ),
           ),
           for (final family in families)
@@ -44,14 +39,8 @@ class LibraryScreen extends ConsumerWidget {
               child: ParallaxImageCard(
                 imagePath: family.image.value,
                 title: family.toLocale(AppLocalizations.of(context)!),
-                onTap: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          AnalyticsByFamiliesScreen(family: family),
-                    ),
-                  );
-                },
+                openBuilderOnTap: (context, openContainer) =>
+                    AnalyticsByFamiliesScreen(family: family),
               ),
             ),
           const SizedBox(
