@@ -88,16 +88,19 @@ class GamesScreen extends ConsumerWidget {
                   ],
                 ),
               if (hasGames)
-                SliverListSummary(
-                  gameCount: totalGames.when(
-                    data: (totalGames) => totalGames,
-                    loading: () => null,
-                    error: (error, stackTrace) => -1,
-                  ),
-                  totalPrice: totalPrice.when(
-                    data: (totalPrice) => totalPrice,
-                    loading: () => null,
-                    error: (error, stackTrace) => -1,
+                SliverPadding(
+                  padding: const EdgeInsets.only(bottom: 48.0),
+                  sliver: SliverListSummary(
+                    gameCount: totalGames.when(
+                      data: (totalGames) => totalGames,
+                      loading: () => null,
+                      error: (error, stackTrace) => -1,
+                    ),
+                    totalPrice: totalPrice.when(
+                      data: (totalPrice) => totalPrice,
+                      loading: () => null,
+                      error: (error, stackTrace) => -1,
+                    ),
                   ),
                 ),
             ],
