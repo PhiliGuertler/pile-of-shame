@@ -3,7 +3,6 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pile_of_shame/features/analytics/analytics_by_families/widgets/platform_family_analytics_details.dart';
 import 'package:pile_of_shame/features/analytics/analytics_by_platform/widgets/platform_analytics_details.dart';
-import 'package:pile_of_shame/features/analytics/analytics_by_platform/widgets/sliver_tabs.dart';
 import 'package:pile_of_shame/features/games/games_list/widgets/slivers/sliver_grouped_games.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/assets.dart';
@@ -38,21 +37,21 @@ class AnalyticsByPlatformScreen extends ConsumerWidget {
           ),
           headerSliverBuilder: (context, innerBoxIsScrolled) => [
             SliverFancyImageAppBar(
-              borderRadius: -defaultBorderRadius * 2,
+              borderRadius: -defaultBorderRadius * 3,
               imagePath: platform.controllerLogoPath,
               title: Text(
                 platform.localizedName(l10n),
               ),
-            ),
-            SliverTabs(
-              tabs: [
-                Tab(
-                  child: Text(l10n.analytics),
-                ),
-                Tab(
-                  child: Text(l10n.games),
-                ),
-              ],
+              bottom: TabBar(
+                tabs: [
+                  Tab(
+                    child: Text(l10n.analytics),
+                  ),
+                  Tab(
+                    child: Text(l10n.games),
+                  ),
+                ],
+              ),
             ),
           ],
           body: TabBarView(
