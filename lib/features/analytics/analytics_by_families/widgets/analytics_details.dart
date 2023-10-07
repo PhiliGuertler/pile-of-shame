@@ -24,12 +24,17 @@ class SliverAnalyticsDetails extends ConsumerWidget {
     final l10n = AppLocalizations.of(context)!;
 
     final currencyFormatter = ref.watch(currencyFormatProvider(context));
+    final percentFormatter = ref.watch(percentFormatProvider(context));
+    final numberFormatter = ref.watch(numberFormatProvider(context));
 
     final GameData data = GameData(
       games: games,
       l10n: l10n,
       currencyFormatter: currencyFormatter,
     );
+
+    final completedData = data.toCompletedData();
+    final ageRatingData = data.toAgeRatingData();
 
     return SliverList.list(
       children: [
@@ -91,7 +96,24 @@ class SliverAnalyticsDetails extends ConsumerWidget {
               subtitle: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 16.0),
                 child: HighlightablePieChart(
-                  data: data.toCompletedData(),
+                  data: completedData,
+                  formatData: (data) => l10n.nGames(data.toInt()),
+                  formatTotalData: (totalData) {
+                    try {
+                      final completed = completedData.firstWhere(
+                        (element) => element.title == l10n.completed,
+                      );
+                      final completedPercentage = completed.value /
+                          completedData.fold(
+                            0,
+                            (previousValue, element) =>
+                                element.value + previousValue,
+                          );
+                      return percentFormatter.format(completedPercentage);
+                    } catch (error) {
+                      return percentFormatter.format(0);
+                    }
+                  },
                 ),
               ),
             ),
@@ -104,6 +126,8 @@ class SliverAnalyticsDetails extends ConsumerWidget {
                 padding: const EdgeInsets.symmetric(vertical: 16.0),
                 child: HighlightablePieChart(
                   data: data.toPlayStatusData(),
+                  formatData: (data) => l10n.nGames(data.toInt()),
+                  formatTotalData: (totalData) => "",
                 ),
               ),
             ),
@@ -115,7 +139,20 @@ class SliverAnalyticsDetails extends ConsumerWidget {
               subtitle: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 16.0),
                 child: HighlightablePieChart(
-                  data: data.toAgeRatingData(),
+                  data: ageRatingData,
+                  formatData: (data) => l10n.nGames(data.toInt()),
+                  formatTotalData: (totalData) {
+                    final ageSum = ageRatingData.fold(
+                      0.0,
+                      (previousValue, element) =>
+                          element.value * element.secondaryValue!,
+                    );
+                    final elementCount = ageRatingData.fold(
+                      0.0,
+                      (previousValue, element) => element.value + previousValue,
+                    );
+                    return "${l10n.average}:\n${numberFormatter.format(ageSum / elementCount)}";
+                  },
                 ),
               ),
             ),
@@ -130,6 +167,7 @@ class SliverAnalyticsDetails extends ConsumerWidget {
                   data: data.toPriceDistribution(
                     5.0,
                   ),
+                  formatData: (data) => l10n.nGames(data.toInt()),
                 ),
               ),
             ),
@@ -142,6 +180,7 @@ class SliverAnalyticsDetails extends ConsumerWidget {
                 padding: const EdgeInsets.symmetric(vertical: 16.0),
                 child: HighlightableBarChart(
                   data: data.toPlatformDistribution(),
+                  formatData: (data) => l10n.nGames(data.toInt()),
                 ),
               ),
             ),

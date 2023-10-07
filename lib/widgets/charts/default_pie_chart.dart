@@ -15,6 +15,7 @@ class DefaultPieChart extends StatefulWidget {
 
   final List<ChartData> data;
   final String Function(double data) formatData;
+  final String Function(double totalData)? formatTotalData;
   final void Function(String? title)? onTapSection;
 
   const DefaultPieChart({
@@ -22,6 +23,7 @@ class DefaultPieChart extends StatefulWidget {
     required this.data,
     this.formatData = defaultFormatData,
     this.onTapSection,
+    this.formatTotalData,
   });
 
   @override
@@ -70,12 +72,16 @@ class _DefaultPieChartState extends State<DefaultPieChart> {
 
   @override
   Widget build(BuildContext context) {
-    final total = widget.formatData(
-      widget.data
-          .fold(0.0, (previousValue, element) => previousValue + element.value),
-    );
-    String totalLabel =
-        AppLocalizations.of(context)!.totalN(total).replaceFirst(": ", ":\n");
+    String totalLabel = "";
+    final sum = widget.data
+        .fold(0.0, (previousValue, element) => previousValue + element.value);
+    if (widget.formatTotalData != null) {
+      totalLabel = widget.formatTotalData!(sum);
+    } else {
+      final total = widget.formatData(sum);
+      totalLabel =
+          AppLocalizations.of(context)!.totalN(total).replaceFirst(": ", ":\n");
+    }
     try {
       final selected = widget.data.singleWhere(
         (element) => element.isSelected,

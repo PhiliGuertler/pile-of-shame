@@ -105,6 +105,7 @@ class GameData {
         ChartData(
           title: usk.toRatedString(l10n),
           value: count.toDouble(),
+          secondaryValue: usk.age.toDouble(),
           color: usk.toBackgroundColor(),
           alternativeTitle: USKLogo(
             ageRestriction: usk,
