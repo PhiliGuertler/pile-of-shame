@@ -26,10 +26,13 @@ class LanguageScreen extends ConsumerWidget {
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(right: 16.0),
-                    child: SizedBox(
-                      width: flagDimension,
-                      height: flagDimension,
-                      child: Image.asset(locale.countryAssetPath()),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(4.0),
+                      child: SizedBox(
+                        width: flagDimension,
+                        height: flagDimension,
+                        child: Image.asset(locale.countryAssetPath()),
+                      ),
                     ),
                   ),
                   Text(locale.fullName()),
