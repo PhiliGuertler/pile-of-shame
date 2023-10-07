@@ -58,7 +58,22 @@ class _CompactBarChartState extends State<CompactBarChart> {
 
     for (var i = 0; i < widget.data.length; ++i) {
       final section = widget.data[i];
-      final color = section.color ?? ColorUtils.stringToColor(section.title);
+      Color color = section.color ?? ColorUtils.stringToColor(section.title);
+      HSLColor hsl = HSLColor.fromColor(color);
+      hsl = hsl.withLightness(
+        section.isSelected ? 0.5 : (i / widget.data.length) * 0.2 + 0.4,
+      );
+      hsl = hsl.withSaturation(
+        section.isSelected
+            ? (hsl.saturation + 0.5).clamp(0.0, 1.0)
+            : hsl.saturation,
+      );
+      hsl = hsl.withHue(
+        section.isSelected
+            ? ((hsl.hue + 180.0) % 360.0).clamp(0.0, 360.0)
+            : hsl.hue,
+      );
+      color = hsl.toColor();
       sections.add(
         BarChartGroupData(
           x: i,
