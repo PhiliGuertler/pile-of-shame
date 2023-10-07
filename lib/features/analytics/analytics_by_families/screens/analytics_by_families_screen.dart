@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pile_of_shame/features/analytics/analytics_by_families/widgets/analytics_details.dart';
-import 'package:pile_of_shame/features/games/platform_game_list/screens/platform_game_list_screen.dart';
+import 'package:pile_of_shame/features/analytics/analytics_by_families/widgets/platform_family_analytics_details.dart';
+import 'package:pile_of_shame/features/analytics/analytics_by_platform/screens/analytics_by_platform_screen.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/assets.dart';
 import 'package:pile_of_shame/models/game.dart';
@@ -46,7 +46,7 @@ class AnalyticsByFamiliesScreen extends ConsumerWidget {
           ),
           ...games.when(
             data: (games) => games.isNotEmpty
-                ? [SliverAnalyticsDetails(games: games)]
+                ? [SliverPlatformFamilyAnalyticsDetails(games: games)]
                 : [
                     SliverPadding(
                       padding: const EdgeInsets.symmetric(
@@ -103,7 +103,7 @@ class AnalyticsByFamiliesScreen extends ConsumerWidget {
                       title: Text(platform.localizedName(l10n)),
                       subtitle: Text(l10n.nGames(group.value.length)),
                       openBuilderOnTap: (context, action) =>
-                          PlatformGameListScreen(platform: platform),
+                          AnalyticsByPlatformScreen(platform: platform),
                     ),
                   ),
                 );

@@ -4,15 +4,11 @@ import 'package:pile_of_shame/features/analytics/analytics_by_families/utils/gam
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/providers/format_provider.dart';
-import 'package:pile_of_shame/utils/constants.dart';
-import 'package:pile_of_shame/widgets/charts/default_bar_chart.dart';
 import 'package:pile_of_shame/widgets/charts/default_comparison_chart.dart';
-import 'package:pile_of_shame/widgets/charts/default_pie_chart.dart';
 import 'package:pile_of_shame/widgets/charts/highlightable_charts.dart';
-import 'package:pile_of_shame/widgets/charts/legend.dart';
 
-class SliverAnalyticsDetails extends ConsumerWidget {
-  const SliverAnalyticsDetails({
+class SliverAnalyticsPlatformDetails extends ConsumerWidget {
+  const SliverAnalyticsPlatformDetails({
     super.key,
     required this.games,
   });
@@ -171,81 +167,7 @@ class SliverAnalyticsDetails extends ConsumerWidget {
                 ),
               ),
             ),
-            ListTile(
-              title: Text(
-                l10n.platform,
-                style: Theme.of(context).textTheme.headlineSmall,
-              ),
-              subtitle: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 16.0),
-                child: HighlightableBarChart(
-                  data: data.toPlatformDistribution(),
-                  formatData: (data) => l10n.nGames(data.toInt()),
-                ),
-              ),
-            ),
           ],
-        ),
-        const SizedBox(
-          height: 16.0,
-        ),
-      ],
-    );
-  }
-}
-
-class SliverAnalyticsDetailsSkeleton extends StatelessWidget {
-  const SliverAnalyticsDetailsSkeleton({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return SliverList.list(
-      children: const [
-        SizedBox(
-          height: 16.0,
-        ),
-        Padding(
-          padding:
-              EdgeInsets.symmetric(horizontal: defaultPaddingX, vertical: 8.0),
-          child: LegendSkeleton(),
-        ),
-        Wrap(
-          alignment: WrapAlignment.spaceEvenly,
-          children: [
-            Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: defaultPaddingX,
-                vertical: 8.0,
-              ),
-              child: SizedBox(
-                width: 350,
-                child: DefaultBarChartSkeleton(),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: defaultPaddingX,
-                vertical: 8.0,
-              ),
-              child: SizedBox(
-                width: 350,
-                child: DefaultBarChartSkeleton(),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: defaultPaddingX,
-                vertical: 8.0,
-              ),
-              child: SizedBox(
-                width: 350,
-                child: DefaultPieChartSkeleton(),
-              ),
-            ),
-          ],
-        ),
-        SizedBox(
-          height: 16.0,
         ),
       ],
     );

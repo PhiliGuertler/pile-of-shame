@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pile_of_shame/features/analytics/analytics_by_families/widgets/platform_family_analytics_details.dart';
+import 'package:pile_of_shame/features/analytics/analytics_by_platform/widgets/platform_analytics_details.dart';
 import 'package:pile_of_shame/features/games/games_list/widgets/slivers/sliver_grouped_games.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
+import 'package:pile_of_shame/models/assets.dart';
 import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/models/game_platforms.dart';
 import 'package:pile_of_shame/models/game_sorting.dart';
@@ -11,18 +14,19 @@ import 'package:pile_of_shame/utils/constants.dart';
 import 'package:pile_of_shame/widgets/app_scaffold.dart';
 import 'package:pile_of_shame/widgets/skeletons/skeleton_game_display.dart';
 import 'package:pile_of_shame/widgets/slivers/sliver_fancy_image_app_bar.dart';
+import 'package:pile_of_shame/widgets/slivers/sliver_fancy_image_header.dart';
 import 'package:pile_of_shame/widgets/slivers/sliver_list_summary.dart';
 
-class PlatformGameListScreen extends ConsumerWidget {
-  const PlatformGameListScreen({super.key, required this.platform});
+class AnalyticsByPlatformScreen extends ConsumerWidget {
+  const AnalyticsByPlatformScreen({super.key, required this.platform});
 
   final GamePlatform platform;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
-
-    final games = ref.watch(gamesByPlatformProvider(platform));
+    final AsyncValue<List<Game>> games =
+        ref.watch(gamesByPlatformProvider(platform));
 
     return AppScaffold(
       body: CustomScrollView(
@@ -31,9 +35,55 @@ class PlatformGameListScreen extends ConsumerWidget {
         ),
         slivers: [
           SliverFancyImageAppBar(
+            borderRadius: -defaultBorderRadius * 2,
             imagePath: platform.controllerLogoPath,
-            title: Text(platform.localizedName(l10n)),
-            borderRadius: -defaultBorderRadius * 2.0,
+            title: Text(
+              platform.localizedName(l10n),
+            ),
+          ),
+          ...games.when(
+            data: (games) => games.isNotEmpty
+                ? [SliverAnalyticsPlatformDetails(games: games)]
+                : [
+                    SliverPadding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: defaultPaddingX,
+                      ),
+                      sliver: SliverFancyImageHeader(
+                        imagePath: ImageAssets.gamePile.value,
+                        height: 250,
+                      ),
+                    ),
+                    SliverToBoxAdapter(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: defaultPaddingX,
+                          vertical: 16.0,
+                        ),
+                        child: Text(
+                          AppLocalizations.of(context)!
+                              .buildYourPileOfShameByAddingNewGamesInTheMainMenu,
+                          style: Theme.of(context).textTheme.bodyLarge,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                  ],
+            error: (error, stackTrace) => [
+              SliverToBoxAdapter(
+                child: Text(error.toString()),
+              ),
+            ],
+            loading: () => [const SliverAnalyticsDetailsSkeleton()],
+          ),
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: defaultPaddingX),
+              child: Text(
+                l10n.games,
+                style: Theme.of(context).textTheme.headlineSmall,
+              ),
+            ),
           ),
           ...games.when(
             skipLoadingOnReload: true,
