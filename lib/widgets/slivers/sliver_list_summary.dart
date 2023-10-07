@@ -27,7 +27,7 @@ class SliverListSummary extends ConsumerWidget {
           top: 16.0,
           left: defaultPaddingX,
           right: defaultPaddingX,
-          bottom: 80.0,
+          bottom: 32.0,
         ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.end,
