@@ -167,6 +167,7 @@ class SliverAnalyticsDetails extends ConsumerWidget {
                   data: data.toPriceDistribution(
                     5.0,
                   ),
+                  formatData: (data) => l10n.nGames(data.toInt()),
                 ),
               ),
             ),
@@ -179,6 +180,7 @@ class SliverAnalyticsDetails extends ConsumerWidget {
                 padding: const EdgeInsets.symmetric(vertical: 16.0),
                 child: HighlightableBarChart(
                   data: data.toPlatformDistribution(),
+                  formatData: (data) => l10n.nGames(data.toInt()),
                 ),
               ),
             ),
