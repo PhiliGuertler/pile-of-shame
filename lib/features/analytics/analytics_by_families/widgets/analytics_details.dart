@@ -25,6 +25,7 @@ class SliverAnalyticsDetails extends ConsumerWidget {
 
     final currencyFormatter = ref.watch(currencyFormatProvider(context));
     final percentFormatter = ref.watch(percentFormatProvider(context));
+    final numberFormatter = ref.watch(numberFormatProvider(context));
 
     final GameData data = GameData(
       games: games,
@@ -33,6 +34,7 @@ class SliverAnalyticsDetails extends ConsumerWidget {
     );
 
     final completedData = data.toCompletedData();
+    final ageRatingData = data.toAgeRatingData();
 
     return SliverList.list(
       children: [
@@ -95,15 +97,7 @@ class SliverAnalyticsDetails extends ConsumerWidget {
                 padding: const EdgeInsets.symmetric(vertical: 16.0),
                 child: HighlightablePieChart(
                   data: completedData,
-                  formatData: (data) {
-                    final percentage = data /
-                        completedData.fold(
-                          0,
-                          (previousValue, element) =>
-                              element.value + previousValue,
-                        );
-                    return percentFormatter.format(percentage);
-                  },
+                  formatData: (data) => l10n.nGames(data.toInt()),
                   formatTotalData: (totalData) {
                     try {
                       final completed = completedData.firstWhere(
@@ -132,6 +126,8 @@ class SliverAnalyticsDetails extends ConsumerWidget {
                 padding: const EdgeInsets.symmetric(vertical: 16.0),
                 child: HighlightablePieChart(
                   data: data.toPlayStatusData(),
+                  formatData: (data) => l10n.nGames(data.toInt()),
+                  formatTotalData: (totalData) => "",
                 ),
               ),
             ),
@@ -143,7 +139,20 @@ class SliverAnalyticsDetails extends ConsumerWidget {
               subtitle: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 16.0),
                 child: HighlightablePieChart(
-                  data: data.toAgeRatingData(),
+                  data: ageRatingData,
+                  formatData: (data) => l10n.nGames(data.toInt()),
+                  formatTotalData: (totalData) {
+                    final ageSum = ageRatingData.fold(
+                      0.0,
+                      (previousValue, element) =>
+                          element.value * element.secondaryValue!,
+                    );
+                    final elementCount = ageRatingData.fold(
+                      0.0,
+                      (previousValue, element) => element.value + previousValue,
+                    );
+                    return "${l10n.average}:\n${numberFormatter.format(ageSum / elementCount)}";
+                  },
                 ),
               ),
             ),
