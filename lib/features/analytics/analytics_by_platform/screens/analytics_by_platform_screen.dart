@@ -43,6 +43,7 @@ class AnalyticsByPlatformScreen extends ConsumerWidget {
                 platform.localizedName(l10n),
               ),
               bottom: TabBar(
+                dividerColor: Colors.transparent,
                 tabs: [
                   Tab(
                     child: Text(l10n.analytics),
