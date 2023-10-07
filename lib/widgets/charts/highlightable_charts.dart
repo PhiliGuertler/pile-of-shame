@@ -118,11 +118,13 @@ class _HighlightableCompactBarChartState
 class HighlightablePieChart extends StatefulWidget {
   final List<ChartData> data;
   final String Function(double data) formatData;
+  final String Function(double totalData)? formatTotalData;
 
   const HighlightablePieChart({
     super.key,
     required this.data,
     this.formatData = DefaultPieChart.defaultFormatData,
+    this.formatTotalData,
   });
 
   @override
@@ -137,6 +139,7 @@ class _HighlightablePieChartState extends State<HighlightablePieChart>
       data: highlightData(widget.data),
       formatData: widget.formatData,
       onTapSection: handleSectionChange,
+      formatTotalData: widget.formatTotalData,
     );
   }
 }

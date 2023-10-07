@@ -14,6 +14,13 @@ NumberFormat currencyFormat(CurrencyFormatRef ref, BuildContext context) {
 }
 
 @riverpod
+NumberFormat percentFormat(PercentFormatRef ref, BuildContext context) {
+  return NumberFormat.percentPattern(
+    Localizations.localeOf(context).toLanguageTag(),
+  );
+}
+
+@riverpod
 NumberFormat numberFormat(NumberFormatRef ref, BuildContext context) {
   return NumberFormat.decimalPatternDigits(
     decimalDigits: 2,
