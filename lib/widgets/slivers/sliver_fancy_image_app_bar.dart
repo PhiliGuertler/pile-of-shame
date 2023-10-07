@@ -48,6 +48,7 @@ class SliverFancyImageAppBar extends ConsumerWidget {
 
   final Widget? title;
   final List<Widget>? actions;
+  final Widget? bottom;
 
   const SliverFancyImageAppBar({
     super.key,
@@ -61,12 +62,15 @@ class SliverFancyImageAppBar extends ConsumerWidget {
     this.title,
     this.actions,
     this.borderRadius = defaultBorderRadius * 2.0,
+    this.bottom,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final safePadding = MediaQuery.of(context).padding;
-    final minHeight = safePadding.top + minimumToolbarHeight;
+    final minHeight = safePadding.top +
+        minimumToolbarHeight +
+        (bottom != null ? minimumToolbarHeight : 0);
 
     return SliverPersistentHeader(
       pinned: true,
@@ -84,6 +88,7 @@ class SliverFancyImageAppBar extends ConsumerWidget {
         actions: actions,
         themeColor: Theme.of(context).colorScheme.surface,
         tintColor: Theme.of(context).colorScheme.surfaceTint,
+        bottom: bottom,
       ),
     );
   }
@@ -129,6 +134,7 @@ class _SliverFancyImageAppBarDelegate extends SliverPersistentHeaderDelegate {
   final double borderRadius;
   final Color themeColor;
   final Color tintColor;
+  final Widget? bottom;
 
   const _SliverFancyImageAppBarDelegate({
     required this.imagePath,
@@ -141,6 +147,7 @@ class _SliverFancyImageAppBarDelegate extends SliverPersistentHeaderDelegate {
     required this.borderRadius,
     required this.themeColor,
     required this.tintColor,
+    this.bottom,
   });
 
   bool _getEffectiveCenterTitle(ThemeData theme) {
@@ -164,143 +171,166 @@ class _SliverFancyImageAppBarDelegate extends SliverPersistentHeaderDelegate {
   ) {
     final safePadding = MediaQuery.of(context).padding;
 
+    final double effectiveToolbarHeight =
+        minimumToolbarHeight * (bottom != null ? 2 : 1);
+
     final double currentExtent = math.max(height - shrinkOffset, minHeight);
     final double currentOpacity = math.max(
       0.0,
-      0.8 - (shrinkOffset / (height - minimumToolbarHeight)).clamp(0.0, 0.8),
+      0.8 - (shrinkOffset / (height - effectiveToolbarHeight)).clamp(0.0, 0.8),
     );
     final double currentBackgroundBlend = 1.0 -
         math.max(
           0.0,
           1.0 -
-              (shrinkOffset / (height - minimumToolbarHeight)).clamp(0.0, 1.0),
+              (shrinkOffset / (height - effectiveToolbarHeight))
+                  .clamp(0.0, 1.0),
         );
 
     return FlexibleSpaceBar.createSettings(
       currentExtent: currentExtent,
-      child: ClipDecider(
-        borderRadius: borderRadius * (1.0 - currentBackgroundBlend),
-        child: FlexibleSpaceBar(
-          stretchModes: stretchModes,
-          background: SizedBox(
-            height: currentExtent,
-            child: Stack(
-              children: [
-                Opacity(
-                  opacity: currentOpacity,
-                  child: FadeInImage(
-                    fadeInDuration: 200.ms,
-                    fadeOutDuration: 200.ms,
-                    width: double.infinity,
-                    height: double.infinity,
-                    fit: BoxFit.cover,
-                    placeholder: MemoryImage(kTransparentImage),
-                    image: AssetImage(imagePath),
-                  ).animate(delay: 200.ms).fadeIn(),
-                ),
-                Material(
-                  color: ElevationOverlay.applySurfaceTint(
-                    themeColor,
-                    tintColor,
-                    currentBackgroundBlend * 4.0,
-                  ).withOpacity(
-                    math.pow(currentBackgroundBlend, 5.0).toDouble(),
-                  ),
-                  elevation: 4.0,
-                  child: Padding(
-                    padding: EdgeInsets.only(top: safePadding.top),
-                    child: Align(
-                      alignment: Alignment.topCenter,
-                      child: SizedBox(
-                        height: minimumToolbarHeight,
-                        child: NavigationToolbar(
-                          middleSpacing: AppBarTheme.of(context).titleSpacing ??
-                              NavigationToolbar.kMiddleSpacing,
-                          leading: Navigator.of(context).canPop()
-                              ? Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 8.0),
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(
-                                          overlayRadius,
+      child: Stack(
+        children: [
+          ClipDecider(
+            borderRadius: borderRadius * (1.0 - currentBackgroundBlend),
+            child: FlexibleSpaceBar(
+              stretchModes: stretchModes,
+              background: SizedBox(
+                height: currentExtent,
+                child: Stack(
+                  children: [
+                    Opacity(
+                      opacity: currentOpacity,
+                      child: FadeInImage(
+                        fadeInDuration: 200.ms,
+                        fadeOutDuration: 200.ms,
+                        width: double.infinity,
+                        height: double.infinity,
+                        fit: BoxFit.cover,
+                        placeholder: MemoryImage(kTransparentImage),
+                        image: AssetImage(imagePath),
+                      ).animate(delay: 200.ms).fadeIn(),
+                    ),
+                    Material(
+                      color: ElevationOverlay.applySurfaceTint(
+                        themeColor,
+                        tintColor,
+                        currentBackgroundBlend * 4.0,
+                      ).withOpacity(
+                        math.pow(currentBackgroundBlend, 5.0).toDouble(),
+                      ),
+                      elevation: 4.0,
+                      child: Padding(
+                        padding: EdgeInsets.only(top: safePadding.top),
+                        child: Align(
+                          alignment: Alignment.topCenter,
+                          child: SizedBox(
+                            height: minimumToolbarHeight,
+                            child: NavigationToolbar(
+                              middleSpacing:
+                                  AppBarTheme.of(context).titleSpacing ??
+                                      NavigationToolbar.kMiddleSpacing,
+                              leading: Navigator.of(context).canPop()
+                                  ? Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(left: 8.0),
+                                          child: ClipRRect(
+                                            borderRadius: BorderRadius.circular(
+                                              overlayRadius,
+                                            ),
+                                            child: ColoredBox(
+                                              color: themeColor
+                                                  .withOpacity(currentOpacity),
+                                              child: const BackButton(),
+                                            ),
+                                          ),
                                         ),
-                                        child: ColoredBox(
-                                          color: themeColor
-                                              .withOpacity(currentOpacity),
-                                          child: const BackButton(),
+                                      ],
+                                    )
+                                  : null,
+                              centerMiddle:
+                                  _getEffectiveCenterTitle(Theme.of(context)),
+                              middle: title != null
+                                  ? ClipRRect(
+                                      borderRadius:
+                                          BorderRadius.circular(overlayRadius),
+                                      child: ColoredBox(
+                                        color: themeColor
+                                            .withOpacity(currentOpacity),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: DefaultTextStyle(
+                                            overflow: TextOverflow.ellipsis,
+                                            style: AppBarTheme.of(context)
+                                                    .titleTextStyle ??
+                                                Theme.of(context)
+                                                    .textTheme
+                                                    .titleLarge ??
+                                                const TextStyle(),
+                                            child: title!,
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  ],
-                                )
-                              : null,
-                          centerMiddle:
-                              _getEffectiveCenterTitle(Theme.of(context)),
-                          middle: title != null
-                              ? ClipRRect(
-                                  borderRadius:
-                                      BorderRadius.circular(overlayRadius),
-                                  child: ColoredBox(
-                                    color:
-                                        themeColor.withOpacity(currentOpacity),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: DefaultTextStyle(
-                                        overflow: TextOverflow.ellipsis,
-                                        style: AppBarTheme.of(context)
-                                                .titleTextStyle ??
-                                            Theme.of(context)
-                                                .textTheme
-                                                .titleLarge ??
-                                            const TextStyle(),
-                                        child: title!,
-                                      ),
-                                    ),
-                                  ),
-                                )
-                              : null,
-                          trailing: actions != null
-                              ? Padding(
-                                  padding: const EdgeInsets.only(right: 8.0),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: actions!
-                                        .map(
-                                          (action) => Stack(
-                                            children: [
-                                              Positioned.fill(
-                                                child: ClipRRect(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                    overlayRadius,
-                                                  ),
-                                                  child: Container(
-                                                    color:
-                                                        themeColor.withOpacity(
-                                                      currentOpacity,
+                                    )
+                                  : null,
+                              trailing: actions != null
+                                  ? Padding(
+                                      padding:
+                                          const EdgeInsets.only(right: 8.0),
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: actions!
+                                            .map(
+                                              (action) => Stack(
+                                                children: [
+                                                  Positioned.fill(
+                                                    child: ClipRRect(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                        overlayRadius,
+                                                      ),
+                                                      child: Container(
+                                                        color: themeColor
+                                                            .withOpacity(
+                                                          currentOpacity,
+                                                        ),
+                                                      ),
                                                     ),
                                                   ),
-                                                ),
+                                                  action,
+                                                ],
                                               ),
-                                              action,
-                                            ],
-                                          ),
-                                        )
-                                        .toList(),
-                                  ),
-                                )
-                              : null,
+                                            )
+                                            .toList(),
+                                      ),
+                                    )
+                                  : null,
+                            ),
+                          ),
                         ),
                       ),
                     ),
-                  ),
+                  ],
                 ),
-              ],
+              ),
             ),
           ),
-        ),
+          if (bottom != null)
+            Padding(
+              padding: EdgeInsets.only(top: safePadding.top),
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: SizedBox(
+                  height: minimumToolbarHeight,
+                  child: bottom,
+                ),
+              ),
+            ),
+        ],
       ),
     );
   }
