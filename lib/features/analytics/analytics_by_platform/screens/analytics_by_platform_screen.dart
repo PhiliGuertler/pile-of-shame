@@ -3,6 +3,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pile_of_shame/features/analytics/analytics_by_families/widgets/platform_family_analytics_details.dart';
 import 'package:pile_of_shame/features/analytics/analytics_by_platform/widgets/platform_analytics_details.dart';
+import 'package:pile_of_shame/features/analytics/analytics_by_platform/widgets/sliver_tabs.dart';
 import 'package:pile_of_shame/features/games/games_list/widgets/slivers/sliver_grouped_games.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/assets.dart';
@@ -29,96 +30,135 @@ class AnalyticsByPlatformScreen extends ConsumerWidget {
         ref.watch(gamesByPlatformProvider(platform));
 
     return AppScaffold(
-      body: CustomScrollView(
-        physics: const BouncingScrollPhysics(
-          parent: AlwaysScrollableScrollPhysics(),
-        ),
-        slivers: [
-          SliverFancyImageAppBar(
-            borderRadius: -defaultBorderRadius * 2,
-            imagePath: platform.controllerLogoPath,
-            title: Text(
-              platform.localizedName(l10n),
-            ),
+      body: DefaultTabController(
+        length: 2,
+        child: NestedScrollView(
+          physics: const BouncingScrollPhysics(
+            parent: AlwaysScrollableScrollPhysics(),
           ),
-          ...games.when(
-            data: (games) => games.isNotEmpty
-                ? [SliverAnalyticsPlatformDetails(games: games)]
-                : [
-                    SliverPadding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: defaultPaddingX,
-                      ),
-                      sliver: SliverFancyImageHeader(
-                        imagePath: ImageAssets.gamePile.value,
-                        height: 250,
-                      ),
-                    ),
-                    SliverToBoxAdapter(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: defaultPaddingX,
-                          vertical: 16.0,
-                        ),
-                        child: Text(
-                          AppLocalizations.of(context)!
-                              .buildYourPileOfShameByAddingNewGamesInTheMainMenu,
-                          style: Theme.of(context).textTheme.bodyLarge,
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    ),
-                  ],
-            error: (error, stackTrace) => [
-              SliverToBoxAdapter(
-                child: Text(error.toString()),
-              ),
-            ],
-            loading: () => [const SliverAnalyticsDetailsSkeleton()],
-          ),
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: defaultPaddingX),
-              child: Text(
-                l10n.games,
-                style: Theme.of(context).textTheme.headlineSmall,
+          headerSliverBuilder: (context, innerBoxIsScrolled) => [
+            SliverFancyImageAppBar(
+              borderRadius: -defaultBorderRadius * 2,
+              imagePath: platform.controllerLogoPath,
+              title: Text(
+                platform.localizedName(l10n),
               ),
             ),
-          ),
-          ...games.when(
-            skipLoadingOnReload: true,
-            data: (games) {
-              final List<Game> sortedGames = List.from(games);
-              sortedGames.sort(
-                (a, b) => SortStrategy.byName.sorter.compareGames(a, b, true),
-              );
-              return [
-                SliverGroupedGames(games: sortedGames),
-                SliverListSummary(
-                  gameCount: sortedGames.length,
-                  totalPrice: sortedGames.fold<double>(
-                    0.0,
-                    (previousValue, element) =>
-                        element.fullPrice() + previousValue,
-                  ),
+            SliverTabs(
+              tabs: [
+                Tab(
+                  child: Text(l10n.analytics),
                 ),
-              ];
-            },
-            loading: () => [
-              SliverList.builder(
-                itemBuilder: (context, index) => const SkeletonGameDisplay()
-                    .animate()
-                    .fade(curve: Curves.easeOut, duration: 130.ms),
-                itemCount: 10,
+                Tab(
+                  child: Text(l10n.games),
+                ),
+              ],
+            ),
+          ],
+          body: TabBarView(
+            children: [
+              CustomScrollView(
+                slivers: [
+                  ...games.when(
+                    data: (games) => games.isNotEmpty
+                        ? [
+                            SliverPadding(
+                              padding: const EdgeInsets.only(top: 8.0),
+                              sliver: SliverAnalyticsPlatformDetails(
+                                games: games,
+                              ),
+                            ),
+                          ]
+                        : [
+                            SliverPadding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: defaultPaddingX,
+                              ),
+                              sliver: SliverFancyImageHeader(
+                                imagePath: ImageAssets.gamePile.value,
+                                height: 250,
+                              ),
+                            ),
+                            SliverToBoxAdapter(
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: defaultPaddingX,
+                                  vertical: 16.0,
+                                ),
+                                child: Text(
+                                  AppLocalizations.of(context)!
+                                      .buildYourPileOfShameByAddingNewGamesInTheMainMenu,
+                                  style: Theme.of(context).textTheme.bodyLarge,
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ),
+                          ],
+                    error: (error, stackTrace) => [
+                      SliverToBoxAdapter(
+                        child: Text(error.toString()),
+                      ),
+                    ],
+                    loading: () => [const SliverAnalyticsDetailsSkeleton()],
+                  ),
+                ],
               ),
-            ],
-            error: (error, stackTrace) => [
-              SliverToBoxAdapter(
-                child: Text(error.toString()),
+              CustomScrollView(
+                slivers: [
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                        left: defaultPaddingX,
+                        right: defaultPaddingX,
+                        top: 16.0,
+                      ),
+                      child: Text(
+                        l10n.games,
+                        style: Theme.of(context).textTheme.headlineSmall,
+                      ),
+                    ),
+                  ),
+                  ...games.when(
+                    skipLoadingOnReload: true,
+                    data: (games) {
+                      final List<Game> sortedGames = List.from(games);
+                      sortedGames.sort(
+                        (a, b) =>
+                            SortStrategy.byName.sorter.compareGames(a, b, true),
+                      );
+                      return [
+                        SliverGroupedGames(games: sortedGames),
+                        SliverListSummary(
+                          gameCount: sortedGames.length,
+                          totalPrice: sortedGames.fold<double>(
+                            0.0,
+                            (previousValue, element) =>
+                                element.fullPrice() + previousValue,
+                          ),
+                        ),
+                      ];
+                    },
+                    loading: () => [
+                      SliverList.builder(
+                        itemBuilder: (context, index) =>
+                            const SkeletonGameDisplay().animate().fade(
+                                  curve: Curves.easeOut,
+                                  duration: 130.ms,
+                                ),
+                        itemCount: 10,
+                      ),
+                    ],
+                    error: (error, stackTrace) => [
+                      SliverToBoxAdapter(
+                        child: Text(error.toString()),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ],
           ),
-        ],
+        ),
       ),
     );
   }
