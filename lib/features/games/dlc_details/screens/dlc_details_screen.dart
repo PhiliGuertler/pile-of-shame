@@ -9,7 +9,6 @@ import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/models/game_platforms.dart';
 import 'package:pile_of_shame/providers/games/game_provider.dart';
 import 'package:pile_of_shame/transitions/material_page_slide_route.dart';
-import 'package:pile_of_shame/utils/constants.dart';
 import 'package:pile_of_shame/widgets/app_scaffold.dart';
 import 'package:pile_of_shame/widgets/slivers/sliver_fancy_image_app_bar.dart';
 
@@ -38,7 +37,6 @@ class DLCDetailsScreen extends ConsumerWidget {
               physics: const NeverScrollableScrollPhysics(),
               slivers: [
                 SliverFancyImageAppBar(
-                  borderRadius: -defaultBorderRadius * 2,
                   imagePath: ImageAssets.loading.value,
                 ),
                 const SliverDLCDetailsSkeleton(),
@@ -47,7 +45,6 @@ class DLCDetailsScreen extends ConsumerWidget {
             error: (error, stackTrace) => CustomScrollView(
               slivers: [
                 SliverFancyImageAppBar(
-                  borderRadius: -defaultBorderRadius * 2,
                   imagePath: GamePlatform.unknown.controllerLogoPath,
                 ),
                 Text(error.toString()),
@@ -59,7 +56,6 @@ class DLCDetailsScreen extends ConsumerWidget {
               ),
               slivers: [
                 SliverFancyImageAppBar(
-                  borderRadius: -defaultBorderRadius * 2,
                   imagePath: game.platform.controllerLogoPath,
                   actions: [
                     IconButton(

@@ -1,14 +1,24 @@
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
+import 'package:pile_of_shame/models/theming/theme.dart';
+import 'package:pile_of_shame/providers/theming/theme_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'format_provider.g.dart';
 
 @riverpod
 NumberFormat currencyFormat(CurrencyFormatRef ref, BuildContext context) {
+  final appTheme = ref.watch(appThemeSettingsProvider);
+
+  final currencySymbol = appTheme.when(
+    data: (data) => data.currency,
+    error: (error, stackTrace) => CurrencySymbols.coin,
+    loading: () => CurrencySymbols.coin,
+  );
+
   return NumberFormat.currency(
     decimalDigits: 2,
-    symbol: '€',
+    symbol: currencySymbol.symbol,
     locale: Localizations.localeOf(context).toLanguageTag(),
   );
 }
