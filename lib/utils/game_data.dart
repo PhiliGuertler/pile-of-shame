@@ -144,9 +144,9 @@ class GameData {
       String title = "";
       final previousInterval = e.first - interval + 0.01;
       if (previousInterval >= 0) {
-        title = "${currencyFormatter.format(previousInterval)} -";
+        title = "${currencyFormatter.format(previousInterval)} - ";
       }
-      title = "$title ${currencyFormatter.format(e.first)}";
+      title = "$title${currencyFormatter.format(e.first)}";
 
       return ChartData(
         title: title,
@@ -165,7 +165,11 @@ class GameData {
       platformCounts[game.platform.index].second++;
     }
 
-    platformCounts.sort((a, b) => b.second.compareTo(a.second));
+    platformCounts.sort(
+      (a, b) => b.second.compareTo(a.second) == 0
+          ? a.first.index.compareTo(b.first.index)
+          : b.second.compareTo(a.second),
+    );
 
     final List<ChartData> result = [];
     for (var i = 0; i < GamePlatform.values.length; ++i) {
@@ -222,13 +226,14 @@ class GameData {
   }
 
   double toAveragePrice() {
+    if (games.isEmpty) return 0.0;
+
     return toTotalPrice() / toGameCount();
   }
 
   double toMedianPrice() {
-    if (games.isEmpty) {
-      return 0.0;
-    }
+    if (games.isEmpty) return 0.0;
+
     final List<Game> sortedGames = List.from(games);
     sortedGames.sort((a, b) => a.fullPrice().compareTo(b.fullPrice()));
 
@@ -236,6 +241,8 @@ class GameData {
   }
 
   double toAverageAgeRating() {
+    if (games.isEmpty) return 0.0;
+
     final ageRatings = toAgeRatingData();
 
     // compute the sum of all age ratings
