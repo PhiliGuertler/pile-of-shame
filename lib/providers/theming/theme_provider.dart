@@ -50,4 +50,15 @@ class AppThemeSettings extends _$AppThemeSettings with Persistable {
       return update;
     });
   }
+
+  Future<void> setCurrencySymbol(CurrencySymbols symbol) async {
+    state = await AsyncValue.guard(() async {
+      final AppTheme update = state.maybeWhen(
+        data: (data) => data.copyWith(currency: symbol),
+        orElse: () => AppTheme(currency: symbol),
+      );
+      await persistJSON(storageKey, update.toJson());
+      return update;
+    });
+  }
 }

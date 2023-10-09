@@ -4,6 +4,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:pile_of_shame/features/developer_tools/debug_menu/screens/debug_menu_screen.dart';
 import 'package:pile_of_shame/features/settings/about/screens/about_screen.dart';
 import 'package:pile_of_shame/features/settings/appearance/screens/appearance_screen.dart';
+import 'package:pile_of_shame/features/settings/currency/screens/currency_screen.dart';
 import 'package:pile_of_shame/features/settings/export_games/screens/export_games_screen.dart';
 import 'package:pile_of_shame/features/settings/game_display/screens/game_display_screen.dart';
 import 'package:pile_of_shame/features/settings/import_games/screens/import_games_screen.dart';
@@ -73,6 +74,19 @@ class SettingsScreen extends ConsumerWidget {
                     Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (context) => const LanguageScreen(),
+                      ),
+                    );
+                  },
+                ),
+                SegmentedActionCardItem(
+                  leading: const Icon(Icons.currency_exchange),
+                  title: Text(AppLocalizations.of(context)!.currency),
+                  subtitle:
+                      Text(AppLocalizations.of(context)!.chooseACurrencySymbol),
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const CurrencyScreen(),
                       ),
                     );
                   },
