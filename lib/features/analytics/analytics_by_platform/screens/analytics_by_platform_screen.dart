@@ -1,3 +1,4 @@
+import 'package:custom_nested_scroll_view/custom_nested_scroll_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -31,10 +32,7 @@ class AnalyticsByPlatformScreen extends ConsumerWidget {
     return AppScaffold(
       body: DefaultTabController(
         length: 2,
-        child: NestedScrollView(
-          physics: const BouncingScrollPhysics(
-            parent: AlwaysScrollableScrollPhysics(),
-          ),
+        child: CustomNestedScrollView(
           headerSliverBuilder: (context, innerBoxIsScrolled) => [
             SliverFancyImageAppBar(
               imagePath: platform.controllerLogoPath,
