@@ -61,7 +61,7 @@ class SliverFancyImageAppBar extends ConsumerWidget {
     required this.imagePath,
     this.title,
     this.actions,
-    this.borderRadius = defaultBorderRadius * 2.0,
+    this.borderRadius = defaultSheetCurvature,
     this.bottom,
   });
 
@@ -191,6 +191,27 @@ class _SliverFancyImageAppBarDelegate extends SliverPersistentHeaderDelegate {
       currentExtent: currentExtent,
       child: Stack(
         children: [
+          if (bottom == null && borderRadius < 0)
+            Opacity(
+              opacity: currentOpacity,
+              child: Padding(
+                padding: EdgeInsets.only(
+                  bottom: (borderRadius.abs() * 0.5 - 1) *
+                      (1.0 - currentBackgroundBlend),
+                ),
+                child: Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.onBackground,
+                      borderRadius: BorderRadius.circular(2.0),
+                    ),
+                    height: 2.0,
+                    width: 60.0,
+                  ),
+                ),
+              ),
+            ),
           ClipDecider(
             borderRadius: borderRadius * (1.0 - currentBackgroundBlend),
             child: FlexibleSpaceBar(
@@ -320,14 +341,11 @@ class _SliverFancyImageAppBarDelegate extends SliverPersistentHeaderDelegate {
             ),
           ),
           if (bottom != null)
-            Padding(
-              padding: EdgeInsets.only(top: safePadding.top),
-              child: Align(
-                alignment: Alignment.bottomCenter,
-                child: SizedBox(
-                  height: minimumToolbarHeight,
-                  child: bottom,
-                ),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: SizedBox(
+                height: minimumToolbarHeight,
+                child: bottom,
               ),
             ),
         ],

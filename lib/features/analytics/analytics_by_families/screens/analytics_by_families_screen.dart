@@ -38,7 +38,6 @@ class AnalyticsByFamiliesScreen extends ConsumerWidget {
         ),
         slivers: [
           SliverFancyImageAppBar(
-            borderRadius: -defaultBorderRadius * 2,
             imagePath: family?.image.value ?? ImageAssets.library.value,
             title: Text(
               family != null ? family!.toLocale(l10n) : l10n.gameLibrary,

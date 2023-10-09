@@ -37,7 +37,6 @@ class AnalyticsByPlatformScreen extends ConsumerWidget {
           ),
           headerSliverBuilder: (context, innerBoxIsScrolled) => [
             SliverFancyImageAppBar(
-              borderRadius: -defaultBorderRadius * 3,
               imagePath: platform.controllerLogoPath,
               title: Text(
                 platform.localizedName(l10n),

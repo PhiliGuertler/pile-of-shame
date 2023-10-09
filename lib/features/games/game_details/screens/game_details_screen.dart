@@ -40,7 +40,6 @@ class _GameDetailsScreenState extends ConsumerState<GameDetailsScreen> {
             error: (error, stackTrace) => CustomScrollView(
               slivers: [
                 SliverFancyImageAppBar(
-                  borderRadius: -defaultBorderRadius * 2,
                   key: const ValueKey('error-appbar'),
                   imagePath: GamePlatform.unknown.controllerLogoPath,
                 ),
@@ -54,7 +53,6 @@ class _GameDetailsScreenState extends ConsumerState<GameDetailsScreen> {
               slivers: [
                 SliverFancyImageAppBar(
                   key: const ValueKey('loading-appbar'),
-                  borderRadius: -defaultBorderRadius * 2,
                   imagePath: ImageAssets.loading.value,
                 ),
                 const SliverGameDetailsSkeleton(),
@@ -67,7 +65,6 @@ class _GameDetailsScreenState extends ConsumerState<GameDetailsScreen> {
               slivers: [
                 SliverFancyImageAppBar(
                   key: const ValueKey('appbar'),
-                  borderRadius: -defaultBorderRadius * 2,
                   imagePath: game.platform.controllerLogoPath,
                   actions: [
                     IconButton(
