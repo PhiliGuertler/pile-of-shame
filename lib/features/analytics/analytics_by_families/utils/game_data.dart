@@ -234,4 +234,29 @@ class GameData {
 
     return sortedGames[sortedGames.length ~/ 2].fullPrice();
   }
+
+  double toAverageAgeRating() {
+    final ageRatings = toAgeRatingData();
+
+    // compute the sum of all age ratings
+    final ageRatingSum = ageRatings.fold(
+      0.0,
+      (previousValue, element) =>
+          element.value * element.secondaryValue! + previousValue,
+    );
+
+    return ageRatingSum / games.length;
+  }
+
+  double toCompletedPercentage() {
+    final completedData = toCompletedData();
+    try {
+      final completed = completedData
+          .firstWhere((element) => element.title == l10n.completed);
+      return completed.value / games.length;
+    } catch (error) {
+      // ignore error
+    }
+    return 0.0;
+  }
 }

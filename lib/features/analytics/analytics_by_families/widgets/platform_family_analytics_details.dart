@@ -98,22 +98,8 @@ class SliverPlatformFamilyAnalyticsDetails extends ConsumerWidget {
                 child: HighlightablePieChart(
                   data: completedData,
                   formatData: (data) => l10n.nGames(data.toInt()),
-                  formatTotalData: (totalData) {
-                    try {
-                      final completed = completedData.firstWhere(
-                        (element) => element.title == l10n.completed,
-                      );
-                      final completedPercentage = completed.value /
-                          completedData.fold(
-                            0,
-                            (previousValue, element) =>
-                                element.value + previousValue,
-                          );
-                      return percentFormatter.format(completedPercentage);
-                    } catch (error) {
-                      return percentFormatter.format(0);
-                    }
-                  },
+                  formatTotalData: (totalData) =>
+                      percentFormatter.format(data.toCompletedPercentage()),
                 ),
               ),
             ),
@@ -141,18 +127,8 @@ class SliverPlatformFamilyAnalyticsDetails extends ConsumerWidget {
                 child: HighlightablePieChart(
                   data: ageRatingData,
                   formatData: (data) => l10n.nGames(data.toInt()),
-                  formatTotalData: (totalData) {
-                    final ageSum = ageRatingData.fold(
-                      0.0,
-                      (previousValue, element) =>
-                          element.value * element.secondaryValue!,
-                    );
-                    final elementCount = ageRatingData.fold(
-                      0.0,
-                      (previousValue, element) => element.value + previousValue,
-                    );
-                    return "${l10n.average}:\n${numberFormatter.format(ageSum / elementCount)}";
-                  },
+                  formatTotalData: (totalData) =>
+                      "${l10n.average}:\n${numberFormatter.format(data.toAverageAgeRating())}",
                 ),
               ),
             ),
