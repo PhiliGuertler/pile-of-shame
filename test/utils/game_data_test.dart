@@ -262,7 +262,9 @@ void main() {
       ++index;
 
       expect(
-          result[index].title, GamePlatform.steam.localizedAbbreviation(l10n));
+        result[index].title,
+        GamePlatform.steam.localizedAbbreviation(l10n),
+      );
       expect(result[index].value, 2.0);
       ++index;
 

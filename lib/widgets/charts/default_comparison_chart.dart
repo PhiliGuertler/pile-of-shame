@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pile_of_shame/providers/format_provider.dart';
 import 'package:pile_of_shame/widgets/animated/animated_currency.dart';
 
-class DefaultComparisonChart extends ConsumerStatefulWidget {
+class DefaultComparisonChart extends ConsumerWidget {
   const DefaultComparisonChart({
     super.key,
     required this.left,
@@ -12,6 +12,7 @@ class DefaultComparisonChart extends ConsumerStatefulWidget {
     required this.right,
     this.rightText,
     this.formatValue,
+    this.animationDelay = Duration.zero,
   });
 
   final double left;
@@ -19,41 +20,20 @@ class DefaultComparisonChart extends ConsumerStatefulWidget {
   final double right;
   final String? rightText;
   final String Function(double value)? formatValue;
+  final Duration animationDelay;
 
-  @override
-  ConsumerState<DefaultComparisonChart> createState() =>
-      _DefaultComparisonChartState();
-}
-
-class _DefaultComparisonChartState
-    extends ConsumerState<DefaultComparisonChart> {
   static const double height = 52.0;
 
-  double l = 0;
-  double r = 0;
-  double progress = 0;
-
   @override
-  void initState() {
-    super.initState();
-    Future.delayed(250.ms, () {
-      if (context.mounted) {
-        setState(() {
-          l = widget.left;
-          r = widget.right;
-          if (widget.left + widget.right < 0.01) {
-            progress = 1.0;
-          } else {
-            progress = (widget.left) / (widget.left + widget.right);
-          }
-        });
-      }
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final currencyFormatter = ref.watch(currencyFormatProvider(context));
+
+    double progress;
+    if (left + right < 0.01) {
+      progress = 1.0;
+    } else {
+      progress = left / (left + right);
+    }
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -89,7 +69,7 @@ class _DefaultComparisonChartState
                               borderRadius: const BorderRadius.only(
                                 topLeft: Radius.circular(16.0),
                               ),
-                              border: widget.left < widget.right
+                              border: left < right
                                   ? Border.all(
                                       color: Theme.of(context)
                                           .colorScheme
@@ -102,17 +82,30 @@ class _DefaultComparisonChartState
                             child: progress > 0.1
                                 ? Center(
                                     child: AnimatedCurrency(
-                                      currency: l,
+                                      currency: left,
                                       duration: 250.ms,
                                       formatCurrency: (value) =>
-                                          widget.formatValue != null
-                                              ? widget.formatValue!(value)
+                                          formatValue != null
+                                              ? formatValue!(value)
                                               : currencyFormatter.format(value),
                                       style: leftStyle,
                                     ),
                                   )
                                 : null,
-                          ),
+                          )
+                              .animate()
+                              .scale(
+                                begin: const Offset(0.1, 0.1),
+                                end: const Offset(1.0, 1.0),
+                                delay: animationDelay,
+                                duration: 350.ms,
+                                curve: Curves.easeInOut,
+                              )
+                              .fadeIn(
+                                delay: animationDelay,
+                                duration: 250.ms,
+                                curve: Curves.easeInOut,
+                              ),
                         ),
                         Align(
                           alignment: Alignment.centerRight,
@@ -124,7 +117,7 @@ class _DefaultComparisonChartState
                               borderRadius: const BorderRadius.only(
                                 topRight: Radius.circular(16.0),
                               ),
-                              border: widget.left > widget.right
+                              border: left > right
                                   ? Border.all(
                                       color: Theme.of(context)
                                           .colorScheme
@@ -138,17 +131,30 @@ class _DefaultComparisonChartState
                             child: progress < 0.9
                                 ? Center(
                                     child: AnimatedCurrency(
-                                      currency: r,
+                                      currency: right,
                                       duration: 250.ms,
                                       formatCurrency: (value) =>
-                                          widget.formatValue != null
-                                              ? widget.formatValue!(value)
+                                          formatValue != null
+                                              ? formatValue!(value)
                                               : currencyFormatter.format(value),
                                       style: rightStyle,
                                     ),
                                   )
                                 : null,
-                          ),
+                          )
+                              .animate()
+                              .scale(
+                                begin: const Offset(0.1, 0.1),
+                                end: const Offset(1.0, 1.0),
+                                delay: animationDelay,
+                                duration: 350.ms,
+                                curve: Curves.easeInOut,
+                              )
+                              .fadeIn(
+                                delay: animationDelay,
+                                duration: 250.ms,
+                                curve: Curves.easeInOut,
+                              ),
                         ),
                       ],
                     ),
@@ -173,20 +179,33 @@ class _DefaultComparisonChartState
                             Padding(
                               padding: const EdgeInsets.only(left: 8.0),
                               child: Text(
-                                widget.leftText ?? "",
+                                leftText ?? "",
                                 style: leftStyle,
                               ),
                             ),
                             Padding(
                               padding: const EdgeInsets.only(right: 8.0),
                               child: Text(
-                                widget.rightText ?? "",
+                                rightText ?? "",
                                 style: rightStyle,
                               ),
                             ),
                           ],
                         ),
-                      ),
+                      )
+                          .animate()
+                          .scale(
+                            begin: const Offset(0.8, 0.8),
+                            end: const Offset(1.0, 1.0),
+                            duration: 250.ms,
+                            delay: 100.ms + animationDelay,
+                            curve: Curves.easeInOut,
+                          )
+                          .fadeIn(
+                            duration: 250.ms,
+                            delay: 100.ms + animationDelay,
+                            curve: Curves.easeInOut,
+                          ),
                     ),
                   ],
                 ),

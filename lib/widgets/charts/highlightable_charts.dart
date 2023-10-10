@@ -31,12 +31,14 @@ class HighlightableBarChart extends StatefulWidget {
   final List<ChartData> data;
   final String Function(double data) formatData;
   final double Function(List<ChartData> data) computeSum;
+  final Duration animationDelay;
 
   const HighlightableBarChart({
     super.key,
     required this.data,
     this.formatData = DefaultBarChart.defaultFormatData,
     this.computeSum = DefaultBarChart.defaultComputeSum,
+    this.animationDelay = Duration.zero,
   });
 
   @override
@@ -63,6 +65,7 @@ class _HighlightableBarChartState extends State<HighlightableBarChart>
           formatData: widget.formatData,
           computeSum: widget.computeSum,
           onTapSection: handleSectionChange,
+          animationDelay: widget.animationDelay,
         ),
       ],
     );
@@ -73,12 +76,14 @@ class HighlightableCompactBarChart extends StatefulWidget {
   final List<ChartData> data;
   final String Function(double data) formatData;
   final bool showBackground;
+  final Duration animationDelay;
 
   const HighlightableCompactBarChart({
     super.key,
     required this.data,
     this.formatData = DefaultBarChart.defaultFormatData,
     this.showBackground = false,
+    this.animationDelay = Duration.zero,
   });
 
   @override
@@ -111,6 +116,7 @@ class _HighlightableCompactBarChartState
       formatData: widget.formatData,
       onTapSection: handleSectionChange,
       showBackground: widget.showBackground,
+      animationDelay: widget.animationDelay,
     );
   }
 }
@@ -119,12 +125,14 @@ class HighlightablePieChart extends StatefulWidget {
   final List<ChartData> data;
   final String Function(double data) formatData;
   final String Function(double totalData)? formatTotalData;
+  final Duration animationDelay;
 
   const HighlightablePieChart({
     super.key,
     required this.data,
     this.formatData = DefaultPieChart.defaultFormatData,
     this.formatTotalData,
+    this.animationDelay = Duration.zero,
   });
 
   @override
@@ -140,6 +148,7 @@ class _HighlightablePieChartState extends State<HighlightablePieChart>
       formatData: widget.formatData,
       onTapSection: handleSectionChange,
       formatTotalData: widget.formatTotalData,
+      animationDelay: widget.animationDelay,
     );
   }
 }

@@ -6,7 +6,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:pile_of_shame/models/chart_data.dart';
 import 'package:pile_of_shame/utils/color_utils.dart';
 
-class CompactBarChart extends StatefulWidget {
+class CompactBarChart extends StatelessWidget {
   static String defaultFormatData(double data) {
     return (data == data.roundToDouble() ? data.toInt() : data).toString();
   }
@@ -22,6 +22,7 @@ class CompactBarChart extends StatefulWidget {
   final String Function(double data) formatData;
   final void Function(String? title)? onTapSection;
   final bool showBackground;
+  final Duration animationDelay;
 
   const CompactBarChart({
     super.key,
@@ -29,39 +30,33 @@ class CompactBarChart extends StatefulWidget {
     this.formatData = defaultFormatData,
     this.showBackground = true,
     this.onTapSection,
+    this.animationDelay = Duration.zero,
   });
 
-  @override
-  State<CompactBarChart> createState() => _CompactBarChartState();
-}
-
-class _CompactBarChartState extends State<CompactBarChart> {
-  bool skipAnimation = false;
-
-  Stream<List<BarChartGroupData>> generateChartData(
+  List<BarChartGroupData> generateChartData(
     Color backgroundColor,
     double maxWidth,
-  ) async* {
+  ) {
     final List<BarChartGroupData> sections = [];
-    final maxData = widget.data.fold(
+    final maxData = data.fold(
       0.0,
       (previousValue, element) =>
           element.value > previousValue ? element.value : previousValue,
     );
-    final hasSelection = widget.data.fold(
+    final hasSelection = data.fold(
       false,
       (previousValue, element) => element.isSelected || previousValue,
     );
 
-    final barWidth = maxWidth / (widget.data.length + (hasSelection ? 2 : 0));
+    final barWidth = maxWidth / (data.length + (hasSelection ? 2 : 0));
     final selectedBarWidth = 3 * barWidth;
 
-    for (var i = 0; i < widget.data.length; ++i) {
-      final section = widget.data[i];
+    for (var i = 0; i < data.length; ++i) {
+      final section = data[i];
       Color color = section.color ?? ColorUtils.stringToColor(section.title);
       HSLColor hsl = HSLColor.fromColor(color);
       hsl = hsl.withLightness(
-        section.isSelected ? 0.5 : (i / widget.data.length) * 0.2 + 0.4,
+        section.isSelected ? 0.5 : (i / data.length) * 0.2 + 0.4,
       );
       hsl = hsl.withSaturation(
         section.isSelected
@@ -84,7 +79,7 @@ class _CompactBarChartState extends State<CompactBarChart> {
               color: color,
               width: section.isSelected ? selectedBarWidth : barWidth,
               borderRadius: BorderRadius.zero,
-              backDrawRodData: widget.showBackground
+              backDrawRodData: showBackground
                   ? BackgroundBarChartRodData(
                       color: backgroundColor
                           .withOpacity(section.isSelected ? 0.2 : 0.1),
@@ -99,11 +94,11 @@ class _CompactBarChartState extends State<CompactBarChart> {
       );
     }
     final List<BarChartGroupData> initialSections = [];
-    final average = widget.data.fold(
+    final average = data.fold(
           0.0,
           (previousValue, element) => previousValue + element.value,
         ) /
-        widget.data.length;
+        data.length;
     for (int i = 0; i < sections.length; ++i) {
       final List<BarChartRodData> rods = List.from(sections[i].barRods);
       for (int k = 0; k < rods.length; ++k) {
@@ -111,26 +106,17 @@ class _CompactBarChartState extends State<CompactBarChart> {
       }
       initialSections.add(sections[i].copyWith(barRods: rods));
     }
-    if (!skipAnimation) {
-      yield initialSections;
-      await Future.delayed(200.ms);
-      if (context.mounted) {
-        setState(() {
-          skipAnimation = true;
-        });
-      }
-    }
-    yield sections;
+    return sections;
   }
 
   @override
   Widget build(BuildContext context) {
     String totalLabel = "";
     try {
-      final selected = widget.data.singleWhere(
+      final selected = data.singleWhere(
         (element) => element.isSelected,
       );
-      totalLabel = "${selected.title}: ${widget.formatData(selected.value)}";
+      totalLabel = "${selected.title}: ${formatData(selected.value)}";
     } catch (error) {
       // do nothing
     }
@@ -142,75 +128,69 @@ class _CompactBarChartState extends State<CompactBarChart> {
           height: 250.0,
           child: LayoutBuilder(
             builder: (context, constraints) {
-              return StreamBuilder<List<BarChartGroupData>>(
-                stream: generateChartData(
-                  Theme.of(context).colorScheme.primaryContainer,
-                  constraints.maxWidth,
-                ),
-                builder: (context, snapshot) {
-                  return BarChart(
-                    BarChartData(
-                      minY: 0.0,
-                      maxY: widget.data.fold<double>(
-                        0.0,
-                        (previousValue, element) =>
-                            element.value > previousValue
-                                ? element.value
-                                : previousValue,
-                      ),
-                      alignment: BarChartAlignment.spaceAround,
-                      titlesData: const FlTitlesData(
-                        rightTitles: AxisTitles(),
-                        topTitles: AxisTitles(),
-                        bottomTitles: AxisTitles(),
-                        leftTitles: AxisTitles(),
-                      ),
-                      barGroups: snapshot.data,
-                      borderData: FlBorderData(show: false),
-                      barTouchData: BarTouchData(
-                        enabled: true,
-                        handleBuiltInTouches: false,
-                        touchTooltipData: BarTouchTooltipData(
-                          tooltipBgColor: Colors.transparent,
-                          tooltipPadding: EdgeInsets.zero,
-                          tooltipMargin: 8,
-                          getTooltipItem: (
-                            BarChartGroupData group,
-                            int groupIndex,
-                            BarChartRodData rod,
-                            int rodIndex,
-                          ) {
-                            return BarTooltipItem(
-                              widget.formatData(rod.toY),
-                              TextStyle(
-                                color:
-                                    Theme.of(context).colorScheme.onBackground,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            );
-                          },
-                        ),
-                        touchCallback: (event, response) {
-                          if (event.isInterestedForInteractions &&
-                              widget.onTapSection != null &&
-                              event.runtimeType == FlTapDownEvent) {
-                            if (response != null && response.spot != null) {
-                              final index = response.spot!.touchedBarGroupIndex;
-                              final sectionName =
-                                  index >= 0 ? widget.data[index].title : null;
-                              widget.onTapSection!(sectionName);
-                            } else {
-                              widget.onTapSection!(null);
-                            }
-                          }
-                        },
-                      ),
-                      gridData: const FlGridData(show: false),
+              final chartData = generateChartData(
+                Theme.of(context).colorScheme.primaryContainer,
+                constraints.maxWidth,
+              );
+              return BarChart(
+                BarChartData(
+                  minY: 0.0,
+                  maxY: data.fold<double>(
+                    0.0,
+                    (previousValue, element) => element.value > previousValue
+                        ? element.value
+                        : previousValue,
+                  ),
+                  alignment: BarChartAlignment.spaceAround,
+                  titlesData: const FlTitlesData(
+                    rightTitles: AxisTitles(),
+                    topTitles: AxisTitles(),
+                    bottomTitles: AxisTitles(),
+                    leftTitles: AxisTitles(),
+                  ),
+                  barGroups: chartData,
+                  borderData: FlBorderData(show: false),
+                  barTouchData: BarTouchData(
+                    enabled: true,
+                    handleBuiltInTouches: false,
+                    touchTooltipData: BarTouchTooltipData(
+                      tooltipBgColor: Colors.transparent,
+                      tooltipPadding: EdgeInsets.zero,
+                      tooltipMargin: 8,
+                      getTooltipItem: (
+                        BarChartGroupData group,
+                        int groupIndex,
+                        BarChartRodData rod,
+                        int rodIndex,
+                      ) {
+                        return BarTooltipItem(
+                          formatData(rod.toY),
+                          TextStyle(
+                            color: Theme.of(context).colorScheme.onBackground,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        );
+                      },
                     ),
-                    swapAnimationDuration: 250.ms,
-                    swapAnimationCurve: Curves.easeInOutBack,
-                  );
-                },
+                    touchCallback: (event, response) {
+                      if (event.isInterestedForInteractions &&
+                          onTapSection != null &&
+                          event.runtimeType == FlTapDownEvent) {
+                        if (response != null && response.spot != null) {
+                          final index = response.spot!.touchedBarGroupIndex;
+                          final sectionName =
+                              index >= 0 ? data[index].title : null;
+                          onTapSection!(sectionName);
+                        } else {
+                          onTapSection!(null);
+                        }
+                      }
+                    },
+                  ),
+                  gridData: const FlGridData(show: false),
+                ),
+                swapAnimationDuration: 250.ms,
+                swapAnimationCurve: Curves.easeInOutBack,
               );
             },
           ),
@@ -224,6 +204,12 @@ class _CompactBarChartState extends State<CompactBarChart> {
           ),
         ),
       ],
-    );
+    ).animate().scaleY(
+          begin: 0.0,
+          end: 1.0,
+          curve: Curves.easeOutBack,
+          duration: 500.ms,
+          delay: animationDelay,
+        );
   }
 }
