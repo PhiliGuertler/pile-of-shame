@@ -47,6 +47,16 @@ class LibraryScreen extends ConsumerWidget {
                   ),
                 ),
                 ParallaxImageCard(
+                  imagePath: ImageAssets.gamePile.value,
+                  title: PlayStatus.onPileOfShame.toLocaleString(l10n),
+                  openBuilderOnTap: (context, openContainer) =>
+                      GamesByPlaystatusScreen(
+                    playStatuses: const [
+                      PlayStatus.onPileOfShame,
+                    ],
+                  ),
+                ),
+                ParallaxImageCard(
                   imagePath: ImageAssets.list.value,
                   title: PlayStatus.onWishList.toLocaleString(l10n),
                   openBuilderOnTap: (context, openContainer) =>
@@ -57,12 +67,13 @@ class LibraryScreen extends ConsumerWidget {
                   ),
                 ),
                 ParallaxImageCard(
-                  imagePath: ImageAssets.gamePile.value,
-                  title: PlayStatus.onPileOfShame.toLocaleString(l10n),
+                  imagePath: ImageAssets.barChart.value,
+                  title: PlayStatus.completed.toLocaleString(l10n),
                   openBuilderOnTap: (context, openContainer) =>
                       GamesByPlaystatusScreen(
                     playStatuses: const [
-                      PlayStatus.onPileOfShame,
+                      PlayStatus.completed,
+                      PlayStatus.completed100Percent,
                     ],
                   ),
                 ),
