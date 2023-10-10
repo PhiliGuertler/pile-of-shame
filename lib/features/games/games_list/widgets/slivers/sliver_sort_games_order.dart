@@ -15,7 +15,17 @@ class SliverSortGamesOrder extends StatelessWidget {
   Widget build(BuildContext context) {
     return SliverToBoxAdapter(
       child: CheckboxListTile(
-        title: Text(AppLocalizations.of(context)!.isAscending),
+        title: Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: Icon(
+                isAscending ? Icons.arrow_upward : Icons.arrow_downward,
+              ),
+            ),
+            Text(AppLocalizations.of(context)!.isAscending),
+          ],
+        ),
         value: isAscending,
         onChanged: (value) {
           if (value != null) {

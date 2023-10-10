@@ -74,6 +74,9 @@ class GamesByPlaystatusScreen extends ConsumerWidget {
                         );
                   },
                 ),
+                const SliverToBoxAdapter(
+                  child: Divider(),
+                ),
                 SliverSortGamesOrder(
                   isAscending: sorting.isAscending,
                   onChanged: (value) {

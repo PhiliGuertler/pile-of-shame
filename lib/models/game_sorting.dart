@@ -229,6 +229,32 @@ enum SortStrategy {
     }
   }
 
+  IconData toIcon() {
+    switch (this) {
+      case SortStrategy.byName:
+        return Icons.sort_by_alpha;
+      case SortStrategy.byPlayStatus:
+        return Icons.gamepad;
+      case SortStrategy.byPrice:
+      case SortStrategy.byBasePrice:
+      case SortStrategy.byDLCPrice:
+        return Icons.savings;
+      case SortStrategy.byLastModified:
+      case SortStrategy.byCreatedAt:
+        return Icons.date_range;
+      case SortStrategy.byAgeRating:
+        return Icons.person_add;
+      case SortStrategy.byPlatform:
+        return Icons.sports_esports;
+      case SortStrategy.byHasNotes:
+        return Icons.note;
+      case SortStrategy.byFavorites:
+        return Icons.favorite;
+      case SortStrategy.byDLCCount:
+        return Icons.numbers;
+    }
+  }
+
   final GameSorter sorter;
 
   const SortStrategy({
