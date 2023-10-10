@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pile_of_shame/features/games/games_list/widgets/slivers/sliver_sort_games_by.dart';
+import 'package:pile_of_shame/features/games/games_list/widgets/slivers/sliver_sort_games_order.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/game_grouping.dart';
 import 'package:pile_of_shame/models/game_sorting.dart';
@@ -36,35 +38,21 @@ class GameSorterDrawer extends ConsumerWidget {
             ),
             ...sorting.when(
               data: (sorting) => [
-                SliverList.builder(
-                  itemBuilder: (context, index) {
-                    final SortStrategy strategy = SortStrategy.values[index];
-                    return RadioListTile.adaptive(
-                      groupValue: sorting.sortStrategy,
-                      value: strategy,
-                      title: Text(strategy.toLocaleString(context)),
-                      onChanged: (value) {
-                        ref.read(sortGamesProvider.notifier).setSorting(
-                              sorting.copyWith(sortStrategy: strategy),
-                            );
-                      },
-                      controlAffinity: ListTileControlAffinity.trailing,
-                    );
+                SliverSortGamesBy(
+                  activeStrategy: sorting.sortStrategy,
+                  onChanged: (value) {
+                    ref.read(sortGamesProvider.notifier).setSorting(
+                          sorting.copyWith(sortStrategy: value),
+                        );
                   },
-                  itemCount: SortStrategy.values.length,
                 ),
-                SliverToBoxAdapter(
-                  child: CheckboxListTile(
-                    title: Text(AppLocalizations.of(context)!.isAscending),
-                    value: sorting.isAscending,
-                    onChanged: (value) {
-                      if (value != null) {
-                        ref
-                            .read(sortGamesProvider.notifier)
-                            .setSorting(sorting.copyWith(isAscending: value));
-                      }
-                    },
-                  ),
+                SliverSortGamesOrder(
+                  isAscending: sorting.isAscending,
+                  onChanged: (value) {
+                    ref
+                        .read(sortGamesProvider.notifier)
+                        .setSorting(sorting.copyWith(isAscending: value));
+                  },
                 ),
               ],
               error: (error, stackTrace) => [

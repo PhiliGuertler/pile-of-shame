@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/models/game_platforms.dart';
 import 'package:pile_of_shame/models/game_storage.dart';
+import 'package:pile_of_shame/models/play_status.dart';
 import 'package:pile_of_shame/providers/games/game_file_provider.dart';
 import 'package:pile_of_shame/providers/games/game_filter_provider.dart';
 import 'package:pile_of_shame/providers/games/game_group_provider.dart';
@@ -49,6 +50,16 @@ FutureOr<List<Game>> gamesByPlatformFamily(
   final games = await ref.watch(gamesProvider.future);
 
   return games.where((element) => element.platform.family == family).toList();
+}
+
+@riverpod
+FutureOr<List<Game>> gamesByPlayStatus(
+  GamesByPlayStatusRef ref,
+  List<PlayStatus> statuses,
+) async {
+  final games = await ref.watch(gamesProvider.future);
+
+  return games.where((element) => statuses.contains(element.status)).toList();
 }
 
 @riverpod
