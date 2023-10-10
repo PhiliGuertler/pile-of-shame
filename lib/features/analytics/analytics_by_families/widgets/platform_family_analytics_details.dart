@@ -41,7 +41,6 @@ class SliverPlatformFamilyAnalyticsDetails extends ConsumerWidget {
     return SliverList.list(
       children: [
         ResponsiveWrap(
-          alignment: WrapAlignment.spaceEvenly,
           children: [
             ListTile(
               title: Row(

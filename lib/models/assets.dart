@@ -8,11 +8,15 @@ enum ImageAssets {
   languageGerman(value: 'assets/languages/german.png'),
   // misc
   barChart(value: 'assets/misc/bar_chart.webp'),
-  pieChart(value: 'assets/misc/pie_chart.webp'),
+  deadGame(value: 'assets/misc/dead_game.webp'),
   gamePile(value: 'assets/misc/game_pile.webp'),
-  library(value: 'assets/misc/library.webp'),
   gear(value: 'assets/misc/gear.webp'),
+  library(value: 'assets/misc/library.webp'),
+  list(value: 'assets/misc/list.webp'),
   loading(value: 'assets/misc/loading.webp'),
+  monitor(value: 'assets/misc/monitor.webp'),
+  pc(value: 'assets/misc/pc.webp'),
+  pieChart(value: 'assets/misc/pie_chart.webp'),
   // platform_families
   platformFamilyMicrosoft(value: 'assets/platform_families/microsoft.webp'),
   platformFamilyMisc(value: 'assets/platform_families/misc.webp'),
