@@ -10,9 +10,9 @@ class ResponsiveWidth extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        if (constraints.maxWidth > Breakpoints.lg) {
+        if (constraints.maxWidth > Breakpoints.lg.minWidth) {
           return SizedBox(
-            width: Breakpoints.md,
+            width: 780 * 0.49,
             child: child,
           );
         }
