@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 enum Breakpoints {
   sm(minWidth: 0.0, numColumns: 1),
   md(minWidth: 350.0, numColumns: 1),
-  lg(minWidth: 780.0, numColumns: 2),
+  lg(minWidth: 750.0, numColumns: 2),
   xl(minWidth: 1050.0, numColumns: 3),
   ;
 

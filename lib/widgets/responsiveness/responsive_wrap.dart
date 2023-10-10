@@ -5,7 +5,7 @@ class ResponsiveWrap extends StatelessWidget {
   const ResponsiveWrap({
     super.key,
     required this.children,
-    this.alignment = WrapAlignment.start,
+    this.alignment = WrapAlignment.spaceEvenly,
   });
 
   final List<Widget> children;
@@ -15,6 +15,8 @@ class ResponsiveWrap extends StatelessWidget {
   Widget build(BuildContext context) {
     return Wrap(
       alignment: alignment,
+      runSpacing: 16.0,
+      spacing: 16.0,
       children: children.map((e) => ResponsiveWidth(child: e)).toList(),
     );
   }
