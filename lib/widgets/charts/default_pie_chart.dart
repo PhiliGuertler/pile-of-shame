@@ -8,7 +8,7 @@ import 'package:pile_of_shame/models/chart_data.dart';
 import 'package:pile_of_shame/utils/color_utils.dart';
 import 'package:pile_of_shame/widgets/skeletons/skeleton.dart';
 
-class DefaultPieChart extends StatefulWidget {
+class DefaultPieChart extends StatelessWidget {
   static String defaultFormatData(double data) {
     return (data == data.roundToDouble() ? data.toInt() : data).toString();
   }
@@ -17,6 +17,7 @@ class DefaultPieChart extends StatefulWidget {
   final String Function(double data) formatData;
   final String Function(double totalData)? formatTotalData;
   final void Function(String? title)? onTapSection;
+  final Duration animationDelay;
 
   const DefaultPieChart({
     super.key,
@@ -24,26 +25,19 @@ class DefaultPieChart extends StatefulWidget {
     this.formatData = defaultFormatData,
     this.onTapSection,
     this.formatTotalData,
+    this.animationDelay = Duration.zero,
   });
 
-  @override
-  State<DefaultPieChart> createState() => _DefaultPieChartState();
-}
-
-class _DefaultPieChartState extends State<DefaultPieChart> {
-  bool skipAnimation = false;
-
-  Stream<List<PieChartSectionData>> generateChartData() async* {
+  List<PieChartSectionData> generateChartData() {
     final List<PieChartSectionData> sections = [];
-    for (var i = 0; i < widget.data.length; ++i) {
-      final section = widget.data[i];
+    for (var i = 0; i < data.length; ++i) {
+      final section = data[i];
       final color = section.color ?? ColorUtils.stringToColor(section.title);
       sections.add(
         PieChartSectionData(
           color: color,
-          title: section.alternativeTitle != null
-              ? ""
-              : widget.formatData(section.value),
+          title:
+              section.alternativeTitle != null ? "" : formatData(section.value),
           value: section.value,
           titleStyle: TextStyle(
             color: color.computeLuminance() > 0.5 ? Colors.black : Colors.white,
@@ -58,76 +52,65 @@ class _DefaultPieChartState extends State<DefaultPieChart> {
     for (int i = 0; i < sections.length; ++i) {
       initialSections.add(sections[i].copyWith(value: 1.0));
     }
-    if (!skipAnimation) {
-      yield initialSections;
-      await Future.delayed(200.ms);
-      if (context.mounted) {
-        setState(() {
-          skipAnimation = true;
-        });
-      }
-    }
-    yield sections;
+    return sections;
   }
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     String totalLabel = "";
-    final sum = widget.data
-        .fold(0.0, (previousValue, element) => previousValue + element.value);
-    if (widget.formatTotalData != null) {
-      totalLabel = widget.formatTotalData!(sum);
+    final sum = data.fold(
+      0.0,
+      (previousValue, element) => previousValue + element.value,
+    );
+    if (formatTotalData != null) {
+      totalLabel = formatTotalData!(sum);
     } else {
-      final total = widget.formatData(sum);
-      totalLabel =
-          AppLocalizations.of(context)!.totalN(total).replaceFirst(": ", ":\n");
+      final total = formatData(sum);
+      totalLabel = l10n.totalN(total).replaceFirst(": ", ":\n");
     }
     try {
-      final selected = widget.data.singleWhere(
+      final selected = data.singleWhere(
         (element) => element.isSelected,
       );
-      totalLabel = "${selected.title}:\n${widget.formatData(selected.value)}";
+      totalLabel = "${selected.title}:\n${formatData(selected.value)}";
     } catch (error) {
       // do nothing
     }
+
+    final chartData = generateChartData();
 
     return SizedBox(
       height: 250.0,
       child: Stack(
         children: [
-          StreamBuilder<List<PieChartSectionData>>(
-            stream: generateChartData(),
-            builder: (context, snapshot) {
-              return PieChart(
-                PieChartData(
-                  centerSpaceRadius: double.infinity,
-                  sections: snapshot.data,
-                  startDegreeOffset: 270,
-                  pieTouchData: PieTouchData(
-                    touchCallback: (event, response) {
-                      if (event.isInterestedForInteractions &&
-                          widget.onTapSection != null &&
-                          event.runtimeType == FlTapDownEvent) {
-                        if (response == null ||
-                            response.touchedSection == null ||
-                            response.touchedSection!.touchedSectionIndex ==
-                                -1) {
-                          widget.onTapSection!(null);
-                        } else {
-                          final sectionTitle = widget
-                              .data[
-                                  response.touchedSection!.touchedSectionIndex]
+          PieChart(
+            PieChartData(
+              centerSpaceRadius: double.infinity,
+              sections: chartData,
+              startDegreeOffset: 270,
+              pieTouchData: PieTouchData(
+                touchCallback: (event, response) {
+                  if (event.isInterestedForInteractions &&
+                      onTapSection != null &&
+                      event.runtimeType == FlTapDownEvent) {
+                    if (response == null ||
+                        response.touchedSection == null ||
+                        response.touchedSection!.touchedSectionIndex == -1) {
+                      onTapSection!(null);
+                    } else {
+                      final sectionTitle =
+                          data[response.touchedSection!.touchedSectionIndex]
                               .title;
-                          widget.onTapSection!(sectionTitle);
-                        }
-                      }
-                    },
-                  ),
-                ),
-                swapAnimationDuration: 350.ms,
-                swapAnimationCurve: Curves.easeInOutBack,
-              );
-            },
+                      onTapSection!(sectionTitle);
+                    }
+                  }
+                },
+              ),
+            ),
+            swapAnimationDuration: 350.ms,
+            swapAnimationCurve: Curves.easeInOutBack,
           ),
           IgnorePointer(
             child: Center(
@@ -141,7 +124,22 @@ class _DefaultPieChartState extends State<DefaultPieChart> {
             ),
           ),
         ],
-      ),
+      )
+          .animate()
+          .scale(
+            begin: Offset.zero,
+            end: const Offset(1.0, 1.0),
+            duration: 500.ms,
+            delay: animationDelay,
+            curve: Curves.easeOutBack,
+          )
+          .rotate(
+            begin: -0.1,
+            end: 0.0,
+            duration: 500.ms,
+            delay: animationDelay,
+            curve: Curves.easeInOutBack,
+          ),
     );
   }
 }
