@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/game.dart';
@@ -10,6 +11,7 @@ import 'package:pile_of_shame/widgets/charts/default_comparison_chart.dart';
 import 'package:pile_of_shame/widgets/charts/default_pie_chart.dart';
 import 'package:pile_of_shame/widgets/charts/highlightable_charts.dart';
 import 'package:pile_of_shame/widgets/charts/legend.dart';
+import 'package:pile_of_shame/widgets/responsiveness/responsive_wrap.dart';
 
 class SliverPlatformFamilyAnalyticsDetails extends ConsumerWidget {
   const SliverPlatformFamilyAnalyticsDetails({
@@ -38,7 +40,7 @@ class SliverPlatformFamilyAnalyticsDetails extends ConsumerWidget {
 
     return SliverList.list(
       children: [
-        Wrap(
+        ResponsiveWrap(
           alignment: WrapAlignment.spaceEvenly,
           children: [
             ListTile(
@@ -59,6 +61,7 @@ class SliverPlatformFamilyAnalyticsDetails extends ConsumerWidget {
                 right: data.toTotalDLCPrice(),
                 rightText:
                     "${currencyFormatter.format(data.toTotalDLCPrice())} ${l10n.dlcs}",
+                animationDelay: 100.ms,
               ),
             ),
             ListTile(
@@ -72,6 +75,7 @@ class SliverPlatformFamilyAnalyticsDetails extends ConsumerWidget {
                 right: data.toDLCCount().toDouble(),
                 rightText: l10n.nDLCs(data.toDLCCount()),
                 formatValue: (value) => value.toStringAsFixed(0),
+                animationDelay: 200.ms,
               ),
             ),
             ListTile(
@@ -86,6 +90,7 @@ class SliverPlatformFamilyAnalyticsDetails extends ConsumerWidget {
                 right: data.toMedianPrice(),
                 rightText:
                     "${currencyFormatter.format(data.toMedianPrice())} ${l10n.median}",
+                animationDelay: 300.ms,
               ),
             ),
             ListTile(
@@ -100,6 +105,7 @@ class SliverPlatformFamilyAnalyticsDetails extends ConsumerWidget {
                   formatData: (data) => l10n.nGames(data.toInt()),
                   formatTotalData: (totalData) =>
                       percentFormatter.format(data.toCompletedPercentage()),
+                  animationDelay: 400.ms,
                 ),
               ),
             ),
@@ -114,6 +120,7 @@ class SliverPlatformFamilyAnalyticsDetails extends ConsumerWidget {
                   data: data.toPlayStatusData(),
                   formatData: (data) => l10n.nGames(data.toInt()),
                   formatTotalData: (totalData) => "",
+                  animationDelay: 500.ms,
                 ),
               ),
             ),
@@ -129,6 +136,7 @@ class SliverPlatformFamilyAnalyticsDetails extends ConsumerWidget {
                   formatData: (data) => l10n.nGames(data.toInt()),
                   formatTotalData: (totalData) =>
                       "${l10n.average}:\n${numberFormatter.format(data.toAverageAgeRating())}",
+                  animationDelay: 600.ms,
                 ),
               ),
             ),
@@ -144,6 +152,7 @@ class SliverPlatformFamilyAnalyticsDetails extends ConsumerWidget {
                     5.0,
                   ),
                   formatData: (data) => l10n.nGames(data.toInt()),
+                  animationDelay: 700.ms,
                 ),
               ),
             ),
@@ -157,6 +166,7 @@ class SliverPlatformFamilyAnalyticsDetails extends ConsumerWidget {
                 child: HighlightableBarChart(
                   data: data.toPlatformDistribution(),
                   formatData: (data) => l10n.nGames(data.toInt()),
+                  animationDelay: 800.ms,
                 ),
               ),
             ),
