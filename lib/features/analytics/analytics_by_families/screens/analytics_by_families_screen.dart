@@ -13,6 +13,7 @@ import 'package:pile_of_shame/utils/constants.dart';
 import 'package:pile_of_shame/utils/grouper_utils.dart';
 import 'package:pile_of_shame/widgets/app_scaffold.dart';
 import 'package:pile_of_shame/widgets/image_list_tile.dart';
+import 'package:pile_of_shame/widgets/responsiveness/responsive_wrap.dart';
 import 'package:pile_of_shame/widgets/slivers/sliver_fancy_image_app_bar.dart';
 import 'package:pile_of_shame/widgets/slivers/sliver_fancy_image_header.dart';
 
@@ -86,27 +87,31 @@ class AnalyticsByFamiliesScreen extends ConsumerWidget {
                 const GameSorting(),
               );
 
-              return groups.entries.map((group) {
-                final GamePlatform platform = GamePlatform.values.firstWhere(
-                  (element) => element.localizedAbbreviation(l10n) == group.key,
-                );
-                return SliverToBoxAdapter(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: defaultPaddingX,
-                      vertical: 8.0,
-                    ),
-                    child: ImageListTile(
-                      imagePath: platform.controllerLogoPath,
-                      heroTag: group.key,
-                      title: Text(platform.localizedName(l10n)),
-                      subtitle: Text(l10n.nGames(group.value.length)),
-                      openBuilderOnTap: (context, action) =>
-                          AnalyticsByPlatformScreen(platform: platform),
+              return [
+                SliverPadding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: defaultPaddingX),
+                  sliver: SliverToBoxAdapter(
+                    child: ResponsiveWrap(
+                      children: groups.entries.map((group) {
+                        final GamePlatform platform =
+                            GamePlatform.values.firstWhere(
+                          (element) =>
+                              element.localizedAbbreviation(l10n) == group.key,
+                        );
+                        return ImageListTile(
+                          imagePath: platform.controllerLogoPath,
+                          heroTag: group.key,
+                          title: Text(platform.localizedName(l10n)),
+                          subtitle: Text(l10n.nGames(group.value.length)),
+                          openBuilderOnTap: (context, action) =>
+                              AnalyticsByPlatformScreen(platform: platform),
+                        );
+                      }).toList(),
                     ),
                   ),
-                );
-              });
+                ),
+              ];
             },
             error: (error, stackTrace) => [
               SliverToBoxAdapter(
