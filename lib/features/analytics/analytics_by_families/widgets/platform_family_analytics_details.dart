@@ -17,9 +17,11 @@ class SliverPlatformFamilyAnalyticsDetails extends ConsumerWidget {
   const SliverPlatformFamilyAnalyticsDetails({
     super.key,
     required this.games,
+    this.hasFamilyDistributionChart = false,
   });
 
   final List<Game> games;
+  final bool hasFamilyDistributionChart;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -183,6 +185,21 @@ class SliverPlatformFamilyAnalyticsDetails extends ConsumerWidget {
                 ),
               ),
             ),
+            if (hasFamilyDistributionChart)
+              ListTile(
+                title: Text(
+                  l10n.priceDistributionByPlatformFamily,
+                  style: Theme.of(context).textTheme.headlineSmall,
+                ),
+                subtitle: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 16.0),
+                  child: HighlightableBarChart(
+                    data: data.toPlatformFamilyPriceDistribution(),
+                    formatData: (data) => currencyFormatter.format(data),
+                    animationDelay: 1000.ms,
+                  ),
+                ),
+              ),
           ],
         ),
         const SizedBox(

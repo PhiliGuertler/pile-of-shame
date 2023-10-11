@@ -172,6 +172,7 @@
   "priceAndLastModified": "price and modification-date",
   "priceDistribution": "Price distribution",
   "priceDistributionByPlatform": "Price distribution by platform",
+  "priceDistributionByPlatformFamily": "Price distribution by platform family",
   "priceWithDLCs": "Price with DLCs",
   "ratedN": "Rated {n}",
   "removeActiveFilters": "Remove active filters",
