@@ -46,7 +46,12 @@ class AnalyticsByFamiliesScreen extends ConsumerWidget {
           ),
           ...games.when(
             data: (games) => games.isNotEmpty
-                ? [SliverPlatformFamilyAnalyticsDetails(games: games)]
+                ? [
+                    SliverPlatformFamilyAnalyticsDetails(
+                      games: games,
+                      hasFamilyDistributionChart: family == null,
+                    ),
+                  ]
                 : [
                     SliverPadding(
                       padding: const EdgeInsets.symmetric(

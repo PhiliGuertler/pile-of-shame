@@ -136,6 +136,7 @@
   "priceAndLastModified": "Preis und Änderungsdatum",
   "priceDistribution": "Preisverteilung",
   "priceDistributionByPlatform": "Preisverteilung nach Plattform",
+  "priceDistributionByPlatformFamily": "Preisverteilung nach Plattform-Familie",
   "priceWithDLCs": "Preis inkl. DLCs",
   "ratedN": "Freigegeben ab {n} Jahren",
   "removeActiveFilters": "Aktive Filter entfernen",
