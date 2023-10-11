@@ -188,6 +188,44 @@ class GameData {
     return result;
   }
 
+  List<ChartData> toPlatformPriceDistribution() {
+    final List<Pair<GamePlatform, double>> platformPrices = [
+      for (var i = 0; i < GamePlatform.values.length; ++i)
+        Pair(GamePlatform.values[i], 0),
+    ];
+
+    final List<Pair<GamePlatform, int>> platformCount = [
+      for (var i = 0; i < GamePlatform.values.length; ++i)
+        Pair(GamePlatform.values[i], 0),
+    ];
+
+    for (final game in games) {
+      platformPrices[game.platform.index].second += game.fullPrice();
+      platformCount[game.platform.index].second++;
+    }
+
+    final List<ChartData> result = [];
+    for (var i = 0; i < GamePlatform.values.length; ++i) {
+      final platform = platformPrices[i].first;
+      final price = platformPrices[i].second;
+      final count = platformCount[i].second;
+      if (count > 0) {
+        result.add(
+          ChartData(
+            title: platform.localizedAbbreviation(l10n),
+            value: price,
+          ),
+        );
+      }
+    }
+
+    result.sort(
+      (a, b) => b.value.compareTo(a.value),
+    );
+
+    return result;
+  }
+
   int toGameCount() {
     return games.length;
   }
