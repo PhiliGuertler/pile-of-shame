@@ -157,7 +157,7 @@ class SliverPlatformFamilyAnalyticsDetails extends ConsumerWidget {
             ),
             ListTile(
               title: Text(
-                l10n.platform,
+                l10n.platformDistribution,
                 style: Theme.of(context).textTheme.headlineSmall,
               ),
               subtitle: Padding(
@@ -166,6 +166,20 @@ class SliverPlatformFamilyAnalyticsDetails extends ConsumerWidget {
                   data: data.toPlatformDistribution(),
                   formatData: (data) => l10n.nGames(data.toInt()),
                   animationDelay: 800.ms,
+                ),
+              ),
+            ),
+            ListTile(
+              title: Text(
+                l10n.priceDistributionByPlatform,
+                style: Theme.of(context).textTheme.headlineSmall,
+              ),
+              subtitle: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 16.0),
+                child: HighlightableBarChart(
+                  data: data.toPlatformPriceDistribution(),
+                  formatData: (data) => currencyFormatter.format(data),
+                  animationDelay: 900.ms,
                 ),
               ),
             ),

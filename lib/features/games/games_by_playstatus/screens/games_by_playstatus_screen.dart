@@ -11,6 +11,7 @@ import 'package:pile_of_shame/utils/constants.dart';
 import 'package:pile_of_shame/widgets/app_scaffold.dart';
 import 'package:pile_of_shame/widgets/skeletons/skeleton_game_display.dart';
 import 'package:pile_of_shame/widgets/slivers/sliver_fancy_image_app_bar.dart';
+import 'package:pile_of_shame/widgets/slivers/sliver_list_summary.dart';
 
 class GamesByPlaystatusScreen extends ConsumerWidget {
   GamesByPlaystatusScreen({super.key, required this.playStatuses})
@@ -116,17 +117,29 @@ class GamesByPlaystatusScreen extends ConsumerWidget {
               ),
             ],
           ),
-          games.when(
+          ...games.when(
             skipLoadingOnReload: true,
             data: (games) {
-              return SliverGroupedGames(games: games);
+              return [
+                SliverGroupedGames(games: games),
+                SliverListSummary(
+                  gameCount: games.length,
+                  totalPrice: games.fold(
+                    0.0,
+                    (previousValue, element) =>
+                        element.fullPrice() + previousValue!,
+                  ),
+                ),
+              ];
             },
             error: (error, stackTrace) =>
-                SliverToBoxAdapter(child: Text(error.toString())),
-            loading: () => SliverList.builder(
-              itemBuilder: (context, index) => const SkeletonGameDisplay(),
-              itemCount: 10,
-            ),
+                [SliverToBoxAdapter(child: Text(error.toString()))],
+            loading: () => [
+              SliverList.builder(
+                itemBuilder: (context, index) => const SkeletonGameDisplay(),
+                itemCount: 10,
+              ),
+            ],
           ),
         ],
       ),

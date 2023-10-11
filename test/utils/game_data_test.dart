@@ -280,6 +280,68 @@ void main() {
       ++index;
     });
   });
+  group("toPlatformPriceDistribution", () {
+    test("returns an empty list if no games are passed", () {
+      final GameData data =
+          GameData(games: [], l10n: l10n, currencyFormatter: currencyFormatter);
+
+      final result = data.toPlatformPriceDistribution();
+      expect(result, []);
+    });
+    test("returns a the prices of the platforms as expected", () {
+      final GameData data = GameData(
+        games: [
+          TestGames.gameDarkSouls, // playstation4, 39.99+9.99 = 49.98
+          TestGames.gameOuterWilds, // steam, 24.99+19.99 = 44.98
+          TestGames.gameWitcher3, // gog, 59.99+19.99+9.99 = 89.97
+          TestGames.gameDistance, // steam, 19.99
+          TestGames.gameSsx3, // playstation2, 39.95
+          TestGames.gameOriAndTheBlindForest, // playstation4, 25
+        ],
+        l10n: l10n,
+        currencyFormatter: currencyFormatter,
+      );
+
+      final result = data.toPlatformPriceDistribution();
+
+      expect(result.length, 4);
+      int index = 0;
+
+      expect(
+        result[index].title,
+        GamePlatform.gog.localizedAbbreviation(l10n),
+      );
+      expect(
+        (result[index].value - (59.99 + 19.99 + 9.99)).abs() < 0.001,
+        true,
+      );
+      ++index;
+
+      expect(
+        result[index].title,
+        GamePlatform.playStation4.localizedAbbreviation(l10n),
+      );
+      expect((result[index].value - (39.99 + 9.99 + 25)).abs() < 0.001, true);
+      ++index;
+
+      expect(
+        result[index].title,
+        GamePlatform.steam.localizedAbbreviation(l10n),
+      );
+      expect(
+        (result[index].value - (24.99 + 19.99 + 19.99)).abs() < 0.001,
+        true,
+      );
+      ++index;
+
+      expect(
+        result[index].title,
+        GamePlatform.playStation2.localizedAbbreviation(l10n),
+      );
+      expect((result[index].value - (39.95)).abs() < 0.001, true);
+      ++index;
+    });
+  });
   group("toGameCount", () {
     test("returns 0 if no games are passed", () {
       final GameData data =
