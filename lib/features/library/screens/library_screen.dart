@@ -27,7 +27,7 @@ class LibraryScreen extends ConsumerWidget {
         child: ListView(
           children: [
             Padding(
-              padding: const EdgeInsets.only(top: 16.0, bottom: 8.0),
+              padding: const EdgeInsets.only(top: 16.0, bottom: 16.0),
               child: Text(
                 l10n.gameLibrary,
                 style: theme.textTheme.headlineSmall,
@@ -90,7 +90,7 @@ class LibraryScreen extends ConsumerWidget {
               ],
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 32.0, bottom: 8.0),
+              padding: const EdgeInsets.only(top: 64.0, bottom: 16.0),
               child: Text(
                 l10n.analytics,
                 style: theme.textTheme.headlineSmall,
