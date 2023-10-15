@@ -4,6 +4,9 @@ import 'package:pile_of_shame/features/games/games_list/widgets/drawers/game_sor
 import 'package:pile_of_shame/features/root_page/root_games/widgets/root_games_app_bar.dart';
 import 'package:pile_of_shame/features/root_page/root_games/widgets/root_games_destination.dart';
 import 'package:pile_of_shame/features/root_page/root_games/widgets/root_games_fab.dart';
+import 'package:pile_of_shame/features/root_page/root_hardware/widgets/root_hardware_app_bar.dart';
+import 'package:pile_of_shame/features/root_page/root_hardware/widgets/root_hardware_destination.dart';
+import 'package:pile_of_shame/features/root_page/root_hardware/widgets/root_hardware_fab.dart';
 import 'package:pile_of_shame/features/root_page/root_library/widgets/root_library_app_bar.dart';
 import 'package:pile_of_shame/features/root_page/root_library/widgets/root_library_destination.dart';
 import 'package:pile_of_shame/features/root_page/root_settings/widgets/root_settings_app_bar.dart';
@@ -11,6 +14,7 @@ import 'package:pile_of_shame/features/root_page/root_settings/widgets/root_sett
 
 enum RootTabs {
   games,
+  hardware,
   library,
   settings,
   ;
@@ -21,6 +25,8 @@ enum RootTabs {
         return RootGamesAppBar(
           scrollController: scrollController,
         );
+      case RootTabs.hardware:
+        return RootHardwareAppBar();
       case RootTabs.library:
         return RootLibraryAppBar();
       case RootTabs.settings:
@@ -33,6 +39,8 @@ enum RootTabs {
       case RootTabs.games:
       case RootTabs.library:
         return RootGamesFab(isExtended: isExtended);
+      case RootTabs.hardware:
+        return RootHardwareFab(isExtended: isExtended);
       default:
         return null;
     }
@@ -42,6 +50,8 @@ enum RootTabs {
     switch (this) {
       case RootTabs.games:
         return rootGamesDestination(context);
+      case RootTabs.hardware:
+        return rootHardwareDestination(context);
       case RootTabs.library:
         return rootLibraryDestination(context);
       case RootTabs.settings:
