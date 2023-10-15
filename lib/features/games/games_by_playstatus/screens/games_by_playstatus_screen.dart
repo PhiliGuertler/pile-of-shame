@@ -4,6 +4,7 @@ import 'package:pile_of_shame/features/games/games_by_playstatus/providers/games
 import 'package:pile_of_shame/features/games/games_list/widgets/slivers/sliver_grouped_games.dart';
 import 'package:pile_of_shame/features/games/games_list/widgets/slivers/sliver_sort_games_by.dart';
 import 'package:pile_of_shame/features/games/games_list/widgets/slivers/sliver_sort_games_order.dart';
+import 'package:pile_of_shame/features/root_page/root_games/widgets/root_games_fab.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/assets.dart';
 import 'package:pile_of_shame/models/play_status.dart';
@@ -13,11 +14,21 @@ import 'package:pile_of_shame/widgets/skeletons/skeleton_game_display.dart';
 import 'package:pile_of_shame/widgets/slivers/sliver_fancy_image_app_bar.dart';
 import 'package:pile_of_shame/widgets/slivers/sliver_list_summary.dart';
 
-class GamesByPlaystatusScreen extends ConsumerWidget {
+class GamesByPlaystatusScreen extends ConsumerStatefulWidget {
   GamesByPlaystatusScreen({super.key, required this.playStatuses})
       : assert(playStatuses.isNotEmpty);
 
   final List<PlayStatus> playStatuses;
+
+  @override
+  ConsumerState<GamesByPlaystatusScreen> createState() =>
+      _GamesByPlaystatusScreenState();
+}
+
+class _GamesByPlaystatusScreenState
+    extends ConsumerState<GamesByPlaystatusScreen> {
+  late ScrollController _scrollController;
+  bool isScrolled = false;
 
   ImageAssets playStatusToAsset(PlayStatus status) {
     switch (status) {
@@ -33,17 +44,40 @@ class GamesByPlaystatusScreen extends ConsumerWidget {
         return ImageAssets.deadGame;
       case PlayStatus.completed:
       case PlayStatus.completed100Percent:
-        return ImageAssets.library;
+        return ImageAssets.barChart;
     }
   }
 
+  void handleScroll() {
+    final offset = _scrollController.offset;
+    final minScrollExtent = _scrollController.position.minScrollExtent;
+    final bool result = offset > minScrollExtent;
+    setState(() {
+      isScrolled = result;
+    });
+  }
+
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController();
+    _scrollController.addListener(handleScroll);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(handleScroll);
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
 
-    final games = ref.watch(gamesByPlayStatusesSortedProvider(playStatuses));
+    final games =
+        ref.watch(gamesByPlayStatusesSortedProvider(widget.playStatuses));
     final sorter =
-        ref.watch(gameSortingByPlayStatusProvider(playStatuses.first));
+        ref.watch(gameSortingByPlayStatusProvider(widget.playStatuses.first));
 
     return AppScaffold(
       drawer: Drawer(
@@ -70,7 +104,7 @@ class GamesByPlaystatusScreen extends ConsumerWidget {
                     ref
                         .read(gamesByPlayStatusSorterProvider.notifier)
                         .setSorting(
-                          playStatuses.first,
+                          widget.playStatuses.first,
                           sorting.copyWith(sortStrategy: value),
                         );
                   },
@@ -84,7 +118,7 @@ class GamesByPlaystatusScreen extends ConsumerWidget {
                     ref
                         .read(gamesByPlayStatusSorterProvider.notifier)
                         .setSorting(
-                          playStatuses.first,
+                          widget.playStatuses.first,
                           sorting.copyWith(isAscending: value),
                         );
                   },
@@ -97,13 +131,14 @@ class GamesByPlaystatusScreen extends ConsumerWidget {
         ),
       ),
       body: CustomScrollView(
+        controller: _scrollController,
         physics: const BouncingScrollPhysics(
           parent: AlwaysScrollableScrollPhysics(),
         ),
         slivers: [
           SliverFancyImageAppBar(
-            title: Text(playStatuses.first.toLocaleString(l10n)),
-            imagePath: playStatusToAsset(playStatuses.first).value,
+            title: Text(widget.playStatuses.first.toLocaleString(l10n)),
+            imagePath: playStatusToAsset(widget.playStatuses.first).value,
             actions: [
               Builder(
                 builder: (context) {
@@ -130,6 +165,9 @@ class GamesByPlaystatusScreen extends ConsumerWidget {
                         element.fullPrice() + previousValue!,
                   ),
                 ),
+                const SliverToBoxAdapter(
+                  child: SizedBox(height: 48.0),
+                ),
               ];
             },
             error: (error, stackTrace) =>
@@ -142,6 +180,10 @@ class GamesByPlaystatusScreen extends ConsumerWidget {
             ],
           ),
         ],
+      ),
+      floatingActionButton: RootGamesFab(
+        isExtended: !isScrolled,
+        initialPlayStatus: widget.playStatuses.first,
       ),
     );
   }

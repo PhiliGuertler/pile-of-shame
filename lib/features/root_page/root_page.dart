@@ -18,45 +18,54 @@ class RootPage extends ConsumerStatefulWidget {
 }
 
 class _RootPageState extends ConsumerState<RootPage> {
-  late ScrollController _scrollControllerGames;
-  bool isScrolled = false;
+  late List<ScrollController> _scrollControllers;
+  late List<bool> isScrolled;
   RootTabs activeTab = RootTabs.games;
 
   void _handleRootTabChange(int index, BuildContext context) {
-    if (index == RootTabs.games.index) {
-      if (index == activeTab.index) {
-        _scrollControllerGames.animateTo(
-          0.0,
-          duration: const Duration(milliseconds: 500),
-          curve: Curves.easeInOut,
-        );
-      }
+    if (index == activeTab.index) {
+      _scrollControllers[index].animateTo(
+        0.0,
+        duration: const Duration(milliseconds: 500),
+        curve: Curves.easeInOut,
+      );
     }
 
     setState(() {
       activeTab = RootTabs.values[index];
+      for (int i = 0; i < RootTabs.values.length; ++i) {
+        isScrolled[i] = false;
+      }
     });
   }
 
-  void handleScroll() {
-    final offset = _scrollControllerGames.offset;
-    final minScrollExtent = _scrollControllerGames.position.minScrollExtent;
+  void handleScroll(int index) {
+    final offset = _scrollControllers[index].offset;
+    final minScrollExtent = _scrollControllers[index].position.minScrollExtent;
     final bool result = offset > minScrollExtent;
     setState(() {
-      isScrolled = result;
+      isScrolled[index] = result;
     });
   }
 
   @override
   void initState() {
     super.initState();
-    _scrollControllerGames = ScrollController();
-    _scrollControllerGames.addListener(handleScroll);
+    _scrollControllers = [];
+    isScrolled = [];
+    for (int i = 0; i < RootTabs.values.length; ++i) {
+      final controller = ScrollController();
+      controller.addListener(() => handleScroll(i));
+      _scrollControllers.add(controller);
+      isScrolled.add(false);
+    }
   }
 
   @override
   void dispose() {
-    _scrollControllerGames.removeListener(handleScroll);
+    for (int i = 0; i < RootTabs.values.length; ++i) {
+      _scrollControllers[i].dispose();
+    }
     super.dispose();
   }
 
@@ -68,9 +77,13 @@ class _RootPageState extends ConsumerState<RootPage> {
         RootTabs.values.map((e) => e.destination(context)).toList();
 
     final children = [
-      GamesScreen(scrollController: _scrollControllerGames),
-      const LibraryScreen(),
-      const SettingsScreen(),
+      GamesScreen(scrollController: _scrollControllers[RootTabs.games.index]),
+      LibraryScreen(
+        scrollController: _scrollControllers[RootTabs.library.index],
+      ),
+      SettingsScreen(
+        scrollController: _scrollControllers[RootTabs.settings.index],
+      ),
     ];
 
     return activeTab.wrapper(
@@ -87,9 +100,10 @@ class _RootPageState extends ConsumerState<RootPage> {
             child: children[activeTab.index],
           ),
         ),
-        floatingActionButton: activeTab.fab(context, !isScrolled),
+        floatingActionButton:
+            activeTab.fab(context, !isScrolled[activeTab.index]),
         appBar: activeTab.appBar(
-          _scrollControllerGames,
+          _scrollControllers[activeTab.index],
           hasGames.maybeWhen(
             orElse: () => false,
             data: (data) => data,
