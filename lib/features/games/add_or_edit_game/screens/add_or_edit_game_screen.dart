@@ -12,14 +12,16 @@ import 'package:pile_of_shame/features/games/add_or_edit_game/widgets/price_inpu
 import 'package:pile_of_shame/features/games/add_or_edit_game/widgets/usk_dropdown.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/game.dart';
+import 'package:pile_of_shame/models/play_status.dart';
 import 'package:pile_of_shame/utils/constants.dart';
 import 'package:pile_of_shame/widgets/app_scaffold.dart';
 import 'package:pile_of_shame/widgets/segmented_action_card.dart';
 
 class AddGameScreen extends ConsumerStatefulWidget {
   final EditableGame? initialValue;
+  final PlayStatus? initialPlayStatus;
 
-  const AddGameScreen({super.key, this.initialValue});
+  const AddGameScreen({super.key, this.initialValue, this.initialPlayStatus});
 
   @override
   ConsumerState<AddGameScreen> createState() => _AddGameScreenState();
@@ -70,7 +72,8 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
 
             ref
                 .read(
-                  addGameProvider(widget.initialValue).notifier,
+                  addGameProvider(widget.initialValue, widget.initialPlayStatus)
+                      .notifier,
                 )
                 .updateGame(
                   editableGame.copyWith(
@@ -101,7 +104,8 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
 
           ref
               .read(
-                addGameProvider(widget.initialValue).notifier,
+                addGameProvider(widget.initialValue, widget.initialPlayStatus)
+                    .notifier,
               )
               .updateGame(
                 editableGame.copyWith(
@@ -115,7 +119,8 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final editableGame = ref.watch(addGameProvider(widget.initialValue));
+    final editableGame = ref
+        .watch(addGameProvider(widget.initialValue, widget.initialPlayStatus));
 
     return AppScaffold(
       appBar: AppBar(
@@ -140,7 +145,12 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
                     value: editableGame.name,
                     onChanged: (value) {
                       ref
-                          .read(addGameProvider(widget.initialValue).notifier)
+                          .read(
+                            addGameProvider(
+                              widget.initialValue,
+                              widget.initialPlayStatus,
+                            ).notifier,
+                          )
                           .updateGame(editableGame.copyWith(name: value));
                     },
                   ),
@@ -152,7 +162,12 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
                     value: editableGame.platform,
                     onChanged: (value) {
                       ref
-                          .read(addGameProvider(widget.initialValue).notifier)
+                          .read(
+                            addGameProvider(
+                              widget.initialValue,
+                              widget.initialPlayStatus,
+                            ).notifier,
+                          )
                           .updateGame(editableGame.copyWith(platform: value));
                     },
                   ),
@@ -164,7 +179,12 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
                     value: editableGame.status,
                     onSelect: (selection) {
                       ref
-                          .read(addGameProvider(widget.initialValue).notifier)
+                          .read(
+                            addGameProvider(
+                              widget.initialValue,
+                              widget.initialPlayStatus,
+                            ).notifier,
+                          )
                           .updateGame(editableGame.copyWith(status: selection));
                     },
                   ),
@@ -183,8 +203,10 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
                             onChanged: (value) {
                               ref
                                   .read(
-                                    addGameProvider(widget.initialValue)
-                                        .notifier,
+                                    addGameProvider(
+                                      widget.initialValue,
+                                      widget.initialPlayStatus,
+                                    ).notifier,
                                   )
                                   .updateGame(
                                     editableGame.copyWith(price: value),
@@ -197,7 +219,10 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
                             final newValue = !editableGame.wasGifted;
                             ref
                                 .read(
-                                  addGameProvider(widget.initialValue).notifier,
+                                  addGameProvider(
+                                    widget.initialValue,
+                                    widget.initialPlayStatus,
+                                  ).notifier,
                                 )
                                 .updateGame(
                                   editableGame.copyWith(
@@ -261,7 +286,12 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
                   child: USKDropdown(
                     onChanged: (value) {
                       ref
-                          .read(addGameProvider(widget.initialValue).notifier)
+                          .read(
+                            addGameProvider(
+                              widget.initialValue,
+                              widget.initialPlayStatus,
+                            ).notifier,
+                          )
                           .updateGame(editableGame.copyWith(usk: value));
                     },
                     value: editableGame.usk,
@@ -276,7 +306,12 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
                     value: editableGame.notes,
                     onChanged: (value) {
                       ref
-                          .read(addGameProvider(widget.initialValue).notifier)
+                          .read(
+                            addGameProvider(
+                              widget.initialValue,
+                              widget.initialPlayStatus,
+                            ).notifier,
+                          )
                           .updateGame(
                             editableGame.copyWith(
                               notes: value.isEmpty ? null : value,
@@ -305,7 +340,10 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
                           if (result != null) {
                             ref
                                 .read(
-                                  addGameProvider(widget.initialValue).notifier,
+                                  addGameProvider(
+                                    widget.initialValue,
+                                    widget.initialPlayStatus,
+                                  ).notifier,
                                 )
                                 .updateGame(
                                   editableGame.copyWith(

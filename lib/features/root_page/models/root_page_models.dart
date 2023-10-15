@@ -31,6 +31,7 @@ enum RootTabs {
   Widget? fab(BuildContext context, [bool isExtended = false]) {
     switch (this) {
       case RootTabs.games:
+      case RootTabs.library:
         return RootGamesFab(isExtended: isExtended);
       default:
         return null;

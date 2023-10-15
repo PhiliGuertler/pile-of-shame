@@ -11,7 +11,9 @@ import 'package:pile_of_shame/widgets/parallax_image_card.dart';
 import 'package:pile_of_shame/widgets/responsiveness/responsive_wrap.dart';
 
 class LibraryScreen extends ConsumerWidget {
-  const LibraryScreen({super.key});
+  final ScrollController scrollController;
+
+  const LibraryScreen({super.key, required this.scrollController});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -25,6 +27,7 @@ class LibraryScreen extends ConsumerWidget {
       data: (families) => Padding(
         padding: const EdgeInsets.symmetric(horizontal: defaultPaddingX),
         child: ListView(
+          controller: scrollController,
           children: [
             Padding(
               padding: const EdgeInsets.only(top: 16.0, bottom: 16.0),
