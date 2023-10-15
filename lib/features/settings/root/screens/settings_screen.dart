@@ -21,7 +21,9 @@ import 'package:pile_of_shame/widgets/segmented_action_card.dart';
 import 'package:pile_of_shame/widgets/slivers/sliver_fancy_image_header.dart';
 
 class SettingsScreen extends ConsumerWidget {
-  const SettingsScreen({super.key});
+  final ScrollController scrollController;
+
+  const SettingsScreen({super.key, required this.scrollController});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -30,6 +32,7 @@ class SettingsScreen extends ConsumerWidget {
 
     return SafeArea(
       child: CustomScrollView(
+        controller: scrollController,
         slivers: [
           SliverFancyImageHeader(
             imagePath: ImageAssets.gear.value,
