@@ -1,6 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:pile_of_shame/models/age_restriction.dart';
 import 'package:pile_of_shame/models/game_platforms.dart';
+import 'package:pile_of_shame/models/hardware.dart';
 import 'package:pile_of_shame/models/play_status.dart';
 
 part 'game.freezed.dart';
@@ -58,6 +59,8 @@ class Game with _$Game {
 class GamesList with _$GamesList {
   const factory GamesList({
     required List<Game> games,
+    @Default(VideoGameHardwareMap(hardwareByPlatform: {}))
+    VideoGameHardwareMap hardware,
   }) = _GamesList;
   const GamesList._();
 
