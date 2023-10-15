@@ -5,11 +5,8 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pile_of_shame/utils/constants.dart';
+import 'package:pile_of_shame/widgets/custom_toolbar.dart';
 import 'package:transparent_image/transparent_image.dart';
-
-const overlayRadius = 50.0;
-
-const minimumToolbarHeight = 50.0;
 
 // Creates a drawer-like gap at the bottom of the clipped area
 class InvertedCornerClipPath extends CustomClipper<Path> {
@@ -150,19 +147,6 @@ class _SliverFancyImageAppBarDelegate extends SliverPersistentHeaderDelegate {
     this.bottom,
   });
 
-  bool _getEffectiveCenterTitle(ThemeData theme) {
-    switch (theme.platform) {
-      case TargetPlatform.android:
-      case TargetPlatform.fuchsia:
-      case TargetPlatform.linux:
-      case TargetPlatform.windows:
-        return false;
-      case TargetPlatform.iOS:
-      case TargetPlatform.macOS:
-        return actions == null || actions!.length < 2;
-    }
-  }
-
   @override
   Widget build(
     BuildContext context,
@@ -247,89 +231,10 @@ class _SliverFancyImageAppBarDelegate extends SliverPersistentHeaderDelegate {
                           alignment: Alignment.topCenter,
                           child: SizedBox(
                             height: minimumToolbarHeight,
-                            child: NavigationToolbar(
-                              middleSpacing:
-                                  AppBarTheme.of(context).titleSpacing ??
-                                      NavigationToolbar.kMiddleSpacing,
-                              leading: Navigator.of(context).canPop()
-                                  ? Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(left: 8.0),
-                                          child: ClipRRect(
-                                            borderRadius: BorderRadius.circular(
-                                              overlayRadius,
-                                            ),
-                                            child: ColoredBox(
-                                              color: themeColor
-                                                  .withOpacity(currentOpacity),
-                                              child: const BackButton(),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    )
-                                  : null,
-                              centerMiddle:
-                                  _getEffectiveCenterTitle(Theme.of(context)),
-                              middle: title != null
-                                  ? ClipRRect(
-                                      borderRadius:
-                                          BorderRadius.circular(overlayRadius),
-                                      child: ColoredBox(
-                                        color: themeColor
-                                            .withOpacity(currentOpacity),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: DefaultTextStyle(
-                                            overflow: TextOverflow.ellipsis,
-                                            style: AppBarTheme.of(context)
-                                                    .titleTextStyle ??
-                                                Theme.of(context)
-                                                    .textTheme
-                                                    .titleLarge ??
-                                                const TextStyle(),
-                                            child: title!,
-                                          ),
-                                        ),
-                                      ),
-                                    )
-                                  : null,
-                              trailing: actions != null
-                                  ? Padding(
-                                      padding:
-                                          const EdgeInsets.only(right: 8.0),
-                                      child: Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: actions!
-                                            .map(
-                                              (action) => Stack(
-                                                children: [
-                                                  Positioned.fill(
-                                                    child: ClipRRect(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                        overlayRadius,
-                                                      ),
-                                                      child: Container(
-                                                        color: themeColor
-                                                            .withOpacity(
-                                                          currentOpacity,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  action,
-                                                ],
-                                              ),
-                                            )
-                                            .toList(),
-                                      ),
-                                    )
-                                  : null,
+                            child: CustomToolbar(
+                              title: title,
+                              backgroundOpacity: currentOpacity,
+                              actions: actions,
                             ),
                           ),
                         ),

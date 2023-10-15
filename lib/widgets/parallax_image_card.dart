@@ -50,6 +50,41 @@ class _ParallaxBackgroundState extends State<ParallaxBackground> {
   }
 }
 
+class ParallaxImage extends StatelessWidget {
+  const ParallaxImage({
+    super.key,
+    required this.imagePath,
+  });
+
+  final String imagePath;
+
+  @override
+  Widget build(BuildContext context) {
+    return ShaderMask(
+      shaderCallback: (bounds) {
+        return LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            Colors.white.withOpacity(0.8),
+            Colors.white.withOpacity(0.8),
+            Colors.white.withOpacity(0.3),
+            Colors.transparent,
+          ],
+          stops: const [0.0, 0.7, 0.9, 1.0],
+        ).createShader(bounds);
+      },
+      child: ClipRRect(
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(16),
+          topRight: Radius.circular(16),
+        ),
+        child: ParallaxBackground(imagePath: imagePath),
+      ),
+    );
+  }
+}
+
 class ParallaxImageCard extends StatelessWidget {
   const ParallaxImageCard({
     super.key,
@@ -111,28 +146,7 @@ class ParallaxImageCard extends StatelessWidget {
             children: [
               AspectRatio(
                 aspectRatio: 16 / 9,
-                child: ShaderMask(
-                  shaderCallback: (bounds) {
-                    return LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        Colors.white.withOpacity(0.8),
-                        Colors.white.withOpacity(0.8),
-                        Colors.white.withOpacity(0.3),
-                        Colors.transparent,
-                      ],
-                      stops: const [0.0, 0.7, 0.9, 1.0],
-                    ).createShader(bounds);
-                  },
-                  child: ClipRRect(
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(16),
-                      topRight: Radius.circular(16),
-                    ),
-                    child: ParallaxBackground(imagePath: imagePath),
-                  ),
-                ),
+                child: ParallaxImage(imagePath: imagePath),
               ),
               ListTile(
                 title: Text(title),
