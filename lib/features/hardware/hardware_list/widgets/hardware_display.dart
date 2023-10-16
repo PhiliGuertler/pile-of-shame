@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/game_platforms.dart';
@@ -6,8 +7,6 @@ import 'package:pile_of_shame/models/hardware.dart';
 import 'package:pile_of_shame/providers/format_provider.dart';
 import 'package:pile_of_shame/providers/hardware/hardware_provider.dart';
 import 'package:pile_of_shame/utils/constants.dart';
-import 'package:pile_of_shame/widgets/custom_toolbar.dart';
-import 'package:pile_of_shame/widgets/parallax_image_card.dart';
 import 'package:pile_of_shame/widgets/skeletons/skeleton.dart';
 import 'package:pile_of_shame/widgets/skeletons/skeleton_list_tile.dart';
 
@@ -21,71 +20,125 @@ class HardwareDisplay extends ConsumerWidget {
     final l10n = AppLocalizations.of(context)!;
 
     final currencyFormatter = ref.watch(currencyFormatProvider(context));
+
     final AsyncValue<List<VideoGameHardware>> asyncHardware =
         ref.watch(hardwareByPlatformProvider(platform));
     final AsyncValue<double> asyncPriceSum =
         ref.watch(hardwareTotalPriceByPlatformProvider(platform));
 
     return Card(
+      margin: EdgeInsets.zero,
       child: Column(
         children: [
-          SizedBox(
-            height: 80,
-            child: Stack(
-              alignment: Alignment.topCenter,
-              children: [
-                ParallaxImage(
-                  imagePath: platform.controllerLogoPath,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 16.0),
-                  child: SizedBox(
-                    height: minimumToolbarHeight,
-                    child: CustomToolbar(
-                      title: Text(
-                        platform.localizedName(l10n),
-                      ),
-                      actions: [
-                        IconButton(
-                          onPressed: () {
-                            // TODO: Implement editing
-                            debugPrint("TODO: Implement me");
-                          },
-                          icon: const Icon(Icons.edit),
+          ClipRRect(
+            borderRadius: const BorderRadius.only(
+              bottomLeft: Radius.circular(8.0),
+              topLeft: Radius.circular(15.0),
+              bottomRight: Radius.circular(30.0),
+              topRight: Radius.circular(12.0),
+            ),
+            child: ColoredBox(
+              color: Theme.of(context)
+                  .colorScheme
+                  .primaryContainer
+                  .withOpacity(0.3),
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  return Row(
+                    children: [
+                      SizedBox(
+                        width: 80,
+                        height: 80,
+                        child: ClipRRect(
+                          borderRadius: const BorderRadius.only(
+                            bottomLeft: Radius.circular(8.0),
+                            topLeft: Radius.circular(15.0),
+                            bottomRight: Radius.circular(30.0),
+                            topRight: Radius.circular(12.0),
+                          ),
+                          child: Image.asset(
+                            platform.controllerLogoPath,
+                            fit: BoxFit.cover,
+                          ),
                         ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
+                      ).animate().moveX(
+                            begin: constraints.maxWidth - 80,
+                            end: 0,
+                            curve: Curves.easeInOut,
+                            duration: 300.ms,
+                          ),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: defaultPaddingX - 8.0,
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                platform.localizedAbbreviation(l10n),
+                                style:
+                                    Theme.of(context).textTheme.headlineSmall,
+                              ),
+                              Text(
+                                platform.localizedName(l10n),
+                                style: Theme.of(context).textTheme.labelMedium,
+                              ),
+                            ],
+                          ),
+                        ).animate().fadeIn(delay: 200.ms),
+                      ),
+                      IntrinsicWidth(
+                        child: Padding(
+                          padding: const EdgeInsets.only(right: 16.0),
+                          child: asyncPriceSum.when(
+                            skipLoadingOnReload: true,
+                            data: (sum) => Text(
+                              currencyFormatter.format(sum),
+                              style: Theme.of(context).textTheme.bodyLarge,
+                            ),
+                            error: (error, stackTrace) =>
+                                Text(error.toString()),
+                            loading: () => const Skeleton(),
+                          ),
+                        ),
+                      ).animate().fadeIn(delay: 100.ms),
+                    ],
+                  );
+                },
+              ),
             ),
           ),
+          const SizedBox(height: 8.0),
           ...asyncHardware.when(
             skipLoadingOnReload: true,
             data: (hardware) => hardware
                 .map(
                   (ware) => ListTile(
+                    visualDensity: const VisualDensity(vertical: -3),
+                    contentPadding:
+                        const EdgeInsets.symmetric(horizontal: 16.0),
                     title: Text(ware.name),
-                    trailing: Text(currencyFormatter.format(ware.price)),
-                  ),
+                    trailing: ware.wasGifted
+                        ? Icon(
+                            Icons.cake,
+                            color: Theme.of(context).colorScheme.primary,
+                          )
+                        : Text(
+                            currencyFormatter.format(ware.price),
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
+                  ).animate().fadeIn(duration: 150.ms).slideY(
+                        begin: -0.1,
+                        end: 0,
+                        duration: 150.ms,
+                        curve: Curves.easeInOut,
+                      ),
                 )
                 .toList(),
             error: (error, stackTrace) => [Text(error.toString())],
             loading: () =>
                 [for (int i = 0; i < 3; ++i) const ListTileSkeleton()],
-          ),
-          const Divider(),
-          asyncPriceSum.when(
-            skipLoadingOnReload: true,
-            data: (sum) => ListTile(
-              title: Text(l10n.fullPrice),
-              trailing: Text(
-                currencyFormatter.format(sum),
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
-            ),
-            error: (error, stackTrace) => Text(error.toString()),
-            loading: () => const Skeleton(),
           ),
         ],
       ),
