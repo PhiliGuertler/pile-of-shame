@@ -212,10 +212,10 @@ void main() {
         {},
       );
 
-      final GamesList games =
+      final List<Game> games =
           await container.read(gamesFilteredProvider.future);
 
-      expect(games.games, [
+      expect(games, [
         TestGames.gameOriAndTheBlindForest,
         TestGames.gameSsx3,
         TestGames.gameWitcher3,
@@ -233,10 +233,10 @@ void main() {
           .read(gamePlatformFilterProvider.notifier)
           .setFilter([GamePlatform.gog, GamePlatform.playStation4]);
 
-      final GamesList games =
+      final List<Game> games =
           await container.read(gamesFilteredProvider.future);
 
-      expect(games.games, [
+      expect(games, [
         TestGames.gameOriAndTheBlindForest,
         TestGames.gameWitcher3,
       ]);
@@ -260,10 +260,10 @@ void main() {
           .read(gamePlatformFilterProvider.notifier)
           .setFilter([GamePlatform.gog, GamePlatform.playStation4]);
 
-      final GamesList games =
+      final List<Game> games =
           await container.read(gamesFilteredProvider.future);
 
-      expect(games.games, [
+      expect(games, [
         TestGames.gameWitcher3,
       ]);
     });

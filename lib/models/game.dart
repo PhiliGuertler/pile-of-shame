@@ -55,6 +55,7 @@ class Game with _$Game {
   }
 }
 
+// TODO: Refactor this class by renaming it, as it no longer only contains a list of games but also hardware!
 @freezed
 class GamesList with _$GamesList {
   const factory GamesList({
@@ -67,6 +68,9 @@ class GamesList with _$GamesList {
   factory GamesList.fromJson(Map<String, dynamic> json) =>
       _$GamesListFromJson(json);
 
+  // ######################################################################## //
+  // ### Games ############################################################## //
+
   /// Updates a game by overwriting it.
   /// If no game with the given id exists, an Exception is thrown.
   GamesList updateGame(String id, Game update) {
@@ -76,7 +80,7 @@ class GamesList with _$GamesList {
     final List<Game> updatedGames = List.from(games);
 
     updatedGames[gameIndex] = update;
-    return GamesList(games: updatedGames);
+    return copyWith(games: updatedGames);
   }
 
   /// Removes a game from the list by its id
@@ -89,7 +93,7 @@ class GamesList with _$GamesList {
 
     final List<Game> updatedGames = List.from(games);
     updatedGames.removeWhere((element) => element.id == id);
-    return GamesList(games: updatedGames);
+    return copyWith(games: updatedGames);
   }
 
   /// Adds a game to the list
@@ -102,7 +106,7 @@ class GamesList with _$GamesList {
 
     final List<Game> updatedGames = List.from(games);
     updatedGames.add(game);
-    return GamesList(games: updatedGames);
+    return copyWith(games: updatedGames);
   }
 
   /// Updates games that are marked as more recent by their lastModified member.
@@ -124,7 +128,7 @@ class GamesList with _$GamesList {
       }
     }
 
-    return GamesList(games: updatedGames);
+    return copyWith(games: updatedGames);
   }
 
   /// Adds missing games to the list.
@@ -143,4 +147,71 @@ class GamesList with _$GamesList {
 
     return updatedGames;
   }
+
+  // ######################################################################## //
+  // ### Hardware ########################################################### //
+
+  /// Adds hardware to the list
+  /// Throws an exception if hardware with the same id already exists
+  GamesList addHardware(VideoGameHardware hardware, GamePlatform platform) {
+    assert(
+      (this.hardware.hardwareByPlatform[platform] ?? [])
+          .every((element) => element.id != hardware.id),
+      "Hardware with id '${hardware.id}' already exists for platform '${platform.abbreviation}'. Did you mean to update existing hardware?",
+    );
+
+    final Map<GamePlatform, List<VideoGameHardware>> update =
+        Map.from(this.hardware.hardwareByPlatform);
+    if (update.containsKey(platform)) {
+      update[platform]!.add(hardware);
+    } else {
+      update[platform] = [hardware];
+    }
+
+    return copyWith(hardware: VideoGameHardwareMap(hardwareByPlatform: update));
+  }
+
+  /// Updates existing hardware
+  /// Throws an exception if no hardware with the same id already exists
+  GamesList updateHardware(VideoGameHardware hardware, GamePlatform platform) {
+    assert(
+      (this.hardware.hardwareByPlatform[platform] ?? [])
+          .any((h) => h.id == hardware.id),
+      "Hardware with id '${hardware.id}' does not exist for platform '${platform.abbreviation}'. Did you mean to add new hardware?",
+    );
+
+    final Map<GamePlatform, List<VideoGameHardware>> update =
+        Map.from(this.hardware.hardwareByPlatform);
+    final List<VideoGameHardware> updatedList = update[platform]!;
+    final updateIndex = updatedList.indexWhere(
+      (element) => element.id == hardware.id,
+    );
+
+    updatedList[updateIndex] = hardware;
+    update[platform] = updatedList;
+
+    return copyWith(hardware: VideoGameHardwareMap(hardwareByPlatform: update));
+  }
+
+  /// Removes existing hardware
+  /// Throws an exception if no hardware with the same id already exists
+  GamesList removeHardware(String id, GamePlatform platform) {
+    assert(
+      (hardware.hardwareByPlatform[platform] ?? []).any((h) => h.id == id),
+      "Hardware with id '$id' does not exist for platform '${platform.abbreviation}'",
+    );
+
+    final Map<GamePlatform, List<VideoGameHardware>> update =
+        Map.from(hardware.hardwareByPlatform);
+    final List<VideoGameHardware> updatedList = update[platform]!;
+    updatedList.removeWhere(
+      (element) => element.id == id,
+    );
+
+    update[platform] = updatedList;
+
+    return copyWith(hardware: VideoGameHardwareMap(hardwareByPlatform: update));
+  }
+
+  // TODO: Add functions like above for games that only update if the incoming hardware is newer, etc.
 }

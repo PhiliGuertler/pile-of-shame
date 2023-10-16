@@ -35,6 +35,8 @@ class RootGamesFab extends ConsumerWidget {
         );
 
         if (result != null) {
+          // TODO: Add a provider that just returns the actual storage.
+          // FIXME: This code basically deletes the hardware...
           final games = GamesList(games: await ref.read(gamesProvider.future));
           final update = games.addGame(result.toGame());
 

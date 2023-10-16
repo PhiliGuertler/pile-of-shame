@@ -70,7 +70,7 @@ FutureOr<bool> hasGames(HasGamesRef ref) async {
 }
 
 @riverpod
-FutureOr<GamesList> gamesFiltered(GamesFilteredRef ref) async {
+FutureOr<List<Game>> gamesFiltered(GamesFilteredRef ref) async {
   final games = await ref.watch(gamesProvider.future);
 
   final filteredGames = ref.watch(applyGameFiltersProvider(games));
@@ -78,7 +78,7 @@ FutureOr<GamesList> gamesFiltered(GamesFilteredRef ref) async {
   final sortedGames =
       await ref.watch(applyGameSortingProvider(searchedGames).future);
 
-  return GamesList(games: sortedGames);
+  return sortedGames;
 }
 
 @riverpod
@@ -110,7 +110,7 @@ FutureOr<DLC> dlcByGameAndId(
 FutureOr<double> gamesFilteredTotalPrice(GamesFilteredTotalPriceRef ref) async {
   final list = await ref.watch(gamesFilteredProvider.future);
 
-  final sum = list.games.fold(
+  final sum = list.fold(
     0.0,
     (previousValue, element) => previousValue + element.fullPrice(),
   );
@@ -121,12 +121,12 @@ FutureOr<double> gamesFilteredTotalPrice(GamesFilteredTotalPriceRef ref) async {
 FutureOr<int> gamesFilteredTotalAmount(GamesFilteredTotalAmountRef ref) async {
   final list = await ref.watch(gamesFilteredProvider.future);
 
-  return list.games.length;
+  return list.length;
 }
 
 @riverpod
 FutureOr<Map<String, List<Game>>> gamesGrouped(GamesGroupedRef ref) async {
   final filteredGames = await ref.watch(gamesFilteredProvider.future);
 
-  return await ref.watch(applyGameGroupProvider(filteredGames.games).future);
+  return await ref.watch(applyGameGroupProvider(filteredGames).future);
 }

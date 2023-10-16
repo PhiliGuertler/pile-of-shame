@@ -110,6 +110,7 @@
   "fancyAnimations": "fancy animations",
   "favorites": "Favorites",
   "filterGames": "Filter games",
+  "fullPrice": "Full price",
   "game": "{num, plural, =0{Games} =1{Game} other{Games}}",
   "gameAndDLCAmount": "Game/DLC count",
   "gameCount": "Game count",

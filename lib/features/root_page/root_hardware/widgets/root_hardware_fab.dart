@@ -1,7 +1,15 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
+import 'package:pile_of_shame/models/game.dart';
+import 'package:pile_of_shame/models/game_platforms.dart';
+import 'package:pile_of_shame/models/hardware.dart';
+import 'package:pile_of_shame/providers/games/game_provider.dart';
+import 'package:pile_of_shame/providers/hardware/hardware_provider.dart';
 import 'package:pile_of_shame/widgets/collapsing_floating_action_button.dart';
+import 'package:uuid/uuid.dart';
 
 class RootHardwareFab extends ConsumerWidget {
   final bool isExtended;
@@ -19,22 +27,29 @@ class RootHardwareFab extends ConsumerWidget {
       label: Text(AppLocalizations.of(context)!.addHardware),
       isExtended: isExtended,
       onPressed: () async {
-        // TODO: Add hardware
-        debugPrint("Add hardware");
-        // final result = await Navigator.of(context).push<EditableGame?>(
-        //   MaterialPageSlideRoute(
-        //     builder: (context) =>
-        //         AddGameScreen(initialPlayStatus: initialPlayStatus),
-        //   ),
-        // );
+        debugPrint("Open Add Hardware Screen here!");
 
-        // if (result != null) {
-        //   final games = GamesList(games: await ref.read(gamesProvider.future));
-        //   final update = games.addGame(result.toGame());
+        final hardware = VideoGameHardware(
+          id: const Uuid().v4(),
+          price: Random().nextDouble() * 50,
+          name: "Hardware",
+          lastModified: DateTime.now(),
+          createdAt: DateTime.now(),
+        );
 
-        //   final gameStorage = ref.read(gameStorageProvider);
-        //   await gameStorage.persistGamesList(update);
-        // }
+        GamesList update = GamesList(
+          games: await ref.read(gamesProvider.future),
+          hardware: VideoGameHardwareMap(
+            hardwareByPlatform: await ref.read(hardwareProvider.future),
+          ),
+        );
+        update = update.addHardware(
+          hardware,
+          GamePlatform.values[Random().nextInt(GamePlatform.values.length)],
+        );
+
+        final gameStorage = ref.read(gameStorageProvider);
+        await gameStorage.persistGamesList(update);
       },
     );
   }

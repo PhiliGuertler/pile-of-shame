@@ -74,6 +74,7 @@
   "fancyAnimations": "krasse Animationen",
   "favorites": "Favoriten",
   "filterGames": "Spiele filtern",
+  "fullPrice": "Gesamtpreis",
   "game": "{num, plural, =0{Spiele} =1{Spiel} other{Spiele}}",
   "gameAndDLCAmount": "Spiel/DLC Anzahl",
   "gameCount": "Spieleanzahl",
