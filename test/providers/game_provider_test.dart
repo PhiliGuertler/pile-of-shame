@@ -84,7 +84,7 @@ void main() {
           .thenAnswer((realInvocation) async => mockFile);
 
       const String stringifiedTestGameList =
-          '{"games":[${TestGames.gameWitcher3Json}],"hardware":{}}';
+          '{"games":[${TestGames.gameWitcher3Json}],"hardware":[]}';
 
       // starts with an empty list as the mockfile returns an empty string
       final initialValue = await container.read(gamesProvider.future);
@@ -98,7 +98,7 @@ void main() {
       when(mockFile.readAsString())
           .thenAnswer((realInvocation) async => stringifiedTestGameList);
       await container.read(databaseStorageProvider).persistDatabase(
-            Database(games: [TestGames.gameWitcher3], hardware: {}),
+            Database(games: [TestGames.gameWitcher3], hardware: []),
           );
       verify(mockFile.writeAsString(stringifiedTestGameList)).called(1);
 

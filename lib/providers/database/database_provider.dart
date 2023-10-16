@@ -19,7 +19,7 @@ FutureOr<Database> database(DatabaseRef ref) async {
         jsonDecode(content) as Map<String, dynamic>;
     return DatabaseMigrator.loadAndMigrateGamesFromJson(jsonMap);
   }
-  return const Database(games: [], hardware: {});
+  return const Database(games: [], hardware: []);
 }
 
 @riverpod

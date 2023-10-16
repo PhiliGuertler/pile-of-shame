@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pile_of_shame/features/hardware/widgets/hardware_display.dart';
+import 'package:pile_of_shame/features/hardware/hardware_list/widgets/hardware_display.dart';
 import 'package:pile_of_shame/providers/hardware/hardware_provider.dart';
 import 'package:pile_of_shame/utils/constants.dart';
 import 'package:pile_of_shame/widgets/responsiveness/responsive_wrap.dart';

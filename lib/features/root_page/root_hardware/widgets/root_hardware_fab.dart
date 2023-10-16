@@ -1,13 +1,11 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pile_of_shame/features/hardware/add_or_edit_hardware/models/editable_hardware.dart';
+import 'package:pile_of_shame/features/hardware/add_or_edit_hardware/screens/add_or_edit_hardware_screen.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
-import 'package:pile_of_shame/models/game_platforms.dart';
-import 'package:pile_of_shame/models/hardware.dart';
 import 'package:pile_of_shame/providers/database/database_provider.dart';
+import 'package:pile_of_shame/transitions/material_page_slide_route.dart';
 import 'package:pile_of_shame/widgets/collapsing_floating_action_button.dart';
-import 'package:uuid/uuid.dart';
 
 class RootHardwareFab extends ConsumerWidget {
   final bool isExtended;
@@ -25,23 +23,20 @@ class RootHardwareFab extends ConsumerWidget {
       label: Text(AppLocalizations.of(context)!.addHardware),
       isExtended: isExtended,
       onPressed: () async {
-        debugPrint("Open Add Hardware Screen here!");
-
-        final hardware = VideoGameHardware(
-          id: const Uuid().v4(),
-          price: Random().nextDouble() * 50,
-          name: "Hardware",
-          lastModified: DateTime.now(),
-          createdAt: DateTime.now(),
+        final result = await Navigator.of(context).push<EditableHardware?>(
+          MaterialPageSlideRoute(
+            builder: (context) => const AddOrEditHardwareScreen(),
+          ),
         );
 
-        final database = await ref.read(databaseProvider.future);
-        final update = database.addHardware(
-          hardware,
-          GamePlatform.values[Random().nextInt(GamePlatform.values.length)],
-        );
+        if (result != null) {
+          final database = await ref.read(databaseProvider.future);
+          final update = database.addHardware(
+            result.toHardware(),
+          );
 
-        await ref.read(databaseStorageProvider).persistDatabase(update);
+          await ref.read(databaseStorageProvider).persistDatabase(update);
+        }
       },
     );
   }

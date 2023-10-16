@@ -6,7 +6,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'hardware_provider.g.dart';
 
 @riverpod
-FutureOr<Map<GamePlatform, List<VideoGameHardware>>> hardware(
+FutureOr<List<VideoGameHardware>> hardware(
   HardwareRef ref,
 ) async {
   final database = await ref.watch(databaseProvider.future);
@@ -19,12 +19,13 @@ FutureOr<List<GamePlatform>> hardwarePlatforms(
 ) async {
   final hardware = await ref.watch(hardwareProvider.future);
 
-  final List<GamePlatform> result = [];
-  for (final entry in hardware.entries) {
-    if (entry.value.isNotEmpty) {
-      result.add(entry.key);
-    }
+  final Set<GamePlatform> platformSet = {};
+  for (final entry in hardware) {
+    platformSet.add(entry.platform);
   }
+
+  final List<GamePlatform> result = platformSet.toList();
+  result.sort((a, b) => a.index.compareTo(b.index));
 
   return result;
 }
@@ -34,25 +35,29 @@ FutureOr<List<VideoGameHardware>> hardwareByPlatform(
   HardwareByPlatformRef ref,
   GamePlatform platform,
 ) async {
-  final hardwareMap = await ref.watch(hardwareProvider.future);
+  final allHardware = await ref.watch(hardwareProvider.future);
 
-  final content = hardwareMap[platform];
-  return content ?? [];
+  final List<VideoGameHardware> hardware = [];
+
+  for (final h in allHardware) {
+    if (h.platform == platform) {
+      hardware.add(h);
+    }
+  }
+
+  hardware.sort((a, b) => a.name.compareTo(b.name));
+
+  return hardware;
 }
 
 @riverpod
 FutureOr<double> hardwareTotalPrice(HardwareTotalPriceRef ref) async {
-  final hardwareMap = await ref.watch(hardwareProvider.future);
+  final hardware = await ref.watch(hardwareProvider.future);
 
-  double sum = 0;
-  for (final entry in hardwareMap.values) {
-    sum += entry.fold(
-      0.0,
-      (previousValue, element) => element.price + previousValue,
-    );
-  }
-
-  return sum;
+  return hardware.fold<double>(
+    0.0,
+    (previousValue, element) => element.price + previousValue,
+  );
 }
 
 @riverpod
@@ -60,11 +65,9 @@ FutureOr<double> hardwareTotalPriceByPlatform(
   HardwareTotalPriceByPlatformRef ref,
   GamePlatform platform,
 ) async {
-  final hardwareMap = await ref.watch(hardwareProvider.future);
+  final hardware = await ref.watch(hardwareByPlatformProvider(platform).future);
 
-  final hardwareList = hardwareMap[platform] ?? [];
-
-  return hardwareList.fold<double>(
+  return hardware.fold<double>(
     0.0,
     (previousValue, element) => element.price + previousValue,
   );

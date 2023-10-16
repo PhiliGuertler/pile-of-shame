@@ -241,7 +241,7 @@ class SettingsScreen extends ConsumerWidget {
                     if (response != null && response) {
                       final databaseStorage = ref.read(databaseStorageProvider);
                       databaseStorage.persistDatabase(
-                        const Database(games: [], hardware: {}),
+                        const Database(games: [], hardware: []),
                       );
 
                       if (context.mounted) {

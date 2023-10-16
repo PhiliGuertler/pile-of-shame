@@ -15,12 +15,10 @@ void main() {
         test(
           'correctly updates an existing game without modifying the hardware',
           () {
-            final Map<GamePlatform, List<VideoGameHardware>> hardware = {
-              GamePlatform.playStation5: [
-                TestHardware.console,
-                TestHardware.controllerRed,
-              ],
-            };
+            final List<VideoGameHardware> hardware = [
+              TestHardware.console,
+              TestHardware.controllerRed,
+            ];
 
             final Database database = Database(
               games: [
@@ -65,7 +63,7 @@ void main() {
               games: [
                 TestGames.gameOuterWilds,
               ],
-              hardware: {},
+              hardware: [],
             );
 
             final Game updatedGameDistance = TestGames.gameDistance.copyWith(
@@ -92,12 +90,10 @@ void main() {
         test(
             'correctly removes an existing Game without modifying the hardware',
             () {
-          final Map<GamePlatform, List<VideoGameHardware>> hardware = {
-            GamePlatform.playStation5: [
-              TestHardware.console,
-              TestHardware.controllerRed,
-            ],
-          };
+          final List<VideoGameHardware> hardware = [
+            TestHardware.console,
+            TestHardware.controllerRed,
+          ];
 
           final Database database = Database(
             games: [
@@ -131,7 +127,7 @@ void main() {
             games: [
               TestGames.gameOuterWilds,
             ],
-            hardware: {},
+            hardware: [],
           );
 
           expect(gamesList.games, [
@@ -149,12 +145,10 @@ void main() {
       });
       group('addGame', () {
         test('correctly adds a new Game without modifying the hardware', () {
-          final Map<GamePlatform, List<VideoGameHardware>> hardware = {
-            GamePlatform.playStation5: [
-              TestHardware.console,
-              TestHardware.controllerRed,
-            ],
-          };
+          final List<VideoGameHardware> hardware = [
+            TestHardware.console,
+            TestHardware.controllerRed,
+          ];
 
           final Database gamesList = Database(
             games: [
@@ -189,7 +183,7 @@ void main() {
             games: [
               TestGames.gameOuterWilds,
             ],
-            hardware: {},
+            hardware: [],
           );
 
           expect(gamesList.games, [
@@ -218,24 +212,23 @@ void main() {
 
           final Database database = Database(
             games: gamesList,
-            hardware: {
-              GamePlatform.playStation5: [
-                TestHardware.console,
-                TestHardware.controllerRed,
-              ],
-            },
+            hardware: [
+              TestHardware.console,
+              TestHardware.controllerRed,
+            ],
           );
 
           final VideoGameHardware updatedHardware =
               TestHardware.console.copyWith(price: 999.5);
 
           expect(database.games, gamesList);
-          expect(database.hardware, {
-            GamePlatform.playStation5: [
+          expect(
+            database.hardware,
+            [
               TestHardware.console,
               TestHardware.controllerRed,
             ],
-          });
+          );
 
           final result = database.updateHardware(
             updatedHardware,
@@ -243,12 +236,13 @@ void main() {
           );
 
           expect(result.games, gamesList);
-          expect(result.hardware, {
-            GamePlatform.playStation5: [
+          expect(
+            result.hardware,
+            [
               updatedHardware,
               TestHardware.controllerRed,
             ],
-          });
+          );
         });
         test("throws an exception if no hardware with the update id exists",
             () {
@@ -256,12 +250,10 @@ void main() {
             games: [
               TestGames.gameOuterWilds,
             ],
-            hardware: {
-              GamePlatform.playStation5: [
-                TestHardware.console,
-                TestHardware.controllerRed,
-              ],
-            },
+            hardware: [
+              TestHardware.console,
+              TestHardware.controllerRed,
+            ],
           );
 
           try {
@@ -286,21 +278,20 @@ void main() {
 
           final Database database = Database(
             games: gamesList,
-            hardware: {
-              GamePlatform.playStation5: [
-                TestHardware.console,
-                TestHardware.controllerRed,
-              ],
-            },
-          );
-
-          expect(database.games, gamesList);
-          expect(database.hardware, {
-            GamePlatform.playStation5: [
+            hardware: [
               TestHardware.console,
               TestHardware.controllerRed,
             ],
-          });
+          );
+
+          expect(database.games, gamesList);
+          expect(
+            database.hardware,
+            [
+              TestHardware.console,
+              TestHardware.controllerRed,
+            ],
+          );
 
           final result = database.removeHardware(
             TestHardware.console.id,
@@ -308,11 +299,12 @@ void main() {
           );
 
           expect(result.games, gamesList);
-          expect(result.hardware, {
-            GamePlatform.playStation5: [
+          expect(
+            result.hardware,
+            [
               TestHardware.controllerRed,
             ],
-          });
+          );
         });
         test("throws an exception if no hardware with the remove id exists",
             () {
@@ -320,12 +312,10 @@ void main() {
             games: [
               TestGames.gameOuterWilds,
             ],
-            hardware: {
-              GamePlatform.playStation5: [
-                TestHardware.console,
-                TestHardware.controllerRed,
-              ],
-            },
+            hardware: [
+              TestHardware.console,
+              TestHardware.controllerRed,
+            ],
           );
 
           try {
@@ -352,35 +342,34 @@ void main() {
 
           final Database database = Database(
             games: gamesList,
-            hardware: {
-              GamePlatform.playStation5: [
-                TestHardware.console,
-                TestHardware.controllerRed,
-              ],
-            },
-          );
-
-          expect(database.games, gamesList);
-          expect(database.hardware, {
-            GamePlatform.playStation5: [
+            hardware: [
               TestHardware.console,
               TestHardware.controllerRed,
             ],
-          });
+          );
+
+          expect(database.games, gamesList);
+          expect(
+            database.hardware,
+            [
+              TestHardware.console,
+              TestHardware.controllerRed,
+            ],
+          );
 
           final result = database.addHardware(
             TestHardware.controllerBlue,
-            GamePlatform.playStation5,
           );
 
           expect(result.games, gamesList);
-          expect(result.hardware, {
-            GamePlatform.playStation5: [
+          expect(
+            result.hardware,
+            [
               TestHardware.console,
               TestHardware.controllerRed,
               TestHardware.controllerBlue,
             ],
-          });
+          );
         });
         test(
             "correctly adds new Hardware to an non-existing platform without modifying games",
@@ -394,55 +383,51 @@ void main() {
 
           final Database database = Database(
             games: gamesList,
-            hardware: {
-              GamePlatform.playStation5: [
-                TestHardware.console,
-                TestHardware.controllerRed,
-              ],
-            },
+            hardware: [
+              TestHardware.console,
+              TestHardware.controllerRed,
+            ],
           );
 
           expect(database.games, gamesList);
-          expect(database.hardware, {
-            GamePlatform.playStation5: [
+          expect(
+            database.hardware,
+            [
               TestHardware.console,
               TestHardware.controllerRed,
             ],
-          });
+          );
 
           final result = database.addHardware(
-            TestHardware.controllerBlue,
-            GamePlatform.nintendoSwitch,
+            TestHardware.controllerBlue
+                .copyWith(platform: GamePlatform.nintendoSwitch),
           );
 
           expect(result.games, gamesList);
-          expect(result.hardware, {
-            GamePlatform.playStation5: [
+          expect(
+            result.hardware,
+            [
               TestHardware.console,
               TestHardware.controllerRed,
+              TestHardware.controllerBlue
+                  .copyWith(platform: GamePlatform.nintendoSwitch),
             ],
-            GamePlatform.nintendoSwitch: [
-              TestHardware.controllerBlue,
-            ],
-          });
+          );
         });
         test("throws an exception if hardware with the add id exists", () {
           final Database database = Database(
             games: [
               TestGames.gameOuterWilds,
             ],
-            hardware: {
-              GamePlatform.playStation5: [
-                TestHardware.console,
-                TestHardware.controllerRed,
-              ],
-            },
+            hardware: [
+              TestHardware.console,
+              TestHardware.controllerRed,
+            ],
           );
 
           try {
             database.addHardware(
               TestHardware.console,
-              GamePlatform.playStation5,
             );
           } catch (error) {
             return;
@@ -459,12 +444,10 @@ void main() {
             TestGames.gameSsx3,
             TestGames.gameOriAndTheBlindForest,
           ],
-          hardware: {
-            GamePlatform.playStation5: [
-              TestHardware.console,
-              TestHardware.controllerRed,
-            ],
-          },
+          hardware: [
+            TestHardware.console,
+            TestHardware.controllerRed,
+          ],
         );
 
         final Game updatedDistance = TestGames.gameDistance.copyWith(
@@ -491,12 +474,10 @@ void main() {
             updatedOri,
             updatedDistance,
           ],
-          hardware: {
-            GamePlatform.playStation5: [
-              updatedConsole,
-              updatedControllerRed,
-            ],
-          },
+          hardware: [
+            updatedConsole,
+            updatedControllerRed,
+          ],
         );
 
         final Database result = original.updateDatabaseByLastModified(update);
@@ -507,12 +488,13 @@ void main() {
           // the update-game is older, so this should not have been updated
           TestGames.gameOriAndTheBlindForest,
         ]);
-        expect(result.hardware, {
-          GamePlatform.playStation5: [
+        expect(
+          result.hardware,
+          [
             updatedConsole,
             TestHardware.controllerRed,
           ],
-        });
+        );
       });
     });
     group("addMissingDatabaseEntries", () {
@@ -523,15 +505,11 @@ void main() {
             TestGames.gameSsx3,
             TestGames.gameOriAndTheBlindForest,
           ],
-          hardware: {
-            GamePlatform.playStation5: [
-              TestHardware.console,
-              TestHardware.controllerBlue,
-            ],
-            GamePlatform.nintendoSwitch: [
-              TestHardware.controllerRed,
-            ],
-          },
+          hardware: [
+            TestHardware.console,
+            TestHardware.controllerBlue,
+            TestHardware.controllerRed,
+          ],
         );
 
         final Database update = Database(
@@ -539,12 +517,10 @@ void main() {
             TestGames.gameOuterWilds,
             TestGames.gameSsx3,
           ],
-          hardware: {
-            GamePlatform.playStation5: [
-              TestHardware.console,
-              TestHardware.giftedConsole,
-            ],
-          },
+          hardware: [
+            TestHardware.console,
+            TestHardware.giftedConsole,
+          ],
         );
 
         final Database result = original.addMissingDatabaseEntries(update);
@@ -555,16 +531,15 @@ void main() {
           TestGames.gameOriAndTheBlindForest,
           TestGames.gameOuterWilds,
         ]);
-        expect(result.hardware, {
-          GamePlatform.playStation5: [
+        expect(
+          result.hardware,
+          [
             TestHardware.console,
             TestHardware.controllerBlue,
+            TestHardware.controllerRed,
             TestHardware.giftedConsole,
           ],
-          GamePlatform.nintendoSwitch: [
-            TestHardware.controllerRed,
-          ],
-        });
+        );
       });
     });
   });

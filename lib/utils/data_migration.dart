@@ -115,7 +115,7 @@ class DatabaseMigrator {
   static Database migrateGamesListV2(GamesListv2 gamesList) {
     return Database(
       games: gamesList.games,
-      hardware: {},
+      hardware: [],
     );
   }
 

@@ -30,7 +30,7 @@ class HardwareDisplay extends ConsumerWidget {
       child: Column(
         children: [
           SizedBox(
-            height: 150,
+            height: 80,
             child: Stack(
               alignment: Alignment.topCenter,
               children: [

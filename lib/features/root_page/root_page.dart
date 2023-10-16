@@ -2,7 +2,7 @@ import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pile_of_shame/features/games/games_list/screens/games_screen.dart';
-import 'package:pile_of_shame/features/hardware/screens/hardware_screen.dart';
+import 'package:pile_of_shame/features/hardware/hardware_list/screens/hardware_screen.dart';
 import 'package:pile_of_shame/features/library/screens/library_screen.dart';
 import 'package:pile_of_shame/features/root_page/models/root_page_models.dart';
 import 'package:pile_of_shame/features/settings/root/screens/settings_screen.dart';

@@ -7,7 +7,6 @@ import 'package:mockito/mockito.dart';
 import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
 import 'package:pile_of_shame/models/database.dart';
 import 'package:pile_of_shame/models/database_storage.dart';
-import 'package:pile_of_shame/models/game_platforms.dart';
 import 'package:pile_of_shame/providers/database/database_file_provider.dart';
 import 'package:pile_of_shame/providers/database/database_provider.dart';
 
@@ -28,12 +27,10 @@ void main() {
     games: [
       TestGames.gameWitcher3,
     ],
-    hardware: {
-      GamePlatform.playStation5: [TestHardware.console],
-    },
+    hardware: [TestHardware.console],
   );
   const String jsonDatabase =
-      '{"games":[${TestGames.gameWitcher3Json}],"hardware":{"PS5":[${TestHardware.consoleJson}]}}';
+      '{"games":[${TestGames.gameWitcher3Json}],"hardware":[${TestHardware.consoleJson}]}';
 
   setUp(() {
     mockPathProviderPlatform = FakePathProviderPlatform();
