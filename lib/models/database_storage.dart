@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pile_of_shame/models/database.dart';
 import 'package:pile_of_shame/providers/database/database_file_provider.dart';
 import 'package:pile_of_shame/providers/database/database_provider.dart';
+import 'package:pile_of_shame/utils/data_migration.dart';
 
 /// Takes care of persisting and reading the database to and
 /// from a file
@@ -28,7 +29,7 @@ class DatabaseStorage {
   Future<Database> readDatabaseFromFile(File inputFile) async {
     final fileContents = await inputFile.readAsString();
     final json = jsonDecode(fileContents) as Map<String, dynamic>;
-    return Database.fromJson(json);
+    return DatabaseMigrator.loadAndMigrateGamesFromJson(json);
   }
 
   Future<void> persistCurrentDatabase() async {

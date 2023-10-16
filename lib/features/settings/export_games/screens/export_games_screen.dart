@@ -25,7 +25,6 @@ class _ExportGamesScreenState extends ConsumerState<ExportGamesScreen> {
     setState(() {
       isLoading = true;
     });
-    final exportGamesTitle = AppLocalizations.of(context)!.exportDatabase;
     String currentDateTime = DateTime.now().toIso8601String();
     currentDateTime = currentDateTime.replaceFirst("T", "_");
     currentDateTime = currentDateTime.replaceAll(":", "-");
@@ -36,7 +35,7 @@ class _ExportGamesScreenState extends ConsumerState<ExportGamesScreen> {
       final success = await callback(
         databaseFile,
         'games-$currentDateTime.json',
-        exportGamesTitle,
+        'games-$currentDateTime.json',
       );
       if (success) {
         if (context.mounted) {

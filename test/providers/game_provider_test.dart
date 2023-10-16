@@ -84,7 +84,7 @@ void main() {
           .thenAnswer((realInvocation) async => mockFile);
 
       const String stringifiedTestGameList =
-          '{"games":[${TestGames.gameWitcher3Json}]}';
+          '{"games":[${TestGames.gameWitcher3Json}],"hardware":{}}';
 
       // starts with an empty list as the mockfile returns an empty string
       final initialValue = await container.read(gamesProvider.future);
