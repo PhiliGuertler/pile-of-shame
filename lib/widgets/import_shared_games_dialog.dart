@@ -91,7 +91,7 @@ class _ImportSharedGamesState extends ConsumerState<ImportSharedGames> {
                 ),
                 sliver: SliverToBoxAdapter(
                   child: Text(
-                    AppLocalizations.of(context)!.importGames,
+                    AppLocalizations.of(context)!.importDatabase,
                     style: Theme.of(context).textTheme.headlineSmall,
                   ),
                 ),
@@ -203,7 +203,8 @@ class _ImportSharedGamesState extends ConsumerState<ImportSharedGames> {
                     SegmentedActionCardItem(
                       trailing: trailing,
                       title: Text(
-                        AppLocalizations.of(context)!.importMissingGamesOnly,
+                        AppLocalizations.of(context)!
+                            .importMissingDatabaseEntriesOnly,
                       ),
                       subtitle: Text(
                         AppLocalizations.of(context)!

@@ -166,9 +166,9 @@ class SettingsScreen extends ConsumerWidget {
                 ),
                 SegmentedActionCardItem(
                   leading: const Icon(Icons.file_download),
-                  title: Text(AppLocalizations.of(context)!.importGames),
+                  title: Text(AppLocalizations.of(context)!.importDatabase),
                   subtitle: Text(
-                    AppLocalizations.of(context)!.importGamesFromAJSONFile,
+                    AppLocalizations.of(context)!.importDatabaseFromAJSONFile,
                   ),
                   onTap: () {
                     Navigator.of(context).push(
@@ -180,9 +180,9 @@ class SettingsScreen extends ConsumerWidget {
                 ),
                 SegmentedActionCardItem(
                   leading: const Icon(Icons.file_upload),
-                  title: Text(AppLocalizations.of(context)!.exportGames),
+                  title: Text(AppLocalizations.of(context)!.exportDatabase),
                   subtitle: Text(
-                    AppLocalizations.of(context)!.exportGamesToAJSONFile,
+                    AppLocalizations.of(context)!.exportDatabaseToAJSONFile,
                   ),
                   onTap: () {
                     Navigator.of(context).push(

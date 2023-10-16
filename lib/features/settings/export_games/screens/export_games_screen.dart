@@ -25,7 +25,7 @@ class _ExportGamesScreenState extends ConsumerState<ExportGamesScreen> {
     setState(() {
       isLoading = true;
     });
-    final exportGamesTitle = AppLocalizations.of(context)!.exportGames;
+    final exportGamesTitle = AppLocalizations.of(context)!.exportDatabase;
     String currentDateTime = DateTime.now().toIso8601String();
     currentDateTime = currentDateTime.replaceFirst("T", "_");
     currentDateTime = currentDateTime.replaceAll(":", "-");
@@ -78,7 +78,7 @@ class _ExportGamesScreenState extends ConsumerState<ExportGamesScreen> {
   Widget build(BuildContext context) {
     return AppScaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.exportGames),
+        title: Text(AppLocalizations.of(context)!.exportDatabase),
       ),
       body: SafeArea(
         child: CustomScrollView(
@@ -96,7 +96,7 @@ class _ExportGamesScreenState extends ConsumerState<ExportGamesScreen> {
                         : const Icon(Icons.file_upload),
                     title: Text(AppLocalizations.of(context)!.exportAll),
                     subtitle: Text(
-                      AppLocalizations.of(context)!.exportAllGamesIntoAJSONFile,
+                      AppLocalizations.of(context)!.exportDatabaseToAJSONFile,
                     ),
                     onTap: isLoading ? null : () => exportGames(),
                   ),
@@ -108,9 +108,9 @@ class _ExportGamesScreenState extends ConsumerState<ExportGamesScreen> {
                             child: CircularProgressIndicator(),
                           )
                         : const Icon(Icons.share),
-                    title: Text(AppLocalizations.of(context)!.shareGames),
+                    title: Text(AppLocalizations.of(context)!.shareDatabase),
                     subtitle: Text(
-                      AppLocalizations.of(context)!.shareGamesAsAJSONFile,
+                      AppLocalizations.of(context)!.shareDatabaseAsAJSONFile,
                     ),
                     onTap: isLoading ? null : () => shareGames(),
                   ),

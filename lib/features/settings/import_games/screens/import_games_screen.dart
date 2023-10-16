@@ -6,7 +6,6 @@ import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/database.dart';
 import 'package:pile_of_shame/providers/database/database_provider.dart';
 import 'package:pile_of_shame/providers/file_provider.dart';
-import 'package:pile_of_shame/utils/constants.dart';
 import 'package:pile_of_shame/widgets/app_scaffold.dart';
 import 'package:pile_of_shame/widgets/segmented_action_card.dart';
 
@@ -74,22 +73,18 @@ class _ImportGamesScreenState extends ConsumerState<ImportGamesScreen> {
 
     return AppScaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.importGames),
+        title: Text(AppLocalizations.of(context)!.importDatabase),
       ),
       body: SafeArea(
         child: CustomScrollView(
           slivers: [
             SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.only(
-                  left: defaultPaddingX,
-                  right: defaultPaddingX,
-                  top: 24.0,
-                  bottom: 16.0,
-                ),
-                child: Text(
+              child: ListTile(
+                leading: const Icon(Icons.warning),
+                title: Text(
                   AppLocalizations.of(context)!
                       .beforeYouImportGamesYouShouldExportYourPreviousGamesAsAPrecaution,
+                  style: Theme.of(context).textTheme.bodyMedium,
                 ),
               ),
             ),
@@ -171,7 +166,8 @@ class _ImportGamesScreenState extends ConsumerState<ImportGamesScreen> {
                   SegmentedActionCardItem(
                     trailing: trailing,
                     title: Text(
-                      AppLocalizations.of(context)!.importMissingGamesOnly,
+                      AppLocalizations.of(context)!
+                          .importMissingDatabaseEntriesOnly,
                     ),
                     subtitle: Text(
                       AppLocalizations.of(context)!
