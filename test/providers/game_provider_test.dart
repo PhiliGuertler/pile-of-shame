@@ -4,11 +4,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:pile_of_shame/models/database.dart';
 import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/models/game_platforms.dart';
 import 'package:pile_of_shame/models/game_sorting.dart';
+import 'package:pile_of_shame/providers/database/database_file_provider.dart';
+import 'package:pile_of_shame/providers/database/database_provider.dart';
 import 'package:pile_of_shame/providers/file_provider.dart';
-import 'package:pile_of_shame/providers/games/game_file_provider.dart';
 import 'package:pile_of_shame/providers/games/game_filter_provider.dart';
 import 'package:pile_of_shame/providers/games/game_provider.dart';
 import 'package:pile_of_shame/providers/games/game_search_provider.dart';
@@ -95,8 +97,8 @@ void main() {
       // to stub the process of writing the list to a file
       when(mockFile.readAsString())
           .thenAnswer((realInvocation) async => stringifiedTestGameList);
-      await container.read(gameStorageProvider).persistGamesList(
-            GamesList(games: [TestGames.gameWitcher3]),
+      await container.read(databaseStorageProvider).persistDatabase(
+            Database(games: [TestGames.gameWitcher3], hardware: {}),
           );
       verify(mockFile.writeAsString(stringifiedTestGameList)).called(1);
 

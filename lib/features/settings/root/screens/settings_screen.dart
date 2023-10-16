@@ -12,9 +12,9 @@ import 'package:pile_of_shame/features/settings/language/screens/language_screen
 import 'package:pile_of_shame/features/settings/platforms/screens/platforms_screen.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/assets.dart';
-import 'package:pile_of_shame/models/game.dart';
+import 'package:pile_of_shame/models/database.dart';
+import 'package:pile_of_shame/providers/database/database_provider.dart';
 import 'package:pile_of_shame/providers/debug_provider.dart';
-import 'package:pile_of_shame/providers/games/game_provider.dart';
 import 'package:pile_of_shame/utils/constants.dart';
 import 'package:pile_of_shame/utils/debug/debug_secret_code_input.dart';
 import 'package:pile_of_shame/widgets/segmented_action_card.dart';
@@ -198,7 +198,7 @@ class SettingsScreen extends ConsumerWidget {
                     color: onErrorContainer,
                   ),
                   title: Text(
-                    AppLocalizations.of(context)!.deleteGames,
+                    AppLocalizations.of(context)!.deleteDatabase,
                     style: TextStyle(color: onErrorContainer),
                   ),
                   trailing: Icon(
@@ -214,8 +214,10 @@ class SettingsScreen extends ConsumerWidget {
                     final bool? response = await showAdaptiveDialog<bool>(
                       context: context,
                       builder: (context) => AlertDialog.adaptive(
-                        title:
-                            Text(AppLocalizations.of(context)!.deleteAllGames),
+                        title: Text(
+                          AppLocalizations.of(context)!
+                              .deleteAllGamesAndHardware,
+                        ),
                         content: Text(
                           AppLocalizations.of(context)!
                               .thisActionCannotBeUndone,
@@ -237,8 +239,10 @@ class SettingsScreen extends ConsumerWidget {
                       ),
                     );
                     if (response != null && response) {
-                      final gameStore = ref.read(gameStorageProvider);
-                      gameStore.persistGamesList(const GamesList(games: []));
+                      final databaseStorage = ref.read(databaseStorageProvider);
+                      databaseStorage.persistDatabase(
+                        const Database(games: [], hardware: {}),
+                      );
 
                       if (context.mounted) {
                         ScaffoldMessenger.of(context).showSnackBar(

@@ -7,6 +7,7 @@ import 'package:pile_of_shame/features/games/dlc_details/widgets/sliver_dlc_deta
 import 'package:pile_of_shame/models/assets.dart';
 import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/models/game_platforms.dart';
+import 'package:pile_of_shame/providers/database/database_provider.dart';
 import 'package:pile_of_shame/providers/games/game_provider.dart';
 import 'package:pile_of_shame/transitions/material_page_slide_route.dart';
 import 'package:pile_of_shame/widgets/app_scaffold.dart';
@@ -77,15 +78,15 @@ class DLCDetailsScreen extends ConsumerWidget {
                           updatedDLCs[dlcIndex] = result.toDLC();
                           final updatedGame = game.copyWith(dlcs: updatedDLCs);
 
-                          final gamesList = GamesList(
-                            games: await ref.read(gamesProvider.future),
-                          );
-                          final update =
-                              gamesList.updateGame(updatedGame.id, updatedGame);
+                          final database =
+                              await ref.read(databaseProvider.future);
 
-                          ref
-                              .read(gameStorageProvider)
-                              .persistGamesList(update);
+                          final update =
+                              database.updateGame(updatedGame.id, updatedGame);
+
+                          await ref
+                              .read(databaseStorageProvider)
+                              .persistDatabase(update);
                         }
                       },
                     ),

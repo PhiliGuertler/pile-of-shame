@@ -1,35 +1,19 @@
-import 'dart:convert';
-
 import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/models/game_platforms.dart';
-import 'package:pile_of_shame/models/game_storage.dart';
 import 'package:pile_of_shame/models/play_status.dart';
-import 'package:pile_of_shame/providers/games/game_file_provider.dart';
+import 'package:pile_of_shame/providers/database/database_provider.dart';
 import 'package:pile_of_shame/providers/games/game_filter_provider.dart';
 import 'package:pile_of_shame/providers/games/game_group_provider.dart';
 import 'package:pile_of_shame/providers/games/game_search_provider.dart';
 import 'package:pile_of_shame/providers/games/game_sorter_provider.dart';
-import 'package:pile_of_shame/utils/data_migration.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'game_provider.g.dart';
 
 @riverpod
-GameStorage gameStorage(GameStorageRef ref) => GameStorage(ref: ref);
-
-@riverpod
 FutureOr<List<Game>> games(GamesRef ref) async {
-  final gameFile = await ref.watch(gameFileProvider.future);
-
-  final content = await gameFile.readAsString();
-
-  if (content.isNotEmpty) {
-    final Map<String, dynamic> jsonMap =
-        jsonDecode(content) as Map<String, dynamic>;
-    final games = GamesMigrator.loadAndMigrateGamesFromJson(jsonMap);
-    return games.games;
-  }
-  return const [];
+  final database = await ref.watch(databaseProvider.future);
+  return database.games;
 }
 
 @riverpod

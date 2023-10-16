@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pile_of_shame/models/age_restriction.dart';
+import 'package:pile_of_shame/models/database.dart';
 import 'package:pile_of_shame/models/game.dart';
 
 import '../../test_resources/test_games.dart';
@@ -14,18 +15,19 @@ void main() {
     });
   });
 
-  group('GamesList', () {
+  group('Database', () {
     group('updateGame', () {
       test(
         'correctly updates an existing game',
         () {
-          final GamesList gamesList = GamesList(
+          final Database gamesList = Database(
             games: [
               TestGames.gameOuterWilds,
               TestGames.gameDistance,
               TestGames.gameSsx3,
               TestGames.gameOriAndTheBlindForest,
             ],
+            hardware: {},
           );
 
           final Game updatedGameDistance = TestGames.gameDistance.copyWith(
@@ -55,10 +57,11 @@ void main() {
       test(
         'throws an exception if attempting to update a non existing game',
         () {
-          final GamesList gamesList = GamesList(
+          final Database gamesList = Database(
             games: [
               TestGames.gameOuterWilds,
             ],
+            hardware: {},
           );
 
           final Game updatedGameDistance = TestGames.gameDistance.copyWith(
@@ -83,13 +86,14 @@ void main() {
     });
     group('removeGame', () {
       test('correctly removes an existing Game', () {
-        final GamesList gamesList = GamesList(
+        final Database gamesList = Database(
           games: [
             TestGames.gameOuterWilds,
             TestGames.gameDistance,
             TestGames.gameSsx3,
             TestGames.gameOriAndTheBlindForest,
           ],
+          hardware: {},
         );
 
         expect(gamesList.games, [
@@ -108,10 +112,11 @@ void main() {
         ]);
       });
       test('throws an exception if no game with the given id exists', () {
-        final GamesList gamesList = GamesList(
+        final Database gamesList = Database(
           games: [
             TestGames.gameOuterWilds,
           ],
+          hardware: {},
         );
 
         expect(gamesList.games, [
@@ -129,12 +134,13 @@ void main() {
     });
     group('addGame', () {
       test('correctly adds a new Game', () {
-        final GamesList gamesList = GamesList(
+        final Database gamesList = Database(
           games: [
             TestGames.gameOuterWilds,
             TestGames.gameDistance,
             TestGames.gameSsx3,
           ],
+          hardware: {},
         );
 
         expect(gamesList.games, [
@@ -155,10 +161,11 @@ void main() {
       test(
           "throws an exception if a game with the new game's id already exists",
           () {
-        final GamesList gamesList = GamesList(
+        final Database gamesList = Database(
           games: [
             TestGames.gameOuterWilds,
           ],
+          hardware: {},
         );
 
         expect(gamesList.games, [
@@ -176,12 +183,13 @@ void main() {
     });
     group("updateGamesByLastModified", () {
       test("correctly updates older games only", () {
-        final GamesList original = GamesList(
+        final Database original = Database(
           games: [
             TestGames.gameDistance,
             TestGames.gameSsx3,
             TestGames.gameOriAndTheBlindForest,
           ],
+          hardware: {},
         );
 
         final Game updatedDistance = TestGames.gameDistance.copyWith(
@@ -193,14 +201,15 @@ void main() {
           lastModified: DateTime(2022),
         );
 
-        final GamesList update = GamesList(
+        final Database update = Database(
           games: [
             updatedOri,
             updatedDistance,
           ],
+          hardware: {},
         );
 
-        final GamesList result = original.updateGamesByLastModified(update);
+        final Database result = original.updateGamesByLastModified(update);
 
         expect(result.games, [
           updatedDistance,
@@ -212,22 +221,24 @@ void main() {
     });
     group("addMissingGames", () {
       test("correctly adds missing games only", () {
-        final GamesList original = GamesList(
+        final Database original = Database(
           games: [
             TestGames.gameDistance,
             TestGames.gameSsx3,
             TestGames.gameOriAndTheBlindForest,
           ],
+          hardware: {},
         );
 
-        final GamesList update = GamesList(
+        final Database update = Database(
           games: [
             TestGames.gameOuterWilds,
             TestGames.gameSsx3,
           ],
+          hardware: {},
         );
 
-        final GamesList result = original.addMissingGames(update);
+        final Database result = original.addMissingGames(update);
 
         expect(result.games, [
           TestGames.gameDistance,

@@ -3,9 +3,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
-import 'package:pile_of_shame/models/game.dart';
+import 'package:pile_of_shame/models/database.dart';
+import 'package:pile_of_shame/providers/database/database_provider.dart';
 import 'package:pile_of_shame/providers/file_provider.dart';
-import 'package:pile_of_shame/providers/games/game_provider.dart';
 import 'package:pile_of_shame/utils/constants.dart';
 import 'package:pile_of_shame/widgets/app_scaffold.dart';
 import 'package:pile_of_shame/widgets/segmented_action_card.dart';
@@ -21,7 +21,7 @@ class _ImportGamesScreenState extends ConsumerState<ImportGamesScreen> {
   bool isLoading = false;
 
   Future<void> importGames(
-    Future<GamesList> Function(File file) processGames,
+    Future<Database> Function(File file) processGames,
   ) async {
     setState(() {
       isLoading = true;
@@ -29,11 +29,9 @@ class _ImportGamesScreenState extends ConsumerState<ImportGamesScreen> {
     final pickedFile = await ref.read(fileUtilsProvider).pickFile();
     if (pickedFile != null) {
       try {
-        final gameStorage = ref.read(gameStorageProvider);
-
         final games = await processGames(pickedFile);
 
-        await gameStorage.persistGamesList(games);
+        await ref.read(databaseStorageProvider).persistDatabase(games);
 
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -111,9 +109,9 @@ class _ImportGamesScreenState extends ConsumerState<ImportGamesScreen> {
                         : () => importGames(
                               (File pickedFile) async {
                                 final gameStorage =
-                                    ref.read(gameStorageProvider);
+                                    ref.read(databaseStorageProvider);
                                 return gameStorage
-                                    .readGamesFromFile(pickedFile);
+                                    .readDatabaseFromFile(pickedFile);
                               },
                             ),
                   ),
@@ -128,21 +126,16 @@ class _ImportGamesScreenState extends ConsumerState<ImportGamesScreen> {
                         : () => importGames(
                               (File pickedFile) async {
                                 final gameStorage =
-                                    ref.read(gameStorageProvider);
-                                final GamesList importedGames =
-                                    await gameStorage
-                                        .readGamesFromFile(pickedFile);
+                                    ref.read(databaseStorageProvider);
+                                final Database importedGames = await gameStorage
+                                    .readDatabaseFromFile(pickedFile);
 
-                                final existingGames = GamesList(
-                                  games: await ref.read(gamesProvider.future),
-                                );
+                                final existingGames =
+                                    await ref.read(databaseProvider.future);
 
-                                final update1 = existingGames
+                                final update = existingGames
                                     .updateGamesByLastModified(importedGames);
-                                final update2 =
-                                    update1.addMissingGames(importedGames);
-
-                                return update2;
+                                return update.addMissingGames(importedGames);
                               },
                             ),
                   ),
@@ -159,19 +152,15 @@ class _ImportGamesScreenState extends ConsumerState<ImportGamesScreen> {
                         : () => importGames(
                               (File pickedFile) async {
                                 final gameStorage =
-                                    ref.read(gameStorageProvider);
-                                final GamesList importedGames =
-                                    await gameStorage
-                                        .readGamesFromFile(pickedFile);
+                                    ref.read(databaseStorageProvider);
+                                final Database importedGames = await gameStorage
+                                    .readDatabaseFromFile(pickedFile);
 
-                                final GamesList existingGames = GamesList(
-                                  games: await ref.read(gamesProvider.future),
-                                );
+                                final Database database =
+                                    await ref.read(databaseProvider.future);
 
-                                final update = existingGames
+                                return database
                                     .updateGamesByLastModified(importedGames);
-
-                                return update;
                               },
                             ),
                   ),
@@ -189,19 +178,14 @@ class _ImportGamesScreenState extends ConsumerState<ImportGamesScreen> {
                         : () => importGames(
                               (File pickedFile) async {
                                 final gameStorage =
-                                    ref.read(gameStorageProvider);
-                                final GamesList importedGames =
-                                    await gameStorage
-                                        .readGamesFromFile(pickedFile);
+                                    ref.read(databaseStorageProvider);
+                                final Database importedGames = await gameStorage
+                                    .readDatabaseFromFile(pickedFile);
 
-                                final GamesList existingGames = GamesList(
-                                  games: await ref.read(gamesProvider.future),
-                                );
+                                final Database database =
+                                    await ref.read(databaseProvider.future);
 
-                                final update = existingGames
-                                    .addMissingGames(importedGames);
-
-                                return update;
+                                return database.addMissingGames(importedGames);
                               },
                             ),
                   ),

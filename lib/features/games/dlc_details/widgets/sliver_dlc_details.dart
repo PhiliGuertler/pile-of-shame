@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/game.dart';
+import 'package:pile_of_shame/providers/database/database_provider.dart';
 import 'package:pile_of_shame/providers/format_provider.dart';
-import 'package:pile_of_shame/providers/games/game_provider.dart';
 import 'package:pile_of_shame/widgets/animated/animated_heart/animated_heart_button.dart';
 import 'package:pile_of_shame/widgets/game_platform_icon.dart';
 import 'package:pile_of_shame/widgets/image_container.dart';
@@ -50,11 +50,10 @@ class SliverDLCDetails extends ConsumerWidget {
               updatedDLCs[dlcIndex] = updatedDLC;
               final updatedGame = game.copyWith(dlcs: updatedDLCs);
 
-              final gamesList =
-                  GamesList(games: await ref.read(gamesProvider.future));
-              final update = gamesList.updateGame(updatedGame.id, updatedGame);
+              final database = await ref.read(databaseProvider.future);
+              final update = database.updateGame(updatedGame.id, updatedGame);
 
-              ref.read(gameStorageProvider).persistGamesList(update);
+              await ref.read(databaseStorageProvider).persistDatabase(update);
             },
           ),
         ),

@@ -1,5 +1,4 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:pile_of_shame/models/game_platforms.dart';
 
 part 'hardware.freezed.dart';
 part 'hardware.g.dart';
@@ -16,14 +15,4 @@ class VideoGameHardware with _$VideoGameHardware {
 
   factory VideoGameHardware.fromJson(Map<String, dynamic> json) =>
       _$VideoGameHardwareFromJson(json);
-}
-
-@freezed
-class VideoGameHardwareMap with _$VideoGameHardwareMap {
-  const factory VideoGameHardwareMap({
-    required Map<GamePlatform, List<VideoGameHardware>> hardwareByPlatform,
-  }) = _VideoGameHardwareMap;
-
-  factory VideoGameHardwareMap.fromJson(Map<String, dynamic> json) =>
-      _$VideoGameHardwareMapFromJson(json);
 }

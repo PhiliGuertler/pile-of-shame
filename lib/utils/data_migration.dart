@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:pile_of_shame/models/age_restriction.dart';
+import 'package:pile_of_shame/models/database.dart';
 import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/models/game_platforms.dart';
 import 'package:pile_of_shame/models/play_status.dart';
@@ -58,9 +59,9 @@ class GamesListv1 with _$GamesListv1 {
       _$GamesListv1FromJson(json);
 }
 
-/// Migrates Games and DLCs
-class GamesMigrator {
-  const GamesMigrator._();
+/// Migrates the database
+class DatabaseMigrator {
+  const DatabaseMigrator._();
 
   static DLC migrateDLCv1(DLCv1 dlc) {
     return DLC(
@@ -93,16 +94,17 @@ class GamesMigrator {
     );
   }
 
-  static GamesList migrateGamesList(GamesListv1 gamesList) {
-    return GamesList(
+  static Database migrateDatabase(GamesListv1 gamesList) {
+    return Database(
       games: gamesList.games.map((e) => migrateGamev1(e)).toList(),
+      hardware: {},
     );
   }
 
-  static GamesList loadAndMigrateGamesFromJson(Map<String, dynamic> jsonMap) {
-    GamesList? result;
+  static Database loadAndMigrateGamesFromJson(Map<String, dynamic> jsonMap) {
+    Database? result;
     try {
-      result = GamesList.fromJson(jsonMap);
+      result = Database.fromJson(jsonMap);
     } catch (error) {
       // fall through to the previous migration step
       result = null;
@@ -112,7 +114,7 @@ class GamesMigrator {
     if (result == null) {
       try {
         final GamesListv1 gamesV1 = GamesListv1.fromJson(jsonMap);
-        result = migrateGamesList(gamesV1);
+        result = migrateDatabase(gamesV1);
       } catch (error) {
         // fall through to the previous migration step
         result = null;

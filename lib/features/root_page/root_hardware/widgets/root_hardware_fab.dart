@@ -3,11 +3,9 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
-import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/models/game_platforms.dart';
 import 'package:pile_of_shame/models/hardware.dart';
-import 'package:pile_of_shame/providers/games/game_provider.dart';
-import 'package:pile_of_shame/providers/hardware/hardware_provider.dart';
+import 'package:pile_of_shame/providers/database/database_provider.dart';
 import 'package:pile_of_shame/widgets/collapsing_floating_action_button.dart';
 import 'package:uuid/uuid.dart';
 
@@ -37,19 +35,13 @@ class RootHardwareFab extends ConsumerWidget {
           createdAt: DateTime.now(),
         );
 
-        GamesList update = GamesList(
-          games: await ref.read(gamesProvider.future),
-          hardware: VideoGameHardwareMap(
-            hardwareByPlatform: await ref.read(hardwareProvider.future),
-          ),
-        );
-        update = update.addHardware(
+        final database = await ref.read(databaseProvider.future);
+        final update = database.addHardware(
           hardware,
           GamePlatform.values[Random().nextInt(GamePlatform.values.length)],
         );
 
-        final gameStorage = ref.read(gameStorageProvider);
-        await gameStorage.persistGamesList(update);
+        await ref.read(databaseStorageProvider).persistDatabase(update);
       },
     );
   }

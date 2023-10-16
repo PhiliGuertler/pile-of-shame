@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
-import 'package:pile_of_shame/providers/games/game_file_provider.dart';
+import 'package:pile_of_shame/providers/database/database_file_provider.dart';
 
 import '../test_utils/fake_path_provider.dart';
 
@@ -19,7 +19,7 @@ void main() {
   });
 
   test("correctly returns the game file", () async {
-    final file = await container.read(gameFileProvider.future);
+    final file = await container.read(databaseFileProvider.future);
     expect(file.path, 'test_resources/game-store.json');
     expect(file.readAsStringSync().replaceAll("\r", ""), """
 {

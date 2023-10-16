@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
+import 'package:pile_of_shame/providers/database/database_file_provider.dart';
 import 'package:pile_of_shame/providers/file_provider.dart';
-import 'package:pile_of_shame/providers/games/game_file_provider.dart';
 import 'package:pile_of_shame/widgets/app_scaffold.dart';
 import 'package:pile_of_shame/widgets/segmented_action_card.dart';
 
@@ -30,11 +30,11 @@ class _ExportGamesScreenState extends ConsumerState<ExportGamesScreen> {
     currentDateTime = currentDateTime.replaceFirst("T", "_");
     currentDateTime = currentDateTime.replaceAll(":", "-");
     currentDateTime = currentDateTime.split(".").first;
-    final gamesFile = await ref.read(gameFileProvider.future);
+    final databaseFile = await ref.read(databaseFileProvider.future);
 
     try {
       final success = await callback(
-        gamesFile,
+        databaseFile,
         'games-$currentDateTime.json',
         exportGamesTitle,
       );

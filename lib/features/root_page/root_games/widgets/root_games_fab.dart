@@ -3,9 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pile_of_shame/features/games/add_or_edit_game/models/editable_game.dart';
 import 'package:pile_of_shame/features/games/add_or_edit_game/screens/add_or_edit_game_screen.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
-import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/models/play_status.dart';
-import 'package:pile_of_shame/providers/games/game_provider.dart';
+import 'package:pile_of_shame/providers/database/database_provider.dart';
 import 'package:pile_of_shame/transitions/material_page_slide_route.dart';
 import 'package:pile_of_shame/widgets/collapsing_floating_action_button.dart';
 
@@ -35,13 +34,10 @@ class RootGamesFab extends ConsumerWidget {
         );
 
         if (result != null) {
-          // TODO: Add a provider that just returns the actual storage.
-          // FIXME: This code basically deletes the hardware...
-          final games = GamesList(games: await ref.read(gamesProvider.future));
-          final update = games.addGame(result.toGame());
+          final database = await ref.read(databaseProvider.future);
+          final update = database.addGame(result.toGame());
 
-          final gameStorage = ref.read(gameStorageProvider);
-          await gameStorage.persistGamesList(update);
+          await ref.read(databaseStorageProvider).persistDatabase(update);
         }
       },
     );
