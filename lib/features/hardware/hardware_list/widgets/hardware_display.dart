@@ -109,25 +109,49 @@ class HardwareDisplay extends ConsumerWidget {
               ),
             ),
           ),
-          const SizedBox(height: 8.0),
           ...asyncHardware.when(
             skipLoadingOnReload: true,
             data: (hardware) => hardware
                 .map(
                   (ware) => ListTile(
-                    visualDensity: const VisualDensity(vertical: -3),
                     contentPadding:
                         const EdgeInsets.symmetric(horizontal: 16.0),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: ware == hardware.last
+                            ? const Radius.circular(12.0)
+                            : Radius.zero,
+                        bottomRight: ware == hardware.last
+                            ? const Radius.circular(12.0)
+                            : Radius.zero,
+                      ),
+                    ),
                     title: Text(ware.name),
-                    trailing: ware.wasGifted
-                        ? Icon(
-                            Icons.cake,
-                            color: Theme.of(context).colorScheme.primary,
+                    subtitle: ware.wasGifted
+                        ? Row(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Icon(
+                                Icons.cake,
+                                color: Theme.of(context).colorScheme.primary,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 8.0),
+                                child: Text(
+                                  l10n.gift,
+                                  style: Theme.of(context).textTheme.bodyMedium,
+                                ),
+                              ),
+                            ],
                           )
                         : Text(
                             currencyFormatter.format(ware.price),
                             style: Theme.of(context).textTheme.bodyMedium,
                           ),
+                    trailing: const Icon(Icons.navigate_next),
+                    onTap: () {
+                      debugPrint("Tapped");
+                    },
                   ).animate().fadeIn(duration: 150.ms).slideY(
                         begin: -0.1,
                         end: 0,
