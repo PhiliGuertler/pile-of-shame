@@ -11,21 +11,47 @@ import 'package:pile_of_shame/utils/constants.dart';
 import 'package:pile_of_shame/widgets/skeletons/skeleton.dart';
 import 'package:pile_of_shame/widgets/skeletons/skeleton_list_tile.dart';
 
-class HardwareDisplay extends ConsumerWidget {
+class HardwareDisplay extends ConsumerStatefulWidget {
   final GamePlatform platform;
 
-  const HardwareDisplay({super.key, required this.platform});
+  const HardwareDisplay({
+    super.key,
+    required this.platform,
+  });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<HardwareDisplay> createState() => _HardwareDisplayState();
+}
+
+class _HardwareDisplayState extends ConsumerState<HardwareDisplay>
+    with SingleTickerProviderStateMixin {
+  late AnimationController controller;
+  bool isAnimationForward = false;
+
+  @override
+  void initState() {
+    super.initState();
+    controller = AnimationController(vsync: this, duration: 600.ms);
+
+    controller.forward();
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
 
     final currencyFormatter = ref.watch(currencyFormatProvider(context));
 
     final AsyncValue<List<VideoGameHardware>> asyncHardware =
-        ref.watch(hardwareByPlatformProvider(platform));
+        ref.watch(hardwareByPlatformProvider(widget.platform));
     final AsyncValue<double> asyncPriceSum =
-        ref.watch(hardwareTotalPriceByPlatformProvider(platform));
+        ref.watch(hardwareTotalPriceByPlatformProvider(widget.platform));
 
     return Card(
       margin: EdgeInsets.zero,
@@ -38,77 +64,112 @@ class HardwareDisplay extends ConsumerWidget {
               bottomRight: Radius.circular(30.0),
               topRight: Radius.circular(12.0),
             ),
-            child: ColoredBox(
-              color: Theme.of(context)
-                  .colorScheme
-                  .primaryContainer
-                  .withOpacity(0.3),
-              child: LayoutBuilder(
-                builder: (context, constraints) {
-                  return Row(
-                    children: [
-                      SizedBox(
-                        width: 80,
-                        height: 80,
-                        child: ClipRRect(
-                          borderRadius: const BorderRadius.only(
-                            bottomLeft: Radius.circular(8.0),
-                            topLeft: Radius.circular(15.0),
-                            bottomRight: Radius.circular(30.0),
-                            topRight: Radius.circular(12.0),
-                          ),
-                          child: Image.asset(
-                            platform.controllerLogoPath,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ).animate().moveX(
-                            begin: constraints.maxWidth - 80,
-                            end: 0,
-                            curve: Curves.easeInOut,
-                            duration: 300.ms,
-                          ),
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: defaultPaddingX - 8.0,
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                platform.localizedAbbreviation(l10n),
-                                style:
-                                    Theme.of(context).textTheme.headlineSmall,
-                              ),
-                              Text(
-                                platform.localizedName(l10n),
-                                style: Theme.of(context).textTheme.labelMedium,
-                              ),
-                            ],
-                          ),
-                        ).animate().fadeIn(delay: 200.ms),
-                      ),
-                      IntrinsicWidth(
-                        child: Padding(
-                          padding: const EdgeInsets.only(right: 16.0),
-                          child: asyncPriceSum.when(
-                            skipLoadingOnReload: true,
-                            data: (sum) => Text(
-                              currencyFormatter.format(sum),
-                              style: Theme.of(context).textTheme.bodyLarge,
+            child: GestureDetector(
+              onTap: () {
+                if (isAnimationForward) {
+                  controller.forward(from: controller.value);
+                } else {
+                  controller.reverse(from: controller.value);
+                }
+                setState(() {
+                  isAnimationForward = !isAnimationForward;
+                });
+              },
+              child: ColoredBox(
+                color: Theme.of(context)
+                    .colorScheme
+                    .primaryContainer
+                    .withOpacity(0.3),
+                child: LayoutBuilder(
+                  builder: (context, constraints) {
+                    final Animation<double> curve = CurvedAnimation(
+                      parent: controller,
+                      curve: Curves.easeInOut,
+                    );
+                    final animation =
+                        Tween<double>(begin: constraints.maxWidth, end: 80)
+                            .animate(curve)
+                          ..addListener(() {
+                            setState(() {
+                              // The state that has changed here is the animation object's value.
+                            });
+                          });
+
+                    return Stack(
+                      children: [
+                        Row(
+                          children: [
+                            const SizedBox(
+                              height: 80,
+                              width: 80,
                             ),
-                            error: (error, stackTrace) =>
-                                Text(error.toString()),
-                            loading: () => const Skeleton(),
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: defaultPaddingX - 8.0,
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      widget.platform
+                                          .localizedAbbreviation(l10n),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headlineSmall,
+                                    ),
+                                    Text(
+                                      widget.platform.localizedName(l10n),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .labelMedium,
+                                    ),
+                                  ],
+                                ),
+                              ).animate().fadeIn(delay: 200.ms),
+                            ),
+                            IntrinsicWidth(
+                              child: Padding(
+                                padding: const EdgeInsets.only(right: 16.0),
+                                child: asyncPriceSum.when(
+                                  skipLoadingOnReload: true,
+                                  data: (sum) => Text(
+                                    currencyFormatter.format(sum),
+                                    style:
+                                        Theme.of(context).textTheme.bodyLarge,
+                                  ),
+                                  error: (error, stackTrace) =>
+                                      Text(error.toString()),
+                                  loading: () => const Skeleton(),
+                                ),
+                              ),
+                            ).animate().fadeIn(delay: 100.ms),
+                          ],
+                        ),
+                        SizedBox(
+                          width: animation.value,
+                          height: 80,
+                          child: ClipRRect(
+                            borderRadius: const BorderRadius.only(
+                              bottomLeft: Radius.circular(8.0),
+                              topLeft: Radius.circular(15.0),
+                              bottomRight: Radius.circular(30.0),
+                              topRight: Radius.circular(12.0),
+                            ),
+                            child: Image.asset(
+                              widget.platform.controllerLogoPath,
+                              fit: BoxFit.cover,
+                              width: double.infinity,
+                              height: 80,
+                            ),
                           ),
                         ),
-                      ).animate().fadeIn(delay: 100.ms),
-                    ],
-                  );
-                },
-              ),
-            ).animate().fadeIn(duration: 300.ms),
+                      ],
+                    );
+                  },
+                ),
+              ).animate().fadeIn(duration: 300.ms),
+            ),
           ),
           ...asyncHardware.when(
             skipLoadingOnReload: true,
