@@ -14,6 +14,14 @@ FutureOr<List<VideoGameHardware>> hardware(
 }
 
 @riverpod
+FutureOr<bool> hasHardware(
+  HasHardwareRef ref,
+) async {
+  final hardware = await ref.watch(hardwareProvider.future);
+  return hardware.isNotEmpty;
+}
+
+@riverpod
 FutureOr<List<GamePlatform>> hardwarePlatforms(
   HardwarePlatformsRef ref,
 ) async {

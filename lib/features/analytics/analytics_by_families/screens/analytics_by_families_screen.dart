@@ -57,9 +57,12 @@ class AnalyticsByFamiliesScreen extends ConsumerWidget {
                       padding: const EdgeInsets.symmetric(
                         horizontal: defaultPaddingX,
                       ),
-                      sliver: SliverFancyImageHeader(
-                        imagePath: ImageAssets.gamePile.value,
-                        height: 250,
+                      sliver: SliverOpacity(
+                        opacity: 0.7,
+                        sliver: SliverFancyImageHeader(
+                          imagePath: ImageAssets.pieChart.value,
+                          height: 250,
+                        ),
                       ),
                     ),
                     SliverToBoxAdapter(
@@ -70,8 +73,8 @@ class AnalyticsByFamiliesScreen extends ConsumerWidget {
                         ),
                         child: Text(
                           AppLocalizations.of(context)!
-                              .buildYourPileOfShameByAddingNewGamesInTheMainMenu,
-                          style: Theme.of(context).textTheme.bodyLarge,
+                              .addGamesToGenerateALibraryAnalysis,
+                          style: Theme.of(context).textTheme.headlineSmall,
                           textAlign: TextAlign.center,
                         ),
                       ),

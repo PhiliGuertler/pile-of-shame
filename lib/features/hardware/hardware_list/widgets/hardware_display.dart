@@ -108,7 +108,7 @@ class HardwareDisplay extends ConsumerWidget {
                   );
                 },
               ),
-            ),
+            ).animate().fadeIn(duration: 300.ms),
           ),
           ...asyncHardware.when(
             skipLoadingOnReload: true,

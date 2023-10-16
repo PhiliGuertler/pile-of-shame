@@ -39,7 +39,7 @@ class LibraryScreen extends ConsumerWidget {
             ResponsiveWrap(
               children: [
                 ParallaxImageCard(
-                  imagePath: ImageAssets.pc.value,
+                  imagePath: ImageAssets.controllerUnknown.value,
                   title: PlayStatus.playing.toLocaleString(l10n),
                   openBuilderOnTap: (context, openContainer) =>
                       GamesByPlaystatusScreen(
@@ -117,7 +117,7 @@ class LibraryScreen extends ConsumerWidget {
               ],
             ),
             const SizedBox(
-              height: 24.0,
+              height: 78.0,
             ),
           ],
         ),
