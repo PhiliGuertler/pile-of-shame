@@ -96,6 +96,7 @@
   "deleteDatabase": "Delete database",
   "deleteGame": "Delete game",
   "deleteGames": "Delete games",
+  "deleteHardware": "Delete hardware",
   "dlc": "{num, plural, =0{DLCs} =1{DLC} other{DLCs}}",
   "dlcName": "DLC name",
   "dlcs": "DLCs",

@@ -60,6 +60,7 @@
   "deleteDatabase": "Datenbank löschen",
   "deleteGame": "Spiel löschen",
   "deleteGames": "Spiele löschen",
+  "deleteHardware": "Hardware löschen",
   "dlc": "{num, plural, =0{DLCs} =1{DLC} other{DLCs}}",
   "dlcName": "Name des DLCs",
   "dlcs": "DLCs",

@@ -1,6 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:pile_of_shame/models/game.dart';
-import 'package:pile_of_shame/models/game_platforms.dart';
 import 'package:pile_of_shame/models/hardware.dart';
 
 part 'database.freezed.dart';
@@ -77,7 +76,7 @@ class Database with _$Database {
 
   /// Updates existing hardware
   /// Throws an exception if no hardware with the same id already exists
-  Database updateHardware(VideoGameHardware hardware, GamePlatform platform) {
+  Database updateHardware(VideoGameHardware hardware) {
     assert(
       this.hardware.any((h) => h.id == hardware.id),
       "Hardware with id '${hardware.id}' does not exist. Did you mean to add new hardware?",
@@ -95,10 +94,10 @@ class Database with _$Database {
 
   /// Removes existing hardware
   /// Throws an exception if no hardware with the same id already exists
-  Database removeHardware(String id, GamePlatform platform) {
+  Database removeHardware(String id) {
     assert(
       hardware.any((h) => h.id == id),
-      "Hardware with id '$id' does not exist for platform '${platform.abbreviation}'",
+      "Hardware with id '$id' does not exist",
     );
 
     final List<VideoGameHardware> update = List.from(hardware);

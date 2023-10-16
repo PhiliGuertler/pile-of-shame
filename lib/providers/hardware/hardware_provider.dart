@@ -51,6 +51,20 @@ FutureOr<List<VideoGameHardware>> hardwareByPlatform(
 }
 
 @riverpod
+FutureOr<VideoGameHardware> hardwareById(
+  HardwareByIdRef ref,
+  String id,
+) async {
+  final allHardware = await ref.watch(hardwareProvider.future);
+
+  try {
+    return allHardware.singleWhere((element) => element.id == id);
+  } catch (error) {
+    throw Exception("No hardware with id '$id' found");
+  }
+}
+
+@riverpod
 FutureOr<double> hardwareTotalPrice(HardwareTotalPriceRef ref) async {
   final hardware = await ref.watch(hardwareProvider.future);
 

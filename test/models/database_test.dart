@@ -232,7 +232,6 @@ void main() {
 
           final result = database.updateHardware(
             updatedHardware,
-            GamePlatform.playStation5,
           );
 
           expect(result.games, gamesList);
@@ -259,7 +258,6 @@ void main() {
           try {
             database.updateHardware(
               TestHardware.controllerBlue,
-              GamePlatform.playStation5,
             );
           } catch (error) {
             return;
@@ -295,7 +293,6 @@ void main() {
 
           final result = database.removeHardware(
             TestHardware.console.id,
-            GamePlatform.playStation5,
           );
 
           expect(result.games, gamesList);
@@ -321,7 +318,6 @@ void main() {
           try {
             database.removeHardware(
               TestHardware.controllerBlue.id,
-              GamePlatform.playStation5,
             );
           } catch (error) {
             return;

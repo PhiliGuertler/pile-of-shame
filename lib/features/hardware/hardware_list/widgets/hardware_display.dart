@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pile_of_shame/features/hardware/hardware_details/screens/hardware_details_screen.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/game_platforms.dart';
 import 'package:pile_of_shame/models/hardware.dart';
@@ -150,7 +151,13 @@ class HardwareDisplay extends ConsumerWidget {
                           ),
                     trailing: const Icon(Icons.navigate_next),
                     onTap: () {
-                      debugPrint("Tapped");
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => HardwareDetailsScreen(
+                            hardwareId: ware.id,
+                          ),
+                        ),
+                      );
                     },
                   ).animate().fadeIn(duration: 150.ms).slideY(
                         begin: -0.1,
