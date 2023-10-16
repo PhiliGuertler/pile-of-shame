@@ -5,8 +5,8 @@ import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/custom_game_display_settings.dart';
 import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/providers/custom_game_display.dart';
+import 'package:pile_of_shame/providers/database/database_provider.dart';
 import 'package:pile_of_shame/providers/format_provider.dart';
-import 'package:pile_of_shame/providers/games/game_provider.dart';
 import 'package:pile_of_shame/utils/constants.dart';
 import 'package:pile_of_shame/widgets/age_rating_text_display.dart';
 import 'package:pile_of_shame/widgets/game_platform_icon.dart';
@@ -151,11 +151,10 @@ class CustomizableGameDisplay extends ConsumerWidget {
       },
       onTriggerRight: () async {
         final updatedGame = game.copyWith(isFavorite: !game.isFavorite);
-        final gamesList =
-            GamesList(games: await ref.read(gamesProvider.future));
-        final update = gamesList.updateGame(updatedGame.id, updatedGame);
+        final database = await ref.read(databaseProvider.future);
+        final update = database.updateGame(updatedGame.id, updatedGame);
 
-        await ref.read(gameStorageProvider).persistGamesList(update);
+        await ref.read(databaseStorageProvider).persistDatabase(update);
       },
       leftWidget: notes.isNotEmpty
           ? (triggerProgress) {

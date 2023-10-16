@@ -5,12 +5,13 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
-import 'package:pile_of_shame/models/game.dart';
-import 'package:pile_of_shame/models/game_storage.dart';
-import 'package:pile_of_shame/providers/games/game_file_provider.dart';
-import 'package:pile_of_shame/providers/games/game_provider.dart';
+import 'package:pile_of_shame/models/database.dart';
+import 'package:pile_of_shame/models/database_storage.dart';
+import 'package:pile_of_shame/providers/database/database_file_provider.dart';
+import 'package:pile_of_shame/providers/database/database_provider.dart';
 
 import '../../test_resources/test_games.dart';
+import '../../test_resources/test_hardware.dart';
 import '../test_utils/fake_path_provider.dart';
 @GenerateNiceMocks([MockSpec<File>()])
 import 'game_storage_test.mocks.dart';
@@ -20,78 +21,87 @@ void main() {
 
   late FakePathProviderPlatform mockPathProviderPlatform;
   late ProviderContainer container;
-  late MockFile gameFile;
+  late MockFile databaseFile;
 
-  final GamesList testGameList = GamesList(games: [TestGames.gameWitcher3]);
-  const String jsonGameList = '{"games":[${TestGames.gameWitcher3Json}]}';
+  final Database testDatabase = Database(
+    games: [
+      TestGames.gameWitcher3,
+    ],
+    hardware: [TestHardware.console],
+  );
+  const String jsonDatabase =
+      '{"games":[${TestGames.gameWitcher3Json}],"hardware":[${TestHardware.consoleJson}]}';
 
   setUp(() {
     mockPathProviderPlatform = FakePathProviderPlatform();
     PathProviderPlatform.instance = mockPathProviderPlatform;
 
-    gameFile = MockFile();
+    databaseFile = MockFile();
 
     container = ProviderContainer(
       overrides: [
-        gameFileProvider.overrideWith((ref) => gameFile),
-        gamesProvider.overrideWith((ref) => testGameList.games),
+        databaseFileProvider.overrideWith((ref) => databaseFile),
       ],
     );
   });
 
   group("persistGamesList", () {
     test("writes into gameFileProvider's value by default", () async {
-      final GameStorage storage = container.read(gameStorageProvider);
+      final DatabaseStorage storage = container.read(databaseStorageProvider);
 
-      verifyNever(gameFile.writeAsString(jsonGameList));
+      verifyNever(databaseFile.writeAsString(jsonDatabase));
 
-      await storage.persistGamesList(
-        testGameList,
+      await storage.persistDatabase(
+        testDatabase,
       );
 
-      verify(gameFile.writeAsString(jsonGameList)).called(1);
+      verify(databaseFile.writeAsString(jsonDatabase)).called(1);
     });
     test("writes into the input file if provided", () async {
-      final GameStorage storage = container.read(gameStorageProvider);
+      final DatabaseStorage storage = container.read(databaseStorageProvider);
       final MockFile file = MockFile();
 
-      verifyNever(gameFile.writeAsString(jsonGameList));
-      verifyNever(file.writeAsString(jsonGameList));
+      verifyNever(databaseFile.writeAsString(jsonDatabase));
+      verifyNever(file.writeAsString(jsonDatabase));
 
-      await storage.persistGamesList(testGameList, file);
+      await storage.persistDatabase(testDatabase, file);
 
       // Did not write into gameFileProvider's file
-      verifyNever(gameFile.writeAsString(jsonGameList));
-      verify(file.writeAsString(jsonGameList)).called(1);
+      verifyNever(databaseFile.writeAsString(jsonDatabase));
+      verify(file.writeAsString(jsonDatabase)).called(1);
     });
   });
   group("readGamesFromFile", () {
     test("reads the game list correctly", () async {
-      final GameStorage storage = container.read(gameStorageProvider);
+      final DatabaseStorage storage = container.read(databaseStorageProvider);
       final MockFile file = MockFile();
 
       when(file.readAsString()).thenAnswer(
-        (realInvocation) => Future.value(jsonGameList),
+        (realInvocation) => Future.value(jsonDatabase),
       );
 
       verifyNever(file.readAsString());
 
-      final GamesList result = await storage.readGamesFromFile(file);
+      final Database result = await storage.readDatabaseFromFile(file);
 
       verify(file.readAsString()).called(1);
 
-      expect(result, testGameList);
+      expect(result, testDatabase);
     });
   });
   group("persistCurrentGames", () {
     test("persists the list of current games correctly", () async {
-      final GameStorage storage = container.read(gameStorageProvider);
+      final DatabaseStorage storage = container.read(databaseStorageProvider);
 
-      verifyNever(gameFile.writeAsString(jsonGameList));
+      when(databaseFile.readAsString()).thenAnswer(
+        (realInvocation) => Future.value(jsonDatabase),
+      );
 
-      await storage.persistCurrentGames();
+      verifyNever(databaseFile.writeAsString(jsonDatabase));
 
-      verify(gameFile.writeAsString(jsonGameList)).called(1);
+      await storage.persistCurrentDatabase();
+
+      verify(databaseFile.writeAsString(jsonDatabase)).called(1);
     });
   });
 }

@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
-import 'package:pile_of_shame/models/game.dart';
+import 'package:pile_of_shame/models/database.dart';
+import 'package:pile_of_shame/providers/database/database_provider.dart';
 import 'package:pile_of_shame/providers/debug_provider.dart';
-import 'package:pile_of_shame/providers/games/game_provider.dart';
 import 'package:pile_of_shame/providers/shared_content_provider.dart';
 import 'package:pile_of_shame/utils/constants.dart';
 import 'package:pile_of_shame/widgets/segmented_action_card.dart';
@@ -27,7 +27,7 @@ class _ImportSharedGamesState extends ConsumerState<ImportSharedGames> {
   }
 
   Future<void> importSharedGames(
-    Future<GamesList> Function(File file) processGames,
+    Future<Database> Function(File file) processGames,
   ) async {
     setState(() {
       isLoading = true;
@@ -39,11 +39,9 @@ class _ImportSharedGamesState extends ConsumerState<ImportSharedGames> {
 
     final File sharedFile = File(sharedFiles.first.value!);
     try {
-      final gameStorage = ref.read(gameStorageProvider);
-
       final games = await processGames(sharedFile);
 
-      await gameStorage.persistGamesList(games);
+      await ref.read(databaseStorageProvider).persistDatabase(games);
 
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -93,7 +91,7 @@ class _ImportSharedGamesState extends ConsumerState<ImportSharedGames> {
                 ),
                 sliver: SliverToBoxAdapter(
                   child: Text(
-                    AppLocalizations.of(context)!.importGames,
+                    AppLocalizations.of(context)!.importDatabase,
                     style: Theme.of(context).textTheme.headlineSmall,
                   ),
                 ),
@@ -139,9 +137,9 @@ class _ImportSharedGamesState extends ConsumerState<ImportSharedGames> {
                           : () => importSharedGames(
                                 (File pickedFile) async {
                                   final gameStorage =
-                                      ref.read(gameStorageProvider);
+                                      ref.read(databaseStorageProvider);
                                   return gameStorage
-                                      .readGamesFromFile(pickedFile);
+                                      .readDatabaseFromFile(pickedFile);
                                 },
                               ),
                     ),
@@ -157,21 +155,20 @@ class _ImportSharedGamesState extends ConsumerState<ImportSharedGames> {
                           : () => importSharedGames(
                                 (File pickedFile) async {
                                   final gameStorage =
-                                      ref.read(gameStorageProvider);
-                                  final GamesList importedGames =
+                                      ref.read(databaseStorageProvider);
+                                  final Database importedGames =
                                       await gameStorage
-                                          .readGamesFromFile(pickedFile);
+                                          .readDatabaseFromFile(pickedFile);
 
-                                  final GamesList existingGames = GamesList(
-                                    games: await ref.read(gamesProvider.future),
+                                  final Database database =
+                                      await ref.read(databaseProvider.future);
+
+                                  final update =
+                                      database.updateDatabaseByLastModified(
+                                    importedGames,
                                   );
-
-                                  final update1 = existingGames
-                                      .updateGamesByLastModified(importedGames);
-                                  final update2 =
-                                      update1.addMissingGames(importedGames);
-
-                                  return update2;
+                                  return update
+                                      .addMissingDatabaseEntries(importedGames);
                                 },
                               ),
                     ),
@@ -189,26 +186,25 @@ class _ImportSharedGamesState extends ConsumerState<ImportSharedGames> {
                           : () => importSharedGames(
                                 (File pickedFile) async {
                                   final gameStorage =
-                                      ref.read(gameStorageProvider);
-                                  final GamesList importedGames =
+                                      ref.read(databaseStorageProvider);
+                                  final Database importedGames =
                                       await gameStorage
-                                          .readGamesFromFile(pickedFile);
+                                          .readDatabaseFromFile(pickedFile);
 
-                                  final GamesList existingGames = GamesList(
-                                    games: await ref.read(gamesProvider.future),
+                                  final Database database =
+                                      await ref.read(databaseProvider.future);
+
+                                  return database.updateDatabaseByLastModified(
+                                    importedGames,
                                   );
-
-                                  final update = existingGames
-                                      .updateGamesByLastModified(importedGames);
-
-                                  return update;
                                 },
                               ),
                     ),
                     SegmentedActionCardItem(
                       trailing: trailing,
                       title: Text(
-                        AppLocalizations.of(context)!.importMissingGamesOnly,
+                        AppLocalizations.of(context)!
+                            .importMissingDatabaseEntriesOnly,
                       ),
                       subtitle: Text(
                         AppLocalizations.of(context)!
@@ -219,19 +215,16 @@ class _ImportSharedGamesState extends ConsumerState<ImportSharedGames> {
                           : () => importSharedGames(
                                 (File pickedFile) async {
                                   final gameStorage =
-                                      ref.read(gameStorageProvider);
-                                  final GamesList importedGames =
+                                      ref.read(databaseStorageProvider);
+                                  final Database importedGames =
                                       await gameStorage
-                                          .readGamesFromFile(pickedFile);
+                                          .readDatabaseFromFile(pickedFile);
 
-                                  final GamesList existingGames = GamesList(
-                                    games: await ref.read(gamesProvider.future),
-                                  );
+                                  final Database database =
+                                      await ref.read(databaseProvider.future);
 
-                                  final update = existingGames
-                                      .addMissingGames(importedGames);
-
-                                  return update;
+                                  return database
+                                      .addMissingDatabaseEntries(importedGames);
                                 },
                               ),
                     ),

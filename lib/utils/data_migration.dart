@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:pile_of_shame/models/age_restriction.dart';
+import 'package:pile_of_shame/models/database.dart';
 import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/models/game_platforms.dart';
 import 'package:pile_of_shame/models/play_status.dart';
@@ -58,9 +59,21 @@ class GamesListv1 with _$GamesListv1 {
       _$GamesListv1FromJson(json);
 }
 
-/// Migrates Games and DLCs
-class GamesMigrator {
-  const GamesMigrator._();
+@freezed
+class GamesListv2 with _$GamesListv2 {
+  const factory GamesListv2({
+    required List<Game> games,
+    // GamesListv2 is missing the Map of platforms to hardware
+  }) = _GamesListv2;
+  const GamesListv2._();
+
+  factory GamesListv2.fromJson(Map<String, dynamic> json) =>
+      _$GamesListv2FromJson(json);
+}
+
+/// Migrates the database
+class DatabaseMigrator {
+  const DatabaseMigrator._();
 
   static DLC migrateDLCv1(DLCv1 dlc) {
     return DLC(
@@ -93,16 +106,23 @@ class GamesMigrator {
     );
   }
 
-  static GamesList migrateGamesList(GamesListv1 gamesList) {
-    return GamesList(
+  static GamesListv2 migrateGamesListV1(GamesListv1 gamesList) {
+    return GamesListv2(
       games: gamesList.games.map((e) => migrateGamev1(e)).toList(),
     );
   }
 
-  static GamesList loadAndMigrateGamesFromJson(Map<String, dynamic> jsonMap) {
-    GamesList? result;
+  static Database migrateGamesListV2(GamesListv2 gamesList) {
+    return Database(
+      games: gamesList.games,
+      hardware: [],
+    );
+  }
+
+  static Database loadAndMigrateGamesFromJson(Map<String, dynamic> jsonMap) {
+    Database? result;
     try {
-      result = GamesList.fromJson(jsonMap);
+      result = Database.fromJson(jsonMap);
     } catch (error) {
       // fall through to the previous migration step
       result = null;
@@ -111,8 +131,18 @@ class GamesMigrator {
     // ### Migration steps in reverse order ################################# //
     if (result == null) {
       try {
+        final GamesListv2 gamesV2 = GamesListv2.fromJson(jsonMap);
+        result = migrateGamesListV2(gamesV2);
+      } catch (error) {
+        result = null;
+      }
+    }
+
+    if (result == null) {
+      try {
         final GamesListv1 gamesV1 = GamesListv1.fromJson(jsonMap);
-        result = migrateGamesList(gamesV1);
+        final GamesListv2 gamesV2 = migrateGamesListV1(gamesV1);
+        result = migrateGamesListV2(gamesV2);
       } catch (error) {
         // fall through to the previous migration step
         result = null;

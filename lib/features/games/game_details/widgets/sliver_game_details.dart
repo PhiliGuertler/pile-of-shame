@@ -5,8 +5,8 @@ import 'package:pile_of_shame/features/games/add_or_edit_game/screens/add_or_edi
 import 'package:pile_of_shame/features/games/dlc_details/screens/dlc_details_screen.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/game.dart';
+import 'package:pile_of_shame/providers/database/database_provider.dart';
 import 'package:pile_of_shame/providers/format_provider.dart';
-import 'package:pile_of_shame/providers/games/game_provider.dart';
 import 'package:pile_of_shame/utils/constants.dart';
 import 'package:pile_of_shame/widgets/animated/animated_heart/animated_heart_button.dart';
 import 'package:pile_of_shame/widgets/game_platform_icon.dart';
@@ -69,11 +69,10 @@ class _SliverGameDetailsState extends ConsumerState<SliverGameDetails> {
           final updatedGame =
               widget.game.copyWith(dlcs: [...widget.game.dlcs, result.toDLC()]);
 
-          final games = GamesList(games: await ref.read(gamesProvider.future));
-          final update = games.updateGame(updatedGame.id, updatedGame);
+          final database = await ref.read(databaseProvider.future);
+          final update = database.updateGame(updatedGame.id, updatedGame);
 
-          final gameStorage = ref.read(gameStorageProvider);
-          await gameStorage.persistGamesList(update);
+          await ref.read(databaseStorageProvider).persistDatabase(update);
         }
       },
     );
@@ -92,11 +91,10 @@ class _SliverGameDetailsState extends ConsumerState<SliverGameDetails> {
             onPressed: () async {
               final updatedGame =
                   widget.game.copyWith(isFavorite: !widget.game.isFavorite);
-              final gamesList =
-                  GamesList(games: await ref.read(gamesProvider.future));
-              final update = gamesList.updateGame(updatedGame.id, updatedGame);
+              final database = await ref.read(databaseProvider.future);
+              final update = database.updateGame(updatedGame.id, updatedGame);
 
-              await ref.read(gameStorageProvider).persistGamesList(update);
+              await ref.read(databaseStorageProvider).persistDatabase(update);
             },
           ),
         ),
@@ -217,15 +215,13 @@ class _SliverGameDetailsState extends ConsumerState<SliverGameDetails> {
                             .where((element) => element.id != dlc.id)
                             .toList(),
                       );
-                      final gamesList = GamesList(
-                        games: await ref.read(gamesProvider.future),
-                      );
+                      final database = await ref.read(databaseProvider.future);
                       final update =
-                          gamesList.updateGame(updatedGame.id, updatedGame);
+                          database.updateGame(updatedGame.id, updatedGame);
 
                       await ref
-                          .read(gameStorageProvider)
-                          .persistGamesList(update);
+                          .read(databaseStorageProvider)
+                          .persistDatabase(update);
                     },
                   ),
                 ),

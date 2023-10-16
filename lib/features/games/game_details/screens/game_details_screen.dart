@@ -6,8 +6,8 @@ import 'package:pile_of_shame/features/games/add_or_edit_game/screens/add_or_edi
 import 'package:pile_of_shame/features/games/game_details/widgets/sliver_game_details.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/assets.dart';
-import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/models/game_platforms.dart';
+import 'package:pile_of_shame/providers/database/database_provider.dart';
 import 'package:pile_of_shame/providers/games/game_provider.dart';
 import 'package:pile_of_shame/transitions/material_page_slide_route.dart';
 import 'package:pile_of_shame/utils/constants.dart';
@@ -81,15 +81,14 @@ class _GameDetailsScreenState extends ConsumerState<GameDetailsScreen> {
 
                         if (result != null) {
                           final updatedGame = result.toGame();
-                          final gamesList = GamesList(
-                            games: await ref.read(gamesProvider.future),
-                          );
+                          final database =
+                              await ref.read(databaseProvider.future);
                           final update =
-                              gamesList.updateGame(updatedGame.id, updatedGame);
+                              database.updateGame(updatedGame.id, updatedGame);
 
                           await ref
-                              .read(gameStorageProvider)
-                              .persistGamesList(update);
+                              .read(databaseStorageProvider)
+                              .persistDatabase(update);
                         }
                       },
                     ),
@@ -150,13 +149,13 @@ class _GameDetailsScreenState extends ConsumerState<GameDetailsScreen> {
                           );
 
                           if (result != null && result) {
-                            final games = GamesList(
-                              games: await ref.read(gamesProvider.future),
-                            );
-                            final update = games.removeGame(game.id);
+                            final database =
+                                await ref.read(databaseProvider.future);
+                            final update = database.removeGame(game.id);
 
-                            final gameStorage = ref.read(gameStorageProvider);
-                            await gameStorage.persistGamesList(update);
+                            await ref
+                                .read(databaseStorageProvider)
+                                .persistDatabase(update);
 
                             if (context.mounted) {
                               Navigator.of(context).pop();

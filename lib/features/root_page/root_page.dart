@@ -2,6 +2,7 @@ import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pile_of_shame/features/games/games_list/screens/games_screen.dart';
+import 'package:pile_of_shame/features/hardware/hardware_list/screens/hardware_screen.dart';
 import 'package:pile_of_shame/features/library/screens/library_screen.dart';
 import 'package:pile_of_shame/features/root_page/models/root_page_models.dart';
 import 'package:pile_of_shame/features/settings/root/screens/settings_screen.dart';
@@ -78,6 +79,9 @@ class _RootPageState extends ConsumerState<RootPage> {
 
     final children = [
       GamesScreen(scrollController: _scrollControllers[RootTabs.games.index]),
+      HardwareScreen(
+        scrollController: _scrollControllers[RootTabs.hardware.index],
+      ),
       LibraryScreen(
         scrollController: _scrollControllers[RootTabs.library.index],
       ),

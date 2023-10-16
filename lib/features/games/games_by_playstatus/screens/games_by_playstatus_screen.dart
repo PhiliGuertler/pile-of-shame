@@ -35,7 +35,7 @@ class _GamesByPlaystatusScreenState
       case PlayStatus.playing:
       case PlayStatus.replaying:
       case PlayStatus.endlessGame:
-        return ImageAssets.pc;
+        return ImageAssets.controllerUnknown;
       case PlayStatus.onPileOfShame:
         return ImageAssets.gamePile;
       case PlayStatus.onWishList:
