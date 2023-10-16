@@ -11,6 +11,8 @@ class VideoGameHardware with _$VideoGameHardware {
     @Default(0.0) double price,
     required DateTime lastModified,
     required DateTime createdAt,
+    String? notes,
+    @Default(false) bool wasGifted,
   }) = _VideoGameHardware;
 
   factory VideoGameHardware.fromJson(Map<String, dynamic> json) =>

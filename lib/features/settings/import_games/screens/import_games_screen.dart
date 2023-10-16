@@ -133,9 +133,12 @@ class _ImportGamesScreenState extends ConsumerState<ImportGamesScreen> {
                                 final existingGames =
                                     await ref.read(databaseProvider.future);
 
-                                final update = existingGames
-                                    .updateGamesByLastModified(importedGames);
-                                return update.addMissingGames(importedGames);
+                                final update =
+                                    existingGames.updateDatabaseByLastModified(
+                                  importedGames,
+                                );
+                                return update
+                                    .addMissingDatabaseEntries(importedGames);
                               },
                             ),
                   ),
@@ -159,8 +162,9 @@ class _ImportGamesScreenState extends ConsumerState<ImportGamesScreen> {
                                 final Database database =
                                     await ref.read(databaseProvider.future);
 
-                                return database
-                                    .updateGamesByLastModified(importedGames);
+                                return database.updateDatabaseByLastModified(
+                                  importedGames,
+                                );
                               },
                             ),
                   ),
@@ -185,7 +189,8 @@ class _ImportGamesScreenState extends ConsumerState<ImportGamesScreen> {
                                 final Database database =
                                     await ref.read(databaseProvider.future);
 
-                                return database.addMissingGames(importedGames);
+                                return database
+                                    .addMissingDatabaseEntries(importedGames);
                               },
                             ),
                   ),

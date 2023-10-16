@@ -58,45 +58,6 @@ class Database with _$Database {
     return copyWith(games: updatedGames);
   }
 
-  /// Updates games that are marked as more recent by their lastModified member.
-  /// Games with the same id but with the same lastModified or more recent will not be altered.
-  /// If no game matches the id of an input game it won't be added, instead nothing happens.
-  Database updateGamesByLastModified(Database gamesList) {
-    final List<Game> updatedGames = List.from(games);
-
-    for (int i = 0; i < updatedGames.length; ++i) {
-      final Game game = updatedGames[i];
-      final int possibleUpdateIndex =
-          gamesList.games.indexWhere((update) => update.id == game.id);
-      if (possibleUpdateIndex == -1) {
-        continue;
-      }
-      final Game update = gamesList.games[possibleUpdateIndex];
-      if (update.lastModified.compareTo(game.lastModified) > 0) {
-        updatedGames[i] = update;
-      }
-    }
-
-    return copyWith(games: updatedGames);
-  }
-
-  /// Adds missing games to the list.
-  /// A game is considered missing if there is no game with the same id yet.
-  Database addMissingGames(Database gamesList) {
-    Database updatedGames = this;
-
-    for (int i = 0; i < gamesList.games.length; ++i) {
-      final Game possibleNewGame = gamesList.games[i];
-      final int index =
-          games.indexWhere((element) => element.id == possibleNewGame.id);
-      if (index == -1) {
-        updatedGames = addGame(possibleNewGame);
-      }
-    }
-
-    return updatedGames;
-  }
-
   // ######################################################################## //
   // ### Hardware ########################################################### //
 
@@ -161,5 +122,86 @@ class Database with _$Database {
     return copyWith(hardware: update);
   }
 
-  // TODO: Add functions like above for games that only update if the incoming hardware is newer, etc.
+  // ######################################################################## //
+  // ### Update Database #################################################### //
+
+  /// Updates games that are marked as more recent by their lastModified member.
+  /// Games with the same id but with the same lastModified or more recent will not be altered.
+  /// If no game matches the id of an input game it won't be added, instead nothing happens.
+  Database updateDatabaseByLastModified(Database database) {
+    final List<Game> updatedGames = List.from(games);
+    final Map<GamePlatform, List<VideoGameHardware>> updatedHardware =
+        Map.from(hardware);
+
+    // update games
+    for (int i = 0; i < updatedGames.length; ++i) {
+      final Game game = updatedGames[i];
+      final int possibleUpdateIndex =
+          database.games.indexWhere((update) => update.id == game.id);
+      if (possibleUpdateIndex == -1) {
+        continue;
+      }
+      final Game update = database.games[possibleUpdateIndex];
+      if (update.lastModified.compareTo(game.lastModified) > 0) {
+        updatedGames[i] = update;
+      }
+    }
+
+    // update hardware
+    for (final entry in database.hardware.entries) {
+      final List<VideoGameHardware>? h = updatedHardware[entry.key];
+      // skip entries that do not exist yet
+      if (h == null) continue;
+
+      final List<VideoGameHardware> hardwareList = List.from(h);
+      for (int i = 0; i < entry.value.length; ++i) {
+        final VideoGameHardware incomingHardware = entry.value[i];
+
+        final int possibleUpdateIndex =
+            h.indexWhere((element) => element.id == incomingHardware.id);
+        if (possibleUpdateIndex == -1) continue;
+
+        final VideoGameHardware update = h[possibleUpdateIndex];
+        if (incomingHardware.lastModified.compareTo(update.lastModified) > 0) {
+          hardwareList[possibleUpdateIndex] = incomingHardware;
+        }
+      }
+      updatedHardware[entry.key] = hardwareList;
+    }
+
+    return copyWith(games: updatedGames, hardware: updatedHardware);
+  }
+
+  /// Adds missing games to the list.
+  /// A game is considered missing if there is no game with the same id yet.
+  Database addMissingDatabaseEntries(Database database) {
+    Database updatedDatabase = this;
+
+    // update games
+    for (int i = 0; i < database.games.length; ++i) {
+      final Game possibleNewGame = database.games[i];
+      final int index =
+          games.indexWhere((element) => element.id == possibleNewGame.id);
+      if (index == -1) {
+        updatedDatabase = updatedDatabase.addGame(possibleNewGame);
+      }
+    }
+
+    // update hardware
+    for (final entry in database.hardware.entries) {
+      final List<VideoGameHardware>? existingHardware = hardware[entry.key];
+      for (int i = 0; i < entry.value.length; ++i) {
+        final VideoGameHardware possibleNewHardware = entry.value[i];
+        final bool isContained = updatedDatabase.hardware.entries.any(
+          (element) => element.value.any((h) => h.id == possibleNewHardware.id),
+        );
+        if (existingHardware == null || !isContained) {
+          updatedDatabase =
+              updatedDatabase.addHardware(possibleNewHardware, entry.key);
+        }
+      }
+    }
+
+    return updatedDatabase;
+  }
 }

@@ -163,9 +163,12 @@ class _ImportSharedGamesState extends ConsumerState<ImportSharedGames> {
                                   final Database database =
                                       await ref.read(databaseProvider.future);
 
-                                  final update = database
-                                      .updateGamesByLastModified(importedGames);
-                                  return update.addMissingGames(importedGames);
+                                  final update =
+                                      database.updateDatabaseByLastModified(
+                                    importedGames,
+                                  );
+                                  return update
+                                      .addMissingDatabaseEntries(importedGames);
                                 },
                               ),
                     ),
@@ -191,8 +194,9 @@ class _ImportSharedGamesState extends ConsumerState<ImportSharedGames> {
                                   final Database database =
                                       await ref.read(databaseProvider.future);
 
-                                  return database
-                                      .updateGamesByLastModified(importedGames);
+                                  return database.updateDatabaseByLastModified(
+                                    importedGames,
+                                  );
                                 },
                               ),
                     ),
@@ -219,7 +223,7 @@ class _ImportSharedGamesState extends ConsumerState<ImportSharedGames> {
                                       await ref.read(databaseProvider.future);
 
                                   return database
-                                      .addMissingGames(importedGames);
+                                      .addMissingDatabaseEntries(importedGames);
                                 },
                               ),
                     ),
