@@ -10,4 +10,8 @@ analyzer:
     - test/appium/**
     - coverage/**
     - build/**
+  errors:
+    todo: warning
+    fixme: warning
+    hack: info
 
