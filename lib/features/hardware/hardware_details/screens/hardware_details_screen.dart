@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pile_of_shame/features/games/game_details/widgets/sliver_game_details.dart';
+import 'package:pile_of_shame/features/hardware/add_or_edit_hardware/models/editable_hardware.dart';
+import 'package:pile_of_shame/features/hardware/add_or_edit_hardware/screens/add_or_edit_hardware_screen.dart';
 import 'package:pile_of_shame/features/hardware/hardware_details/widgets/sliver_hardware_details.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/assets.dart';
 import 'package:pile_of_shame/models/game_platforms.dart';
 import 'package:pile_of_shame/providers/database/database_provider.dart';
 import 'package:pile_of_shame/providers/hardware/hardware_provider.dart';
+import 'package:pile_of_shame/transitions/material_page_slide_route.dart';
 import 'package:pile_of_shame/utils/constants.dart';
 import 'package:pile_of_shame/widgets/app_scaffold.dart';
 import 'package:pile_of_shame/widgets/slivers/sliver_fancy_image_app_bar.dart';
@@ -34,6 +37,33 @@ class HardwareDetailsScreen extends ConsumerWidget {
               SliverFancyImageAppBar(
                 imagePath: hardware.platform.controllerLogoPath,
                 title: Text(hardware.name),
+                actions: [
+                  IconButton(
+                    icon: const Icon(Icons.edit),
+                    onPressed: () async {
+                      final result =
+                          await Navigator.of(context).push<EditableHardware?>(
+                        MaterialPageSlideRoute(
+                          builder: (context) => AddOrEditHardwareScreen(
+                            initialValue:
+                                EditableHardware.fromHardware(hardware),
+                          ),
+                        ),
+                      );
+
+                      if (result != null) {
+                        final updatedHardware = result.toHardware();
+                        final database =
+                            await ref.read(databaseProvider.future);
+                        final update = database.updateHardware(updatedHardware);
+
+                        await ref
+                            .read(databaseStorageProvider)
+                            .persistDatabase(update);
+                      }
+                    },
+                  ),
+                ],
               ),
               SliverHardwareDetails(hardware: hardware),
               SliverFillRemaining(
