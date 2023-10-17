@@ -7,9 +7,9 @@ import 'package:pile_of_shame/models/game_platforms.dart';
 import 'package:pile_of_shame/models/hardware.dart';
 import 'package:pile_of_shame/providers/format_provider.dart';
 import 'package:pile_of_shame/providers/hardware/hardware_provider.dart';
-import 'package:pile_of_shame/utils/constants.dart';
 import 'package:pile_of_shame/widgets/skeletons/skeleton.dart';
 import 'package:pile_of_shame/widgets/skeletons/skeleton_list_tile.dart';
+import 'package:pile_of_shame/widgets/slide_expandable.dart';
 
 class HardwareDisplay extends ConsumerStatefulWidget {
   final GamePlatform platform;
@@ -51,171 +51,36 @@ class _HardwareDisplayState extends ConsumerState<HardwareDisplay>
     final AsyncValue<double> asyncPriceSum =
         ref.watch(hardwareTotalPriceByPlatformProvider(widget.platform));
 
-    return Card(
-      margin: EdgeInsets.zero,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(8.0),
-          topLeft: Radius.circular(15.0),
-          bottomRight: Radius.circular(30.0),
-          topRight: Radius.circular(12.0),
-        ),
+    return SlideExpandable(
+      imagePath: widget.platform.controllerLogoPath,
+      title: Text(
+        widget.platform.localizedAbbreviation(l10n),
       ),
-      child: Column(
-        children: [
-          ClipRRect(
-            borderRadius: const BorderRadius.only(
-              bottomLeft: Radius.circular(8.0),
-              topLeft: Radius.circular(15.0),
-              bottomRight: Radius.circular(30.0),
-              topRight: Radius.circular(12.0),
-            ),
-            child: GestureDetector(
-              onTap: () {
-                if (isAnimationForward) {
-                  controller.forward(from: controller.value);
-                } else {
-                  controller.reverse(from: controller.value);
-                }
-                setState(() {
-                  isAnimationForward = !isAnimationForward;
-                });
-              },
-              child: ColoredBox(
-                color: Theme.of(context)
-                    .colorScheme
-                    .primaryContainer
-                    .withOpacity(0.3),
-                child: LayoutBuilder(
-                  builder: (context, constraints) {
-                    final Animation<double> curve = CurvedAnimation(
-                      parent: controller,
-                      curve: Curves.fastEaseInToSlowEaseOut,
-                    );
-                    final animation =
-                        Tween<double>(begin: constraints.maxWidth, end: 80)
-                            .animate(curve)
-                          ..addListener(() {
-                            setState(() {
-                              // The state that has changed here is the animation object's value.
-                            });
-                          });
-
-                    return Stack(
-                      children: [
-                        Row(
-                          children: [
-                            const SizedBox(
-                              height: 80,
-                              width: 80,
-                            ),
-                            Expanded(
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: defaultPaddingX - 8.0,
-                                ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      widget.platform
-                                          .localizedAbbreviation(l10n),
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headlineSmall,
-                                    ),
-                                    Text(
-                                      widget.platform.localizedName(l10n),
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .labelMedium,
-                                    ),
-                                  ],
-                                ),
-                              ).animate().fadeIn(delay: 200.ms),
-                            ),
-                            IntrinsicWidth(
-                              child: Padding(
-                                padding: const EdgeInsets.only(right: 16.0),
-                                child: asyncPriceSum.when(
-                                  skipLoadingOnReload: true,
-                                  data: (sum) => Text(
-                                    currencyFormatter.format(sum),
-                                    style:
-                                        Theme.of(context).textTheme.bodyLarge,
-                                  ),
-                                  error: (error, stackTrace) =>
-                                      Text(error.toString()),
-                                  loading: () => const Skeleton(),
-                                ),
-                              ),
-                            ).animate().fadeIn(delay: 100.ms),
-                          ],
-                        ),
-                        SizedBox(
-                          width: animation.value,
-                          height: 80,
-                          child: ClipRRect(
-                            borderRadius: const BorderRadius.only(
-                              bottomLeft: Radius.circular(8.0),
-                              topLeft: Radius.circular(15.0),
-                              bottomRight: Radius.circular(30.0),
-                              topRight: Radius.circular(12.0),
-                            ),
-                            child: Image.asset(
-                              widget.platform.controllerLogoPath,
-                              fit: BoxFit.cover,
-                              width: double.infinity,
-                              height: 80,
-                            ),
-                          ),
-                        ),
-                      ],
-                    );
-                  },
+      subtitle: Text(
+        widget.platform.localizedName(l10n),
+      ),
+      trailing: asyncPriceSum.when(
+        skipLoadingOnReload: true,
+        data: (sum) => Text(
+          currencyFormatter.format(sum),
+        ),
+        error: (error, stackTrace) => Text(error.toString()),
+        loading: () => const Skeleton(),
+      ),
+      children: asyncHardware.when(
+        skipLoadingOnReload: true,
+        data: (hardware) {
+          return hardware
+              .map(
+                (ware) => HardwareEntry(
+                  hardware: ware,
+                  isLastElement: ware == hardware.last,
                 ),
-              ).animate().fadeIn(duration: 300.ms),
-            ),
-          ),
-          ...asyncHardware.when(
-            skipLoadingOnReload: true,
-            data: (hardware) {
-              final List<Animate> result = hardware
-                  .map(
-                    (ware) => AnimatedSize(
-                      curve: Curves.easeInOutBack,
-                      duration: 350.ms,
-                      child: isAnimationForward
-                          ? const SizedBox(
-                              height: 0,
-                            )
-                          : HardwareEntry(
-                              hardware: ware,
-                              isLastElement: ware == hardware.last,
-                            ),
-                    ).animate().fadeIn(duration: 250.ms),
-                  )
-                  .toList();
-              for (int i = result.length - 1; i > 0; --i) {
-                result.insert(
-                  i,
-                  AnimatedOpacity(
-                    curve: Curves.easeInOutBack,
-                    duration: 350.ms,
-                    opacity: isAnimationForward ? 0 : 1,
-                    child: const Divider(
-                      height: 1,
-                    ),
-                  ).animate().fadeIn(duration: 250.ms),
-                );
-              }
-              return result;
-            },
-            error: (error, stackTrace) => [Text(error.toString())],
-            loading: () =>
-                [for (int i = 0; i < 3; ++i) const ListTileSkeleton()],
-          ),
-        ],
+              )
+              .toList();
+        },
+        error: (error, stackTrace) => [Text(error.toString())],
+        loading: () => [for (int i = 0; i < 3; ++i) const ListTileSkeleton()],
       ),
     );
   }
