@@ -59,6 +59,26 @@ FutureOr<List<VideoGameHardware>> hardwareByPlatform(
 }
 
 @riverpod
+FutureOr<List<VideoGameHardware>> hardwareByPlatformFamily(
+  HardwareByPlatformFamilyRef ref,
+  GamePlatformFamily family,
+) async {
+  final allHardware = await ref.watch(hardwareProvider.future);
+
+  final List<VideoGameHardware> hardware = [];
+
+  for (final h in allHardware) {
+    if (h.platform.family == family) {
+      hardware.add(h);
+    }
+  }
+
+  hardware.sort((a, b) => a.name.compareTo(b.name));
+
+  return hardware;
+}
+
+@riverpod
 FutureOr<VideoGameHardware> hardwareById(
   HardwareByIdRef ref,
   String id,

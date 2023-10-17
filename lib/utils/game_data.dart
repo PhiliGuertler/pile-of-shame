@@ -20,6 +20,8 @@ class GameData {
     required this.currencyFormatter,
   });
 
+  bool get hasData => games.isNotEmpty;
+
   List<ChartData> toCompletedData() {
     final completedGamesCount = games.fold(
       0,

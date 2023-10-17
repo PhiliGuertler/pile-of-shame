@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pile_of_shame/features/analytics/analytics_by_families/providers/analytics_provider.dart';
 import 'package:pile_of_shame/features/analytics/analytics_by_families/widgets/platform_family_analytics_details.dart';
 import 'package:pile_of_shame/features/analytics/analytics_by_platform/screens/analytics_by_platform_screen.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/assets.dart';
-import 'package:pile_of_shame/models/game.dart';
+import 'package:pile_of_shame/models/database.dart';
 import 'package:pile_of_shame/models/game_grouping.dart';
 import 'package:pile_of_shame/models/game_platforms.dart';
 import 'package:pile_of_shame/models/game_sorting.dart';
-import 'package:pile_of_shame/providers/games/game_provider.dart';
 import 'package:pile_of_shame/utils/constants.dart';
 import 'package:pile_of_shame/utils/grouper_utils.dart';
 import 'package:pile_of_shame/widgets/app_scaffold.dart';
@@ -25,12 +25,8 @@ class AnalyticsByFamiliesScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
-    late AsyncValue<List<Game>> games;
-    if (family == null) {
-      games = ref.watch(gamesProvider);
-    } else {
-      games = ref.watch(gamesByPlatformFamilyProvider(family!));
-    }
+    final AsyncValue<Database> analyticsDatabase =
+        ref.watch(databaseByPlatformFamilyProvider(family));
 
     return AppScaffold(
       body: CustomScrollView(
@@ -44,42 +40,44 @@ class AnalyticsByFamiliesScreen extends ConsumerWidget {
               family != null ? family!.toLocale(l10n) : l10n.gameLibrary,
             ),
           ),
-          ...games.when(
-            data: (games) => games.isNotEmpty
-                ? [
-                    SliverPlatformFamilyAnalyticsDetails(
-                      games: games,
-                      hasFamilyDistributionChart: family == null,
-                    ),
-                  ]
-                : [
-                    SliverPadding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: defaultPaddingX,
-                      ),
-                      sliver: SliverOpacity(
-                        opacity: 0.7,
-                        sliver: SliverFancyImageHeader(
-                          imagePath: ImageAssets.pieChart.value,
-                          height: 250,
+          ...analyticsDatabase.when(
+            data: (database) =>
+                database.games.isNotEmpty && database.hardware.isNotEmpty
+                    ? [
+                        SliverPlatformFamilyAnalyticsDetails(
+                          games: database.games,
+                          hardware: database.hardware,
+                          hasFamilyDistributionChart: family == null,
                         ),
-                      ),
-                    ),
-                    SliverToBoxAdapter(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: defaultPaddingX,
-                          vertical: 16.0,
+                      ]
+                    : [
+                        SliverPadding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: defaultPaddingX,
+                          ),
+                          sliver: SliverOpacity(
+                            opacity: 0.7,
+                            sliver: SliverFancyImageHeader(
+                              imagePath: ImageAssets.pieChart.value,
+                              height: 250,
+                            ),
+                          ),
                         ),
-                        child: Text(
-                          AppLocalizations.of(context)!
-                              .addGamesToGenerateALibraryAnalysis,
-                          style: Theme.of(context).textTheme.headlineSmall,
-                          textAlign: TextAlign.center,
+                        SliverToBoxAdapter(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: defaultPaddingX,
+                              vertical: 16.0,
+                            ),
+                            child: Text(
+                              AppLocalizations.of(context)!
+                                  .addGamesToGenerateALibraryAnalysis,
+                              style: Theme.of(context).textTheme.headlineSmall,
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
-                  ],
+                      ],
             error: (error, stackTrace) => [
               SliverToBoxAdapter(
                 child: Text(error.toString()),
@@ -87,10 +85,10 @@ class AnalyticsByFamiliesScreen extends ConsumerWidget {
             ],
             loading: () => [const SliverAnalyticsDetailsSkeleton()],
           ),
-          ...games.when(
-            data: (games) {
+          ...analyticsDatabase.when(
+            data: (database) {
               final groups = GameGrouperUtils(l10n: l10n).groupAndSortGames(
-                games,
+                database.games,
                 GroupStrategy.byPlatform,
                 const GameSorting(),
               );
