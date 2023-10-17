@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pile_of_shame/features/analytics/analytics_by_families/providers/analytics_provider.dart';
-import 'package:pile_of_shame/features/analytics/analytics_by_families/widgets/platform_family_analytics_details.dart';
+import 'package:pile_of_shame/features/analytics/analytics_by_families/widgets/sliver_analytics_details.dart';
 import 'package:pile_of_shame/features/analytics/analytics_by_platform/screens/analytics_by_platform_screen.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/assets.dart';
@@ -44,10 +44,11 @@ class AnalyticsByFamiliesScreen extends ConsumerWidget {
             data: (database) =>
                 database.games.isNotEmpty && database.hardware.isNotEmpty
                     ? [
-                        SliverPlatformFamilyAnalyticsDetails(
+                        SliverAnalyticsDetails(
                           games: database.games,
                           hardware: database.hardware,
                           hasFamilyDistributionChart: family == null,
+                          hasPlatformDistributionCharts: true,
                         ),
                       ]
                     : [

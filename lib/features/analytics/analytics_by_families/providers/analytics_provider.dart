@@ -26,3 +26,16 @@ FutureOr<Database> databaseByPlatformFamily(
 
   return Database(games: games, hardware: hardware);
 }
+
+@riverpod
+FutureOr<Database> databaseByPlatform(
+  DatabaseByPlatformRef ref,
+  GamePlatform platform,
+) async {
+  final List<Game> games =
+      await ref.watch(gamesByPlatformProvider(platform).future);
+  final List<VideoGameHardware> hardware =
+      await ref.watch(hardwareByPlatformProvider(platform).future);
+
+  return Database(games: games, hardware: hardware);
+}

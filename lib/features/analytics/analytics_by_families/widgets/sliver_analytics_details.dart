@@ -15,17 +15,19 @@ import 'package:pile_of_shame/widgets/charts/highlightable_charts.dart';
 import 'package:pile_of_shame/widgets/charts/legend.dart';
 import 'package:pile_of_shame/widgets/responsiveness/responsive_wrap.dart';
 
-class SliverPlatformFamilyAnalyticsDetails extends ConsumerWidget {
-  const SliverPlatformFamilyAnalyticsDetails({
+class SliverAnalyticsDetails extends ConsumerWidget {
+  const SliverAnalyticsDetails({
     super.key,
     required this.games,
     required this.hardware,
     this.hasFamilyDistributionChart = false,
+    this.hasPlatformDistributionCharts = false,
   });
 
   final List<Game> games;
   final List<VideoGameHardware> hardware;
   final bool hasFamilyDistributionChart;
+  final bool hasPlatformDistributionCharts;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -78,7 +80,6 @@ class SliverPlatformFamilyAnalyticsDetails extends ConsumerWidget {
                   right: hardwareData.toTotalPrice(),
                   rightText:
                       "${currencyFormatter.format(hardwareData.toTotalPrice())} ${l10n.hardware}",
-                  animationDelay: 200.ms,
                 ),
               ),
             if (gameData.hasData)
@@ -112,7 +113,7 @@ class SliverPlatformFamilyAnalyticsDetails extends ConsumerWidget {
                   right: gameData.toTotalDLCPrice(),
                   rightText:
                       "${currencyFormatter.format(gameData.toTotalDLCPrice())} ${l10n.dlcs}",
-                  animationDelay: 100.ms,
+                  animationDelay: 50.ms,
                 ),
               ),
             if (gameData.hasData)
@@ -127,7 +128,7 @@ class SliverPlatformFamilyAnalyticsDetails extends ConsumerWidget {
                   right: gameData.toDLCCount().toDouble(),
                   rightText: l10n.nDLCs(gameData.toDLCCount()),
                   formatValue: (value) => value.toStringAsFixed(0),
-                  animationDelay: 200.ms,
+                  animationDelay: 100.ms,
                 ),
               ),
             if (gameData.hasData)
@@ -143,7 +144,7 @@ class SliverPlatformFamilyAnalyticsDetails extends ConsumerWidget {
                   right: gameData.toMedianPrice(),
                   rightText:
                       "${currencyFormatter.format(gameData.toMedianPrice())} ${l10n.median}",
-                  animationDelay: 300.ms,
+                  animationDelay: 150.ms,
                 ),
               ),
             if (gameData.hasData)
@@ -159,7 +160,7 @@ class SliverPlatformFamilyAnalyticsDetails extends ConsumerWidget {
                     formatData: (data) => l10n.nGames(data.toInt()),
                     formatTotalData: (totalData) => percentFormatter
                         .format(gameData.toCompletedPercentage()),
-                    animationDelay: 400.ms,
+                    animationDelay: 200.ms,
                   ),
                 ),
               ),
@@ -175,7 +176,7 @@ class SliverPlatformFamilyAnalyticsDetails extends ConsumerWidget {
                     data: gameData.toPlayStatusData(),
                     formatData: (data) => l10n.nGames(data.toInt()),
                     formatTotalData: (totalData) => "",
-                    animationDelay: 500.ms,
+                    animationDelay: 250.ms,
                   ),
                 ),
               ),
@@ -192,7 +193,7 @@ class SliverPlatformFamilyAnalyticsDetails extends ConsumerWidget {
                     formatData: (data) => l10n.nGames(data.toInt()),
                     formatTotalData: (totalData) =>
                         "${l10n.average}:\n${numberFormatter.format(gameData.toAverageAgeRating())}",
-                    animationDelay: 600.ms,
+                    animationDelay: 300.ms,
                   ),
                 ),
               ),
@@ -209,11 +210,11 @@ class SliverPlatformFamilyAnalyticsDetails extends ConsumerWidget {
                       5.0,
                     ),
                     formatData: (data) => l10n.nGames(data.toInt()),
-                    animationDelay: 700.ms,
+                    animationDelay: 350.ms,
                   ),
                 ),
               ),
-            if (gameData.hasData)
+            if (gameData.hasData && hasPlatformDistributionCharts)
               ListTile(
                 title: Text(
                   l10n.platformDistribution,
@@ -224,11 +225,11 @@ class SliverPlatformFamilyAnalyticsDetails extends ConsumerWidget {
                   child: HighlightableBarChart(
                     data: gameData.toPlatformDistribution(),
                     formatData: (data) => l10n.nGames(data.toInt()),
-                    animationDelay: 800.ms,
+                    animationDelay: 400.ms,
                   ),
                 ),
               ),
-            if (gameData.hasData)
+            if (gameData.hasData && hasPlatformDistributionCharts)
               ListTile(
                 title: Text(
                   l10n.priceDistributionByPlatform,
@@ -239,7 +240,7 @@ class SliverPlatformFamilyAnalyticsDetails extends ConsumerWidget {
                   child: HighlightableBarChart(
                     data: gameData.toPlatformPriceDistribution(),
                     formatData: (data) => currencyFormatter.format(data),
-                    animationDelay: 900.ms,
+                    animationDelay: 450.ms,
                   ),
                 ),
               ),
@@ -254,7 +255,7 @@ class SliverPlatformFamilyAnalyticsDetails extends ConsumerWidget {
                   child: HighlightableBarChart(
                     data: gameData.toPlatformFamilyPriceDistribution(),
                     formatData: (data) => currencyFormatter.format(data),
-                    animationDelay: 1000.ms,
+                    animationDelay: 500.ms,
                   ),
                 ),
               ),
@@ -283,7 +284,7 @@ class SliverPlatformFamilyAnalyticsDetails extends ConsumerWidget {
                   right: hardwareData.toMedianPrice(),
                   rightText:
                       "${currencyFormatter.format(hardwareData.toMedianPrice())} ${l10n.median}",
-                  animationDelay: 300.ms,
+                  animationDelay: 550.ms,
                 ),
               ),
             if (hardwareData.hasData)
@@ -299,11 +300,11 @@ class SliverPlatformFamilyAnalyticsDetails extends ConsumerWidget {
                       50.0,
                     ),
                     formatData: (data) => l10n.nHardware(data.toInt()),
-                    animationDelay: 700.ms,
+                    animationDelay: 600.ms,
                   ),
                 ),
               ),
-            if (hardwareData.hasData)
+            if (hardwareData.hasData && hasPlatformDistributionCharts)
               ListTile(
                 title: Text(
                   l10n.platformDistribution,
@@ -314,11 +315,11 @@ class SliverPlatformFamilyAnalyticsDetails extends ConsumerWidget {
                   child: HighlightableBarChart(
                     data: hardwareData.toPlatformDistribution(),
                     formatData: (data) => l10n.nHardware(data.toInt()),
-                    animationDelay: 800.ms,
+                    animationDelay: 650.ms,
                   ),
                 ),
               ),
-            if (hardwareData.hasData)
+            if (hardwareData.hasData && hasPlatformDistributionCharts)
               ListTile(
                 title: Text(
                   l10n.priceDistributionByPlatform,
@@ -329,7 +330,7 @@ class SliverPlatformFamilyAnalyticsDetails extends ConsumerWidget {
                   child: HighlightableBarChart(
                     data: hardwareData.toPlatformPriceDistribution(),
                     formatData: (data) => currencyFormatter.format(data),
-                    animationDelay: 900.ms,
+                    animationDelay: 700.ms,
                   ),
                 ),
               ),
@@ -344,7 +345,7 @@ class SliverPlatformFamilyAnalyticsDetails extends ConsumerWidget {
                   child: HighlightableBarChart(
                     data: hardwareData.toPlatformFamilyPriceDistribution(),
                     formatData: (data) => currencyFormatter.format(data),
-                    animationDelay: 1000.ms,
+                    animationDelay: 750.ms,
                   ),
                 ),
               ),
