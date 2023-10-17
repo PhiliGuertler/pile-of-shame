@@ -42,7 +42,7 @@ class AnalyticsByFamiliesScreen extends ConsumerWidget {
           ),
           ...analyticsDatabase.when(
             data: (database) =>
-                database.games.isNotEmpty && database.hardware.isNotEmpty
+                database.games.isNotEmpty || database.hardware.isNotEmpty
                     ? [
                         SliverAnalyticsDetails(
                           games: database.games,
@@ -95,6 +95,21 @@ class AnalyticsByFamiliesScreen extends ConsumerWidget {
               );
 
               return [
+                if (groups.isNotEmpty)
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                        left: defaultPaddingX,
+                        right: defaultPaddingX,
+                        bottom: 8.0,
+                        top: 32.0,
+                      ),
+                      child: Text(
+                        l10n.yourPlatforms,
+                        style: Theme.of(context).textTheme.headlineMedium,
+                      ),
+                    ),
+                  ),
                 SliverPadding(
                   padding:
                       const EdgeInsets.symmetric(horizontal: defaultPaddingX),

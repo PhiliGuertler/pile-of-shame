@@ -6,7 +6,6 @@ import 'package:pile_of_shame/features/analytics/analytics_by_families/providers
 import 'package:pile_of_shame/features/analytics/analytics_by_families/widgets/sliver_analytics_details.dart';
 import 'package:pile_of_shame/features/games/games_list/widgets/slivers/sliver_grouped_games.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
-import 'package:pile_of_shame/models/assets.dart';
 import 'package:pile_of_shame/models/database.dart';
 import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/models/game_platforms.dart';
@@ -15,7 +14,6 @@ import 'package:pile_of_shame/utils/constants.dart';
 import 'package:pile_of_shame/widgets/app_scaffold.dart';
 import 'package:pile_of_shame/widgets/skeletons/skeleton_game_display.dart';
 import 'package:pile_of_shame/widgets/slivers/sliver_fancy_image_app_bar.dart';
-import 'package:pile_of_shame/widgets/slivers/sliver_fancy_image_header.dart';
 import 'package:pile_of_shame/widgets/slivers/sliver_list_summary.dart';
 
 class AnalyticsByPlatformScreen extends ConsumerWidget {
@@ -57,42 +55,12 @@ class AnalyticsByPlatformScreen extends ConsumerWidget {
               CustomScrollView(
                 slivers: [
                   ...analyticsDatabase.when(
-                    data: (database) => database.games.isNotEmpty &&
-                            database.hardware.isNotEmpty
-                        ? [
-                            SliverPadding(
-                              padding: const EdgeInsets.only(top: 8.0),
-                              sliver: SliverAnalyticsDetails(
-                                games: database.games,
-                                hardware: database.hardware,
-                              ),
-                            ),
-                          ]
-                        : [
-                            SliverPadding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: defaultPaddingX,
-                              ),
-                              sliver: SliverFancyImageHeader(
-                                imagePath: ImageAssets.gamePile.value,
-                                height: 250,
-                              ),
-                            ),
-                            SliverToBoxAdapter(
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: defaultPaddingX,
-                                  vertical: 16.0,
-                                ),
-                                child: Text(
-                                  AppLocalizations.of(context)!
-                                      .buildYourPileOfShameByAddingNewGamesInTheMainMenu,
-                                  style: Theme.of(context).textTheme.bodyLarge,
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
-                            ),
-                          ],
+                    data: (database) => [
+                      SliverAnalyticsDetails(
+                        games: database.games,
+                        hardware: database.hardware,
+                      ),
+                    ],
                     error: (error, stackTrace) => [
                       SliverToBoxAdapter(
                         child: Text(error.toString()),

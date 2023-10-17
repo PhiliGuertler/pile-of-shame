@@ -46,13 +46,13 @@ class _SlideExpandableState extends ConsumerState<SlideExpandable>
         .map(
           (child) => AnimatedSize(
             curve: Curves.easeInOutBack,
-            duration: 350.ms,
+            duration: 400.ms,
             child: isAnimationForward
                 ? const SizedBox(
                     height: 0,
                   )
                 : child,
-          ).animate().fadeIn(duration: 250.ms),
+          ).animate().fadeIn(duration: 400.ms),
         )
         .toList();
     for (int i = childWidgets.length - 1; i > 0; --i) {
@@ -60,12 +60,12 @@ class _SlideExpandableState extends ConsumerState<SlideExpandable>
         i,
         AnimatedOpacity(
           curve: Curves.easeInOutBack,
-          duration: 350.ms,
+          duration: 400.ms,
           opacity: isAnimationForward ? 0 : 1,
           child: const Divider(
             height: 1,
           ),
-        ).animate().fadeIn(duration: 250.ms),
+        ).animate().fadeIn(duration: 400.ms),
       );
     }
 
