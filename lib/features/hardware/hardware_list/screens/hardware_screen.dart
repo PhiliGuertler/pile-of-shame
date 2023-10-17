@@ -29,13 +29,15 @@ class HardwareScreen extends ConsumerWidget {
             child: Builder(
               builder: (context) {
                 if (hasHardware) {
-                  return Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: defaultPaddingX),
-                    child: ListView(
-                      controller: scrollController,
-                      children: [
-                        ResponsiveWrap(
+                  return ListView(
+                    controller: scrollController,
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: defaultPaddingX,
+                        ),
+                        child: ResponsiveWrap(
                           children: platforms.when(
                             skipLoadingOnReload: true,
                             data: (data) => data
@@ -48,11 +50,11 @@ class HardwareScreen extends ConsumerWidget {
                             loading: () => [],
                           ),
                         ),
-                        const SizedBox(
-                          height: 78.0,
-                        ),
-                      ],
-                    ),
+                      ),
+                      const SizedBox(
+                        height: 78.0,
+                      ),
+                    ],
                   );
                 } else {
                   return CustomScrollView(
