@@ -2,20 +2,18 @@ import 'package:custom_nested_scroll_view/custom_nested_scroll_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pile_of_shame/features/analytics/analytics_by_families/widgets/platform_family_analytics_details.dart';
-import 'package:pile_of_shame/features/analytics/analytics_by_platform/widgets/platform_analytics_details.dart';
+import 'package:pile_of_shame/features/analytics/analytics_by_families/providers/analytics_provider.dart';
+import 'package:pile_of_shame/features/analytics/analytics_by_families/widgets/sliver_analytics_details.dart';
 import 'package:pile_of_shame/features/games/games_list/widgets/slivers/sliver_grouped_games.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
-import 'package:pile_of_shame/models/assets.dart';
+import 'package:pile_of_shame/models/database.dart';
 import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/models/game_platforms.dart';
 import 'package:pile_of_shame/models/game_sorting.dart';
-import 'package:pile_of_shame/providers/games/game_provider.dart';
 import 'package:pile_of_shame/utils/constants.dart';
 import 'package:pile_of_shame/widgets/app_scaffold.dart';
 import 'package:pile_of_shame/widgets/skeletons/skeleton_game_display.dart';
 import 'package:pile_of_shame/widgets/slivers/sliver_fancy_image_app_bar.dart';
-import 'package:pile_of_shame/widgets/slivers/sliver_fancy_image_header.dart';
 import 'package:pile_of_shame/widgets/slivers/sliver_list_summary.dart';
 
 class AnalyticsByPlatformScreen extends ConsumerWidget {
@@ -26,8 +24,8 @@ class AnalyticsByPlatformScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
-    final AsyncValue<List<Game>> games =
-        ref.watch(gamesByPlatformProvider(platform));
+    final AsyncValue<Database> analyticsDatabase =
+        ref.watch(databaseByPlatformProvider(platform));
 
     return AppScaffold(
       body: DefaultTabController(
@@ -56,41 +54,13 @@ class AnalyticsByPlatformScreen extends ConsumerWidget {
             children: [
               CustomScrollView(
                 slivers: [
-                  ...games.when(
-                    data: (games) => games.isNotEmpty
-                        ? [
-                            SliverPadding(
-                              padding: const EdgeInsets.only(top: 8.0),
-                              sliver: SliverAnalyticsPlatformDetails(
-                                games: games,
-                              ),
-                            ),
-                          ]
-                        : [
-                            SliverPadding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: defaultPaddingX,
-                              ),
-                              sliver: SliverFancyImageHeader(
-                                imagePath: ImageAssets.gamePile.value,
-                                height: 250,
-                              ),
-                            ),
-                            SliverToBoxAdapter(
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: defaultPaddingX,
-                                  vertical: 16.0,
-                                ),
-                                child: Text(
-                                  AppLocalizations.of(context)!
-                                      .buildYourPileOfShameByAddingNewGamesInTheMainMenu,
-                                  style: Theme.of(context).textTheme.bodyLarge,
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
-                            ),
-                          ],
+                  ...analyticsDatabase.when(
+                    data: (database) => [
+                      SliverAnalyticsDetails(
+                        games: database.games,
+                        hardware: database.hardware,
+                      ),
+                    ],
                     error: (error, stackTrace) => [
                       SliverToBoxAdapter(
                         child: Text(error.toString()),
@@ -115,10 +85,10 @@ class AnalyticsByPlatformScreen extends ConsumerWidget {
                       ),
                     ),
                   ),
-                  ...games.when(
+                  ...analyticsDatabase.when(
                     skipLoadingOnReload: true,
-                    data: (games) {
-                      final List<Game> sortedGames = List.from(games);
+                    data: (databse) {
+                      final List<Game> sortedGames = List.from(databse.games);
                       sortedGames.sort(
                         (a, b) =>
                             SortStrategy.byName.sorter.compareGames(a, b, true),
