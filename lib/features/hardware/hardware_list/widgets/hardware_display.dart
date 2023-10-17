@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pile_of_shame/features/hardware/hardware_details/screens/hardware_details_screen.dart';
+import 'package:pile_of_shame/features/hardware/hardware_list/widgets/hardware_entry.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/game_platforms.dart';
 import 'package:pile_of_shame/models/hardware.dart';
@@ -26,14 +26,12 @@ class HardwareDisplay extends ConsumerStatefulWidget {
 class _HardwareDisplayState extends ConsumerState<HardwareDisplay>
     with SingleTickerProviderStateMixin {
   late AnimationController controller;
-  bool isAnimationForward = false;
+  bool isAnimationForward = true;
 
   @override
   void initState() {
     super.initState();
-    controller = AnimationController(vsync: this, duration: 600.ms);
-
-    controller.forward();
+    controller = AnimationController(vsync: this, duration: 400.ms);
   }
 
   @override
@@ -55,6 +53,14 @@ class _HardwareDisplayState extends ConsumerState<HardwareDisplay>
 
     return Card(
       margin: EdgeInsets.zero,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(8.0),
+          topLeft: Radius.circular(15.0),
+          bottomRight: Radius.circular(30.0),
+          topRight: Radius.circular(12.0),
+        ),
+      ),
       child: Column(
         children: [
           ClipRRect(
@@ -84,7 +90,7 @@ class _HardwareDisplayState extends ConsumerState<HardwareDisplay>
                   builder: (context, constraints) {
                     final Animation<double> curve = CurvedAnimation(
                       parent: controller,
-                      curve: Curves.easeInOut,
+                      curve: Curves.fastEaseInToSlowEaseOut,
                     );
                     final animation =
                         Tween<double>(begin: constraints.maxWidth, end: 80)
@@ -173,61 +179,38 @@ class _HardwareDisplayState extends ConsumerState<HardwareDisplay>
           ),
           ...asyncHardware.when(
             skipLoadingOnReload: true,
-            data: (hardware) => hardware
-                .map(
-                  (ware) => ListTile(
-                    contentPadding:
-                        const EdgeInsets.symmetric(horizontal: 16.0),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.only(
-                        bottomLeft: ware == hardware.last
-                            ? const Radius.circular(12.0)
-                            : Radius.zero,
-                        bottomRight: ware == hardware.last
-                            ? const Radius.circular(12.0)
-                            : Radius.zero,
-                      ),
+            data: (hardware) {
+              final List<Animate> result = hardware
+                  .map(
+                    (ware) => AnimatedSize(
+                      curve: Curves.easeInOutBack,
+                      duration: 350.ms,
+                      child: isAnimationForward
+                          ? const SizedBox(
+                              height: 0,
+                            )
+                          : HardwareEntry(
+                              hardware: ware,
+                              isLastElement: ware == hardware.last,
+                            ),
+                    ).animate().fadeIn(duration: 250.ms),
+                  )
+                  .toList();
+              for (int i = result.length - 1; i > 0; --i) {
+                result.insert(
+                  i,
+                  AnimatedOpacity(
+                    curve: Curves.easeInOutBack,
+                    duration: 350.ms,
+                    opacity: isAnimationForward ? 0 : 1,
+                    child: const Divider(
+                      height: 1,
                     ),
-                    title: Text(ware.name),
-                    subtitle: ware.wasGifted
-                        ? Row(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              Icon(
-                                Icons.cake,
-                                color: Theme.of(context).colorScheme.primary,
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 8.0),
-                                child: Text(
-                                  l10n.gift,
-                                  style: Theme.of(context).textTheme.bodyMedium,
-                                ),
-                              ),
-                            ],
-                          )
-                        : Text(
-                            currencyFormatter.format(ware.price),
-                            style: Theme.of(context).textTheme.bodyMedium,
-                          ),
-                    trailing: const Icon(Icons.navigate_next),
-                    onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => HardwareDetailsScreen(
-                            hardwareId: ware.id,
-                          ),
-                        ),
-                      );
-                    },
-                  ).animate().fadeIn(duration: 150.ms).slideY(
-                        begin: -0.1,
-                        end: 0,
-                        duration: 150.ms,
-                        curve: Curves.easeInOut,
-                      ),
-                )
-                .toList(),
+                  ).animate().fadeIn(duration: 250.ms),
+                );
+              }
+              return result;
+            },
             error: (error, stackTrace) => [Text(error.toString())],
             loading: () =>
                 [for (int i = 0; i < 3; ++i) const ListTileSkeleton()],
