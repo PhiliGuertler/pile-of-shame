@@ -25,6 +25,8 @@ jobs:
         run: bundle exec fastlane promote_internal_to_alpha
         working-directory: android
   build_and_attach_appbundle_to_release:
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
     environment: Android
     steps:
@@ -67,6 +69,8 @@ jobs:
           file: build/app/outputs/bundle/release/app-release.aab
           asset_name: "pile_of_shame-$tag.aab"
   build_and_attach_apk_to_release:
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
     environment: Android
     steps:
