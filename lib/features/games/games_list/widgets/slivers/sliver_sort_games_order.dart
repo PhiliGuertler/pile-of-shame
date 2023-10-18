@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 
-class SliverSortGamesOrder extends StatelessWidget {
-  const SliverSortGamesOrder({
+class SliverSortOrder extends StatelessWidget {
+  const SliverSortOrder({
     super.key,
     required this.isAscending,
     required this.onChanged,
@@ -13,24 +13,19 @@ class SliverSortGamesOrder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return SliverToBoxAdapter(
-      child: CheckboxListTile(
-        title: Row(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(right: 8.0),
-              child: Icon(
-                isAscending ? Icons.arrow_upward : Icons.arrow_downward,
-              ),
-            ),
-            Text(AppLocalizations.of(context)!.isAscending),
-          ],
+      child: ListTile(
+        title: Text(isAscending ? l10n.isAscending : l10n.descending),
+        trailing: Padding(
+          padding: const EdgeInsets.only(right: 8.0),
+          child: Icon(
+            isAscending ? Icons.arrow_upward : Icons.arrow_downward,
+          ),
         ),
-        value: isAscending,
-        onChanged: (value) {
-          if (value != null) {
-            onChanged(value);
-          }
+        onTap: () {
+          onChanged(!isAscending);
         },
       ),
     );

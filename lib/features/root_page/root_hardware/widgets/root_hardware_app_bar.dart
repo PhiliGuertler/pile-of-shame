@@ -14,6 +14,19 @@ class RootHardwareAppBar extends StatelessWidget
   Widget build(BuildContext context) {
     return AppBar(
       title: Text(AppLocalizations.of(context)!.hardware),
+      actions: [
+        Builder(
+          builder: (context) {
+            return IconButton(
+              key: const ValueKey("sort_hardware"),
+              icon: const Icon(Icons.sort),
+              onPressed: () {
+                Scaffold.of(context).openDrawer();
+              },
+            );
+          },
+        ),
+      ],
     );
   }
 }

@@ -61,5 +61,5 @@ Future<List<Game>> gamesByPlayStatusesSorted(
   final sorter =
       await ref.watch(gameSortingByPlayStatusProvider(statuses.first).future);
 
-  return const GameSorterUtils().sortGames(games, sorter);
+  return SorterUtils.sortGames(games, sorter);
 }

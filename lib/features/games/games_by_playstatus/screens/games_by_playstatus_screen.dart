@@ -112,7 +112,7 @@ class _GamesByPlaystatusScreenState
                 const SliverToBoxAdapter(
                   child: Divider(),
                 ),
-                SliverSortGamesOrder(
+                SliverSortOrder(
                   isAscending: sorting.isAscending,
                   onChanged: (value) {
                     ref

@@ -46,7 +46,7 @@ class GameSorterDrawer extends ConsumerWidget {
                         );
                   },
                 ),
-                SliverSortGamesOrder(
+                SliverSortOrder(
                   isAscending: sorting.isAscending,
                   onChanged: (value) {
                     ref
