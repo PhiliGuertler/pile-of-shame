@@ -24,3 +24,43 @@ jobs:
       - name: Fastlane - promote internal to alpha
         run: bundle exec fastlane promote_internal_to_alpha
         working-directory: android
+  build_and_attach_appbundle_to_release:
+    runs-on: ubuntu-latest
+    environment: Android
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set env
+        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+        # Setup environment
+      - name: Java - setup SDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: "zulu"
+          java-version: "17.x"
+          cache: gradle
+      - name: Flutter - setup SDK
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          cache: true
+        # Fetch dependencies and generate code
+      - name: Flutter - fetch dependencies
+        run: flutter pub get
+      - name: Flutter - generate Localizations
+        run: flutter gen-l10n
+      - name: Flutter - generate code using build_runner
+        run: dart run build_runner build
+        # Prepare for build signing
+      - name: Android App-Signing - prepare secrets directory
+        run: mkdir -p secrets
+      - name: Android App-Signing - insert secret upload keystore
+        run: echo -n "${{secrets.UPLOAD_KEYSTORE_BASE64}}" | base64 --decode > ./secrets/upload-keystore.jks
+      - name: Android App-Signing - insert secret key properties
+        run: echo -n "${{secrets.KEY_PROPERTIES_BASE64}}" | base64 --decode > ./android/key.properties
+      - name: Flutter - build application
+        run: flutter build appbundle --release
+      - uses: AButler/upload-release-assets@v2.0
+        with:
+          files: 'build/app/outputs/bundle/release/app-release.aab'
+          repo-token: ${{secrets.GITHUB_TOKEN}}
+          release-tag: ${{env.RELEASE_VERSION}}
