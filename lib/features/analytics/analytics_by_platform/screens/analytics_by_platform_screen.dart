@@ -60,6 +60,9 @@ class AnalyticsByPlatformScreen extends ConsumerWidget {
                         games: database.games,
                         hardware: database.hardware,
                       ),
+                      const SliverToBoxAdapter(
+                        child: SizedBox(height: 32.0),
+                      ),
                     ],
                     error: (error, stackTrace) => [
                       SliverToBoxAdapter(
