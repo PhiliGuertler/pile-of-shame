@@ -58,13 +58,14 @@ class _SlideExpandableState extends ConsumerState<SlideExpandable>
     for (int i = childWidgets.length - 1; i > 0; --i) {
       childWidgets.insert(
         i,
-        AnimatedOpacity(
+        AnimatedSize(
           curve: Curves.easeInOutBack,
           duration: 400.ms,
-          opacity: isAnimationForward ? 0 : 1,
-          child: const Divider(
-            height: 1,
-          ),
+          child: isAnimationForward
+              ? const SizedBox(height: 0)
+              : const Divider(
+                  height: 1,
+                ),
         ).animate().fadeIn(duration: 400.ms),
       );
     }

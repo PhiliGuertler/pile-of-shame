@@ -8,28 +8,39 @@ import 'package:pile_of_shame/widgets/charts/legend.dart';
 mixin HighlightableChart<T extends StatefulWidget> on State<T> {
   String? highlightedLabel;
 
-  void handleSectionChange(String? selection) {
+  void handleSectionChange(String? selection, [bool? isPrimary]) {
     if (highlightedLabel == selection) {
       setState(() {
         highlightedLabel = null;
       });
     } else {
       setState(() {
-        highlightedLabel = selection;
+        if (isPrimary != null) {
+          highlightedLabel =
+              "$selection-${isPrimary ? 'primary' : 'secondary'}";
+        } else {
+          highlightedLabel = selection;
+        }
       });
     }
   }
 
   List<ChartData> highlightData(List<ChartData> data) {
     return data
-        .map((e) => e.copyWith(isSelected: e.title == highlightedLabel))
+        .map(
+          (e) => e.copyWith(
+            isSelected: e.title == highlightedLabel ||
+                "${e.title}-primary" == highlightedLabel,
+            isSecondarySelected: "${e.title}-secondary" == highlightedLabel,
+          ),
+        )
         .toList();
   }
 }
 
 class HighlightableBarChart extends StatefulWidget {
   final List<ChartData> data;
-  final String Function(double data) formatData;
+  final String Function(double data, [bool? isPrimary]) formatData;
   final double Function(List<ChartData> data) computeSum;
   final Duration animationDelay;
 

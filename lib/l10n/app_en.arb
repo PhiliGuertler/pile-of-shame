@@ -159,6 +159,7 @@
   "median": "median",
   "microsoft": "Microsoft",
   "misc": "Misc",
+  "miscAnalytics": "Misc analytics",
   "nDLCs": "{num, plural, =0{No DLCs} =1{1 DLC} other{{num} DLCs}}",
   "nGames": "{num, plural, =0{No Games} =1{1 Game} other{{num} Games}}",
   "nHardware": "{num, plural, =0{No Hardware} =1{1 Hardware entry} other{{num} Hardware entries}}",
