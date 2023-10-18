@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pile_of_shame/features/analytics/analytics_by_families/widgets/game_analytics.dart';
+import 'package:pile_of_shame/features/analytics/analytics_by_families/widgets/games_and_hardware_analytics.dart';
 import 'package:pile_of_shame/features/analytics/analytics_by_families/widgets/hardware_analytics.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/game.dart';
@@ -61,6 +62,20 @@ class SliverAnalyticsDetails extends StatelessWidget {
               horizontal: defaultPaddingX,
             ),
             child: HardwareAnalytics(
+              hardware: hardware,
+              hasFamilyDistributionChart: hasFamilyDistributionChart,
+              hasPlatformDistributionCharts: hasPlatformDistributionCharts,
+            ),
+          ),
+        if (games.isNotEmpty && hardware.isNotEmpty)
+          const SizedBox(height: 32.0),
+        if (games.isNotEmpty && hardware.isNotEmpty)
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: defaultPaddingX,
+            ),
+            child: GamesAndHardwareAnalytics(
+              games: games,
               hardware: hardware,
               hasFamilyDistributionChart: hasFamilyDistributionChart,
               hasPlatformDistributionCharts: hasPlatformDistributionCharts,
