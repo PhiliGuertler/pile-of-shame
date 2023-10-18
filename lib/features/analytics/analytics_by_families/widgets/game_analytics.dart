@@ -183,7 +183,8 @@ class GameAnalytics extends ConsumerWidget {
                   padding: const EdgeInsets.symmetric(vertical: 16.0),
                   child: HighlightableBarChart(
                     data: gameData.toPlatformDistribution(),
-                    formatData: (data) => l10n.nGames(data.toInt()),
+                    formatData: (data, [isPrimary]) =>
+                        l10n.nGames(data.toInt()),
                     animationDelay: 400.ms,
                   ),
                 ),
@@ -199,7 +200,8 @@ class GameAnalytics extends ConsumerWidget {
                   padding: const EdgeInsets.symmetric(vertical: 16.0),
                   child: HighlightableBarChart(
                     data: gameData.toPlatformPriceDistribution(),
-                    formatData: (data) => currencyFormatter.format(data),
+                    formatData: (data, [isPrimary]) =>
+                        currencyFormatter.format(data),
                     animationDelay: 450.ms,
                   ),
                 ),
@@ -215,7 +217,8 @@ class GameAnalytics extends ConsumerWidget {
                   padding: const EdgeInsets.symmetric(vertical: 16.0),
                   child: HighlightableBarChart(
                     data: gameData.toPlatformFamilyPriceDistribution(),
-                    formatData: (data) => currencyFormatter.format(data),
+                    formatData: (data, [isPrimary]) =>
+                        currencyFormatter.format(data),
                     animationDelay: 500.ms,
                   ),
                 ),

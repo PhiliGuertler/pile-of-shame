@@ -92,7 +92,8 @@ class HardwareAnalytics extends ConsumerWidget {
                   padding: const EdgeInsets.symmetric(vertical: 16.0),
                   child: HighlightableBarChart(
                     data: hardwareData.toPlatformDistribution(),
-                    formatData: (data) => l10n.nHardware(data.toInt()),
+                    formatData: (data, [isPrimary]) =>
+                        l10n.nHardware(data.toInt()),
                     animationDelay: 650.ms,
                   ),
                 ),
@@ -108,7 +109,8 @@ class HardwareAnalytics extends ConsumerWidget {
                   padding: const EdgeInsets.symmetric(vertical: 16.0),
                   child: HighlightableBarChart(
                     data: hardwareData.toPlatformPriceDistribution(),
-                    formatData: (data) => currencyFormatter.format(data),
+                    formatData: (data, [isPrimary]) =>
+                        currencyFormatter.format(data),
                     animationDelay: 700.ms,
                   ),
                 ),
@@ -124,7 +126,8 @@ class HardwareAnalytics extends ConsumerWidget {
                   padding: const EdgeInsets.symmetric(vertical: 16.0),
                   child: HighlightableBarChart(
                     data: hardwareData.toPlatformFamilyPriceDistribution(),
-                    formatData: (data) => currencyFormatter.format(data),
+                    formatData: (data, [isPrimary]) =>
+                        currencyFormatter.format(data),
                     animationDelay: 750.ms,
                   ),
                 ),

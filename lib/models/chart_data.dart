@@ -10,6 +10,7 @@ class ChartData with _$ChartData {
     required double value,
     double? secondaryValue,
     @Default(false) bool isSelected,
+    @Default(false) bool isSecondarySelected,
     Color? color,
     Widget? alternativeTitle,
   }) = _ChartData;

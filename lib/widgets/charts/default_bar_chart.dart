@@ -9,7 +9,7 @@ import 'package:pile_of_shame/utils/color_utils.dart';
 import 'package:pile_of_shame/widgets/skeletons/skeleton.dart';
 
 class DefaultBarChart extends StatelessWidget {
-  static String defaultFormatData(double data) {
+  static String defaultFormatData(double data, [bool? isPrimary]) {
     return (data == data.roundToDouble() ? data.toInt() : data).toString();
   }
 
@@ -21,9 +21,9 @@ class DefaultBarChart extends StatelessWidget {
   }
 
   final List<ChartData> data;
-  final String Function(double data) formatData;
+  final String Function(double data, [bool? isPrimary]) formatData;
   final double Function(List<ChartData> data) computeSum;
-  final void Function(String? title)? onTapSection;
+  final void Function(String? title, [bool? isPrimary])? onTapSection;
   final Duration animationDelay;
 
   const DefaultBarChart({
@@ -53,6 +53,13 @@ class DefaultBarChart extends StatelessWidget {
               width: section.isSelected ? 45.0 : 15.0,
               borderRadius: BorderRadius.circular(4.0),
             ),
+            if (section.secondaryValue != null)
+              BarChartRodData(
+                toY: section.secondaryValue!,
+                color: color.withOpacity(0.7),
+                width: section.isSecondarySelected ? 45.0 : 15.0,
+                borderRadius: BorderRadius.circular(4.0),
+              ),
           ],
         ),
       );
@@ -83,13 +90,30 @@ class DefaultBarChart extends StatelessWidget {
       final selected = data.singleWhere(
         (element) => element.isSelected,
       );
-      totalLabel = "${selected.title}: ${formatData(selected.value)}";
+      totalLabel = "${selected.title}: ${formatData(selected.value, true)}";
+    } catch (error) {
+      // do nothing
+    }
+    try {
+      final selected = data.singleWhere(
+        (element) => element.isSecondarySelected,
+      );
+      totalLabel =
+          "${selected.title}: ${formatData(selected.secondaryValue ?? 0.0, false)}";
     } catch (error) {
       // do nothing
     }
 
     final chartData =
         generateChartData(Theme.of(context).colorScheme.primaryContainer);
+
+    final double maxY = data.fold<double>(
+      0.0,
+      (previousValue, element) =>
+          max(element.value, element.secondaryValue ?? 0.0) > previousValue
+              ? max(element.value, element.secondaryValue ?? 0.0)
+              : previousValue,
+    );
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -99,12 +123,7 @@ class DefaultBarChart extends StatelessWidget {
           child: BarChart(
             BarChartData(
               minY: 0.0,
-              maxY: data.fold<double>(
-                0.0,
-                (previousValue, element) => element.value > previousValue
-                    ? element.value
-                    : previousValue,
-              ),
+              maxY: maxY,
               alignment: BarChartAlignment.spaceAround,
               titlesData: const FlTitlesData(
                 rightTitles: AxisTitles(),
@@ -141,8 +160,9 @@ class DefaultBarChart extends StatelessWidget {
                       event.runtimeType == FlTapDownEvent) {
                     if (response != null && response.spot != null) {
                       final index = response.spot!.touchedBarGroupIndex;
+                      final isPrimary = response.spot!.touchedRodDataIndex == 0;
                       final sectionName = index >= 0 ? data[index].title : null;
-                      onTapSection!(sectionName);
+                      onTapSection!(sectionName, isPrimary);
                     } else {
                       onTapSection!(null);
                     }

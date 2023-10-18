@@ -6,9 +6,11 @@ import 'package:pile_of_shame/models/assets.dart';
 import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/models/hardware.dart';
 import 'package:pile_of_shame/providers/format_provider.dart';
+import 'package:pile_of_shame/utils/game_and_hardware_data.dart';
 import 'package:pile_of_shame/utils/game_data.dart';
 import 'package:pile_of_shame/utils/hardware_data.dart';
 import 'package:pile_of_shame/widgets/charts/default_comparison_chart.dart';
+import 'package:pile_of_shame/widgets/charts/highlightable_charts.dart';
 import 'package:pile_of_shame/widgets/responsiveness/responsive_wrap.dart';
 import 'package:pile_of_shame/widgets/slide_expandable.dart';
 
@@ -39,6 +41,12 @@ class GamesAndHardwareAnalytics extends ConsumerWidget {
       currencyFormatter: currencyFormatter,
     );
     final HardwareData hardwareData = HardwareData(
+      hardware: hardware,
+      l10n: l10n,
+      currencyFormatter: currencyFormatter,
+    );
+    final GameAndHardwareData gamesAndHardwareData = GameAndHardwareData(
+      games: games,
       hardware: hardware,
       l10n: l10n,
       currencyFormatter: currencyFormatter,
@@ -82,6 +90,55 @@ class GamesAndHardwareAnalytics extends ConsumerWidget {
                 animationDelay: 50.ms,
               ),
             ),
+            if (hasPlatformDistributionCharts)
+              ListTile(
+                contentPadding: chartPadding,
+                title: Text(
+                  l10n.platformDistribution,
+                  style: textTheme.titleLarge,
+                ),
+                subtitle: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 16.0),
+                  child: HighlightableBarChart(
+                    data: gamesAndHardwareData.toPlatformPriceDistribution(),
+                    computeSum: (data) => data.fold(
+                      0.0,
+                      (previousValue, element) =>
+                          previousValue +
+                          element.value +
+                          (element.secondaryValue ?? 0.0),
+                    ),
+                    formatData: (data, [isPrimary]) =>
+                        "${currencyFormatter.format(data)}${isPrimary == null ? "" : isPrimary ? " ${l10n.games}" : " ${l10n.hardware}"}",
+                    animationDelay: 400.ms,
+                  ),
+                ),
+              ),
+            if (hasFamilyDistributionChart)
+              ListTile(
+                contentPadding: chartPadding,
+                title: Text(
+                  l10n.platformDistribution,
+                  style: textTheme.titleLarge,
+                ),
+                subtitle: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 16.0),
+                  child: HighlightableBarChart(
+                    data: gamesAndHardwareData
+                        .toPlatformFamilyPriceDistribution(),
+                    computeSum: (data) => data.fold(
+                      0.0,
+                      (previousValue, element) =>
+                          previousValue +
+                          element.value +
+                          (element.secondaryValue ?? 0.0),
+                    ),
+                    formatData: (data, [isPrimary]) =>
+                        "${currencyFormatter.format(data)}${isPrimary == null ? "" : isPrimary ? " ${l10n.games}" : " ${l10n.hardware}"}",
+                    animationDelay: 400.ms,
+                  ),
+                ),
+              ),
           ],
         ),
       ],
