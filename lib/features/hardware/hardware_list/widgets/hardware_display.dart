@@ -47,8 +47,8 @@ class _HardwareDisplayState extends ConsumerState<HardwareDisplay>
     final currencyFormatter = ref.watch(currencyFormatProvider(context));
 
     final AsyncValue<List<VideoGameHardware>> asyncHardware =
-        ref.watch(hardwareByPlatformProvider(widget.platform));
-    final AsyncValue<double> asyncPriceSum =
+        ref.watch(sortedHardwareByPlatformProvider(widget.platform));
+    final AsyncValue<double?> asyncPriceSum =
         ref.watch(hardwareTotalPriceByPlatformProvider(widget.platform));
 
     return SlideExpandable(
@@ -61,9 +61,14 @@ class _HardwareDisplayState extends ConsumerState<HardwareDisplay>
       ),
       trailing: asyncPriceSum.when(
         skipLoadingOnReload: true,
-        data: (sum) => Text(
-          currencyFormatter.format(sum),
-        ),
+        data: (sum) => sum != null
+            ? Text(
+                currencyFormatter.format(sum),
+              )
+            : Icon(
+                Icons.cake,
+                color: Theme.of(context).colorScheme.primary,
+              ),
         error: (error, stackTrace) => Text(error.toString()),
         loading: () => const Skeleton(),
       ),

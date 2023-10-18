@@ -39,7 +39,7 @@ class GameGrouperUtils {
     GroupStrategy grouping,
     GameSorting sorting,
   ) {
-    final sortedGames = const GameSorterUtils().sortGames(games, sorting);
+    final sortedGames = SorterUtils.sortGames(games, sorting);
 
     return groupGames(sortedGames, grouping);
   }

@@ -34,5 +34,5 @@ FutureOr<List<Game>> applyGameSorting(
 ) async {
   final sorting = await ref.watch(sortGamesProvider.future);
 
-  return const GameSorterUtils().sortGames(games, sorting);
+  return SorterUtils.sortGames(games, sorting);
 }

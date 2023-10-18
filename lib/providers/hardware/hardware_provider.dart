@@ -1,6 +1,7 @@
 import 'package:pile_of_shame/models/game_platforms.dart';
 import 'package:pile_of_shame/models/hardware.dart';
 import 'package:pile_of_shame/providers/database/database_provider.dart';
+import 'package:pile_of_shame/providers/hardware/hardware_sorter_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'hardware_provider.g.dart';
@@ -93,24 +94,31 @@ FutureOr<VideoGameHardware> hardwareById(
 }
 
 @riverpod
-FutureOr<double> hardwareTotalPrice(HardwareTotalPriceRef ref) async {
-  final hardware = await ref.watch(hardwareProvider.future);
-
-  return hardware.fold<double>(
-    0.0,
-    (previousValue, element) => element.price + previousValue,
-  );
-}
-
-@riverpod
-FutureOr<double> hardwareTotalPriceByPlatform(
+FutureOr<double?> hardwareTotalPriceByPlatform(
   HardwareTotalPriceByPlatformRef ref,
   GamePlatform platform,
 ) async {
   final hardware = await ref.watch(hardwareByPlatformProvider(platform).future);
 
-  return hardware.fold<double>(
-    0.0,
-    (previousValue, element) => element.price + previousValue,
+  final isAllGifted = hardware.fold<bool>(
+    true,
+    (previousValue, element) => element.wasGifted && previousValue,
   );
+
+  return isAllGifted
+      ? null
+      : hardware.fold<double>(
+          0.0,
+          (previousValue, element) => element.price + previousValue,
+        );
+}
+
+@riverpod
+FutureOr<List<VideoGameHardware>> sortedHardwareByPlatform(
+  SortedHardwareByPlatformRef ref,
+  GamePlatform platform,
+) async {
+  final hardware = await ref.watch(hardwareByPlatformProvider(platform).future);
+
+  return await ref.watch(applyHardwareSortingProvider(hardware).future);
 }
