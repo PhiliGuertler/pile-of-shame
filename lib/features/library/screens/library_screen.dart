@@ -8,7 +8,6 @@ import 'package:pile_of_shame/models/play_status.dart';
 import 'package:pile_of_shame/providers/games/game_platforms_provider.dart';
 import 'package:pile_of_shame/utils/constants.dart';
 import 'package:pile_of_shame/widgets/parallax_image_card.dart';
-import 'package:pile_of_shame/widgets/responsiveness/responsive_wrap.dart';
 
 class LibraryScreen extends ConsumerWidget {
   final ScrollController scrollController;
@@ -36,61 +35,72 @@ class LibraryScreen extends ConsumerWidget {
                 style: theme.textTheme.headlineSmall,
               ),
             ),
-            ResponsiveWrap(
-              children: [
-                ParallaxImageCard(
-                  imagePath: ImageAssets.controllerUnknown.value,
-                  title: PlayStatus.playing.toLocaleString(l10n),
-                  openBuilderOnTap: (context, openContainer) =>
-                      GamesByPlaystatusScreen(
-                    playStatuses: const [
-                      PlayStatus.playing,
-                      PlayStatus.replaying,
-                    ],
-                  ),
+            Padding(
+              padding: const EdgeInsets.only(top: 16.0),
+              child: ParallaxImageCard(
+                imagePath: ImageAssets.controllerUnknown.value,
+                title: PlayStatus.playing.toLocaleString(l10n),
+                openBuilderOnTap: (context, openContainer) =>
+                    GamesByPlaystatusScreen(
+                  playStatuses: const [
+                    PlayStatus.playing,
+                    PlayStatus.replaying,
+                  ],
                 ),
-                ParallaxImageCard(
-                  imagePath: ImageAssets.gamePile.value,
-                  title: PlayStatus.onPileOfShame.toLocaleString(l10n),
-                  openBuilderOnTap: (context, openContainer) =>
-                      GamesByPlaystatusScreen(
-                    playStatuses: const [
-                      PlayStatus.onPileOfShame,
-                    ],
-                  ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 16.0),
+              child: ParallaxImageCard(
+                imagePath: ImageAssets.gamePile.value,
+                title: PlayStatus.onPileOfShame.toLocaleString(l10n),
+                openBuilderOnTap: (context, openContainer) =>
+                    GamesByPlaystatusScreen(
+                  playStatuses: const [
+                    PlayStatus.onPileOfShame,
+                  ],
                 ),
-                ParallaxImageCard(
-                  imagePath: ImageAssets.list.value,
-                  title: PlayStatus.onWishList.toLocaleString(l10n),
-                  openBuilderOnTap: (context, openContainer) =>
-                      GamesByPlaystatusScreen(
-                    playStatuses: const [
-                      PlayStatus.onWishList,
-                    ],
-                  ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 16.0),
+              child: ParallaxImageCard(
+                imagePath: ImageAssets.list.value,
+                title: PlayStatus.onWishList.toLocaleString(l10n),
+                openBuilderOnTap: (context, openContainer) =>
+                    GamesByPlaystatusScreen(
+                  playStatuses: const [
+                    PlayStatus.onWishList,
+                  ],
                 ),
-                ParallaxImageCard(
-                  imagePath: ImageAssets.barChart.value,
-                  title: PlayStatus.completed.toLocaleString(l10n),
-                  openBuilderOnTap: (context, openContainer) =>
-                      GamesByPlaystatusScreen(
-                    playStatuses: const [
-                      PlayStatus.completed,
-                      PlayStatus.completed100Percent,
-                    ],
-                  ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 16.0),
+              child: ParallaxImageCard(
+                imagePath: ImageAssets.barChart.value,
+                title: PlayStatus.completed.toLocaleString(l10n),
+                openBuilderOnTap: (context, openContainer) =>
+                    GamesByPlaystatusScreen(
+                  playStatuses: const [
+                    PlayStatus.completed,
+                    PlayStatus.completed100Percent,
+                  ],
                 ),
-                ParallaxImageCard(
-                  imagePath: ImageAssets.deadGame.value,
-                  title: PlayStatus.cancelled.toLocaleString(l10n),
-                  openBuilderOnTap: (context, openContainer) =>
-                      GamesByPlaystatusScreen(
-                    playStatuses: const [
-                      PlayStatus.cancelled,
-                    ],
-                  ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 16.0),
+              child: ParallaxImageCard(
+                imagePath: ImageAssets.deadGame.value,
+                title: PlayStatus.cancelled.toLocaleString(l10n),
+                openBuilderOnTap: (context, openContainer) =>
+                    GamesByPlaystatusScreen(
+                  playStatuses: const [
+                    PlayStatus.cancelled,
+                  ],
                 ),
-              ],
+              ),
             ),
             Padding(
               padding: const EdgeInsets.only(top: 64.0, bottom: 16.0),
@@ -99,23 +109,25 @@ class LibraryScreen extends ConsumerWidget {
                 style: theme.textTheme.headlineSmall,
               ),
             ),
-            ResponsiveWrap(
-              children: [
-                ParallaxImageCard(
-                  imagePath: ImageAssets.library.value,
-                  title: AppLocalizations.of(context)!.gameLibrary,
-                  openBuilderOnTap: (context, openContainer) =>
-                      const AnalyticsByFamiliesScreen(),
-                ),
-                for (final family in families)
-                  ParallaxImageCard(
-                    imagePath: family.image.value,
-                    title: family.toLocale(AppLocalizations.of(context)!),
-                    openBuilderOnTap: (context, openContainer) =>
-                        AnalyticsByFamiliesScreen(family: family),
-                  ),
-              ],
+            Padding(
+              padding: const EdgeInsets.only(top: 16.0),
+              child: ParallaxImageCard(
+                imagePath: ImageAssets.library.value,
+                title: AppLocalizations.of(context)!.gameLibrary,
+                openBuilderOnTap: (context, openContainer) =>
+                    const AnalyticsByFamiliesScreen(),
+              ),
             ),
+            for (final family in families)
+              Padding(
+                padding: const EdgeInsets.only(top: 16.0),
+                child: ParallaxImageCard(
+                  imagePath: family.image.value,
+                  title: family.toLocale(AppLocalizations.of(context)!),
+                  openBuilderOnTap: (context, openContainer) =>
+                      AnalyticsByFamiliesScreen(family: family),
+                ),
+              ),
             const SizedBox(
               height: 78.0,
             ),

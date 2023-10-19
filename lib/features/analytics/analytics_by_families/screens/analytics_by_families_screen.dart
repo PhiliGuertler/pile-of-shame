@@ -13,7 +13,6 @@ import 'package:pile_of_shame/utils/constants.dart';
 import 'package:pile_of_shame/utils/grouper_utils.dart';
 import 'package:pile_of_shame/widgets/app_scaffold.dart';
 import 'package:pile_of_shame/widgets/image_list_tile.dart';
-import 'package:pile_of_shame/widgets/responsiveness/responsive_wrap.dart';
 import 'package:pile_of_shame/widgets/slivers/sliver_fancy_image_app_bar.dart';
 import 'package:pile_of_shame/widgets/slivers/sliver_fancy_image_header.dart';
 
@@ -113,24 +112,25 @@ class AnalyticsByFamiliesScreen extends ConsumerWidget {
                 SliverPadding(
                   padding:
                       const EdgeInsets.symmetric(horizontal: defaultPaddingX),
-                  sliver: SliverToBoxAdapter(
-                    child: ResponsiveWrap(
-                      children: groups.entries.map((group) {
-                        final GamePlatform platform =
-                            GamePlatform.values.firstWhere(
-                          (element) =>
-                              element.localizedAbbreviation(l10n) == group.key,
-                        );
-                        return ImageListTile(
+                  sliver: SliverList.list(
+                    children: groups.entries.map((group) {
+                      final GamePlatform platform =
+                          GamePlatform.values.firstWhere(
+                        (element) =>
+                            element.localizedAbbreviation(l10n) == group.key,
+                      );
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 8.0),
+                        child: ImageListTile(
                           imagePath: platform.controllerLogoPath,
                           heroTag: group.key,
                           title: Text(platform.localizedName(l10n)),
                           subtitle: Text(l10n.nGames(group.value.length)),
                           openBuilderOnTap: (context, action) =>
                               AnalyticsByPlatformScreen(platform: platform),
-                        );
-                      }).toList(),
-                    ),
+                        ),
+                      );
+                    }).toList(),
                   ),
                 ),
               ];

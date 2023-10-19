@@ -5,7 +5,6 @@ import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/assets.dart';
 import 'package:pile_of_shame/providers/hardware/hardware_provider.dart';
 import 'package:pile_of_shame/utils/constants.dart';
-import 'package:pile_of_shame/widgets/responsiveness/responsive_wrap.dart';
 import 'package:pile_of_shame/widgets/slivers/sliver_fancy_image_header.dart';
 
 class HardwareScreen extends ConsumerWidget {
@@ -33,23 +32,23 @@ class HardwareScreen extends ConsumerWidget {
                     controller: scrollController,
                     physics: const AlwaysScrollableScrollPhysics(),
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: defaultPaddingX,
-                        ),
-                        child: ResponsiveWrap(
-                          children: platforms.when(
-                            skipLoadingOnReload: true,
-                            data: (data) => data
-                                .map(
-                                  (e) => HardwareDisplay(platform: e),
-                                )
-                                .toList(),
-                            error: (error, stackTrace) =>
-                                [Text(error.toString())],
-                            loading: () => [],
-                          ),
-                        ),
+                      ...platforms.when(
+                        skipLoadingOnReload: true,
+                        data: (data) => data
+                            .map(
+                              (e) => Padding(
+                                padding: const EdgeInsets.only(
+                                  left: defaultPaddingX,
+                                  right: defaultPaddingX,
+                                  top: 16.0,
+                                ),
+                                child: HardwareDisplay(platform: e),
+                              ),
+                            )
+                            .toList(),
+                        error: (error, stackTrace) =>
+                            <Widget>[Text(error.toString())],
+                        loading: () => <Widget>[],
                       ),
                       const SizedBox(
                         height: 78.0,

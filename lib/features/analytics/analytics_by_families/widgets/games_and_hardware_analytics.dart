@@ -11,7 +11,6 @@ import 'package:pile_of_shame/utils/game_data.dart';
 import 'package:pile_of_shame/utils/hardware_data.dart';
 import 'package:pile_of_shame/widgets/charts/default_comparison_chart.dart';
 import 'package:pile_of_shame/widgets/charts/highlightable_charts.dart';
-import 'package:pile_of_shame/widgets/responsiveness/responsive_wrap.dart';
 import 'package:pile_of_shame/widgets/slide_expandable.dart';
 
 class GamesAndHardwareAnalytics extends ConsumerWidget {
@@ -52,7 +51,8 @@ class GamesAndHardwareAnalytics extends ConsumerWidget {
       currencyFormatter: currencyFormatter,
     );
 
-    const chartPadding = EdgeInsets.only(left: 16.0, right: 16.0, top: 8.0);
+    const chartPadding =
+        EdgeInsets.only(left: 16.0, right: 16.0, top: 8.0, bottom: 8.0);
 
     return SlideExpandable(
       imagePath: ImageAssets.pieChart.value,
@@ -62,85 +62,80 @@ class GamesAndHardwareAnalytics extends ConsumerWidget {
       subtitle: Container(),
       trailing: Container(),
       children: [
-        ResponsiveWrap(
-          children: [
-            ListTile(
-              contentPadding: chartPadding,
-              title: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    l10n.priceDistribution,
-                    style: textTheme.titleLarge,
-                  ),
-                  Text(
-                    currencyFormatter.format(
-                      gameData.toTotalPrice() + hardwareData.toTotalPrice(),
-                    ),
-                  ),
-                ],
+        ListTile(
+          contentPadding: chartPadding,
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                l10n.priceDistribution,
+                style: textTheme.titleLarge,
               ),
-              subtitle: DefaultComparisonChart(
-                left: gameData.toTotalPrice(),
-                leftText:
-                    "${currencyFormatter.format(gameData.toTotalPrice())} ${l10n.games}",
-                right: hardwareData.toTotalPrice(),
-                rightText:
-                    "${currencyFormatter.format(hardwareData.toTotalPrice())} ${l10n.hardware}",
-                animationDelay: 50.ms,
+              Text(
+                currencyFormatter.format(
+                  gameData.toTotalPrice() + hardwareData.toTotalPrice(),
+                ),
+              ),
+            ],
+          ),
+          subtitle: DefaultComparisonChart(
+            left: gameData.toTotalPrice(),
+            leftText:
+                "${currencyFormatter.format(gameData.toTotalPrice())} ${l10n.games}",
+            right: hardwareData.toTotalPrice(),
+            rightText:
+                "${currencyFormatter.format(hardwareData.toTotalPrice())} ${l10n.hardware}",
+            animationDelay: 50.ms,
+          ),
+        ),
+        if (hasPlatformDistributionCharts)
+          ListTile(
+            contentPadding: chartPadding,
+            title: Text(
+              l10n.platformDistribution,
+              style: textTheme.titleLarge,
+            ),
+            subtitle: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 16.0),
+              child: HighlightableBarChart(
+                data: gamesAndHardwareData.toPlatformPriceDistribution(),
+                computeSum: (data) => data.fold(
+                  0.0,
+                  (previousValue, element) =>
+                      previousValue +
+                      element.value +
+                      (element.secondaryValue ?? 0.0),
+                ),
+                formatData: (data, [isPrimary]) =>
+                    "${currencyFormatter.format(data)}${isPrimary == null ? "" : isPrimary ? " ${l10n.games}" : " ${l10n.hardware}"}",
+                animationDelay: 400.ms,
               ),
             ),
-            if (hasPlatformDistributionCharts)
-              ListTile(
-                contentPadding: chartPadding,
-                title: Text(
-                  l10n.platformDistribution,
-                  style: textTheme.titleLarge,
+          ),
+        if (hasFamilyDistributionChart)
+          ListTile(
+            contentPadding: chartPadding,
+            title: Text(
+              l10n.platformDistribution,
+              style: textTheme.titleLarge,
+            ),
+            subtitle: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 16.0),
+              child: HighlightableBarChart(
+                data: gamesAndHardwareData.toPlatformFamilyPriceDistribution(),
+                computeSum: (data) => data.fold(
+                  0.0,
+                  (previousValue, element) =>
+                      previousValue +
+                      element.value +
+                      (element.secondaryValue ?? 0.0),
                 ),
-                subtitle: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 16.0),
-                  child: HighlightableBarChart(
-                    data: gamesAndHardwareData.toPlatformPriceDistribution(),
-                    computeSum: (data) => data.fold(
-                      0.0,
-                      (previousValue, element) =>
-                          previousValue +
-                          element.value +
-                          (element.secondaryValue ?? 0.0),
-                    ),
-                    formatData: (data, [isPrimary]) =>
-                        "${currencyFormatter.format(data)}${isPrimary == null ? "" : isPrimary ? " ${l10n.games}" : " ${l10n.hardware}"}",
-                    animationDelay: 400.ms,
-                  ),
-                ),
+                formatData: (data, [isPrimary]) =>
+                    "${currencyFormatter.format(data)}${isPrimary == null ? "" : isPrimary ? " ${l10n.games}" : " ${l10n.hardware}"}",
+                animationDelay: 400.ms,
               ),
-            if (hasFamilyDistributionChart)
-              ListTile(
-                contentPadding: chartPadding,
-                title: Text(
-                  l10n.platformDistribution,
-                  style: textTheme.titleLarge,
-                ),
-                subtitle: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 16.0),
-                  child: HighlightableBarChart(
-                    data: gamesAndHardwareData
-                        .toPlatformFamilyPriceDistribution(),
-                    computeSum: (data) => data.fold(
-                      0.0,
-                      (previousValue, element) =>
-                          previousValue +
-                          element.value +
-                          (element.secondaryValue ?? 0.0),
-                    ),
-                    formatData: (data, [isPrimary]) =>
-                        "${currencyFormatter.format(data)}${isPrimary == null ? "" : isPrimary ? " ${l10n.games}" : " ${l10n.hardware}"}",
-                    animationDelay: 400.ms,
-                  ),
-                ),
-              ),
-          ],
-        ),
+            ),
+          ),
       ],
     );
   }
