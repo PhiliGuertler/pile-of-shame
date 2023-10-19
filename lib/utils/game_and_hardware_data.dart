@@ -58,8 +58,8 @@ class GameAndHardwareData {
         result.add(
           ChartData(
             title: family.toLocale(l10n),
-            value: hardwarePrice,
-            secondaryValue: gamePrice,
+            value: gamePrice,
+            secondaryValue: hardwarePrice,
           ),
         );
       }
