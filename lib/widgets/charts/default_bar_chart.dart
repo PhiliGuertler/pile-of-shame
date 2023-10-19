@@ -9,6 +9,10 @@ import 'package:pile_of_shame/utils/color_utils.dart';
 import 'package:pile_of_shame/widgets/skeletons/skeleton.dart';
 
 class DefaultBarChart extends StatelessWidget {
+  static const double barWidth = 15.0;
+  static const double selectedBarWidth = 45.0;
+  static const Duration transitionDuration = Duration(milliseconds: 250);
+
   static String defaultFormatData(double data, [bool? isPrimary]) {
     return (data == data.roundToDouble() ? data.toInt() : data).toString();
   }
@@ -50,14 +54,15 @@ class DefaultBarChart extends StatelessWidget {
             BarChartRodData(
               toY: section.value,
               color: color,
-              width: section.isSelected ? 45.0 : 15.0,
+              width: section.isSelected ? selectedBarWidth : barWidth,
               borderRadius: BorderRadius.circular(4.0),
             ),
             if (section.secondaryValue != null)
               BarChartRodData(
                 toY: section.secondaryValue!,
                 color: color.withOpacity(0.7),
-                width: section.isSecondarySelected ? 45.0 : 15.0,
+                width:
+                    section.isSecondarySelected ? selectedBarWidth : barWidth,
                 borderRadius: BorderRadius.circular(4.0),
               ),
           ],
@@ -107,6 +112,20 @@ class DefaultBarChart extends StatelessWidget {
     final chartData =
         generateChartData(Theme.of(context).colorScheme.primaryContainer);
 
+    final bool isAnythingSelected = data.any(
+      (element) => element.isSelected || element.isSecondarySelected,
+    );
+
+    // The width of the chart is given by the amount of rods times their width (with 4px padding)
+    // plus one expanded rod during selection plus 44px for the titles on the left
+    final double chartWidth = data.length *
+            ((data.isNotEmpty
+                    ? (data.first.secondaryValue != null ? barWidth : 0)
+                    : 0) +
+                (barWidth + 4.0)) +
+        (isAnythingSelected ? (selectedBarWidth - barWidth) : 0) +
+        44.0;
+
     final double maxY = data.fold<double>(
       0.0,
       (previousValue, element) =>
@@ -118,61 +137,74 @@ class DefaultBarChart extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        SizedBox(
-          height: 250.0,
-          child: BarChart(
-            BarChartData(
-              minY: 0.0,
-              maxY: maxY,
-              alignment: BarChartAlignment.spaceAround,
-              titlesData: const FlTitlesData(
-                rightTitles: AxisTitles(),
-                topTitles: AxisTitles(),
-                bottomTitles: AxisTitles(),
-              ),
-              barGroups: chartData,
-              borderData: FlBorderData(show: false),
-              barTouchData: BarTouchData(
-                enabled: true,
-                handleBuiltInTouches: false,
-                touchTooltipData: BarTouchTooltipData(
-                  tooltipBgColor: Colors.transparent,
-                  tooltipPadding: EdgeInsets.zero,
-                  tooltipMargin: 8,
-                  getTooltipItem: (
-                    BarChartGroupData group,
-                    int groupIndex,
-                    BarChartRodData rod,
-                    int rodIndex,
-                  ) {
-                    return BarTooltipItem(
-                      formatData(rod.toY),
-                      TextStyle(
-                        color: Theme.of(context).colorScheme.onBackground,
-                        fontWeight: FontWeight.bold,
+        Scrollbar(
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: AnimatedContainer(
+                duration: transitionDuration,
+                curve: Curves.easeInOutBack,
+                height: 250.0,
+                width: chartWidth,
+                child: BarChart(
+                  BarChartData(
+                    minY: 0.0,
+                    maxY: maxY,
+                    alignment: BarChartAlignment.spaceAround,
+                    titlesData: const FlTitlesData(
+                      rightTitles: AxisTitles(),
+                      topTitles: AxisTitles(),
+                      bottomTitles: AxisTitles(),
+                    ),
+                    barGroups: chartData,
+                    borderData: FlBorderData(show: false),
+                    barTouchData: BarTouchData(
+                      enabled: true,
+                      handleBuiltInTouches: false,
+                      touchTooltipData: BarTouchTooltipData(
+                        tooltipBgColor: Colors.transparent,
+                        tooltipPadding: EdgeInsets.zero,
+                        tooltipMargin: 8,
+                        getTooltipItem: (
+                          BarChartGroupData group,
+                          int groupIndex,
+                          BarChartRodData rod,
+                          int rodIndex,
+                        ) {
+                          return BarTooltipItem(
+                            formatData(rod.toY),
+                            TextStyle(
+                              color: Theme.of(context).colorScheme.onBackground,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          );
+                        },
                       ),
-                    );
-                  },
+                      touchCallback: (event, response) {
+                        if (event.isInterestedForInteractions &&
+                            onTapSection != null &&
+                            event.runtimeType == FlTapDownEvent) {
+                          if (response != null && response.spot != null) {
+                            final index = response.spot!.touchedBarGroupIndex;
+                            final isPrimary =
+                                response.spot!.touchedRodDataIndex == 0;
+                            final sectionName =
+                                index >= 0 ? data[index].title : null;
+                            onTapSection!(sectionName, isPrimary);
+                          } else {
+                            onTapSection!(null);
+                          }
+                        }
+                      },
+                    ),
+                    gridData: const FlGridData(show: false),
+                  ),
+                  swapAnimationDuration: transitionDuration,
+                  swapAnimationCurve: Curves.easeInOutBack,
                 ),
-                touchCallback: (event, response) {
-                  if (event.isInterestedForInteractions &&
-                      onTapSection != null &&
-                      event.runtimeType == FlTapDownEvent) {
-                    if (response != null && response.spot != null) {
-                      final index = response.spot!.touchedBarGroupIndex;
-                      final isPrimary = response.spot!.touchedRodDataIndex == 0;
-                      final sectionName = index >= 0 ? data[index].title : null;
-                      onTapSection!(sectionName, isPrimary);
-                    } else {
-                      onTapSection!(null);
-                    }
-                  }
-                },
               ),
-              gridData: const FlGridData(show: false),
             ),
-            swapAnimationDuration: 250.ms,
-            swapAnimationCurve: Curves.easeInOutBack,
           ),
         ),
         Padding(

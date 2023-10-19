@@ -57,7 +57,7 @@ FutureOr<bool> hasGames(HasGamesRef ref) async {
 FutureOr<List<Game>> gamesFiltered(GamesFilteredRef ref) async {
   final games = await ref.watch(gamesProvider.future);
 
-  final filteredGames = ref.watch(applyGameFiltersProvider(games));
+  final filteredGames = await ref.watch(applyGameFiltersProvider(games).future);
   final searchedGames = ref.watch(applyGameSearchProvider(filteredGames));
   final sortedGames =
       await ref.watch(applyGameSortingProvider(searchedGames).future);
