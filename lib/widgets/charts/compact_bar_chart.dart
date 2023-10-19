@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/chart_data.dart';
 import 'package:pile_of_shame/utils/color_utils.dart';
 
@@ -111,7 +112,8 @@ class CompactBarChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String totalLabel = "";
+    final l10n = AppLocalizations.of(context)!;
+    String totalLabel = l10n.totalN(formatData(defaultComputeSum(data)));
     try {
       final selected = data.singleWhere(
         (element) => element.isSelected,
