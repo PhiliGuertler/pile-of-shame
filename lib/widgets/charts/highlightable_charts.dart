@@ -9,18 +9,17 @@ mixin HighlightableChart<T extends StatefulWidget> on State<T> {
   String? highlightedLabel;
 
   void handleSectionChange(String? selection, [bool? isPrimary]) {
-    if (highlightedLabel == selection) {
+    final String? modifiedLabel = (isPrimary != null && selection != null)
+        ? "$selection-${isPrimary ? 'primary' : 'secondary'}"
+        : selection;
+
+    if (highlightedLabel == modifiedLabel) {
       setState(() {
         highlightedLabel = null;
       });
     } else {
       setState(() {
-        if (isPrimary != null) {
-          highlightedLabel =
-              "$selection-${isPrimary ? 'primary' : 'secondary'}";
-        } else {
-          highlightedLabel = selection;
-        }
+        highlightedLabel = modifiedLabel;
       });
     }
   }
