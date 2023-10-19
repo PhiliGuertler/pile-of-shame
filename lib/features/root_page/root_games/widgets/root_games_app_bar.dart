@@ -68,16 +68,19 @@ class _RootGamesAppBarState extends ConsumerState<RootGamesAppBar> {
                 );
               },
             ),
-      leading: Builder(
-        builder: (context) {
-          return IconButton(
-            key: const ValueKey("sort_games"),
-            icon: const Icon(Icons.sort),
-            onPressed: () {
-              Scaffold.of(context).openDrawer();
-            },
-          );
-        },
+      leading: Padding(
+        padding: const EdgeInsets.only(left: 8.0),
+        child: Builder(
+          builder: (context) {
+            return IconButton(
+              key: const ValueKey("sort_games"),
+              icon: const Icon(Icons.sort),
+              onPressed: () {
+                Scaffold.of(context).openDrawer();
+              },
+            );
+          },
+        ),
       ),
       actions: [
         IconButton(
@@ -94,37 +97,40 @@ class _RootGamesAppBarState extends ConsumerState<RootGamesAppBar> {
           icon: Icon(isSearchOpen ? Icons.search_off : Icons.search),
         ),
         isFilterActive.when(
-          data: (isFilterActive) => Builder(
-            builder: (context) {
-              Widget result = IconButton(
-                key: const ValueKey("filter_games"),
-                icon: const Icon(Icons.filter_alt),
-                color: isFilterActive
-                    ? Theme.of(context).colorScheme.primary
-                    : null,
-                onPressed: () {
-                  Scaffold.of(context).openEndDrawer();
-                },
-              );
-              if (isFilterActive) {
-                result = ClipRRect(
-                  borderRadius: BorderRadius.circular(16.0),
-                  child: ColoredBox(
-                    color: Theme.of(context).colorScheme.background,
-                    child: result,
-                  )
-                      .animate(
-                        onPlay: (controller) => controller.repeat(),
-                      )
-                      .shimmer(
-                        duration: 1500.ms,
-                        delay: 10.seconds,
-                        color: Theme.of(context).colorScheme.surfaceTint,
-                      ),
+          data: (isFilterActive) => Padding(
+            padding: const EdgeInsets.only(right: 8.0),
+            child: Builder(
+              builder: (context) {
+                Widget result = IconButton(
+                  key: const ValueKey("filter_games"),
+                  icon: const Icon(Icons.filter_alt),
+                  color: isFilterActive
+                      ? Theme.of(context).colorScheme.primary
+                      : null,
+                  onPressed: () {
+                    Scaffold.of(context).openEndDrawer();
+                  },
                 );
-              }
-              return result;
-            },
+                if (isFilterActive) {
+                  result = ClipRRect(
+                    borderRadius: BorderRadius.circular(16.0),
+                    child: ColoredBox(
+                      color: Theme.of(context).colorScheme.background,
+                      child: result,
+                    )
+                        .animate(
+                          onPlay: (controller) => controller.repeat(),
+                        )
+                        .shimmer(
+                          duration: 1500.ms,
+                          delay: 10.seconds,
+                          color: Theme.of(context).colorScheme.surfaceTint,
+                        ),
+                  );
+                }
+                return result;
+              },
+            ),
           ),
           error: (error, stackTrace) => const SizedBox(),
           loading: () => const SizedBox(),
