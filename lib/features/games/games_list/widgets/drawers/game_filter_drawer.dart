@@ -38,6 +38,7 @@ class GameFilterDrawer extends ConsumerWidget {
               ),
             ),
             isAnyFilterActive.when(
+              skipLoadingOnReload: true,
               data: (isAnyFilterActive) => isAnyFilterActive
                   ? SliverPadding(
                       padding: const EdgeInsets.symmetric(
