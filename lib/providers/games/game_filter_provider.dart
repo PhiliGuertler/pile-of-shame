@@ -2,158 +2,85 @@
 
 import 'package:pile_of_shame/models/age_restriction.dart';
 import 'package:pile_of_shame/models/game.dart';
+import 'package:pile_of_shame/models/game_filters.dart';
 import 'package:pile_of_shame/models/game_platforms.dart';
 import 'package:pile_of_shame/models/play_status.dart';
 import 'package:pile_of_shame/providers/games/game_platforms_provider.dart';
+import 'package:pile_of_shame/providers/mixins/persistable_mixin.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'game_filter_provider.g.dart';
 
 @Riverpod(keepAlive: true)
-class PlayStatusFilter extends _$PlayStatusFilter {
+class GameFilter extends _$GameFilter with Persistable {
+  static const String storageKey = "game-filters";
+
   @override
-  List<PlayStatus> build() {
-    return PlayStatus.values;
-  }
-
-  void setFilter(List<PlayStatus> filter) {
-    state = filter;
-  }
-}
-
-@Riverpod(keepAlive: true)
-class GamePlatformFamilyFilter extends _$GamePlatformFamilyFilter {
-  @override
-  List<GamePlatformFamily> build() {
-    return GamePlatformFamily.values;
-  }
-
-  Future<void> setFilter(List<GamePlatformFamily> filter) async {
-    final activePlatformFamilies =
-        await ref.read(activeGamePlatformFamiliesProvider.future);
-    if (activePlatformFamilies.every((element) => filter.contains(element))) {
-      state = GamePlatformFamily.values;
-    } else {
-      state = filter;
+  FutureOr<GameFilters> build() async {
+    final storedJSON = await loadFromStorage(storageKey);
+    if (storedJSON != null) {
+      return GameFilters.fromJson(storedJSON);
     }
-  }
-}
-
-@Riverpod(keepAlive: true)
-class GamePlatformFilter extends _$GamePlatformFilter {
-  @override
-  List<GamePlatform> build() {
-    return GamePlatform.values;
+    return const GameFilters();
   }
 
-  Future<void> setFilter(List<GamePlatform> filter) async {
-    final activePlatforms = await ref.read(activeGamePlatformsProvider.future);
-    if (activePlatforms.every((element) => filter.contains(element))) {
-      state = GamePlatform.values;
-    } else {
-      state = filter;
-    }
-  }
-}
-
-@Riverpod(keepAlive: true)
-class AgeRatingFilter extends _$AgeRatingFilter {
-  @override
-  List<USK> build() {
-    return USK.values;
-  }
-
-  void setFilter(List<USK> filter) {
-    state = filter;
-  }
-}
-
-@Riverpod(keepAlive: true)
-class FavoriteFilter extends _$FavoriteFilter {
-  @override
-  List<bool> build() {
-    return [true, false];
-  }
-
-  void setFilter(List<bool> filter) {
-    state = filter;
-  }
-}
-
-@Riverpod(keepAlive: true)
-class HasNotesFilter extends _$HasNotesFilter {
-  @override
-  List<bool> build() {
-    return [true, false];
-  }
-
-  void setFilter(List<bool> filter) {
-    state = filter;
-  }
-}
-
-@Riverpod(keepAlive: true)
-class HasDLCsFilter extends _$HasDLCsFilter {
-  @override
-  List<bool> build() {
-    return [true, false];
-  }
-
-  void setFilter(List<bool> filter) {
-    state = filter;
+  Future<void> setFilters(GameFilters filters) async {
+    state = await AsyncValue.guard(() async {
+      await persistJSON(storageKey, filters.toJson());
+      return filters;
+    });
   }
 }
 
 @riverpod
-bool isAnyFilterActive(IsAnyFilterActiveRef ref) {
-  final allPlatforms = ref.watch(activeGamePlatformsProvider).maybeWhen(
-        data: (data) => data,
-        orElse: () => GamePlatform.values,
-      );
-  final platformFilter = ref.watch(gamePlatformFilterProvider);
+FutureOr<bool> isAnyFilterActive(IsAnyFilterActiveRef ref) async {
+  final allPlatforms = await ref.watch(activeGamePlatformsProvider.future);
+  final allPlatformFamilies =
+      await ref.read(activeGamePlatformFamiliesProvider.future);
+
+  final filters = await ref.watch(gameFilterProvider.future);
+
   final bool isPlatformFilterActive =
-      !allPlatforms.every((element) => platformFilter.contains(element));
-  final platformFamilyFilter = ref.watch(gamePlatformFamilyFilterProvider);
-  final playStatusFilter = ref.watch(playStatusFilterProvider);
-  final ageRatingFilter = ref.watch(ageRatingFilterProvider);
-  final favoriteFilter = ref.watch(favoriteFilterProvider);
-  final hasNotesFilter = ref.watch(hasNotesFilterProvider);
-  final hasDLCsFilter = ref.watch(hasDLCsFilterProvider);
+      !allPlatforms.every((element) => filters.platforms.contains(element));
+  final bool isPlatformFamilyFilterActive = !allPlatformFamilies
+      .every((element) => filters.platformFamilies.contains(element));
 
   return isPlatformFilterActive ||
-      platformFamilyFilter.length < GamePlatformFamily.values.length ||
-      playStatusFilter.length < PlayStatus.values.length ||
-      ageRatingFilter.length < USK.values.length ||
-      favoriteFilter.length < 2 ||
-      hasNotesFilter.length < 2 ||
-      hasDLCsFilter.length < 2;
+      isPlatformFamilyFilterActive ||
+      filters.playstatuses.length < PlayStatus.values.length ||
+      filters.ageRatings.length < USK.values.length ||
+      filters.isFavorite.length < 2 ||
+      filters.hasNotes.length < 2 ||
+      filters.hasDLCs.length < 2;
 }
 
 @riverpod
-List<Game> applyGameFilters(ApplyGameFiltersRef ref, List<Game> games) {
-  final platformFilter = ref.watch(gamePlatformFilterProvider);
-  final allPlatforms = ref.watch(activeGamePlatformsProvider);
-  final allLogicalPlatforms = allPlatforms.maybeWhen(
-    data: (data) => data.length == platformFilter.length
-        ? GamePlatform.values
-        : platformFilter,
-    orElse: () => platformFilter,
-  );
-  final platformFamilyFilter = ref.watch(gamePlatformFamilyFilterProvider);
-  final playStatusFilter = ref.watch(playStatusFilterProvider);
-  final ageRatingFilter = ref.watch(ageRatingFilterProvider);
-  final favoriteFilter = ref.watch(favoriteFilterProvider);
-  final hasNotesFilter = ref.watch(hasNotesFilterProvider);
-  final hasDLCsFilter = ref.watch(hasDLCsFilterProvider);
+FutureOr<List<Game>> applyGameFilters(
+  ApplyGameFiltersRef ref,
+  List<Game> games,
+) async {
+  final filters = await ref.watch(gameFilterProvider.future);
+
+  final allPlatforms = await ref.watch(activeGamePlatformsProvider.future);
+  final logicalPlatforms = allPlatforms.length == filters.platforms.length
+      ? GamePlatform.values
+      : filters.platforms;
+  final allPlatformFamilies =
+      await ref.watch(activeGamePlatformFamiliesProvider.future);
+  final logicalPlatformFamilies =
+      allPlatformFamilies.length == filters.platformFamilies.length
+          ? GamePlatformFamily.values
+          : filters.platformFamilies;
 
   final result = games.where((Game game) {
-    return allLogicalPlatforms.contains(game.platform) &&
-        platformFamilyFilter.contains(game.platform.family) &&
-        playStatusFilter.contains(game.status) &&
-        ageRatingFilter.contains(game.usk) &&
-        favoriteFilter.contains(game.isFavorite) &&
-        hasNotesFilter.contains(game.notes != null && game.notes!.isNotEmpty) &&
-        hasDLCsFilter.contains(game.dlcs.isNotEmpty);
+    return logicalPlatforms.contains(game.platform) &&
+        logicalPlatformFamilies.contains(game.platform.family) &&
+        filters.playstatuses.contains(game.status) &&
+        filters.ageRatings.contains(game.usk) &&
+        filters.isFavorite.contains(game.isFavorite) &&
+        filters.hasNotes
+            .contains(game.notes != null && game.notes!.isNotEmpty) &&
+        filters.hasDLCs.contains(game.dlcs.isNotEmpty);
   }).toList();
 
   return result;

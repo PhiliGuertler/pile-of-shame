@@ -6,6 +6,7 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:pile_of_shame/models/database.dart';
 import 'package:pile_of_shame/models/game.dart';
+import 'package:pile_of_shame/models/game_filters.dart';
 import 'package:pile_of_shame/models/game_platforms.dart';
 import 'package:pile_of_shame/models/game_sorting.dart';
 import 'package:pile_of_shame/providers/database/database_file_provider.dart';
@@ -231,9 +232,11 @@ void main() {
         {},
       );
 
-      container
-          .read(gamePlatformFilterProvider.notifier)
-          .setFilter([GamePlatform.gog, GamePlatform.playStation4]);
+      await container.read(gameFilterProvider.notifier).setFilters(
+            const GameFilters(
+              platforms: [GamePlatform.gog, GamePlatform.playStation4],
+            ),
+          );
 
       final List<Game> games =
           await container.read(gamesFilteredProvider.future);
@@ -258,9 +261,11 @@ void main() {
               sortStrategy: SortStrategy.byPrice,
             ),
           );
-      container
-          .read(gamePlatformFilterProvider.notifier)
-          .setFilter([GamePlatform.gog, GamePlatform.playStation4]);
+      await container.read(gameFilterProvider.notifier).setFilters(
+            const GameFilters(
+              platforms: [GamePlatform.gog, GamePlatform.playStation4],
+            ),
+          );
 
       final List<Game> games =
           await container.read(gamesFilteredProvider.future);
@@ -297,9 +302,9 @@ void main() {
         {},
       );
 
-      container
-          .read(gamePlatformFilterProvider.notifier)
-          .setFilter([GamePlatform.gog]);
+      await container
+          .read(gameFilterProvider.notifier)
+          .setFilters(const GameFilters(platforms: [GamePlatform.gog]));
 
       final double totalPrice =
           await container.read(gamesFilteredTotalPriceProvider.future);
@@ -330,8 +335,8 @@ void main() {
       );
 
       container
-          .read(gamePlatformFilterProvider.notifier)
-          .setFilter([GamePlatform.gog]);
+          .read(gameFilterProvider.notifier)
+          .setFilters(const GameFilters(platforms: [GamePlatform.gog]));
 
       final int totalPrice =
           await container.read(gamesFilteredTotalAmountProvider.future);

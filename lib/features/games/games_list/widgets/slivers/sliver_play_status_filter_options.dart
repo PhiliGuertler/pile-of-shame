@@ -4,35 +4,46 @@ import 'package:pile_of_shame/features/games/games_list/widgets/slivers/sliver_f
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/play_status.dart';
 import 'package:pile_of_shame/providers/games/game_filter_provider.dart';
+import 'package:pile_of_shame/widgets/skeletons/skeleton_list_tile.dart';
 
 class SliverPlayStatusFilterOptions extends ConsumerWidget {
   const SliverPlayStatusFilterOptions({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final playStatusFilter = ref.watch(playStatusFilterProvider);
+    final filters = ref.watch(gameFilterProvider);
 
-    return SliverFilters<PlayStatus>(
-      title: AppLocalizations.of(context)!.status,
-      selectedValues: playStatusFilter,
-      options: PlayStatus.values,
-      onSelectAll: (value) {
-        if (value) {
-          ref
-              .read(playStatusFilterProvider.notifier)
-              .setFilter(PlayStatus.values);
-        } else {
-          ref.read(playStatusFilterProvider.notifier).setFilter([]);
-        }
-      },
-      optionBuilder: (option, onChanged) => CheckboxListTile(
-        title: Text(option.toLocaleString(AppLocalizations.of(context)!)),
-        value: playStatusFilter.contains(option),
-        onChanged: (value) {
-          ref
-              .read(playStatusFilterProvider.notifier)
-              .setFilter(onChanged(value));
+    return filters.when(
+      data: (filters) => SliverFilters<PlayStatus>(
+        title: AppLocalizations.of(context)!.status,
+        selectedValues: filters.playstatuses,
+        options: PlayStatus.values,
+        onSelectAll: (value) {
+          if (value) {
+            ref
+                .read(gameFilterProvider.notifier)
+                .setFilters(filters.copyWith(playstatuses: PlayStatus.values));
+          } else {
+            ref
+                .read(gameFilterProvider.notifier)
+                .setFilters(filters.copyWith(playstatuses: []));
+          }
         },
+        optionBuilder: (option, onChanged) => CheckboxListTile(
+          title: Text(option.toLocaleString(AppLocalizations.of(context)!)),
+          value: filters.playstatuses.contains(option),
+          onChanged: (value) {
+            ref
+                .read(gameFilterProvider.notifier)
+                .setFilters(filters.copyWith(playstatuses: onChanged(value)));
+          },
+        ),
+      ),
+      error: (error, stackTrace) => SliverToBoxAdapter(
+        child: Text(error.toString()),
+      ),
+      loading: () => const SliverToBoxAdapter(
+        child: ListTileSkeleton(),
       ),
     );
   }

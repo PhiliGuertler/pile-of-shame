@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pile_of_shame/models/age_restriction.dart';
+import 'package:pile_of_shame/models/game_filters.dart';
 import 'package:pile_of_shame/models/game_platforms.dart';
 import 'package:pile_of_shame/models/play_status.dart';
 import 'package:pile_of_shame/providers/games/game_filter_provider.dart';
@@ -18,8 +19,12 @@ void main() {
     container = ProviderContainer(overrides: []);
   });
   group("isAnyFilterActiveProvider", () {
-    test("returns false by default if no filter is active", () {
-      final isFilterActive = container.read(isAnyFilterActiveProvider);
+    test("returns false by default if no filter is active", () async {
+      SharedPreferences.setMockInitialValues(
+        {},
+      );
+      final isFilterActive =
+          await container.read(isAnyFilterActiveProvider.future);
 
       expect(isFilterActive, false);
     });
@@ -29,10 +34,11 @@ void main() {
           {},
         );
         await container
-            .read(gamePlatformFilterProvider.notifier)
-            .setFilter([GamePlatform.epicGames]);
+            .read(gameFilterProvider.notifier)
+            .setFilters(const GameFilters(platforms: [GamePlatform.epicGames]));
 
-        final isFilterActive = container.read(isAnyFilterActiveProvider);
+        final isFilterActive =
+            await container.read(isAnyFilterActiveProvider.future);
 
         expect(isFilterActive, true);
       });
@@ -49,10 +55,11 @@ void main() {
             .read(activeGamePlatformsProvider.notifier)
             .updatePlatforms(activePlatforms);
         await container
-            .read(gamePlatformFilterProvider.notifier)
-            .setFilter(activePlatforms);
+            .read(gameFilterProvider.notifier)
+            .setFilters(GameFilters(platforms: activePlatforms));
 
-        final isFilterActive = container.read(isAnyFilterActiveProvider);
+        final isFilterActive =
+            await container.read(isAnyFilterActiveProvider.future);
 
         expect(isFilterActive, false);
       });
@@ -73,10 +80,11 @@ void main() {
             List.from(GamePlatform.values);
         filterPlatforms.remove(GamePlatform.nintendoSwitch);
         await container
-            .read(gamePlatformFilterProvider.notifier)
-            .setFilter(filterPlatforms);
+            .read(gameFilterProvider.notifier)
+            .setFilters(GameFilters(platforms: filterPlatforms));
 
-        final isFilterActive = container.read(isAnyFilterActiveProvider);
+        final isFilterActive =
+            await container.read(isAnyFilterActiveProvider.future);
 
         expect(isFilterActive, true);
       });
@@ -86,11 +94,14 @@ void main() {
         SharedPreferences.setMockInitialValues(
           {},
         );
-        await container
-            .read(gamePlatformFamilyFilterProvider.notifier)
-            .setFilter([GamePlatformFamily.nintendo]);
+        await container.read(gameFilterProvider.notifier).setFilters(
+              const GameFilters(
+                platformFamilies: [GamePlatformFamily.nintendo],
+              ),
+            );
 
-        final isFilterActive = container.read(isAnyFilterActiveProvider);
+        final isFilterActive =
+            await container.read(isAnyFilterActiveProvider.future);
 
         expect(isFilterActive, true);
       });
@@ -113,10 +124,11 @@ void main() {
             List.from(GamePlatformFamily.values);
         filter.remove(GamePlatformFamily.microsoft);
         await container
-            .read(gamePlatformFamilyFilterProvider.notifier)
-            .setFilter(filter);
+            .read(gameFilterProvider.notifier)
+            .setFilters(GameFilters(platformFamilies: filter));
 
-        final isFilterActive = container.read(isAnyFilterActiveProvider);
+        final isFilterActive =
+            await container.read(isAnyFilterActiveProvider.future);
 
         expect(isFilterActive, false);
       });
@@ -139,27 +151,32 @@ void main() {
             List.from(GamePlatformFamily.values);
         filter.remove(GamePlatformFamily.nintendo);
         await container
-            .read(gamePlatformFamilyFilterProvider.notifier)
-            .setFilter(filter);
+            .read(gameFilterProvider.notifier)
+            .setFilters(GameFilters(platformFamilies: filter));
 
-        final isFilterActive = container.read(isAnyFilterActiveProvider);
+        final isFilterActive =
+            await container.read(isAnyFilterActiveProvider.future);
 
         expect(isFilterActive, true);
       });
     });
-    test("returns true if a play status filter is active", () {
-      container
-          .read(playStatusFilterProvider.notifier)
-          .setFilter([PlayStatus.endlessGame]);
+    test("returns true if a play status filter is active", () async {
+      await container.read(gameFilterProvider.notifier).setFilters(
+            const GameFilters(playstatuses: [PlayStatus.endlessGame]),
+          );
 
-      final isFilterActive = container.read(isAnyFilterActiveProvider);
+      final isFilterActive =
+          await container.read(isAnyFilterActiveProvider.future);
 
       expect(isFilterActive, true);
     });
-    test("returns true if a age-rating filter is active", () {
-      container.read(ageRatingFilterProvider.notifier).setFilter([USK.usk12]);
+    test("returns true if a age-rating filter is active", () async {
+      await container
+          .read(gameFilterProvider.notifier)
+          .setFilters(const GameFilters(ageRatings: [USK.usk12]));
 
-      final isFilterActive = container.read(isAnyFilterActiveProvider);
+      final isFilterActive =
+          await container.read(isAnyFilterActiveProvider.future);
 
       expect(isFilterActive, true);
     });
@@ -168,9 +185,11 @@ void main() {
   group("applyGameFiltersProvider", () {
     test("correctly applies platform filters", () async {
       SharedPreferences.setMockInitialValues({});
-      await container
-          .read(gamePlatformFilterProvider.notifier)
-          .setFilter([GamePlatform.playStation2, GamePlatform.steam]);
+      await container.read(gameFilterProvider.notifier).setFilters(
+            const GameFilters(
+              platforms: [GamePlatform.playStation2, GamePlatform.steam],
+            ),
+          );
 
       final originalGames = [
         TestGames.gameOuterWilds,
@@ -179,7 +198,8 @@ void main() {
         TestGames.gameOriAndTheBlindForest,
       ];
 
-      final result = container.read(applyGameFiltersProvider(originalGames));
+      final result =
+          await container.read(applyGameFiltersProvider(originalGames).future);
 
       expect(result, [
         TestGames.gameOuterWilds,
@@ -189,9 +209,9 @@ void main() {
     });
     test("correctly applies platform family filters", () async {
       SharedPreferences.setMockInitialValues({});
-      await container
-          .read(gamePlatformFamilyFilterProvider.notifier)
-          .setFilter([GamePlatformFamily.sony]);
+      await container.read(gameFilterProvider.notifier).setFilters(
+            const GameFilters(platformFamilies: [GamePlatformFamily.sony]),
+          );
 
       final originalGames = [
         TestGames.gameOuterWilds,
@@ -200,7 +220,8 @@ void main() {
         TestGames.gameOriAndTheBlindForest,
       ];
 
-      final result = container.read(applyGameFiltersProvider(originalGames));
+      final result =
+          await container.read(applyGameFiltersProvider(originalGames).future);
 
       expect(result, [
         TestGames.gameSsx3,
@@ -208,9 +229,11 @@ void main() {
       ]);
     });
     test("correctly applies play status filters", () async {
-      container
-          .read(playStatusFilterProvider.notifier)
-          .setFilter([PlayStatus.completed, PlayStatus.onPileOfShame]);
+      await container.read(gameFilterProvider.notifier).setFilters(
+            const GameFilters(
+              playstatuses: [PlayStatus.completed, PlayStatus.onPileOfShame],
+            ),
+          );
 
       final originalGames = [
         TestGames.gameOuterWilds,
@@ -219,17 +242,18 @@ void main() {
         TestGames.gameOriAndTheBlindForest,
       ];
 
-      final result = container.read(applyGameFiltersProvider(originalGames));
+      final result =
+          await container.read(applyGameFiltersProvider(originalGames).future);
 
       expect(
         result,
         [TestGames.gameOuterWilds, TestGames.gameOriAndTheBlindForest],
       );
     });
-    test("correctly applies age rating filters", () {
-      container
-          .read(ageRatingFilterProvider.notifier)
-          .setFilter([USK.usk0, USK.usk6]);
+    test("correctly applies age rating filters", () async {
+      await container
+          .read(gameFilterProvider.notifier)
+          .setFilters(const GameFilters(ageRatings: [USK.usk0, USK.usk6]));
 
       final originalGames = [
         TestGames.gameOuterWilds,
@@ -238,21 +262,20 @@ void main() {
         TestGames.gameOriAndTheBlindForest,
       ];
 
-      final result = container.read(applyGameFiltersProvider(originalGames));
+      final result =
+          await container.read(applyGameFiltersProvider(originalGames).future);
 
       expect(result, [TestGames.gameDistance, TestGames.gameSsx3]);
     });
-    test("correctly applies multiple filters", () {
-      container.read(ageRatingFilterProvider.notifier).setFilter([USK.usk12]);
-      container
-          .read(gamePlatformFamilyFilterProvider.notifier)
-          .setFilter([GamePlatformFamily.sony]);
-      container
-          .read(gamePlatformFilterProvider.notifier)
-          .setFilter([GamePlatform.playStation4]);
-      container
-          .read(playStatusFilterProvider.notifier)
-          .setFilter([PlayStatus.onPileOfShame]);
+    test("correctly applies multiple filters", () async {
+      await container.read(gameFilterProvider.notifier).setFilters(
+            const GameFilters(
+              ageRatings: [USK.usk12],
+              platformFamilies: [GamePlatformFamily.sony],
+              platforms: [GamePlatform.playStation4],
+              playstatuses: [PlayStatus.onPileOfShame],
+            ),
+          );
 
       final originalGames = [
         TestGames.gameOuterWilds,
@@ -261,7 +284,8 @@ void main() {
         TestGames.gameOriAndTheBlindForest,
       ];
 
-      final result = container.read(applyGameFiltersProvider(originalGames));
+      final result =
+          await container.read(applyGameFiltersProvider(originalGames).future);
 
       expect(result, [TestGames.gameOriAndTheBlindForest]);
     });
