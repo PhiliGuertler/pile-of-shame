@@ -112,6 +112,7 @@ class LibraryScreen extends ConsumerWidget {
             Padding(
               padding: const EdgeInsets.only(top: 16.0),
               child: ParallaxImageCard(
+                key: const ValueKey("library_analytics"),
                 imagePath: ImageAssets.library.value,
                 title: AppLocalizations.of(context)!.gameLibrary,
                 openBuilderOnTap: (context, openContainer) =>

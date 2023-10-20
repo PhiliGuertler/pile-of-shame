@@ -42,7 +42,10 @@ class HardwareScreen extends ConsumerWidget {
                                   right: defaultPaddingX,
                                   top: 16.0,
                                 ),
-                                child: HardwareDisplay(platform: e),
+                                child: HardwareDisplay(
+                                  key: ValueKey("hardware-${e.abbreviation}"),
+                                  platform: e,
+                                ),
                               ),
                             )
                             .toList(),

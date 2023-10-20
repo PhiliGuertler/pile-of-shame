@@ -55,3 +55,4 @@ secrets/
 **/*.freezed.dart
 **/*.mocks.dart
 /test/coverage_helper_test.dart
+/test/generate_screenshots/goldens/

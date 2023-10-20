@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pile_of_shame/utils/constants.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class SlideExpandable extends ConsumerStatefulWidget {
   final String imagePath;
@@ -28,15 +29,30 @@ class _SlideExpandableState extends ConsumerState<SlideExpandable>
   late AnimationController controller;
   bool isAnimationForward = true;
 
+  late Animation<double> animation;
+
+  late VoidCallback animationListener;
+
   @override
   void initState() {
     super.initState();
     controller = AnimationController(vsync: this, duration: 400.ms);
+
+    final Animation<double> curve = CurvedAnimation(
+      parent: controller,
+      curve: Curves.fastEaseInToSlowEaseOut,
+    );
+    animationListener = () {
+      setState(() {});
+    };
+    animation = Tween<double>(begin: 0, end: 1).animate(curve)
+      ..addListener(animationListener);
   }
 
   @override
   void dispose() {
     controller.dispose();
+    animation.removeListener(animationListener);
     super.dispose();
   }
 
@@ -107,19 +123,6 @@ class _SlideExpandableState extends ConsumerState<SlideExpandable>
                     .withOpacity(0.3),
                 child: LayoutBuilder(
                   builder: (context, constraints) {
-                    final Animation<double> curve = CurvedAnimation(
-                      parent: controller,
-                      curve: Curves.fastEaseInToSlowEaseOut,
-                    );
-                    final animation =
-                        Tween<double>(begin: constraints.maxWidth, end: 80)
-                            .animate(curve)
-                          ..addListener(() {
-                            setState(() {
-                              // The state that has changed here is the animation object's value.
-                            });
-                          });
-
                     return Stack(
                       children: [
                         Row(
@@ -168,7 +171,8 @@ class _SlideExpandableState extends ConsumerState<SlideExpandable>
                           ],
                         ),
                         SizedBox(
-                          width: animation.value,
+                          width: (animation.value * 80) +
+                              ((1 - animation.value) * constraints.maxWidth),
                           height: 80,
                           child: ClipRRect(
                             borderRadius: const BorderRadius.only(
@@ -177,12 +181,15 @@ class _SlideExpandableState extends ConsumerState<SlideExpandable>
                               bottomRight: Radius.circular(30.0),
                               topRight: Radius.circular(12.0),
                             ),
-                            child: Image.asset(
-                              widget.imagePath,
-                              fit: BoxFit.cover,
+                            child: FadeInImage(
+                              fadeInDuration: 200.ms,
+                              fadeOutDuration: 200.ms,
                               width: double.infinity,
                               height: 80,
-                            ),
+                              fit: BoxFit.cover,
+                              placeholder: MemoryImage(kTransparentImage),
+                              image: AssetImage(widget.imagePath),
+                            ).animate(delay: 200.ms).fadeIn(),
                           ),
                         ),
                       ],
