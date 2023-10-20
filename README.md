@@ -78,6 +78,10 @@ npm run test-android
 You might have to adjust the config for your platform, as the name of the device/emulator is specified there.
 Have a look at [the Android config](./test/appium/configs/wdio.android.conf.js) and [the iOS config](./test/appium/configs/wdio.ios.conf.js).
 
+## Generating screenshots
+The testing library golden toolkit is used to auto-generate screenshots for the play store entry.
+Simply run `scripts/generate_screenshots.py` to re-generate them.
+
 ## Download the App
 
 <div style="width: 200px">
@@ -87,10 +91,13 @@ Have a look at [the Android config](./test/appium/configs/wdio.android.conf.js) 
 ## Screenshots
 
 <p align="center">
-    <img src="./android/fastlane/metadata/android/en-US/images/phoneScreenshots/1_en-US.jpg" width="300">
-    <img src="./android/fastlane/metadata/android/en-US/images/phoneScreenshots/2_en-US.jpg" width="300">
+    <img src="./android/fastlane/metadata/android/en-US/images/phoneScreenshots/1_en-US.png" width="300">
+    <img src="./android/fastlane/metadata/android/en-US/images/phoneScreenshots/2_en-US.png" width="300">
 </p>
 <p align="center">
-    <img src="./android/fastlane/metadata/android/en-US/images/phoneScreenshots/3_en-US.jpg" width="300">
-    <img src="./android/fastlane/metadata/android/en-US/images/phoneScreenshots/4_en-US.jpg" width="300">
+    <img src="./android/fastlane/metadata/android/en-US/images/phoneScreenshots/3_en-US.png" width="300">
+    <img src="./android/fastlane/metadata/android/en-US/images/phoneScreenshots/4_en-US.png" width="300">
+<p align="center">
+    <img src="./android/fastlane/metadata/android/en-US/images/phoneScreenshots/5_en-US.png" width="300">
+    <img src="./android/fastlane/metadata/android/en-US/images/phoneScreenshots/6_en-US.png" width="300">
 </p>
