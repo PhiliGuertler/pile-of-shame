@@ -21,7 +21,7 @@ jobs:
       - name: Fastlane - install fastlane
         run: bundle install
         working-directory: android
-      - name: Fastlane - promote internal to alpha
+      - name: Fastlane - promote beta to production
         run: bundle exec fastlane promote_beta_to_production
         working-directory: android
   build_and_attach_appbundle_to_release:
