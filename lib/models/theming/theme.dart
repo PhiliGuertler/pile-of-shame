@@ -53,7 +53,7 @@ class AppTheme with _$AppTheme {
     @Default(ThemeMode.system) ThemeMode themeMode,
     @Default(null) String? locale,
     @Default(Color(0xFF3B0000)) @ColorIntConv() Color primaryColor,
-    @Default(CurrencySymbols.coin) CurrencySymbols currency,
+    @Default(CurrencySymbols.euro) CurrencySymbols currency,
   }) = _AppTheme;
   const AppTheme._();
 
