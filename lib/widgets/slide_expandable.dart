@@ -28,15 +28,30 @@ class _SlideExpandableState extends ConsumerState<SlideExpandable>
   late AnimationController controller;
   bool isAnimationForward = true;
 
+  late Animation<double> animation;
+
+  late VoidCallback animationListener;
+
   @override
   void initState() {
     super.initState();
     controller = AnimationController(vsync: this, duration: 400.ms);
+
+    final Animation<double> curve = CurvedAnimation(
+      parent: controller,
+      curve: Curves.fastEaseInToSlowEaseOut,
+    );
+    animationListener = () {
+      setState(() {});
+    };
+    animation = Tween<double>(begin: 0, end: 1).animate(curve)
+      ..addListener(animationListener);
   }
 
   @override
   void dispose() {
     controller.dispose();
+    animation.removeListener(animationListener);
     super.dispose();
   }
 
@@ -107,19 +122,6 @@ class _SlideExpandableState extends ConsumerState<SlideExpandable>
                     .withOpacity(0.3),
                 child: LayoutBuilder(
                   builder: (context, constraints) {
-                    final Animation<double> curve = CurvedAnimation(
-                      parent: controller,
-                      curve: Curves.fastEaseInToSlowEaseOut,
-                    );
-                    final animation =
-                        Tween<double>(begin: constraints.maxWidth, end: 80)
-                            .animate(curve)
-                          ..addListener(() {
-                            setState(() {
-                              // The state that has changed here is the animation object's value.
-                            });
-                          });
-
                     return Stack(
                       children: [
                         Row(
@@ -168,7 +170,8 @@ class _SlideExpandableState extends ConsumerState<SlideExpandable>
                           ],
                         ),
                         SizedBox(
-                          width: animation.value,
+                          width: (animation.value * 80) +
+                              ((1 - animation.value) * constraints.maxWidth),
                           height: 80,
                           child: ClipRRect(
                             borderRadius: const BorderRadius.only(
