@@ -18,14 +18,15 @@ os.chdir('..')
 subprocess.run(['flutter', 'test', 'test/generate_screenshots/screenshot_generator.dart', '--update-goldens'], check=True, shell=True)
 
 locales = ['de-DE', 'en-US']
+sizes = [['android', 'phoneScreenshots'], ['android7inch', 'sevenInchScreenshots'], ['android10inch', 'tenInchScreenshots']]
 screens = ['game_list', 'add_game', 'game_details', 'hardware_list', 'library_list', 'analytics_all_list']
 
-def copyFiles(locale):
+def copyFiles(locale, prefix, target):
     sourceDir = './test/generate_screenshots/goldens/'
 
-    phonePrefix = 'android-dark-'+locale[:2]+'-'
+    phonePrefix = prefix+'-dark-'+locale[:2]+'-'
     fileSuffix = '.final.png'
-    targetDir = './android/fastlane/metadata/android/'+locale+'/images/phoneScreenshots/'
+    targetDir = './android/fastlane/metadata/android/'+locale+'/images/'+target+'/'
 
     counter = 1
     for screen in screens:
@@ -33,4 +34,5 @@ def copyFiles(locale):
         counter = counter + 1
 
 for locale in locales:
-    copyFiles(locale)
+    for size in sizes:
+        copyFiles(locale, size[0], size[1])
