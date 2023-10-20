@@ -51,6 +51,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   freezed: any
+  golden_toolkit: ^0.15.0
   json_serializable: any
   lint: ^2.1.2
   mockito: any
