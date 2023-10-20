@@ -180,6 +180,8 @@ class ScreenshotUtils {
     required AppTheme appTheme,
     required ProviderContainer container,
   }) async {
+    // Enable shadows
+    debugDisableShadows = false;
     final concatenatedName =
         "${screenSize.name}-${appTheme.themeMode.name}-${appTheme.locale}-$pageName";
 
