@@ -41,6 +41,7 @@ class GameAnalytics extends ConsumerWidget {
         EdgeInsets.only(left: 16.0, right: 16.0, top: 8.0, bottom: 8.0);
 
     return SlideExpandable(
+      key: const ValueKey("game_analytics"),
       imagePath: ImageAssets.controllerUnknown.value,
       title: Text(
         l10n.analyticsGames,
