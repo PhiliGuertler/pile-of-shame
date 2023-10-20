@@ -103,15 +103,36 @@ class ScreenshotUtils {
     required String pageName,
     required bool isFinal,
     required ScreenSizes size,
+    Future<void> Function(WidgetTester tester)? interactBeforeScreenshot,
   }) async {
     await tester.pumpWidgetBuilder(widget);
+
+    await tester.runAsync(() async {
+      for (final element in find.byType(Image).evaluate()) {
+        final Image widget = element.widget as Image;
+        final ImageProvider image = widget.image;
+        await precacheImage(image, element);
+        await tester.pumpAndSettle();
+      }
+    });
+
     await multiScreenGolden(
       tester,
       pageName,
       customPump: (tester) async {
+        await interactBeforeScreenshot?.call(tester);
         for (int i = 0; i < 20; ++i) {
           await tester.pump(const Duration(milliseconds: 300));
         }
+
+        await tester.runAsync(() async {
+          for (final element in find.byType(Image).evaluate()) {
+            final Image widget = element.widget as Image;
+            final ImageProvider image = widget.image;
+            await precacheImage(image, element);
+            await tester.pump(const Duration(milliseconds: 300));
+          }
+        });
       },
       devices: [
         Device(
@@ -179,6 +200,7 @@ class ScreenshotUtils {
     required ScreenSizes screenSize,
     required AppTheme appTheme,
     required ProviderContainer container,
+    Future<void> Function(WidgetTester tester)? interactBeforeScreenshot,
   }) async {
     // Enable shadows
     debugDisableShadows = false;
@@ -188,6 +210,7 @@ class ScreenshotUtils {
     await _takeScreenshot(
       tester: tester,
       isFinal: false,
+      interactBeforeScreenshot: interactBeforeScreenshot,
       widget: _getScreenWrapper(
         child: screen,
         appTheme: appTheme,

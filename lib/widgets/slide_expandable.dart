@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pile_of_shame/utils/constants.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class SlideExpandable extends ConsumerStatefulWidget {
   final String imagePath;
@@ -180,12 +181,15 @@ class _SlideExpandableState extends ConsumerState<SlideExpandable>
                               bottomRight: Radius.circular(30.0),
                               topRight: Radius.circular(12.0),
                             ),
-                            child: Image.asset(
-                              widget.imagePath,
-                              fit: BoxFit.cover,
+                            child: FadeInImage(
+                              fadeInDuration: 200.ms,
+                              fadeOutDuration: 200.ms,
                               width: double.infinity,
                               height: 80,
-                            ),
+                              fit: BoxFit.cover,
+                              placeholder: MemoryImage(kTransparentImage),
+                              image: AssetImage(widget.imagePath),
+                            ).animate(delay: 200.ms).fadeIn(),
                           ),
                         ),
                       ],

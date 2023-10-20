@@ -11,10 +11,12 @@ import 'package:pile_of_shame/features/games/add_or_edit_game/screens/add_or_edi
 import 'package:pile_of_shame/features/games/game_details/screens/game_details_screen.dart';
 import 'package:pile_of_shame/features/root_page/root_page.dart';
 import 'package:pile_of_shame/models/custom_game_display_settings.dart';
+import 'package:pile_of_shame/models/hardware.dart';
 import 'package:pile_of_shame/models/theming/theme.dart';
 import 'package:pile_of_shame/providers/database/database_file_provider.dart';
 import 'package:pile_of_shame/providers/file_provider.dart';
 import 'package:pile_of_shame/providers/games/game_provider.dart';
+import 'package:pile_of_shame/providers/hardware/hardware_provider.dart';
 import 'package:pile_of_shame/utils/file_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -63,6 +65,59 @@ void main() {
         hasGamesProvider.overrideWith((ref) => true),
         gamesFilteredTotalPriceProvider.overrideWith((ref) => 999),
         gamesFilteredTotalAmountProvider.overrideWith((ref) => 6),
+        hasHardwareProvider.overrideWith((ref) => true),
+        hardwarePlatformsProvider.overrideWith(
+          (ref) => [
+            TestGames.gameDarkSouls.platform,
+            TestGames.gameDistance.platform,
+            TestGames.gameSsx3.platform,
+          ],
+        ),
+        sortedHardwareByPlatformProvider(TestGames.gameDarkSouls.platform)
+            .overrideWith(
+          (ref) => [
+            VideoGameHardware(
+              id: "dark-souls",
+              name: "Console",
+              price: 499.95,
+              platform: TestGames.gameDarkSouls.platform,
+              lastModified: DateTime(2023),
+              createdAt: DateTime(2023),
+            ),
+          ],
+        ),
+        sortedHardwareByPlatformProvider(TestGames.gameSsx3.platform)
+            .overrideWith(
+          (ref) => [
+            VideoGameHardware(
+              id: "distance",
+              name: "Console",
+              price: 419.95,
+              platform: TestGames.gameDistance.platform,
+              lastModified: DateTime(2023),
+              createdAt: DateTime(2023),
+            ),
+          ],
+        ),
+        sortedHardwareByPlatformProvider(TestGames.gameSsx3.platform)
+            .overrideWith(
+          (ref) => [
+            VideoGameHardware(
+              id: "ssx",
+              name: "Console",
+              wasGifted: true,
+              platform: TestGames.gameSsx3.platform,
+              lastModified: DateTime(2023),
+              createdAt: DateTime(2023),
+            ),
+          ],
+        ),
+        hardwareTotalPriceByPlatformProvider(TestGames.gameDarkSouls.platform)
+            .overrideWith((provider) => 499.95),
+        hardwareTotalPriceByPlatformProvider(TestGames.gameDistance.platform)
+            .overrideWith((provider) => 419.95),
+        hardwareTotalPriceByPlatformProvider(TestGames.gameSsx3.platform)
+            .overrideWith((provider) => 0),
       ],
     );
 
@@ -150,6 +205,52 @@ void main() {
             tester: tester,
             pageName: pageName,
             screen: const RootPage(),
+            screenSize: screenSize,
+            appTheme: AppTheme(
+              locale: language.key,
+              themeMode: themeMode,
+            ),
+            description: language.value,
+            container: container,
+          );
+        }
+      }
+    }
+  });
+  testGoldens("Hardware list screen", (tester) async {
+    const String pageName = "hardware_list";
+
+    const languages = {
+      "de": "Behalte den Überblick über Deine Spielehardware",
+      "en": "Keep track of all your gaming hardware",
+    };
+
+    for (final language in languages.entries) {
+      for (final themeMode in themeModes) {
+        for (final screenSize in screenSizes) {
+          await ScreenshotUtils.takeDecoratedScreenshot(
+            tester: tester,
+            pageName: pageName,
+            screen: const RootPage(),
+            interactBeforeScreenshot: (tester) async {
+              for (int i = 0; i < 5; ++i) {
+                await tester.pump(const Duration(milliseconds: 300));
+              }
+              await tester.tap(find.byKey(const ValueKey("root_hardware")));
+              for (int i = 0; i < 5; ++i) {
+                await tester.pump(const Duration(milliseconds: 300));
+              }
+              await tester.tap(
+                find.byKey(
+                  ValueKey(
+                    "hardware-${TestGames.gameDarkSouls.platform.abbreviation}",
+                  ),
+                ),
+              );
+              for (int i = 0; i < 5; ++i) {
+                await tester.pump(const Duration(milliseconds: 300));
+              }
+            },
             screenSize: screenSize,
             appTheme: AppTheme(
               locale: language.key,
