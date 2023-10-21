@@ -29,6 +29,12 @@ enum ScreenSizes {
 class ScreenshotUtils {
   ScreenshotUtils._();
 
+  static Future<void> pumpIt(WidgetTester tester) async {
+    for (int i = 0; i < 50; ++i) {
+      await tester.pump(const Duration(seconds: 1));
+    }
+  }
+
   static ThemeData _createThemeData(ColorScheme colorScheme) => ThemeData(
         useMaterial3: true,
         colorScheme: colorScheme,
@@ -78,19 +84,7 @@ class ScreenshotUtils {
             ],
             locale: appTheme.locale != null ? Locale(appTheme.locale!) : null,
             supportedLocales: AppLocalizations.supportedLocales,
-            home: Builder(
-              builder: (context) {
-                return Column(
-                  children: [
-                    Container(
-                      height: 24,
-                      color: Theme.of(context).colorScheme.background,
-                    ),
-                    Expanded(child: child),
-                  ],
-                );
-              },
-            ),
+            home: child,
           );
         },
       ),
@@ -180,7 +174,14 @@ class ScreenshotUtils {
                     padding: const EdgeInsets.all(4.0),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(30.0),
-                      child: image,
+                      child: Column(
+                        children: [
+                          Container(
+                            height: 24.0,
+                          ),
+                          image,
+                        ],
+                      ),
                     ),
                   ),
                 ),

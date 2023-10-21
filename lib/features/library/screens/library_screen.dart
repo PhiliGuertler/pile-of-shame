@@ -38,6 +38,7 @@ class LibraryScreen extends ConsumerWidget {
             Padding(
               padding: const EdgeInsets.only(top: 16.0),
               child: ParallaxImageCard(
+                key: const ValueKey("library_playing"),
                 imageAsset: ImageAssets.controllerUnknown,
                 title: PlayStatus.playing.toLocaleString(l10n),
                 openBuilderOnTap: (context, openContainer) =>
@@ -52,6 +53,7 @@ class LibraryScreen extends ConsumerWidget {
             Padding(
               padding: const EdgeInsets.only(top: 16.0),
               child: ParallaxImageCard(
+                key: const ValueKey("library_pile_of_shame"),
                 imageAsset: ImageAssets.gamePile,
                 title: PlayStatus.onPileOfShame.toLocaleString(l10n),
                 openBuilderOnTap: (context, openContainer) =>
@@ -65,6 +67,7 @@ class LibraryScreen extends ConsumerWidget {
             Padding(
               padding: const EdgeInsets.only(top: 16.0),
               child: ParallaxImageCard(
+                key: const ValueKey("library_on_wish_list"),
                 imageAsset: ImageAssets.list,
                 title: PlayStatus.onWishList.toLocaleString(l10n),
                 openBuilderOnTap: (context, openContainer) =>
@@ -78,6 +81,7 @@ class LibraryScreen extends ConsumerWidget {
             Padding(
               padding: const EdgeInsets.only(top: 16.0),
               child: ParallaxImageCard(
+                key: const ValueKey("library_completed"),
                 imageAsset: ImageAssets.barChart,
                 title: PlayStatus.completed.toLocaleString(l10n),
                 openBuilderOnTap: (context, openContainer) =>
@@ -92,6 +96,7 @@ class LibraryScreen extends ConsumerWidget {
             Padding(
               padding: const EdgeInsets.only(top: 16.0),
               child: ParallaxImageCard(
+                key: const ValueKey("library_cancelled"),
                 imageAsset: ImageAssets.deadGame,
                 title: PlayStatus.cancelled.toLocaleString(l10n),
                 openBuilderOnTap: (context, openContainer) =>
