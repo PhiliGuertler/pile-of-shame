@@ -4,6 +4,7 @@ import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/assets.dart';
 import 'package:pile_of_shame/utils/constants.dart';
 import 'package:pile_of_shame/widgets/app_scaffold.dart';
+import 'package:pile_of_shame/widgets/fade_in_image_asset.dart';
 import 'package:pile_of_shame/widgets/image_container.dart';
 import 'package:pile_of_shame/widgets/segmented_action_card.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -44,8 +45,8 @@ class AboutScreen extends StatelessWidget {
                     if (context.mounted) {
                       showAboutDialog(
                         context: context,
-                        applicationIcon: ImageContainer(
-                          child: Image.asset(ImageAssets.appLogo.value),
+                        applicationIcon: const ImageContainer(
+                          child: FadeInImageAsset(asset: ImageAssets.appLogo),
                         ),
                         applicationName: info.appName,
                         applicationVersion:
@@ -54,11 +55,10 @@ class AboutScreen extends StatelessWidget {
                           ClipRRect(
                             borderRadius:
                                 BorderRadius.circular(defaultBorderRadius),
-                            child: SizedBox(
+                            child: const SizedBox(
                               height: 200,
-                              child: Image.asset(
-                                ImageAssets.loading.value,
-                                fit: BoxFit.cover,
+                              child: FadeInImageAsset(
+                                asset: ImageAssets.loading,
                               ),
                             ),
                           ),

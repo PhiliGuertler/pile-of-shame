@@ -34,19 +34,19 @@ class DLCDetailsScreen extends ConsumerWidget {
           onRefresh: () => ref.refresh(gamesProvider.future),
           child: dlc.when(
             skipLoadingOnReload: true,
-            loading: () => CustomScrollView(
-              physics: const NeverScrollableScrollPhysics(),
+            loading: () => const CustomScrollView(
+              physics: NeverScrollableScrollPhysics(),
               slivers: [
                 SliverFancyImageAppBar(
-                  imagePath: ImageAssets.loading.value,
+                  imageAsset: ImageAssets.loading,
                 ),
-                const SliverDLCDetailsSkeleton(),
+                SliverDLCDetailsSkeleton(),
               ],
             ),
             error: (error, stackTrace) => CustomScrollView(
               slivers: [
                 SliverFancyImageAppBar(
-                  imagePath: GamePlatform.unknown.controllerLogoPath,
+                  imageAsset: GamePlatform.unknown.controller,
                 ),
                 Text(error.toString()),
               ],
@@ -57,7 +57,7 @@ class DLCDetailsScreen extends ConsumerWidget {
               ),
               slivers: [
                 SliverFancyImageAppBar(
-                  imagePath: game.platform.controllerLogoPath,
+                  imageAsset: game.platform.controller,
                   actions: [
                     IconButton(
                       icon: const Icon(Icons.edit),

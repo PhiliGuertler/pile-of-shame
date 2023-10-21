@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pile_of_shame/models/assets.dart';
 import 'package:pile_of_shame/utils/constants.dart';
 import 'package:pile_of_shame/widgets/app_scaffold.dart';
+import 'package:pile_of_shame/widgets/fade_in_image_asset.dart';
 
 class DebugImageAssetsScreen extends StatelessWidget {
   const DebugImageAssetsScreen({super.key});
@@ -37,7 +38,7 @@ class DebugImageAssetsScreen extends StatelessWidget {
                     SizedBox(
                       width: double.infinity,
                       height: 300,
-                      child: Image.asset(asset.value),
+                      child: FadeInImageAsset(asset: asset),
                     ),
                   ],
                 );

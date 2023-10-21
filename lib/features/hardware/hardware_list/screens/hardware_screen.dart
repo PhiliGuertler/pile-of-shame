@@ -64,8 +64,8 @@ class HardwareScreen extends ConsumerWidget {
                       parent: AlwaysScrollableScrollPhysics(),
                     ),
                     slivers: [
-                      SliverFancyImageHeader(
-                        imagePath: ImageAssets.pc.value,
+                      const SliverFancyImageHeader(
+                        imageAsset: ImageAssets.pc,
                         height: 300,
                       ),
                       SliverToBoxAdapter(
@@ -88,15 +88,15 @@ class HardwareScreen extends ConsumerWidget {
             ),
           );
         },
-        loading: () => CustomScrollView(
+        loading: () => const CustomScrollView(
           slivers: [
-            SliverFancyImageHeader(imagePath: ImageAssets.loading.value),
+            SliverFancyImageHeader(imageAsset: ImageAssets.loading),
           ],
         ),
         error: (error, stackTrace) => CustomScrollView(
           slivers: [
-            SliverFancyImageHeader(
-              imagePath: ImageAssets.deadGame.value,
+            const SliverFancyImageHeader(
+              imageAsset: ImageAssets.deadGame,
               height: 300,
             ),
             SliverToBoxAdapter(

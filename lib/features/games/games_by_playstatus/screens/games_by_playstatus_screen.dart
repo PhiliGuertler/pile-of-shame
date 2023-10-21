@@ -138,7 +138,7 @@ class _GamesByPlaystatusScreenState
         slivers: [
           SliverFancyImageAppBar(
             title: Text(widget.playStatuses.first.toLocaleString(l10n)),
-            imagePath: playStatusToAsset(widget.playStatuses.first).value,
+            imageAsset: playStatusToAsset(widget.playStatuses.first),
             actions: [
               Builder(
                 builder: (context) {

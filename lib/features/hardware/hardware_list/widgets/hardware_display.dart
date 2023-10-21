@@ -52,7 +52,7 @@ class _HardwareDisplayState extends ConsumerState<HardwareDisplay>
         ref.watch(hardwareTotalPriceByPlatformProvider(widget.platform));
 
     return SlideExpandable(
-      imagePath: widget.platform.controllerLogoPath,
+      imageAsset: widget.platform.controller,
       title: Text(
         widget.platform.localizedAbbreviation(l10n),
       ),

@@ -35,7 +35,7 @@ class HardwareDetailsScreen extends ConsumerWidget {
             ),
             slivers: [
               SliverFancyImageAppBar(
-                imagePath: hardware.platform.controllerLogoPath,
+                imageAsset: hardware.platform.controller,
                 title: Text(hardware.name),
                 actions: [
                   IconButton(
@@ -134,19 +134,19 @@ class HardwareDetailsScreen extends ConsumerWidget {
               ),
             ],
           ),
-          loading: () => CustomScrollView(
-            physics: const NeverScrollableScrollPhysics(),
+          loading: () => const CustomScrollView(
+            physics: NeverScrollableScrollPhysics(),
             slivers: [
               SliverFancyImageAppBar(
-                imagePath: ImageAssets.loading.value,
+                imageAsset: ImageAssets.loading,
               ),
-              const SliverGameDetailsSkeleton(),
+              SliverGameDetailsSkeleton(),
             ],
           ),
           error: (error, stackTrace) => CustomScrollView(
             slivers: [
               SliverFancyImageAppBar(
-                imagePath: GamePlatform.unknown.controllerLogoPath,
+                imageAsset: GamePlatform.unknown.controller,
               ),
               SliverToBoxAdapter(
                 child: Text(error.toString()),

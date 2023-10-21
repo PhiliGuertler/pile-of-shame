@@ -1,18 +1,20 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
+import 'package:pile_of_shame/models/assets.dart';
 import 'package:pile_of_shame/utils/constants.dart';
+import 'package:pile_of_shame/widgets/fade_in_image_asset.dart';
 
 class ImageListTile extends StatelessWidget {
   const ImageListTile({
     super.key,
-    required this.imagePath,
+    required this.imageAsset,
     required this.heroTag,
     this.openBuilderOnTap,
     this.title,
     this.subtitle,
   });
 
-  final String imagePath;
+  final ImageAssets imageAsset;
   final String heroTag;
   final Widget? title;
   final Widget? subtitle;
@@ -74,9 +76,8 @@ class ImageListTile extends StatelessWidget {
                         bottomLeft: Radius.circular(15.0),
                         topLeft: Radius.circular(15.0),
                       ),
-                      child: Image.asset(
-                        imagePath,
-                        fit: BoxFit.cover,
+                      child: FadeInImageAsset(
+                        asset: imageAsset,
                       ),
                     ),
                   ),

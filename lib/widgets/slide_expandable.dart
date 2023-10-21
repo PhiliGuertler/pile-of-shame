@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pile_of_shame/models/assets.dart';
 import 'package:pile_of_shame/utils/constants.dart';
-import 'package:transparent_image/transparent_image.dart';
+import 'package:pile_of_shame/widgets/fade_in_image_asset.dart';
 
 class SlideExpandable extends ConsumerStatefulWidget {
-  final String imagePath;
+  final ImageAssets imageAsset;
   final Widget title;
   final Widget subtitle;
   final Widget trailing;
@@ -13,7 +14,7 @@ class SlideExpandable extends ConsumerStatefulWidget {
 
   const SlideExpandable({
     super.key,
-    required this.imagePath,
+    required this.imageAsset,
     required this.title,
     required this.subtitle,
     required this.trailing,
@@ -155,7 +156,9 @@ class _SlideExpandableState extends ConsumerState<SlideExpandable>
                                     ),
                                   ],
                                 ),
-                              ).animate().fadeIn(delay: 200.ms),
+                              )
+                                  .animate(target: isAnimationForward ? 0 : 1)
+                                  .fadeIn(delay: 200.ms),
                             ),
                             IntrinsicWidth(
                               child: Padding(
@@ -167,7 +170,9 @@ class _SlideExpandableState extends ConsumerState<SlideExpandable>
                                   child: widget.trailing,
                                 ),
                               ),
-                            ).animate().fadeIn(delay: 100.ms),
+                            )
+                                .animate(target: isAnimationForward ? 0 : 1)
+                                .fadeIn(delay: 100.ms),
                           ],
                         ),
                         SizedBox(
@@ -181,14 +186,9 @@ class _SlideExpandableState extends ConsumerState<SlideExpandable>
                               bottomRight: Radius.circular(30.0),
                               topRight: Radius.circular(12.0),
                             ),
-                            child: FadeInImage(
-                              fadeInDuration: 200.ms,
-                              fadeOutDuration: 200.ms,
-                              width: double.infinity,
+                            child: FadeInImageAsset(
+                              asset: widget.imageAsset,
                               height: 80,
-                              fit: BoxFit.cover,
-                              placeholder: MemoryImage(kTransparentImage),
-                              image: AssetImage(widget.imagePath),
                             ).animate(delay: 200.ms).fadeIn(),
                           ),
                         ),

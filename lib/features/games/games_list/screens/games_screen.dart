@@ -39,8 +39,8 @@ class GamesScreen extends ConsumerWidget {
                 : null,
             slivers: [
               if (!hasGames)
-                SliverFancyImageHeader(
-                  imagePath: ImageAssets.gamePile.value,
+                const SliverFancyImageHeader(
+                  imageAsset: ImageAssets.gamePile,
                   height: 300.0,
                 ),
               if (!hasGames)

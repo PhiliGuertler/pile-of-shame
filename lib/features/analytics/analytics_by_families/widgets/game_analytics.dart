@@ -42,7 +42,7 @@ class GameAnalytics extends ConsumerWidget {
 
     return SlideExpandable(
       key: const ValueKey("game_analytics"),
-      imagePath: ImageAssets.controllerUnknown.value,
+      imageAsset: ImageAssets.controllerUnknown,
       title: Text(
         l10n.analyticsGames,
       ),

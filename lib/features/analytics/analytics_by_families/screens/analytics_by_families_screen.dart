@@ -34,7 +34,7 @@ class AnalyticsByFamiliesScreen extends ConsumerWidget {
         ),
         slivers: [
           SliverFancyImageAppBar(
-            imagePath: family?.image.value ?? ImageAssets.library.value,
+            imageAsset: family?.image ?? ImageAssets.library,
             title: Text(
               family != null ? family!.toLocale(l10n) : l10n.gameLibrary,
             ),
@@ -51,14 +51,14 @@ class AnalyticsByFamiliesScreen extends ConsumerWidget {
                         ),
                       ]
                     : [
-                        SliverPadding(
-                          padding: const EdgeInsets.symmetric(
+                        const SliverPadding(
+                          padding: EdgeInsets.symmetric(
                             horizontal: defaultPaddingX,
                           ),
                           sliver: SliverOpacity(
                             opacity: 0.7,
                             sliver: SliverFancyImageHeader(
-                              imagePath: ImageAssets.pieChart.value,
+                              imageAsset: ImageAssets.pieChart,
                               height: 250,
                             ),
                           ),
@@ -122,7 +122,7 @@ class AnalyticsByFamiliesScreen extends ConsumerWidget {
                       return Padding(
                         padding: const EdgeInsets.only(bottom: 8.0),
                         child: ImageListTile(
-                          imagePath: platform.controllerLogoPath,
+                          imageAsset: platform.controller,
                           heroTag: group.key,
                           title: Text(platform.localizedName(l10n)),
                           subtitle: Text(l10n.nGames(group.value.length)),

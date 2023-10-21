@@ -34,8 +34,8 @@ class SettingsScreen extends ConsumerWidget {
       child: CustomScrollView(
         controller: scrollController,
         slivers: [
-          SliverFancyImageHeader(
-            imagePath: ImageAssets.gear.value,
+          const SliverFancyImageHeader(
+            imageAsset: ImageAssets.gear,
             height: 250,
           ),
           SliverToBoxAdapter(

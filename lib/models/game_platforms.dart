@@ -385,10 +385,6 @@ enum GamePlatform {
     required this.icon,
   });
 
-  String get iconPath => icon.value;
-
-  String get controllerLogoPath => controller.value;
-
   String localizedName(AppLocalizations l10n) {
     switch (this) {
       case GamePlatform.unknown:

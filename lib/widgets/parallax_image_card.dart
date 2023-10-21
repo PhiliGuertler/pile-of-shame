@@ -1,11 +1,13 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:pile_of_shame/models/assets.dart';
+import 'package:pile_of_shame/widgets/fade_in_image_asset.dart';
 
 class ParallaxBackground extends StatefulWidget {
-  const ParallaxBackground({super.key, required this.imagePath});
+  const ParallaxBackground({super.key, required this.imageAsset});
 
-  final String imagePath;
+  final ImageAssets imageAsset;
 
   @override
   State<ParallaxBackground> createState() => _ParallaxBackgroundState();
@@ -40,10 +42,9 @@ class _ParallaxBackgroundState extends State<ParallaxBackground> {
         previousScrollFraction: previousScrollFraction,
       ),
       children: [
-        Image.asset(
-          widget.imagePath,
+        FadeInImageAsset(
+          asset: widget.imageAsset,
           key: _backgroundImageKey,
-          fit: BoxFit.cover,
         ),
       ],
     );
@@ -53,10 +54,10 @@ class _ParallaxBackgroundState extends State<ParallaxBackground> {
 class ParallaxImage extends StatelessWidget {
   const ParallaxImage({
     super.key,
-    required this.imagePath,
+    required this.imageAsset,
   });
 
-  final String imagePath;
+  final ImageAssets imageAsset;
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +80,7 @@ class ParallaxImage extends StatelessWidget {
           topLeft: Radius.circular(16),
           topRight: Radius.circular(16),
         ),
-        child: ParallaxBackground(imagePath: imagePath),
+        child: ParallaxBackground(imageAsset: imageAsset),
       ),
     );
   }
@@ -88,12 +89,12 @@ class ParallaxImage extends StatelessWidget {
 class ParallaxImageCard extends StatelessWidget {
   const ParallaxImageCard({
     super.key,
-    required this.imagePath,
+    required this.imageAsset,
     required this.title,
     this.openBuilderOnTap,
   });
 
-  final String imagePath;
+  final ImageAssets imageAsset;
   final String title;
 
   /// Tap handler that triggers a transition to the returned widget of this function.
@@ -146,7 +147,7 @@ class ParallaxImageCard extends StatelessWidget {
             children: [
               AspectRatio(
                 aspectRatio: 16 / 9,
-                child: ParallaxImage(imagePath: imagePath),
+                child: ParallaxImage(imageAsset: imageAsset),
               ),
               ListTile(
                 title: Text(title),

@@ -41,21 +41,21 @@ class _GameDetailsScreenState extends ConsumerState<GameDetailsScreen> {
               slivers: [
                 SliverFancyImageAppBar(
                   key: const ValueKey('error-appbar'),
-                  imagePath: GamePlatform.unknown.controllerLogoPath,
+                  imageAsset: GamePlatform.unknown.controller,
                 ),
                 SliverToBoxAdapter(
                   child: Text(error.toString()),
                 ),
               ],
             ).animate().fadeIn(),
-            loading: () => CustomScrollView(
-              physics: const NeverScrollableScrollPhysics(),
+            loading: () => const CustomScrollView(
+              physics: NeverScrollableScrollPhysics(),
               slivers: [
                 SliverFancyImageAppBar(
-                  key: const ValueKey('loading-appbar'),
-                  imagePath: ImageAssets.loading.value,
+                  key: ValueKey('loading-appbar'),
+                  imageAsset: ImageAssets.loading,
                 ),
-                const SliverGameDetailsSkeleton(),
+                SliverGameDetailsSkeleton(),
               ],
             ).animate().fadeIn(duration: 1.seconds),
             data: (game) => CustomScrollView(
@@ -65,7 +65,7 @@ class _GameDetailsScreenState extends ConsumerState<GameDetailsScreen> {
               slivers: [
                 SliverFancyImageAppBar(
                   key: const ValueKey('appbar'),
-                  imagePath: game.platform.controllerLogoPath,
+                  imageAsset: game.platform.controller,
                   actions: [
                     IconButton(
                       icon: const Icon(Icons.edit),

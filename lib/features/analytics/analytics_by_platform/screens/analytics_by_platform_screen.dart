@@ -33,7 +33,7 @@ class AnalyticsByPlatformScreen extends ConsumerWidget {
         child: CustomNestedScrollView(
           headerSliverBuilder: (context, innerBoxIsScrolled) => [
             SliverFancyImageAppBar(
-              imagePath: platform.controllerLogoPath,
+              imageAsset: platform.controller,
               title: Text(
                 platform.localizedName(l10n),
               ),

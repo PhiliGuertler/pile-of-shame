@@ -15,12 +15,12 @@ extension LanguageName on Locale {
 }
 
 extension LanguageIcon on Locale {
-  String countryAssetPath() {
+  ImageAssets countryAsset() {
     switch (languageCode) {
       case 'en':
-        return ImageAssets.languageEnglish.value;
+        return ImageAssets.languageEnglish;
       case 'de':
-        return ImageAssets.languageGerman.value;
+        return ImageAssets.languageGerman;
     }
     throw Exception("Language '$languageCode' is not supported");
   }
