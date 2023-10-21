@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/models/game_platforms.dart';
-
+import 'package:pile_of_shame/widgets/fade_in_image_asset.dart';
 import 'package:pile_of_shame/widgets/image_container.dart';
 
 class GamePlatformIcon extends StatelessWidget {
@@ -20,10 +20,9 @@ class GamePlatformIcon extends StatelessWidget {
     return ImageContainer(
       child: Padding(
         padding: const EdgeInsets.all(4.0),
-        child: Image.asset(
-          platform.iconPath,
-          width: double.infinity,
-          height: double.infinity,
+        child: FadeInImageAsset(
+          asset: platform.icon,
+          fit: BoxFit.contain,
         ),
       ),
     );

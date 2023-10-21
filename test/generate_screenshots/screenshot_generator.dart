@@ -261,13 +261,9 @@ void main() {
             pageName: pageName,
             screen: const RootPage(),
             interactBeforeScreenshot: (tester) async {
-              for (int i = 0; i < 5; ++i) {
-                await tester.pump(const Duration(milliseconds: 300));
-              }
+              await ScreenshotUtils.pumpIt(tester);
               await tester.tap(find.byKey(const ValueKey("root_hardware")));
-              for (int i = 0; i < 5; ++i) {
-                await tester.pump(const Duration(milliseconds: 300));
-              }
+              await ScreenshotUtils.pumpIt(tester);
               await tester.tap(
                 find.byKey(
                   ValueKey(
@@ -275,9 +271,7 @@ void main() {
                   ),
                 ),
               );
-              for (int i = 0; i < 5; ++i) {
-                await tester.pump(const Duration(milliseconds: 300));
-              }
+              await ScreenshotUtils.pumpIt(tester);
             },
             screenSize: screenSize,
             appTheme: AppTheme(
@@ -307,13 +301,15 @@ void main() {
             pageName: pageName,
             screen: const RootPage(),
             interactBeforeScreenshot: (tester) async {
-              for (int i = 0; i < 5; ++i) {
-                await tester.pump(const Duration(milliseconds: 300));
-              }
+              await ScreenshotUtils.pumpIt(tester);
               await tester.tap(find.byKey(const ValueKey("root_library")));
-              for (int i = 0; i < 5; ++i) {
-                await tester.pump(const Duration(milliseconds: 300));
-              }
+              await ScreenshotUtils.pumpIt(tester);
+
+              await tester.scrollUntilVisible(
+                find.byKey(const ValueKey("library_pile_of_shame")),
+                200.0,
+              );
+              await ScreenshotUtils.pumpIt(tester);
             },
             screenSize: screenSize,
             appTheme: AppTheme(
@@ -343,35 +339,27 @@ void main() {
             pageName: pageName,
             screen: const RootPage(),
             interactBeforeScreenshot: (tester) async {
-              for (int i = 0; i < 5; ++i) {
-                await tester.pump(const Duration(milliseconds: 300));
-              }
+              await ScreenshotUtils.pumpIt(tester);
               await tester.tap(find.byKey(const ValueKey("root_library")));
-              for (int i = 0; i < 5; ++i) {
-                await tester.pump(const Duration(milliseconds: 300));
-              }
+              await ScreenshotUtils.pumpIt(tester);
 
               // open library analytics
               await tester.scrollUntilVisible(
                 find.byKey(const ValueKey("library_analytics")),
                 200.0,
               );
-              await tester.pump(const Duration(milliseconds: 300));
+              await ScreenshotUtils.pumpIt(tester);
               await tester.tap(find.byKey(const ValueKey("library_analytics")));
-              for (int i = 0; i < 5; ++i) {
-                await tester.pump(const Duration(milliseconds: 300));
-              }
+              await ScreenshotUtils.pumpIt(tester);
 
               // open game analytics of library
               await tester.scrollUntilVisible(
                 find.byKey(const ValueKey("game_analytics")),
                 100.0,
               );
-              await tester.pump(const Duration(milliseconds: 300));
+              await ScreenshotUtils.pumpIt(tester);
               await tester.tap(find.byKey(const ValueKey("game_analytics")));
-              for (int i = 0; i < 5; ++i) {
-                await tester.pump(const Duration(milliseconds: 300));
-              }
+              await ScreenshotUtils.pumpIt(tester);
 
               // scroll down a bit
               final gesture = await tester.startGesture(
@@ -379,7 +367,7 @@ void main() {
               ); //Position of the scrollview
               await gesture
                   .moveBy(const Offset(0, -600)); //How much to scroll by
-              await tester.pump();
+              await ScreenshotUtils.pumpIt(tester);
             },
             screenSize: screenSize,
             appTheme: AppTheme(

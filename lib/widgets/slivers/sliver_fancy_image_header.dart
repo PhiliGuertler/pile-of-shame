@@ -2,8 +2,9 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_animate/flutter_animate.dart';
+import 'package:pile_of_shame/models/assets.dart';
 import 'package:pile_of_shame/utils/constants.dart';
+import 'package:pile_of_shame/widgets/fade_in_image_asset.dart';
 
 class SliverFancyImageHeader extends StatelessWidget {
   final double stretchTriggerOffset;
@@ -11,7 +12,7 @@ class SliverFancyImageHeader extends StatelessWidget {
   final double minHeight;
   final double height;
   final List<StretchMode> stretchModes;
-  final String imagePath;
+  final ImageAssets imageAsset;
 
   const SliverFancyImageHeader({
     super.key,
@@ -22,14 +23,14 @@ class SliverFancyImageHeader extends StatelessWidget {
     this.stretchModes = const [
       StretchMode.zoomBackground,
     ],
-    required this.imagePath,
+    required this.imageAsset,
   });
 
   @override
   Widget build(BuildContext context) {
     return SliverPersistentHeader(
       delegate: _SliverFancyImageHeaderDelegate(
-        imagePath: imagePath,
+        imageAssets: imageAsset,
         height: height,
         minHeight: minHeight,
         stretchConfiguration: OverScrollHeaderStretchConfiguration(
@@ -46,10 +47,10 @@ class _SliverFancyImageHeaderDelegate extends SliverPersistentHeaderDelegate {
   final double minHeight;
   final double height;
   final List<StretchMode> stretchModes;
-  final String imagePath;
+  final ImageAssets imageAssets;
 
   const _SliverFancyImageHeaderDelegate({
-    required this.imagePath,
+    required this.imageAssets,
     required this.minHeight,
     required this.height,
     required this.stretchConfiguration,
@@ -73,10 +74,11 @@ class _SliverFancyImageHeaderDelegate extends SliverPersistentHeaderDelegate {
           stretchModes: stretchModes,
           background: SizedBox(
             height: math.max(height - shrinkOffset, minHeight),
-            child: Image.asset(
-              imagePath,
-              fit: BoxFit.cover,
-            ).animate(delay: 200.ms).fadeIn(),
+            child: FadeInImageAsset(
+              asset: imageAssets,
+              width: double.infinity,
+              height: double.infinity,
+            ),
           ),
         ),
       ),

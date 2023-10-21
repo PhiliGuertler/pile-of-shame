@@ -4,6 +4,7 @@ import 'package:pile_of_shame/extensions/locale_extensions.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/providers/theming/theme_provider.dart';
 import 'package:pile_of_shame/widgets/app_scaffold.dart';
+import 'package:pile_of_shame/widgets/fade_in_image_asset.dart';
 
 class LanguageScreen extends ConsumerWidget {
   const LanguageScreen({super.key});
@@ -31,7 +32,7 @@ class LanguageScreen extends ConsumerWidget {
                       child: SizedBox(
                         width: flagDimension,
                         height: flagDimension,
-                        child: Image.asset(locale.countryAssetPath()),
+                        child: FadeInImageAsset(asset: locale.countryAsset()),
                       ),
                     ),
                   ),

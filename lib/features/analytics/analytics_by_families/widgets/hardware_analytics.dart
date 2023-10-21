@@ -39,7 +39,7 @@ class HardwareAnalytics extends ConsumerWidget {
         EdgeInsets.only(left: 16.0, right: 16.0, top: 8.0, bottom: 8.0);
 
     return SlideExpandable(
-      imagePath: ImageAssets.pc.value,
+      imageAsset: ImageAssets.pc,
       title: Text(
         l10n.hardwareAnalytics,
       ),

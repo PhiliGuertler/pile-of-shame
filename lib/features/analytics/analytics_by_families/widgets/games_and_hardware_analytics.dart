@@ -55,7 +55,7 @@ class GamesAndHardwareAnalytics extends ConsumerWidget {
         EdgeInsets.only(left: 16.0, right: 16.0, top: 8.0, bottom: 8.0);
 
     return SlideExpandable(
-      imagePath: ImageAssets.pieChart.value,
+      imageAsset: ImageAssets.pieChart,
       title: Text(
         l10n.miscAnalytics,
       ),

@@ -38,7 +38,8 @@ class LibraryScreen extends ConsumerWidget {
             Padding(
               padding: const EdgeInsets.only(top: 16.0),
               child: ParallaxImageCard(
-                imagePath: ImageAssets.controllerUnknown.value,
+                key: const ValueKey("library_playing"),
+                imageAsset: ImageAssets.controllerUnknown,
                 title: PlayStatus.playing.toLocaleString(l10n),
                 openBuilderOnTap: (context, openContainer) =>
                     GamesByPlaystatusScreen(
@@ -52,7 +53,8 @@ class LibraryScreen extends ConsumerWidget {
             Padding(
               padding: const EdgeInsets.only(top: 16.0),
               child: ParallaxImageCard(
-                imagePath: ImageAssets.gamePile.value,
+                key: const ValueKey("library_pile_of_shame"),
+                imageAsset: ImageAssets.gamePile,
                 title: PlayStatus.onPileOfShame.toLocaleString(l10n),
                 openBuilderOnTap: (context, openContainer) =>
                     GamesByPlaystatusScreen(
@@ -65,7 +67,8 @@ class LibraryScreen extends ConsumerWidget {
             Padding(
               padding: const EdgeInsets.only(top: 16.0),
               child: ParallaxImageCard(
-                imagePath: ImageAssets.list.value,
+                key: const ValueKey("library_on_wish_list"),
+                imageAsset: ImageAssets.list,
                 title: PlayStatus.onWishList.toLocaleString(l10n),
                 openBuilderOnTap: (context, openContainer) =>
                     GamesByPlaystatusScreen(
@@ -78,7 +81,8 @@ class LibraryScreen extends ConsumerWidget {
             Padding(
               padding: const EdgeInsets.only(top: 16.0),
               child: ParallaxImageCard(
-                imagePath: ImageAssets.barChart.value,
+                key: const ValueKey("library_completed"),
+                imageAsset: ImageAssets.barChart,
                 title: PlayStatus.completed.toLocaleString(l10n),
                 openBuilderOnTap: (context, openContainer) =>
                     GamesByPlaystatusScreen(
@@ -92,7 +96,8 @@ class LibraryScreen extends ConsumerWidget {
             Padding(
               padding: const EdgeInsets.only(top: 16.0),
               child: ParallaxImageCard(
-                imagePath: ImageAssets.deadGame.value,
+                key: const ValueKey("library_cancelled"),
+                imageAsset: ImageAssets.deadGame,
                 title: PlayStatus.cancelled.toLocaleString(l10n),
                 openBuilderOnTap: (context, openContainer) =>
                     GamesByPlaystatusScreen(
@@ -113,7 +118,7 @@ class LibraryScreen extends ConsumerWidget {
               padding: const EdgeInsets.only(top: 16.0),
               child: ParallaxImageCard(
                 key: const ValueKey("library_analytics"),
-                imagePath: ImageAssets.library.value,
+                imageAsset: ImageAssets.library,
                 title: AppLocalizations.of(context)!.gameLibrary,
                 openBuilderOnTap: (context, openContainer) =>
                     const AnalyticsByFamiliesScreen(),
@@ -123,7 +128,7 @@ class LibraryScreen extends ConsumerWidget {
               Padding(
                 padding: const EdgeInsets.only(top: 16.0),
                 child: ParallaxImageCard(
-                  imagePath: family.image.value,
+                  imageAsset: family.image,
                   title: family.toLocale(AppLocalizations.of(context)!),
                   openBuilderOnTap: (context, openContainer) =>
                       AnalyticsByFamiliesScreen(family: family),
