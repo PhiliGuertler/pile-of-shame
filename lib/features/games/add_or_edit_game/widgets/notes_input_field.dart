@@ -17,6 +17,7 @@ class NotesInputField extends StatelessWidget {
       textInputAction: TextInputAction.newline,
       initialValue: value ?? '',
       onChanged: onChanged,
+      hasClearButton: true,
     );
   }
 }
