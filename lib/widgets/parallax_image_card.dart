@@ -91,11 +91,13 @@ class ParallaxImageCard extends StatelessWidget {
     super.key,
     required this.imageAsset,
     required this.title,
+    this.subtitle,
     this.openBuilderOnTap,
   });
 
   final ImageAssets imageAsset;
   final String title;
+  final String? subtitle;
 
   /// Tap handler that triggers a transition to the returned widget of this function.
   final Widget Function(BuildContext, void Function({Object? returnValue}))?
@@ -151,6 +153,7 @@ class ParallaxImageCard extends StatelessWidget {
               ),
               ListTile(
                 title: Text(title),
+                subtitle: subtitle != null ? Text(subtitle!) : null,
                 trailing: openBuilderOnTap != null
                     ? const Icon(Icons.navigate_next)
                     : null,
