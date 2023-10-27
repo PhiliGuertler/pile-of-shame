@@ -39,6 +39,48 @@ class GamesByPlayStatusSorter extends _$GamesByPlayStatusSorter
   }
 }
 
+@Riverpod(keepAlive: true)
+class FavoriteGamesSorter extends _$FavoriteGamesSorter with Persistable {
+  static const String storageKey = "favorite-games-sorter";
+
+  @override
+  FutureOr<GameSorting> build() async {
+    final storedJSON = await loadFromStorage(storageKey);
+    if (storedJSON != null) {
+      return GameSorting.fromJson(storedJSON);
+    }
+    return const GameSorting();
+  }
+
+  Future<void> setSorting(GameSorting sorting) async {
+    state = await AsyncValue.guard(() async {
+      await persistJSON(storageKey, sorting.toJson());
+      return sorting;
+    });
+  }
+}
+
+@Riverpod(keepAlive: true)
+class GamesWithNotesSorter extends _$GamesWithNotesSorter with Persistable {
+  static const String storageKey = "games-with-notes-sorter";
+
+  @override
+  FutureOr<GameSorting> build() async {
+    final storedJSON = await loadFromStorage(storageKey);
+    if (storedJSON != null) {
+      return GameSorting.fromJson(storedJSON);
+    }
+    return const GameSorting();
+  }
+
+  Future<void> setSorting(GameSorting sorting) async {
+    state = await AsyncValue.guard(() async {
+      await persistJSON(storageKey, sorting.toJson());
+      return sorting;
+    });
+  }
+}
+
 @riverpod
 Future<GameSorting> gameSortingByPlayStatus(
   GameSortingByPlayStatusRef ref,
@@ -60,6 +102,28 @@ Future<List<Game>> gamesByPlayStatusesSorted(
 
   final sorter =
       await ref.watch(gameSortingByPlayStatusProvider(statuses.first).future);
+
+  return SorterUtils.sortGames(games, sorter);
+}
+
+@riverpod
+Future<List<Game>> favoriteGamesSorted(
+  FavoriteGamesSortedRef ref,
+) async {
+  final games = await ref.watch(gamesByFavoritesProvider.future);
+
+  final sorter = await ref.watch(favoriteGamesSorterProvider.future);
+
+  return SorterUtils.sortGames(games, sorter);
+}
+
+@riverpod
+Future<List<Game>> gamesWithNotesSorted(
+  GamesWithNotesSortedRef ref,
+) async {
+  final games = await ref.watch(gamesWithNotesProvider.future);
+
+  final sorter = await ref.watch(gamesWithNotesSorterProvider.future);
 
   return SorterUtils.sortGames(games, sorter);
 }

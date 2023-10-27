@@ -47,6 +47,31 @@ FutureOr<List<Game>> gamesByPlayStatus(
 }
 
 @riverpod
+FutureOr<List<Game>> gamesByFavorites(
+  GamesByFavoritesRef ref,
+) async {
+  final games = await ref.watch(gamesProvider.future);
+
+  return games.where((element) => element.isFavorite).toList();
+}
+
+@riverpod
+FutureOr<List<Game>> gamesWithNotes(
+  GamesWithNotesRef ref,
+) async {
+  final games = await ref.watch(gamesProvider.future);
+
+  return games
+      .where(
+        (element) =>
+            (element.notes != null && element.notes!.isNotEmpty) ||
+            (element.dlcs
+                .any((dlc) => dlc.notes != null && dlc.notes!.isNotEmpty)),
+      )
+      .toList();
+}
+
+@riverpod
 FutureOr<bool> hasGames(HasGamesRef ref) async {
   final games = await ref.watch(gamesProvider.future);
 
