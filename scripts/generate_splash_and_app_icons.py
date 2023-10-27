@@ -16,5 +16,6 @@ os.chdir('..')
 
 # generate app icon
 subprocess.run(['dart', 'run', 'flutter_launcher_icons'], check=True, shell=True)
+shutil.copy('./assets/app/logo.png', './android/fastlane/metadata/android/de-DE/images/icon.png')
 # generate splash screens
 subprocess.run(['dart', 'run', 'flutter_native_splash:create'], check=True, shell=True)
