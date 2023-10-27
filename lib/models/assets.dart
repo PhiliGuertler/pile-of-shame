@@ -9,12 +9,14 @@ enum ImageAssets {
   // misc
   barChart(value: 'assets/misc/bar_chart.webp'),
   deadGame(value: 'assets/misc/dead_game.webp'),
+  favorite(value: 'assets/misc/favorite.webp'),
   gamePile(value: 'assets/misc/game_pile.webp'),
   gear(value: 'assets/misc/gear.webp'),
   library(value: 'assets/misc/library.webp'),
   list(value: 'assets/misc/list.webp'),
   loading(value: 'assets/misc/loading.webp'),
   monitor(value: 'assets/misc/monitor.webp'),
+  notes(value: 'assets/misc/notes.webp'),
   pc(value: 'assets/misc/pc.webp'),
   pieChart(value: 'assets/misc/pie_chart.webp'),
   // platform_families

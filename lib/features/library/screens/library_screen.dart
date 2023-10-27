@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pile_of_shame/features/analytics/analytics_by_families/screens/analytics_by_families_screen.dart';
+import 'package:pile_of_shame/features/games/games_by_playstatus/screens/favorite_games_screen.dart';
 import 'package:pile_of_shame/features/games/games_by_playstatus/screens/games_by_playstatus_screen.dart';
+import 'package:pile_of_shame/features/games/games_by_playstatus/screens/games_with_notes_screen.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/assets.dart';
 import 'package:pile_of_shame/models/game.dart';
@@ -17,6 +19,28 @@ int _countGamesForPlayStatus(List<Game> games, List<PlayStatus> statuses) {
     0,
     (previousValue, element) =>
         (statuses.contains(element.status) ? 1 : 0) + previousValue,
+  );
+}
+
+int _countFavoriteGames(List<Game> games) {
+  return games.fold<int>(
+    0,
+    (previousValue, element) => (element.isFavorite ? 1 : 0) + previousValue,
+  );
+}
+
+int _countGamesWithNotes(List<Game> games) {
+  return games.fold<int>(
+    0,
+    (previousValue, element) =>
+        (((element.notes != null && element.notes!.isNotEmpty) ||
+                (element.dlcs.any(
+                  (element) =>
+                      element.notes != null && element.notes!.isNotEmpty,
+                )))
+            ? 1
+            : 0) +
+        previousValue,
   );
 }
 
@@ -114,6 +138,21 @@ class LibraryScreen extends ConsumerWidget {
               Padding(
                 padding: const EdgeInsets.only(top: 16.0),
                 child: ParallaxImageCard(
+                  key: const ValueKey("library_favorites"),
+                  imageAsset: ImageAssets.favorite,
+                  title: l10n.favorites,
+                  subtitle: l10n.nGames(
+                    _countFavoriteGames(
+                      games,
+                    ),
+                  ),
+                  openBuilderOnTap: (context, openContainer) =>
+                      const FavoriteGamesScreen(),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 16.0),
+                child: ParallaxImageCard(
                   key: const ValueKey("library_completed"),
                   imageAsset: ImageAssets.barChart,
                   title: PlayStatus.completed.toLocaleString(l10n),
@@ -150,6 +189,21 @@ class LibraryScreen extends ConsumerWidget {
                       PlayStatus.cancelled,
                     ],
                   ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 16.0),
+                child: ParallaxImageCard(
+                  key: const ValueKey("library_with_notes"),
+                  imageAsset: ImageAssets.notes,
+                  title: l10n.gamesWithNotes,
+                  subtitle: l10n.nGames(
+                    _countGamesWithNotes(
+                      games,
+                    ),
+                  ),
+                  openBuilderOnTap: (context, openContainer) =>
+                      const GamesWithNotesScreen(),
                 ),
               ),
               Padding(
