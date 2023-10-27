@@ -196,7 +196,7 @@ class LibraryScreen extends ConsumerWidget {
                 child: ParallaxImageCard(
                   key: const ValueKey("library_with_notes"),
                   imageAsset: ImageAssets.notes,
-                  title: l10n.notes,
+                  title: l10n.gamesWithNotes,
                   subtitle: l10n.nGames(
                     _countGamesWithNotes(
                       games,

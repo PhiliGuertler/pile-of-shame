@@ -34,7 +34,7 @@ class GamesWithNotesScreen extends ConsumerWidget {
       onOrderChanged: onOrderChanged,
       onStrategyChanged: onStrategyChanged,
       imageAsset: ImageAssets.notes,
-      title: l10n.notes,
+      title: l10n.gamesWithNotes,
     );
   }
 }

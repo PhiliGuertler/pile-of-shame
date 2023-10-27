@@ -126,6 +126,7 @@
   "gamesInYourListThatAreOlderThanImportedGamesWillBeOverwritten": "Games/hardware in your database that are older than imported games/hardware will be overwritten.",
   "gamesThatAreNotInYourListWillBeImported": "Games/hardware that are not in your database will be imported.",
   "gamesVsHardware": "Games vs. Hardware",
+  "gamesWithNotes": "Games with notes",
   "gift": "Gift",
   "githubRepository": "Github repository",
   "groupGames": "Group games",

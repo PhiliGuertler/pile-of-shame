@@ -90,6 +90,7 @@
   "gamesInYourListThatAreOlderThanImportedGamesWillBeOverwritten": "Spiele/Hardware in Deiner Datenbank, die älter als importierte Spiele/Hardware sind, werden überschrieben.",
   "gamesThatAreNotInYourListWillBeImported": "Spiele/Hardware, die nicht in Deiner Datenbank sind, werden importiert.",
   "gamesVsHardware": "Spiele vs. Hardware",
+  "gamesWithNotes": "Spiele mit Notizen",
   "gift": "Geschenk",
   "githubRepository": "Github-Repository",
   "groupGames": "Spiele gruppieren",
