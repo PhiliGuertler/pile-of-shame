@@ -144,209 +144,220 @@ class _GameDisplayScreenState extends ConsumerState<GameDisplayScreen> {
               top: 8.0,
             ),
             sliver: SliverToBoxAdapter(
-              child: Text(
-                l10n.endPieces,
-                style: Theme.of(context).textTheme.headlineSmall,
-              ),
-            ),
-          ),
-          SliverPadding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: defaultPaddingX,
-              vertical: 16.0,
-            ),
-            sliver: SliverList.list(
-              children: [
-                Wrap(
-                  spacing: 8.0,
-                  runSpacing: 8.0,
-                  children: [
-                    DraggableGameDisplayLeadingTrailing(
-                      onDragStarted: onDragEndPiece,
-                      onDragEnded: onDragEndEndPiece,
-                      value: GameDisplayLeadingTrailing.ageRatingIcon,
-                      child: USKLogo.fromGame(game: exampleGame),
-                    ),
-                    DraggableGameDisplayLeadingTrailing(
-                      onDragStarted: onDragEndPiece,
-                      onDragEnded: onDragEndEndPiece,
-                      value: GameDisplayLeadingTrailing.platformIcon,
-                      child: GamePlatformIcon.fromGame(game: exampleGame),
-                    ),
-                    DraggableGameDisplayLeadingTrailing(
-                      onDragStarted: onDragEndPiece,
-                      onDragEnded: onDragEndEndPiece,
-                      value: GameDisplayLeadingTrailing.playStatusIcon,
-                      child: PlayStatusIcon.fromGame(game: exampleGame),
-                    ),
-                    DraggableGameDisplayLeadingTrailing(
-                      onDragStarted: onDragEndPiece,
-                      onDragEnded: onDragEndEndPiece,
-                      width: textSlotWidth + 8,
-                      value: GameDisplayLeadingTrailing.priceAndLastModified,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 8.0,
-                          vertical: 4.0,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 8.0),
+                          child: Text(
+                            l10n.endPieces,
+                            style: Theme.of(context).textTheme.headlineSmall,
+                            textAlign: TextAlign.start,
+                          ),
                         ),
-                        child: PriceAndLastModifiedDisplay.fromGame(
-                          game: exampleGame,
-                        ),
-                      ),
-                    ),
-                    DraggableGameDisplayLeadingTrailing(
-                      onDragStarted: onDragEndPiece,
-                      onDragEnded: onDragEndEndPiece,
-                      width: textSlotWidth + 8,
-                      value: GameDisplayLeadingTrailing.priceOnly,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 8.0,
-                          vertical: 4.0,
-                        ),
-                        child: PriceOnlyDisplay.fromGame(
-                          game: exampleGame,
-                        ),
-                      ),
-                    ),
-                    DraggableGameDisplayLeadingTrailing(
-                      onDragStarted: onDragEndPiece,
-                      onDragEnded: onDragEndEndPiece,
-                      width: textSlotWidth + 8,
-                      value: GameDisplayLeadingTrailing.lastModifiedOnly,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 8.0,
-                          vertical: 4.0,
-                        ),
-                        child: LastModifiedDisplay.fromGame(
-                          game: exampleGame,
-                        ),
-                      ),
-                    ),
-                    DraggableGameDisplayLeadingTrailing(
-                      onDragStarted: onDragEndPiece,
-                      onDragEnded: onDragEndEndPiece,
-                      value: GameDisplayLeadingTrailing.none,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.errorContainer,
-                          borderRadius: BorderRadius.circular(8.0),
-                        ),
-                        child: Icon(
-                          Icons.cancel,
-                          color: Theme.of(context).colorScheme.onErrorContainer,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-          SliverPadding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: defaultPaddingX,
-            ),
-            sliver: SliverToBoxAdapter(
-              child: Text(
-                l10n.bottomBars,
-                style: Theme.of(context).textTheme.headlineSmall,
-              ),
-            ),
-          ),
-          SliverPadding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: defaultPaddingX,
-              vertical: 16.0,
-            ),
-            sliver: SliverList.list(
-              children: [
-                Wrap(
-                  spacing: 8.0,
-                  runSpacing: 8.0,
-                  children: [
-                    DraggableGameDisplaySecondary(
-                      value: GameDisplaySecondary.ageRatingText,
-                      onDragStarted: onDragBottomBar,
-                      onDragEnded: onDragEndBottomBar,
-                      child: AgeRatingTextDisplay.fromGame(
-                        game: exampleGame,
-                      ),
-                    ),
-                    DraggableGameDisplaySecondary(
-                      value: GameDisplaySecondary.statusText,
-                      onDragStarted: onDragBottomBar,
-                      onDragEnded: onDragEndBottomBar,
-                      child: PlayStatusDisplay.fromGame(
-                        game: exampleGame,
-                      ),
-                    ),
-                    DraggableGameDisplaySecondary(
-                      value: GameDisplaySecondary.platformText,
-                      onDragStarted: onDragBottomBar,
-                      onDragEnded: onDragEndBottomBar,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 8.0,
-                          vertical: 4.0,
-                        ),
-                        child: Text(
-                          exampleGame.platform
-                              .localizedName(AppLocalizations.of(context)!),
-                        ),
-                      ),
-                    ),
-                    DraggableGameDisplaySecondary(
-                      value: GameDisplaySecondary.price,
-                      onDragStarted: onDragBottomBar,
-                      onDragEnded: onDragEndBottomBar,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 8.0,
-                          vertical: 4.0,
-                        ),
-                        child: Text(
-                          currencyFormatter.format(exampleGame.fullPrice()),
-                        ),
-                      ),
-                    ),
-                    DraggableGameDisplaySecondary(
-                      value: GameDisplaySecondary.none,
-                      onDragStarted: onDragBottomBar,
-                      onDragEnded: onDragEndBottomBar,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.errorContainer,
-                          borderRadius: BorderRadius.circular(8.0),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                        Wrap(
+                          spacing: 8.0,
+                          runSpacing: 8.0,
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.only(right: 8.0),
-                              child: Icon(
-                                Icons.cancel,
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .onErrorContainer,
+                            DraggableGameDisplayLeadingTrailing(
+                              onDragStarted: onDragEndPiece,
+                              onDragEnded: onDragEndEndPiece,
+                              value: GameDisplayLeadingTrailing.ageRatingIcon,
+                              child: USKLogo.fromGame(game: exampleGame),
+                            ),
+                            DraggableGameDisplayLeadingTrailing(
+                              onDragStarted: onDragEndPiece,
+                              onDragEnded: onDragEndEndPiece,
+                              value: GameDisplayLeadingTrailing.platformIcon,
+                              child:
+                                  GamePlatformIcon.fromGame(game: exampleGame),
+                            ),
+                            DraggableGameDisplayLeadingTrailing(
+                              onDragStarted: onDragEndPiece,
+                              onDragEnded: onDragEndEndPiece,
+                              value: GameDisplayLeadingTrailing.playStatusIcon,
+                              child: PlayStatusIcon.fromGame(game: exampleGame),
+                            ),
+                            DraggableGameDisplayLeadingTrailing(
+                              onDragStarted: onDragEndPiece,
+                              onDragEnded: onDragEndEndPiece,
+                              width: textSlotWidth + 8,
+                              value: GameDisplayLeadingTrailing
+                                  .priceAndLastModified,
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 8.0,
+                                  vertical: 4.0,
+                                ),
+                                child: PriceAndLastModifiedDisplay.fromGame(
+                                  game: exampleGame,
+                                ),
                               ),
                             ),
-                            Text(
-                              AppLocalizations.of(context)!.delete,
-                              style: TextStyle(
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .onErrorContainer,
+                            DraggableGameDisplayLeadingTrailing(
+                              onDragStarted: onDragEndPiece,
+                              onDragEnded: onDragEndEndPiece,
+                              width: textSlotWidth + 8,
+                              value: GameDisplayLeadingTrailing.priceOnly,
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 8.0,
+                                  vertical: 4.0,
+                                ),
+                                child: PriceOnlyDisplay.fromGame(
+                                  game: exampleGame,
+                                ),
+                              ),
+                            ),
+                            DraggableGameDisplayLeadingTrailing(
+                              onDragStarted: onDragEndPiece,
+                              onDragEnded: onDragEndEndPiece,
+                              width: textSlotWidth + 8,
+                              value:
+                                  GameDisplayLeadingTrailing.lastModifiedOnly,
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 8.0,
+                                  vertical: 4.0,
+                                ),
+                                child: LastModifiedDisplay.fromGame(
+                                  game: exampleGame,
+                                ),
+                              ),
+                            ),
+                            DraggableGameDisplayLeadingTrailing(
+                              onDragStarted: onDragEndPiece,
+                              onDragEnded: onDragEndEndPiece,
+                              value: GameDisplayLeadingTrailing.none,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .errorContainer,
+                                  borderRadius: BorderRadius.circular(8.0),
+                                ),
+                                child: Icon(
+                                  Icons.cancel,
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onErrorContainer,
+                                ),
                               ),
                             ),
                           ],
                         ),
-                      ),
+                      ],
                     ),
-                  ],
-                ),
-              ],
+                  ),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 8.0),
+                          child: Text(
+                            l10n.bottomBars,
+                            style: Theme.of(context).textTheme.headlineSmall,
+                          ),
+                        ),
+                        Wrap(
+                          spacing: 8.0,
+                          runSpacing: 8.0,
+                          children: [
+                            DraggableGameDisplaySecondary(
+                              value: GameDisplaySecondary.ageRatingText,
+                              onDragStarted: onDragBottomBar,
+                              onDragEnded: onDragEndBottomBar,
+                              child: AgeRatingTextDisplay.fromGame(
+                                game: exampleGame,
+                              ),
+                            ),
+                            DraggableGameDisplaySecondary(
+                              value: GameDisplaySecondary.statusText,
+                              onDragStarted: onDragBottomBar,
+                              onDragEnded: onDragEndBottomBar,
+                              child: PlayStatusDisplay.fromGame(
+                                game: exampleGame,
+                              ),
+                            ),
+                            DraggableGameDisplaySecondary(
+                              value: GameDisplaySecondary.platformText,
+                              onDragStarted: onDragBottomBar,
+                              onDragEnded: onDragEndBottomBar,
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 8.0,
+                                  vertical: 4.0,
+                                ),
+                                child: Text(
+                                  exampleGame.platform.localizedName(
+                                    AppLocalizations.of(context)!,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            DraggableGameDisplaySecondary(
+                              value: GameDisplaySecondary.price,
+                              onDragStarted: onDragBottomBar,
+                              onDragEnded: onDragEndBottomBar,
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 8.0,
+                                  vertical: 4.0,
+                                ),
+                                child: Text(
+                                  currencyFormatter
+                                      .format(exampleGame.fullPrice()),
+                                ),
+                              ),
+                            ),
+                            DraggableGameDisplaySecondary(
+                              value: GameDisplaySecondary.none,
+                              onDragStarted: onDragBottomBar,
+                              onDragEnded: onDragEndBottomBar,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .errorContainer,
+                                  borderRadius: BorderRadius.circular(8.0),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Padding(
+                                      padding:
+                                          const EdgeInsets.only(right: 8.0),
+                                      child: Icon(
+                                        Icons.cancel,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onErrorContainer,
+                                      ),
+                                    ),
+                                    Text(
+                                      AppLocalizations.of(context)!.delete,
+                                      style: TextStyle(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onErrorContainer,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
           SliverPadding(
