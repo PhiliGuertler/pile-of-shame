@@ -22,6 +22,45 @@ import 'package:pile_of_shame/widgets/skeletons/skeleton_image_container.dart';
 import 'package:pile_of_shame/widgets/swipe_to_trigger.dart';
 import 'package:pile_of_shame/widgets/usk_logo.dart';
 
+class LeadingTrailingGameDisplaySlot extends StatelessWidget {
+  const LeadingTrailingGameDisplaySlot({
+    super.key,
+    required this.game,
+    required this.variant,
+  });
+
+  final Game game;
+  final GameDisplayLeadingTrailing variant;
+
+  @override
+  Widget build(BuildContext context) {
+    switch (variant) {
+      case GameDisplayLeadingTrailing.ageRatingIcon:
+        return USKLogo.fromGame(game: game);
+      case GameDisplayLeadingTrailing.platformIcon:
+        return GamePlatformIcon.fromGame(game: game);
+      case GameDisplayLeadingTrailing.playStatusIcon:
+        return PlayStatusIcon.fromGame(
+          game: game,
+        );
+      case GameDisplayLeadingTrailing.priceAndLastModified:
+        return PriceAndLastModifiedDisplay.fromGame(
+          game: game,
+        );
+      case GameDisplayLeadingTrailing.priceOnly:
+        return PriceOnlyDisplay.fromGame(
+          game: game,
+        );
+      case GameDisplayLeadingTrailing.lastModifiedOnly:
+        return LastModifiedDisplay.fromGame(
+          game: game,
+        );
+      case GameDisplayLeadingTrailing.none:
+        return const Placeholder();
+    }
+  }
+}
+
 class CustomizableGameDisplay extends ConsumerWidget {
   final Game game;
   final VoidCallback onTap;
@@ -45,52 +84,22 @@ class CustomizableGameDisplay extends ConsumerWidget {
     settings.when(
       data: (settings) {
         switch (settings.leading) {
-          case GameDisplayLeadingTrailing.ageRatingIcon:
-            leadingWidget = USKLogo.fromGame(game: game);
-          case GameDisplayLeadingTrailing.platformIcon:
-            leadingWidget = GamePlatformIcon.fromGame(game: game);
-          case GameDisplayLeadingTrailing.playStatusIcon:
-            leadingWidget = PlayStatusIcon.fromGame(
-              game: game,
-            );
-          case GameDisplayLeadingTrailing.priceAndLastModified:
-            leadingWidget = PriceAndLastModifiedDisplay.fromGame(
-              game: game,
-            );
-          case GameDisplayLeadingTrailing.priceOnly:
-            leadingWidget = PriceOnlyDisplay.fromGame(
-              game: game,
-            );
-          case GameDisplayLeadingTrailing.lastModifiedOnly:
-            leadingWidget = LastModifiedDisplay.fromGame(
-              game: game,
-            );
           case GameDisplayLeadingTrailing.none:
             leadingWidget = null;
+          default:
+            leadingWidget = LeadingTrailingGameDisplaySlot(
+              game: game,
+              variant: settings.leading,
+            );
         }
         switch (settings.trailing) {
-          case GameDisplayLeadingTrailing.ageRatingIcon:
-            trailingWidget = USKLogo.fromGame(game: game);
-          case GameDisplayLeadingTrailing.platformIcon:
-            trailingWidget = GamePlatformIcon.fromGame(game: game);
-          case GameDisplayLeadingTrailing.playStatusIcon:
-            trailingWidget = PlayStatusIcon.fromGame(
-              game: game,
-            );
-          case GameDisplayLeadingTrailing.priceAndLastModified:
-            trailingWidget = PriceAndLastModifiedDisplay.fromGame(
-              game: game,
-            );
-          case GameDisplayLeadingTrailing.priceOnly:
-            trailingWidget = PriceOnlyDisplay.fromGame(
-              game: game,
-            );
-          case GameDisplayLeadingTrailing.lastModifiedOnly:
-            trailingWidget = LastModifiedDisplay.fromGame(
-              game: game,
-            );
           case GameDisplayLeadingTrailing.none:
             trailingWidget = null;
+          default:
+            trailingWidget = LeadingTrailingGameDisplaySlot(
+              game: game,
+              variant: settings.trailing,
+            );
         }
         switch (settings.secondary) {
           case GameDisplaySecondary.statusText:

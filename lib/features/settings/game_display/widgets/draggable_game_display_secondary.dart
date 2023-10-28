@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:pile_of_shame/features/settings/game_display/widgets/feedback_container.dart';
 import 'package:pile_of_shame/models/custom_game_display_settings.dart';
+import 'package:pile_of_shame/utils/constants.dart';
 
 class DraggableGameDisplaySecondary extends StatelessWidget {
-  static const double width = 175.0;
+  static const double width = 165.0;
 
   final GameDisplaySecondary value;
   final Widget child;
@@ -22,7 +23,7 @@ class DraggableGameDisplaySecondary extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: width,
-      height: 32.0,
+      height: secondaryHeight,
       child: Draggable<GameDisplaySecondary>(
         data: value,
         onDragStarted: onDragStarted,
