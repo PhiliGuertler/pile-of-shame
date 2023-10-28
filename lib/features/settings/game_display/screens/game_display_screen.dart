@@ -38,6 +38,8 @@ class _GameDisplayScreenState extends ConsumerState<GameDisplayScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     final settings = ref.watch(customizeGameDisplaysProvider);
     final currencyFormatter = ref.watch(currencyFormatProvider(context));
     final exampleGame = Game(
@@ -77,7 +79,7 @@ class _GameDisplayScreenState extends ConsumerState<GameDisplayScreen> {
 
     return AppScaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.gameDisplay),
+        title: Text(l10n.gameDisplay),
       ),
       body: CustomScrollView(
         slivers: [
@@ -88,7 +90,7 @@ class _GameDisplayScreenState extends ConsumerState<GameDisplayScreen> {
                 padding:
                     const EdgeInsets.symmetric(horizontal: defaultPaddingX),
                 child: Text(
-                  AppLocalizations.of(context)!.preview,
+                  l10n.preview,
                   style: Theme.of(context).textTheme.headlineSmall,
                 ),
               ),
@@ -102,8 +104,7 @@ class _GameDisplayScreenState extends ConsumerState<GameDisplayScreen> {
             ),
             sliver: SliverToBoxAdapter(
               child: Text(
-                AppLocalizations.of(context)!
-                    .personalizeTheGameDisplayByDraggingEndPiecesOrBottomBarsIntoThePreview,
+                l10n.personalizeTheGameDisplayByDraggingEndPiecesOrBottomBarsIntoThePreview,
               ),
             ),
           ),
@@ -141,21 +142,22 @@ class _GameDisplayScreenState extends ConsumerState<GameDisplayScreen> {
               left: defaultPaddingX,
               right: defaultPaddingX,
               top: 8.0,
-              bottom: 8.0,
             ),
             sliver: SliverToBoxAdapter(
               child: Text(
-                AppLocalizations.of(context)!.endPieces,
-                style: Theme.of(context).textTheme.bodyLarge,
+                l10n.endPieces,
+                style: Theme.of(context).textTheme.headlineSmall,
               ),
             ),
           ),
           SliverPadding(
-            padding: const EdgeInsets.symmetric(horizontal: 40.0),
+            padding: const EdgeInsets.symmetric(
+              horizontal: defaultPaddingX,
+              vertical: 16.0,
+            ),
             sliver: SliverList.list(
               children: [
                 Wrap(
-                  alignment: WrapAlignment.spaceEvenly,
                   spacing: 8.0,
                   runSpacing: 8.0,
                   children: [
@@ -180,7 +182,7 @@ class _GameDisplayScreenState extends ConsumerState<GameDisplayScreen> {
                     DraggableGameDisplayLeadingTrailing(
                       onDragStarted: onDragEndPiece,
                       onDragEnded: onDragEndEndPiece,
-                      width: 75.0,
+                      width: textSlotWidth + 8,
                       value: GameDisplayLeadingTrailing.priceAndLastModified,
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
@@ -195,7 +197,7 @@ class _GameDisplayScreenState extends ConsumerState<GameDisplayScreen> {
                     DraggableGameDisplayLeadingTrailing(
                       onDragStarted: onDragEndPiece,
                       onDragEnded: onDragEndEndPiece,
-                      width: 75.0,
+                      width: textSlotWidth + 8,
                       value: GameDisplayLeadingTrailing.priceOnly,
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
@@ -210,7 +212,7 @@ class _GameDisplayScreenState extends ConsumerState<GameDisplayScreen> {
                     DraggableGameDisplayLeadingTrailing(
                       onDragStarted: onDragEndPiece,
                       onDragEnded: onDragEndEndPiece,
-                      width: 75.0,
+                      width: textSlotWidth + 8,
                       value: GameDisplayLeadingTrailing.lastModifiedOnly,
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
@@ -243,26 +245,25 @@ class _GameDisplayScreenState extends ConsumerState<GameDisplayScreen> {
             ),
           ),
           SliverPadding(
-            padding: const EdgeInsets.only(
-              left: defaultPaddingX,
-              right: defaultPaddingX,
-              top: 16.0,
-              bottom: 8.0,
+            padding: const EdgeInsets.symmetric(
+              horizontal: defaultPaddingX,
             ),
             sliver: SliverToBoxAdapter(
               child: Text(
-                AppLocalizations.of(context)!.bottomBars,
-                style: Theme.of(context).textTheme.bodyLarge,
+                l10n.bottomBars,
+                style: Theme.of(context).textTheme.headlineSmall,
               ),
             ),
           ),
           SliverPadding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            padding: const EdgeInsets.symmetric(
+              horizontal: defaultPaddingX,
+              vertical: 16.0,
+            ),
             sliver: SliverList.list(
               children: [
                 Wrap(
-                  alignment: WrapAlignment.spaceAround,
-                  spacing: 4.0,
+                  spacing: 8.0,
                   runSpacing: 8.0,
                   children: [
                     DraggableGameDisplaySecondary(
@@ -355,7 +356,7 @@ class _GameDisplayScreenState extends ConsumerState<GameDisplayScreen> {
                 padding:
                     const EdgeInsets.symmetric(horizontal: defaultPaddingX),
                 child: Text(
-                  AppLocalizations.of(context)!.settings,
+                  l10n.settings,
                   style: Theme.of(context).textTheme.headlineSmall,
                 ),
               ),
@@ -371,7 +372,7 @@ class _GameDisplayScreenState extends ConsumerState<GameDisplayScreen> {
                         padding: EdgeInsets.only(left: 8.0, right: 16.0),
                         child: Icon(Icons.animation),
                       ),
-                      Text(AppLocalizations.of(context)!.fancyAnimations),
+                      Text(l10n.fancyAnimations),
                     ],
                   ),
                   value: settings.hasFancyAnimations,
@@ -392,7 +393,7 @@ class _GameDisplayScreenState extends ConsumerState<GameDisplayScreen> {
                         padding: EdgeInsets.only(left: 8.0, right: 16.0),
                         child: Icon(Icons.repeat),
                       ),
-                      Text(AppLocalizations.of(context)!.repeatAnimations),
+                      Text(l10n.repeatAnimations),
                     ],
                   ),
                   enabled: settings.hasFancyAnimations,

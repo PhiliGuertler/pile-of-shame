@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/providers/format_provider.dart';
+import 'package:pile_of_shame/utils/constants.dart';
 
 class PriceOnlyDisplay extends ConsumerWidget {
   final double price;
@@ -24,19 +25,22 @@ class PriceOnlyDisplay extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final currencyFormatter = ref.watch(currencyFormatProvider(context));
 
-    return DefaultTextStyle(
-      style: Theme.of(context).textTheme.labelSmall ?? const TextStyle(),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          if (wasGifted)
-            Icon(
-              Icons.cake_sharp,
-              color: Theme.of(context).colorScheme.primary,
-            ),
-          if (!wasGifted) Text(currencyFormatter.format(price)),
-        ],
+    return SizedBox(
+      width: textSlotWidth,
+      child: DefaultTextStyle(
+        style: Theme.of(context).textTheme.labelSmall ?? const TextStyle(),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            if (wasGifted)
+              Icon(
+                Icons.cake_sharp,
+                color: Theme.of(context).colorScheme.primary,
+              ),
+            if (!wasGifted) Text(currencyFormatter.format(price)),
+          ],
+        ),
       ),
     );
   }
