@@ -26,6 +26,12 @@ class DatabaseStorage {
     }
   }
 
+  Future<Database> readDatabaseFromBytes(List<int> bytes) async {
+    final fileContents = utf8.decode(bytes);
+    final json = jsonDecode(fileContents) as Map<String, dynamic>;
+    return DatabaseMigrator.loadAndMigrateGamesFromJson(json);
+  }
+
   Future<Database> readDatabaseFromFile(File inputFile) async {
     final fileContents = await inputFile.readAsString();
     final json = jsonDecode(fileContents) as Map<String, dynamic>;
