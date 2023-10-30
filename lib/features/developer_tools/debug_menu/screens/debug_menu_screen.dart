@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:pile_of_shame/api/google_drive_integration.dart';
 import 'package:pile_of_shame/features/developer_tools/debug_game_platform_icons/screens/debug_game_platform_icons_screen.dart';
 import 'package:pile_of_shame/utils/constants.dart';
 import 'package:pile_of_shame/widgets/app_scaffold.dart';
@@ -54,17 +53,6 @@ class DebugMenuScreen extends StatelessWidget {
                           MaterialPageRoute(
                             builder: (context) =>
                                 const DebugImageAssetsScreen(),
-                          ),
-                        );
-                      },
-                    ),
-                    SegmentedActionCardItem(
-                      leading: const Icon(Icons.image),
-                      title: const Text("Google Drive Test"),
-                      onTap: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => const TestGoogleAPIs(),
                           ),
                         );
                       },

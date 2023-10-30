@@ -1,3 +1,5 @@
+// ignore_for_file: use_setters_to_change_properties
+
 import "dart:io";
 
 import "package:extension_google_sign_in_as_googleapis_auth/extension_google_sign_in_as_googleapis_auth.dart";
@@ -6,10 +8,22 @@ import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:google_sign_in/google_sign_in.dart";
 import "package:googleapis/analytics/v3.dart";
 import "package:googleapis/drive/v3.dart" as google_drive;
-import "package:pile_of_shame/providers/database/database_file_provider.dart";
 import "package:pile_of_shame/providers/database/database_provider.dart";
-import "package:pile_of_shame/utils/constants.dart";
-import "package:pile_of_shame/widgets/app_scaffold.dart";
+import "package:riverpod_annotation/riverpod_annotation.dart";
+
+part 'google_drive_providers.g.dart';
+
+@Riverpod(keepAlive: true)
+class GoogleUser extends _$GoogleUser {
+  @override
+  GoogleSignInAccount? build() {
+    return null;
+  }
+
+  void setUser(GoogleSignInAccount? account) {
+    state = account;
+  }
+}
 
 class GoogleDriveSyncer {
   static const String remoteFileName = "pile-of-shame.json";
@@ -18,15 +32,28 @@ class GoogleDriveSyncer {
       "application/vnd.google-apps.folder";
 
   final GoogleSignIn _googleSignIn;
-  final WidgetRef ref;
+  final Ref ref;
 
   GoogleDriveSyncer({required this.ref})
       : _googleSignIn = GoogleSignIn(
           scopes: <String>[google_drive.DriveApi.driveFileScope],
-        );
+        ) {
+    // Try to sign in silently
+    _googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount? account) {
+      ref.read(googleUserProvider.notifier).setUser(account);
+    });
+    _googleSignIn.signInSilently();
+  }
+
+  Future<void> logIn() async {
+    await _googleSignIn.signIn();
+  }
+
+  Future<void> logOut() async {
+    await _googleSignIn.signOut();
+  }
 
   Future<google_drive.DriveApi> _prepareApiClient() async {
-    await _googleSignIn.signIn();
     final httpClient = (await _googleSignIn.authenticatedClient())!;
     return google_drive.DriveApi(httpClient);
   }
@@ -120,64 +147,12 @@ class GoogleDriveSyncer {
     final List<int> fileContent = await response.stream
         .reduce((previous, element) => [...previous, ...element]);
 
-    // TODO: Create a backup of the current list of games first
     final storage = ref.read(databaseStorageProvider);
     final database = await storage.readDatabaseFromBytes(fileContent);
     await storage.persistDatabase(database);
   }
 }
 
-class TestGoogleAPIs extends ConsumerWidget {
-  const TestGoogleAPIs({super.key});
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final GoogleDriveSyncer syncer = GoogleDriveSyncer(ref: ref);
-    final databaseFile = ref.watch(databaseFileProvider);
-
-    return AppScaffold(
-      appBar: AppBar(title: const Text("Google Drive Test")),
-      body: ListView(
-        children: [
-          const Text(
-            "TODO: Hier sollte das Google-Konto angezeigt werden, außerdem ein Button 'Ausloggen'/'Einloggen' je nach Login-Status",
-          ),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: defaultPaddingX),
-            child: Text(
-              "Deine synchronisierte Spiele-Datei wird in Deinem Google-Drive unter '${GoogleDriveSyncer.remoteDirectoryName}/${GoogleDriveSyncer.remoteFileName}' gespeichert.",
-            ),
-          ),
-          databaseFile.when(
-            data: (databaseFile) => ElevatedButton(
-              child: const Text("Upload Games to Google Drive"),
-              onPressed: () async {
-                await syncer.uploadFileToGoogleDrive(databaseFile);
-                if (context.mounted) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text("File uploaded successfully!"),
-                    ),
-                  );
-                }
-              },
-            ),
-            loading: () => const CircularProgressIndicator(),
-            error: (error, stackTrace) => Text(error.toString()),
-          ),
-          ElevatedButton(
-            onPressed: () async {
-              await syncer.downloadFileFromGoogleDrive();
-              if (context.mounted) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text("File downloaded successfully")),
-                );
-              }
-            },
-            child: const Text("Download google drive file"),
-          ),
-        ],
-      ),
-    );
-  }
-}
+@Riverpod(keepAlive: true)
+GoogleDriveSyncer googleDriveSyncer(GoogleDriveSyncerRef ref) =>
+    GoogleDriveSyncer(ref: ref);
