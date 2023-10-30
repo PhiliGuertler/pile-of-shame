@@ -1,5 +1,0 @@
-Version 1.1
-
-Dieses Update führt den Export/Import in Google Drive ein.
-
-Viel Spaß mit Pile of Shame!
