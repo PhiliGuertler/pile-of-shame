@@ -1,5 +1,8 @@
-Version 1.1
+Version 1.0
 
-This update introduces the import/export to Google Drive.
+Hello to Pile of Shame, an app to manage your game library!
+With version 1.0, the app has all the features that were intended for now.
+You can add, edit and delete games and hardware, as well as customize the interface as you like.
+There are also analytics on your games and gaming hardware in the "Library" section.
 
 Have fun with Pile of Shame!
