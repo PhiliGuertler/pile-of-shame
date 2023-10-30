@@ -7,6 +7,7 @@ import 'package:pile_of_shame/features/settings/appearance/screens/appearance_sc
 import 'package:pile_of_shame/features/settings/currency/screens/currency_screen.dart';
 import 'package:pile_of_shame/features/settings/export_games/screens/export_games_screen.dart';
 import 'package:pile_of_shame/features/settings/game_display/screens/game_display_screen.dart';
+import 'package:pile_of_shame/features/settings/google_drive/screens/google_drive_screen.dart';
 import 'package:pile_of_shame/features/settings/import_games/screens/import_games_screen.dart';
 import 'package:pile_of_shame/features/settings/language/screens/language_screen.dart';
 import 'package:pile_of_shame/features/settings/platforms/screens/platforms_screen.dart';
@@ -30,6 +31,8 @@ class SettingsScreen extends ConsumerWidget {
     final errorContainer = Theme.of(context).colorScheme.errorContainer;
     final onErrorContainer = Theme.of(context).colorScheme.onErrorContainer;
 
+    final l10n = AppLocalizations.of(context)!;
+
     return SafeArea(
       child: CustomScrollView(
         controller: scrollController,
@@ -47,7 +50,7 @@ class SettingsScreen extends ConsumerWidget {
                 bottom: 8.0,
               ),
               child: Text(
-                AppLocalizations.of(context)!.appSettings,
+                l10n.appSettings,
                 style: Theme.of(context).textTheme.titleLarge,
               ),
             ),
@@ -57,9 +60,8 @@ class SettingsScreen extends ConsumerWidget {
               items: [
                 SegmentedActionCardItem(
                   leading: const Icon(Icons.dark_mode),
-                  title: Text(AppLocalizations.of(context)!.appearance),
-                  subtitle:
-                      Text(AppLocalizations.of(context)!.comeToTheDarkSide),
+                  title: Text(l10n.appearance),
+                  subtitle: Text(l10n.comeToTheDarkSide),
                   onTap: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
@@ -70,9 +72,8 @@ class SettingsScreen extends ConsumerWidget {
                 ),
                 SegmentedActionCardItem(
                   leading: const Icon(Icons.translate),
-                  title: Text(AppLocalizations.of(context)!.language),
-                  subtitle:
-                      Text(AppLocalizations.of(context)!.languageSubtitle),
+                  title: Text(l10n.language),
+                  subtitle: Text(l10n.languageSubtitle),
                   onTap: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
@@ -83,9 +84,8 @@ class SettingsScreen extends ConsumerWidget {
                 ),
                 SegmentedActionCardItem(
                   leading: const Icon(Icons.currency_exchange),
-                  title: Text(AppLocalizations.of(context)!.currency),
-                  subtitle:
-                      Text(AppLocalizations.of(context)!.chooseACurrencySymbol),
+                  title: Text(l10n.currency),
+                  subtitle: Text(l10n.chooseACurrencySymbol),
                   onTap: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
@@ -96,9 +96,9 @@ class SettingsScreen extends ConsumerWidget {
                 ),
                 SegmentedActionCardItem(
                   leading: const Icon(Icons.sports_esports),
-                  title: Text(AppLocalizations.of(context)!.gameDisplay),
+                  title: Text(l10n.gameDisplay),
                   subtitle: Text(
-                    AppLocalizations.of(context)!.personalizeGameDisplays,
+                    l10n.personalizeGameDisplays,
                   ),
                   onTap: () {
                     Navigator.of(context).push(
@@ -110,9 +110,8 @@ class SettingsScreen extends ConsumerWidget {
                 ),
                 SegmentedActionCardItem(
                   leading: const Icon(Icons.videogame_asset),
-                  title: Text(AppLocalizations.of(context)!.yourPlatforms),
-                  subtitle:
-                      Text(AppLocalizations.of(context)!.selectYourPlatforms),
+                  title: Text(l10n.yourPlatforms),
+                  subtitle: Text(l10n.selectYourPlatforms),
                   onTap: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
@@ -123,7 +122,7 @@ class SettingsScreen extends ConsumerWidget {
                 ),
                 SegmentedActionCardItem(
                   leading: const Icon(Icons.info),
-                  title: Text(AppLocalizations.of(context)!.aboutThisApp),
+                  title: Text(l10n.aboutThisApp),
                   onTap: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
@@ -144,7 +143,7 @@ class SettingsScreen extends ConsumerWidget {
                 bottom: 8.0,
               ),
               child: Text(
-                AppLocalizations.of(context)!.importExport,
+                l10n.importExport,
                 style: Theme.of(context).textTheme.titleLarge,
               ),
             ),
@@ -166,9 +165,9 @@ class SettingsScreen extends ConsumerWidget {
                 ),
                 SegmentedActionCardItem(
                   leading: const Icon(Icons.file_download),
-                  title: Text(AppLocalizations.of(context)!.importDatabase),
+                  title: Text(l10n.importDatabase),
                   subtitle: Text(
-                    AppLocalizations.of(context)!.importDatabaseFromAJSONFile,
+                    l10n.importDatabaseFromAJSONFile,
                   ),
                   onTap: () {
                     Navigator.of(context).push(
@@ -180,9 +179,9 @@ class SettingsScreen extends ConsumerWidget {
                 ),
                 SegmentedActionCardItem(
                   leading: const Icon(Icons.file_upload),
-                  title: Text(AppLocalizations.of(context)!.exportDatabase),
+                  title: Text(l10n.exportDatabase),
                   subtitle: Text(
-                    AppLocalizations.of(context)!.exportDatabaseToAJSONFile,
+                    l10n.exportDatabaseToAJSONFile,
                   ),
                   onTap: () {
                     Navigator.of(context).push(
@@ -193,12 +192,26 @@ class SettingsScreen extends ConsumerWidget {
                   },
                 ),
                 SegmentedActionCardItem(
+                  leading: const Icon(Icons.cloud),
+                  title: Text(l10n.cloudBackup),
+                  subtitle: Text(
+                    l10n.uploadDatabaseToGoogleDrive,
+                  ),
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const GoogleDriveScreen(),
+                      ),
+                    );
+                  },
+                ),
+                SegmentedActionCardItem(
                   leading: Icon(
                     Icons.delete_forever,
                     color: onErrorContainer,
                   ),
                   title: Text(
-                    AppLocalizations.of(context)!.deleteDatabase,
+                    l10n.deleteDatabase,
                     style: TextStyle(color: onErrorContainer),
                   ),
                   trailing: Icon(
@@ -207,7 +220,7 @@ class SettingsScreen extends ConsumerWidget {
                   ),
                   tileColor: errorContainer,
                   subtitle: Text(
-                    AppLocalizations.of(context)!.thisActionCannotBeUndone,
+                    l10n.thisActionCannotBeUndone,
                     style: TextStyle(color: onErrorContainer),
                   ),
                   onTap: () async {
@@ -215,25 +228,23 @@ class SettingsScreen extends ConsumerWidget {
                       context: context,
                       builder: (context) => AlertDialog.adaptive(
                         title: Text(
-                          AppLocalizations.of(context)!
-                              .deleteAllGamesAndHardware,
+                          l10n.deleteAllGamesAndHardware,
                         ),
                         content: Text(
-                          AppLocalizations.of(context)!
-                              .thisActionCannotBeUndone,
+                          l10n.thisActionCannotBeUndone,
                         ),
                         actions: [
                           TextButton(
                             onPressed: () {
                               Navigator.of(context).pop(false);
                             },
-                            child: Text(AppLocalizations.of(context)!.cancel),
+                            child: Text(l10n.cancel),
                           ),
                           TextButton(
                             onPressed: () {
                               Navigator.of(context).pop(true);
                             },
-                            child: Text(AppLocalizations.of(context)!.yes),
+                            child: Text(l10n.yes),
                           ),
                         ],
                       ),
@@ -248,7 +259,7 @@ class SettingsScreen extends ConsumerWidget {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: Text(
-                              AppLocalizations.of(context)!.allGamesDeleted,
+                              l10n.allGamesDeleted,
                             ),
                           ),
                         );
