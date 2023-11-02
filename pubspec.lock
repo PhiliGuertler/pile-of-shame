@@ -125,10 +125,10 @@ packages:
     dependency: transitive
     description:
       name: built_value
-      sha256: a8de5955205b4d1dbbbc267daddf2178bd737e4bab8987c04a500478c9651e74
+      sha256: "723b4021e903217dfc445ec4cf5b42e27975aece1fc4ebbc1ca6329c2d9fb54e"
       url: "https://pub.dev"
     source: hosted
-    version: "8.6.3"
+    version: "8.7.0"
   characters:
     dependency: transitive
     description:
@@ -221,26 +221,26 @@ packages:
     dependency: "direct dev"
     description:
       name: custom_lint
-      sha256: "68671c7b9cad03029c0270119169e32e801f8d87cec00367f233f4408d8913bd"
+      sha256: f9a828b696930cf8307f9a3617b2b65c9b370e484dc845d69100cadb77506778
       url: "https://pub.dev"
     source: hosted
-    version: "0.5.5"
+    version: "0.5.6"
   custom_lint_builder:
     dependency: transitive
     description:
       name: custom_lint_builder
-      sha256: cdaa0174851ef27698a3b41a31c9e63bc0385fe399ae40ea7fb53edf03b0d043
+      sha256: c6f656a4d83385fc0656ae60410ed06bb382898c45627bfb8bbaa323aea97883
       url: "https://pub.dev"
     source: hosted
-    version: "0.5.5"
+    version: "0.5.6"
   custom_lint_core:
     dependency: transitive
     description:
       name: custom_lint_core
-      sha256: ae59cf9f211d22fe092ae1817243600ae7b5b815dc3b1985cefd7e5a9f41188c
+      sha256: e20a67737adcf0cf2465e734dd624af535add11f9edd1f2d444909b5b0749650
       url: "https://pub.dev"
     source: hosted
-    version: "0.5.5"
+    version: "0.5.6"
   custom_nested_scroll_view:
     dependency: "direct main"
     description:
@@ -381,10 +381,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_native_splash
-      sha256: "5bf4c3e5e5a0426c1e2fc8ca3555a9e617e76369c3442e1dae8385c7767ba97a"
+      sha256: d93394f22f73e810bda59e11ebe83329c5511d6460b6b7509c4e1f3c92d6d625
       url: "https://pub.dev"
     source: hosted
-    version: "2.3.4"
+    version: "2.3.5"
   flutter_plugin_android_lifecycle:
     dependency: transitive
     description:
@@ -397,10 +397,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_riverpod
-      sha256: bdba94be666ecb1beeb0f5a748d96cdd6a37215f27e6b48c7673b95cecb800c8
+      sha256: "305203d1578f6857675f9730568548b03900ce53afd319f4aa9d2fa943334dbe"
       url: "https://pub.dev"
     source: hosted
-    version: "2.4.4"
+    version: "2.4.5"
   flutter_sharing_intent:
     dependency: "direct main"
     description:
@@ -413,10 +413,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_slidable
-      sha256: cc4231579e3eae41ae166660df717f4bad1359c87f4a4322ad8ba1befeb3d2be
+      sha256: "19ed4813003a6ff4e9c6bcce37e792a2a358919d7603b2b31ff200229191e44c"
       url: "https://pub.dev"
     source: hosted
-    version: "3.0.0"
+    version: "3.0.1"
   flutter_sticky_header:
     dependency: "direct main"
     description:
@@ -492,10 +492,10 @@ packages:
     dependency: transitive
     description:
       name: hotreloader
-      sha256: "6c61cfa809dc9d35ab759c3a4fb96548d699103ee9c5b9412b90c8b770926da6"
+      sha256: "94ee21a60ea2836500799f3af035dc3212b1562027f1e0031c14e087f0231449"
       url: "https://pub.dev"
     source: hosted
-    version: "4.0.0"
+    version: "4.1.0"
   html:
     dependency: transitive
     description:
@@ -788,10 +788,10 @@ packages:
     dependency: transitive
     description:
       name: riverpod
-      sha256: "2af3d127a6e4e34b89b8f1f018086f5ded04b8e538174f0510bba3e4c0d878b1"
+      sha256: "2e84315036e64c59affaff7443dea51247bc2fe704461a32f26a27986fb63d55"
       url: "https://pub.dev"
     source: hosted
-    version: "2.4.4"
+    version: "2.4.5"
   riverpod_analyzer_utils:
     dependency: transitive
     description:
@@ -804,10 +804,10 @@ packages:
     dependency: "direct main"
     description:
       name: riverpod_annotation
-      sha256: "388b03ed91b8f5126318fa43221fe078ebc20c81523dec9fcb5237cb5431d4dd"
+      sha256: "9330309e4400f40e39a2a1d1c340e775d0fd23451cf2dd2286e03c7896fd2bd5"
       url: "https://pub.dev"
     source: hosted
-    version: "2.2.1"
+    version: "2.3.0"
   riverpod_generator:
     dependency: "direct dev"
     description:

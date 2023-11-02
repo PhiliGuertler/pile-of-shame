@@ -14,6 +14,9 @@ enum GamePlatformFamily {
   nintendo(image: ImageAssets.platformFamilyNintendo),
   pc(image: ImageAssets.platformFamilyPC),
   sega(image: ImageAssets.platformFamilySega),
+  atari(image: ImageAssets.platformFamilyAtari),
+  nokia(image: ImageAssets.platformFamilyNokia),
+  retro(image: ImageAssets.platformFamilyRetro),
   misc(image: ImageAssets.platformFamilyMisc),
   ;
 
@@ -29,6 +32,12 @@ enum GamePlatformFamily {
         return l10n.pc;
       case GamePlatformFamily.sega:
         return l10n.sega;
+      case GamePlatformFamily.atari:
+        return l10n.atari;
+      case GamePlatformFamily.nokia:
+        return l10n.nokia;
+      case GamePlatformFamily.retro:
+        return l10n.retro;
       case GamePlatformFamily.misc:
         return l10n.misc;
     }
@@ -259,7 +268,24 @@ enum GamePlatform {
     icon: ImageAssets.iconXBoxSeries,
   ),
   // #### SEGA ############################################################## //
+  // ### Handhelds ########################################################## //
+  segaGameGear(
+    family: GamePlatformFamily.sega,
+    name: "SEGA Game Gear",
+    abbreviation: "SGG",
+    type: GamePlatformType.handheld,
+    controller: ImageAssets.controllerSegaGameGear,
+    icon: ImageAssets.iconSegaGameGear,
+  ),
   // ### Stationaries ####################################################### //
+  segaMasterSystem(
+    family: GamePlatformFamily.sega,
+    name: "SEGA Master System",
+    abbreviation: "SMS",
+    type: GamePlatformType.stationary,
+    controller: ImageAssets.controllerSegaMasterSystem,
+    icon: ImageAssets.iconSegaMasterSystem,
+  ),
   segaMegaDrive(
     family: GamePlatformFamily.sega,
     name: "SEGA Mega Drive",
@@ -268,13 +294,21 @@ enum GamePlatform {
     controller: ImageAssets.controllerSegaMegaDrive,
     icon: ImageAssets.iconSegaMegaDrive,
   ),
-  segaGameGear(
+  segaMegaCD(
     family: GamePlatformFamily.sega,
-    name: "SEGA Game Gear",
-    abbreviation: "SGG",
-    type: GamePlatformType.handheld,
-    controller: ImageAssets.controllerSegaGameGear,
-    icon: ImageAssets.iconSegaGameGear,
+    name: "SEGA Mega CD",
+    abbreviation: "SCD",
+    type: GamePlatformType.stationary,
+    controller: ImageAssets.controllerSegaMegaCD,
+    icon: ImageAssets.iconSegaMegaCD,
+  ),
+  sega32x(
+    family: GamePlatformFamily.sega,
+    name: "SEGA 32X",
+    abbreviation: "32X",
+    type: GamePlatformType.stationary,
+    controller: ImageAssets.controllerSega32X,
+    icon: ImageAssets.iconSega32X,
   ),
   segaSaturn(
     family: GamePlatformFamily.sega,
@@ -291,6 +325,100 @@ enum GamePlatform {
     type: GamePlatformType.stationary,
     controller: ImageAssets.controllerSegaDreamcast,
     icon: ImageAssets.iconSegaDreamcast,
+  ),
+  // #### Atari ############################################################# //
+  // ### Stationaries ####################################################### //
+  atari2600(
+    family: GamePlatformFamily.atari,
+    name: "Atari 2600",
+    abbreviation: "A2600",
+    type: GamePlatformType.stationary,
+    controller: ImageAssets.controllerAtari2600,
+    icon: ImageAssets.iconAtari2600,
+  ),
+  atari5200(
+    family: GamePlatformFamily.atari,
+    name: "Atari 5200",
+    abbreviation: "A5200",
+    type: GamePlatformType.stationary,
+    controller: ImageAssets.controllerAtari5200,
+    icon: ImageAssets.iconAtari5200,
+  ),
+  atari7800(
+    family: GamePlatformFamily.atari,
+    name: "Atari 7800",
+    abbreviation: "A7800",
+    type: GamePlatformType.stationary,
+    controller: ImageAssets.controllerAtari7800,
+    icon: ImageAssets.iconAtari7800,
+  ),
+  atariJaguar(
+    family: GamePlatformFamily.atari,
+    name: "Atari Jaguar",
+    abbreviation: "Jaguar",
+    type: GamePlatformType.stationary,
+    controller: ImageAssets.controllerAtariJaguar,
+    icon: ImageAssets.iconAtariJaguar,
+  ),
+  // #### Nokia ############################################################# //
+  // ### Handhelds ########################################################## //
+  nokiaNGage(
+    family: GamePlatformFamily.nokia,
+    name: "Nokia N-Gage",
+    abbreviation: "N-Gage",
+    type: GamePlatformType.handheld,
+    controller: ImageAssets.controllerNokiaNGage,
+    icon: ImageAssets.iconNokiaNGage,
+  ),
+  // #### Retro ############################################################# //
+  // ### Stationaries ####################################################### //
+  retro3do(
+    family: GamePlatformFamily.retro,
+    name: "3DO",
+    abbreviation: "3DO",
+    type: GamePlatformType.stationary,
+    controller: ImageAssets.controllerRetro3DO,
+    icon: ImageAssets.iconRetro3DO,
+  ),
+  retroColecovision(
+    family: GamePlatformFamily.retro,
+    name: "Colecovision",
+    abbreviation: "Colecovision",
+    type: GamePlatformType.stationary,
+    controller: ImageAssets.controllerRetroColecovision,
+    icon: ImageAssets.iconRetroColecovision,
+  ),
+  retroIntellivision(
+    family: GamePlatformFamily.retro,
+    name: "Intellivision",
+    abbreviation: "Intellivision",
+    type: GamePlatformType.stationary,
+    controller: ImageAssets.controllerRetroIntellivision,
+    icon: ImageAssets.iconRetroIntellivision,
+  ),
+  retroMagnavoxOdyssey(
+    family: GamePlatformFamily.retro,
+    name: "Magnavox Odyssey",
+    abbreviation: "MO",
+    type: GamePlatformType.stationary,
+    controller: ImageAssets.controllerRetroMagnavoxOdyssey,
+    icon: ImageAssets.iconRetroMagnavoxOdyssey,
+  ),
+  retroNeoGeo(
+    family: GamePlatformFamily.retro,
+    name: "Neo Geo",
+    abbreviation: "NG",
+    type: GamePlatformType.stationary,
+    controller: ImageAssets.controllerRetroNeoGeo,
+    icon: ImageAssets.iconRetroNeoGeo,
+  ),
+  retroPhilipsCDi(
+    family: GamePlatformFamily.retro,
+    name: "Philips CDi",
+    abbreviation: "CDi",
+    type: GamePlatformType.stationary,
+    controller: ImageAssets.controllerRetroPhilipsCDi,
+    icon: ImageAssets.iconRetroPhilipsCDi,
   ),
   // #### PC ################################################################ //
   // ### Stationaries ####################################################### //
