@@ -294,6 +294,14 @@ enum GamePlatform {
     controller: ImageAssets.controllerSegaMegaDrive,
     icon: ImageAssets.iconSegaMegaDrive,
   ),
+  segaMegaCD(
+    family: GamePlatformFamily.sega,
+    name: "SEGA Mega CD",
+    abbreviation: "SCD",
+    type: GamePlatformType.stationary,
+    controller: ImageAssets.controllerSegaMegaCD,
+    icon: ImageAssets.iconSegaMegaCD,
+  ),
   sega32x(
     family: GamePlatformFamily.sega,
     name: "SEGA 32X",
@@ -309,14 +317,6 @@ enum GamePlatform {
     type: GamePlatformType.stationary,
     controller: ImageAssets.controllerSegaSaturn,
     icon: ImageAssets.iconSegaSaturn,
-  ),
-  segaMegaCD(
-    family: GamePlatformFamily.sega,
-    name: "SEGA Mega CD",
-    abbreviation: "SCD",
-    type: GamePlatformType.stationary,
-    controller: ImageAssets.controllerSegaMegaCD,
-    icon: ImageAssets.iconSegaMegaCD,
   ),
   segaDreamcast(
     family: GamePlatformFamily.sega,

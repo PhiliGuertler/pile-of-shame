@@ -142,10 +142,30 @@ void main() {
           GamePlatform.xboxSeries,
         ],
         GamePlatformFamily.sega: [
-          GamePlatform.segaMegaDrive,
           GamePlatform.segaGameGear,
+          GamePlatform.segaMasterSystem,
+          GamePlatform.segaMegaDrive,
+          GamePlatform.segaMegaCD,
+          GamePlatform.sega32x,
           GamePlatform.segaSaturn,
           GamePlatform.segaDreamcast,
+        ],
+        GamePlatformFamily.atari: [
+          GamePlatform.atari2600,
+          GamePlatform.atari5200,
+          GamePlatform.atari7800,
+          GamePlatform.atariJaguar,
+        ],
+        GamePlatformFamily.nokia: [
+          GamePlatform.nokiaNGage,
+        ],
+        GamePlatformFamily.retro: [
+          GamePlatform.retro3do,
+          GamePlatform.retroColecovision,
+          GamePlatform.retroIntellivision,
+          GamePlatform.retroMagnavoxOdyssey,
+          GamePlatform.retroNeoGeo,
+          GamePlatform.retroPhilipsCDi,
         ],
         GamePlatformFamily.pc: [
           GamePlatform.pcMisc,
