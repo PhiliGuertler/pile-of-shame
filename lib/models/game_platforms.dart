@@ -14,6 +14,8 @@ enum GamePlatformFamily {
   nintendo(image: ImageAssets.platformFamilyNintendo),
   pc(image: ImageAssets.platformFamilyPC),
   sega(image: ImageAssets.platformFamilySega),
+  atari(image: ImageAssets.platformFamilyAtari),
+  nokia(image: ImageAssets.platformFamilyNokia),
   misc(image: ImageAssets.platformFamilyMisc),
   ;
 
@@ -29,6 +31,10 @@ enum GamePlatformFamily {
         return l10n.pc;
       case GamePlatformFamily.sega:
         return l10n.sega;
+      case GamePlatformFamily.atari:
+        return l10n.atari;
+      case GamePlatformFamily.nokia:
+        return l10n.nokia;
       case GamePlatformFamily.misc:
         return l10n.misc;
     }
@@ -268,6 +274,14 @@ enum GamePlatform {
     controller: ImageAssets.controllerSegaMegaDrive,
     icon: ImageAssets.iconSegaMegaDrive,
   ),
+  sega32x(
+    family: GamePlatformFamily.sega,
+    name: "SEGA 32X",
+    abbreviation: "32X",
+    type: GamePlatformType.stationary,
+    controller: ImageAssets.controllerSega32X,
+    icon: ImageAssets.iconSega32X,
+  ),
   segaGameGear(
     family: GamePlatformFamily.sega,
     name: "SEGA Game Gear",
@@ -291,6 +305,50 @@ enum GamePlatform {
     type: GamePlatformType.stationary,
     controller: ImageAssets.controllerSegaDreamcast,
     icon: ImageAssets.iconSegaDreamcast,
+  ),
+  // #### Atari ############################################################# //
+  // ### Stationaries ####################################################### //
+  atari2600(
+    family: GamePlatformFamily.atari,
+    name: "Atari 2600",
+    abbreviation: "A2600",
+    type: GamePlatformType.stationary,
+    controller: ImageAssets.controllerAtari2600,
+    icon: ImageAssets.iconAtari2600,
+  ),
+  atari5200(
+    family: GamePlatformFamily.atari,
+    name: "Atari 5200",
+    abbreviation: "A5200",
+    type: GamePlatformType.stationary,
+    controller: ImageAssets.controllerAtari5200,
+    icon: ImageAssets.iconAtari5200,
+  ),
+  atari7800(
+    family: GamePlatformFamily.atari,
+    name: "Atari 7800",
+    abbreviation: "A7800",
+    type: GamePlatformType.stationary,
+    controller: ImageAssets.controllerAtari7800,
+    icon: ImageAssets.iconAtari7800,
+  ),
+  atariJaguar(
+    family: GamePlatformFamily.atari,
+    name: "Atari Jaguar",
+    abbreviation: "Jaguar",
+    type: GamePlatformType.stationary,
+    controller: ImageAssets.controllerAtariJaguar,
+    icon: ImageAssets.iconAtariJaguar,
+  ),
+  // #### Nokia ############################################################# //
+  // ### Handhelds ########################################################## //
+  nokiaNGage(
+    family: GamePlatformFamily.nokia,
+    name: "Nokia N-Gage",
+    abbreviation: "N-Gage",
+    type: GamePlatformType.handheld,
+    controller: ImageAssets.controllerNokiaNGage,
+    icon: ImageAssets.iconNokiaNGage,
   ),
   // #### PC ################################################################ //
   // ### Stationaries ####################################################### //

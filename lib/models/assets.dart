@@ -20,14 +20,29 @@ enum ImageAssets {
   pc(value: 'assets/misc/pc.webp'),
   pieChart(value: 'assets/misc/pie_chart.webp'),
   // platform_families
+  platformFamilyAtari(value: 'assets/platform_families/atari.webp'),
   platformFamilyMicrosoft(value: 'assets/platform_families/microsoft.webp'),
   platformFamilyMisc(value: 'assets/platform_families/misc.webp'),
   platformFamilyNintendo(value: 'assets/platform_families/nintendo.webp'),
+  platformFamilyNokia(value: 'assets/platform_families/nokia.webp'),
   platformFamilyPC(value: 'assets/platform_families/pc.webp'),
   platformFamilySega(value: 'assets/platform_families/sega.webp'),
   platformFamilySony(value: 'assets/platform_families/sony.webp'),
   // platforms
   // > controllers
+  // > > atari
+  controllerAtari2600(
+    value: 'assets/platforms/controllers/atari/atari_2600.webp',
+  ),
+  controllerAtari5200(
+    value: 'assets/platforms/controllers/atari/atari_5200.webp',
+  ),
+  controllerAtari7800(
+    value: 'assets/platforms/controllers/atari/atari_7800.webp',
+  ),
+  controllerAtariJaguar(
+    value: 'assets/platforms/controllers/atari/atari_jaguar.webp',
+  ),
   // > > microsoft
   controllerXBox(value: 'assets/platforms/controllers/microsoft/xbox.webp'),
   controllerXBox360(
@@ -86,6 +101,8 @@ enum ImageAssets {
   controllerNintendoWiiU(
     value: 'assets/platforms/controllers/nintendo/wii_u.webp',
   ),
+  // > > Nokia
+  controllerNokiaNGage(value: 'assets/platforms/controllers/nokia/n-gage.webp'),
   // > > PC
   controllerEpic(value: 'assets/platforms/controllers/pc/epic_games.webp'),
   controllerGog(value: 'assets/platforms/controllers/pc/gog.webp'),
@@ -97,6 +114,9 @@ enum ImageAssets {
     value: 'assets/platforms/controllers/pc/ubisoft_connect.webp',
   ),
   // > > SEGA
+  controllerSega32X(
+    value: 'assets/platforms/controllers/sega/sega_32x.webp',
+  ),
   controllerSegaDreamcast(
     value: 'assets/platforms/controllers/sega/sega_dreamcast.webp',
   ),
@@ -118,6 +138,11 @@ enum ImageAssets {
   controllerPS5(value: 'assets/platforms/controllers/sony/ps5.webp'),
   controllerPSP(value: 'assets/platforms/controllers/sony/psp.webp'),
   // > icons
+  // > > atari
+  iconAtari2600(value: 'assets/platforms/icons/atari/atari_2600.webp'),
+  iconAtari5200(value: 'assets/platforms/icons/atari/atari_5200.webp'),
+  iconAtari7800(value: 'assets/platforms/icons/atari/atari_7800.webp'),
+  iconAtariJaguar(value: 'assets/platforms/icons/atari/atari_jaguar.webp'),
   // > > microsoft
   iconXBox(value: 'assets/platforms/icons/microsoft/xbox.webp'),
   iconXBox360(value: 'assets/platforms/icons/microsoft/xbox_360.webp'),
@@ -152,6 +177,8 @@ enum ImageAssets {
   iconSNES(value: 'assets/platforms/icons/nintendo/super_nes.webp'),
   iconNintendoWii(value: 'assets/platforms/icons/nintendo/wii.webp'),
   iconNintendoWiiU(value: 'assets/platforms/icons/nintendo/wii_u.webp'),
+  // > > Nokia
+  iconNokiaNGage(value: 'assets/platforms/icons/nokia/n-gage.webp'),
   // > > PC
   iconEpic(value: 'assets/platforms/icons/pc/epic_games.webp'),
   iconGog(value: 'assets/platforms/icons/pc/gog.webp'),
@@ -167,6 +194,7 @@ enum ImageAssets {
   iconSegaGameGear(value: 'assets/platforms/icons/sega/sega_game_gear.webp'),
   iconSegaMegaDrive(value: 'assets/platforms/icons/sega/sega_mega_drive.webp'),
   iconSegaSaturn(value: 'assets/platforms/icons/sega/sega_saturn.webp'),
+  iconSega32X(value: 'assets/platforms/icons/sega/sega_32x.webp'),
   // > > Sony
   iconPSVita(value: 'assets/platforms/icons/sony/ps_vita.webp'),
   iconPS1(value: 'assets/platforms/icons/sony/ps1.webp'),
