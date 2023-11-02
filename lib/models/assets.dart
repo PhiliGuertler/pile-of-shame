@@ -26,6 +26,7 @@ enum ImageAssets {
   platformFamilyNintendo(value: 'assets/platform_families/nintendo.webp'),
   platformFamilyNokia(value: 'assets/platform_families/nokia.webp'),
   platformFamilyPC(value: 'assets/platform_families/pc.webp'),
+  platformFamilyRetro(value: 'assets/platform_families/retro.webp'),
   platformFamilySega(value: 'assets/platform_families/sega.webp'),
   platformFamilySony(value: 'assets/platform_families/sony.webp'),
   // platforms
@@ -113,6 +114,23 @@ enum ImageAssets {
   controllerUbisoftConnect(
     value: 'assets/platforms/controllers/pc/ubisoft_connect.webp',
   ),
+  // > > Retro
+  controllerRetro3DO(value: 'assets/platforms/controllers/retro/3do.webp'),
+  controllerRetroColecovision(
+    value: 'assets/platforms/controllers/retro/colecovision.webp',
+  ),
+  controllerRetroIntellivision(
+    value: 'assets/platforms/controllers/retro/intellivision.webp',
+  ),
+  controllerRetroMagnavoxOdyssey(
+    value: 'assets/platforms/controllers/retro/magnavox_odyssey.webp',
+  ),
+  controllerRetroNeoGeo(
+    value: 'assets/platforms/controllers/retro/neo_geo.webp',
+  ),
+  controllerRetroPhilipsCDi(
+    value: 'assets/platforms/controllers/retro/philips_cd_i.webp',
+  ),
   // > > SEGA
   controllerSega32X(
     value: 'assets/platforms/controllers/sega/sega_32x.webp',
@@ -123,8 +141,14 @@ enum ImageAssets {
   controllerSegaGameGear(
     value: 'assets/platforms/controllers/sega/sega_game_gear.webp',
   ),
+  controllerSegaMasterSystem(
+    value: 'assets/platforms/controllers/sega/sega_master_system.webp',
+  ),
   controllerSegaMegaDrive(
     value: 'assets/platforms/controllers/sega/sega_mega_drive.webp',
+  ),
+  controllerSegaMegaCD(
+    value: 'assets/platforms/controllers/sega/sega_mega_cd.webp',
   ),
   controllerSegaSaturn(
     value: 'assets/platforms/controllers/sega/sega_saturn.webp',
@@ -189,10 +213,31 @@ enum ImageAssets {
   iconUbisoftConnect(
     value: 'assets/platforms/icons/pc/ubisoft_connect.webp',
   ),
+  // > > Retro
+  iconRetro3DO(value: 'assets/platforms/icons/retro/3do.webp'),
+  iconRetroColecovision(
+    value: 'assets/platforms/icons/retro/colecovision.webp',
+  ),
+  iconRetroIntellivision(
+    value: 'assets/platforms/icons/retro/intellivision.webp',
+  ),
+  iconRetroMagnavoxOdyssey(
+    value: 'assets/platforms/icons/retro/magnavox_odyssey.webp',
+  ),
+  iconRetroNeoGeo(
+    value: 'assets/platforms/icons/retro/neo_geo.webp',
+  ),
+  iconRetroPhilipsCDi(
+    value: 'assets/platforms/icons/retro/philips_cd_i.webp',
+  ),
   // > > SEGA
   iconSegaDreamcast(value: 'assets/platforms/icons/sega/sega_dreamcast.webp'),
   iconSegaGameGear(value: 'assets/platforms/icons/sega/sega_game_gear.webp'),
+  iconSegaMasterSystem(
+    value: 'assets/platforms/icons/sega/sega_master_system.webp',
+  ),
   iconSegaMegaDrive(value: 'assets/platforms/icons/sega/sega_mega_drive.webp'),
+  iconSegaMegaCD(value: 'assets/platforms/icons/sega/sega_mega_cd.webp'),
   iconSegaSaturn(value: 'assets/platforms/icons/sega/sega_saturn.webp'),
   iconSega32X(value: 'assets/platforms/icons/sega/sega_32x.webp'),
   // > > Sony

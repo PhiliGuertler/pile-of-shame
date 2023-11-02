@@ -16,6 +16,7 @@ enum GamePlatformFamily {
   sega(image: ImageAssets.platformFamilySega),
   atari(image: ImageAssets.platformFamilyAtari),
   nokia(image: ImageAssets.platformFamilyNokia),
+  retro(image: ImageAssets.platformFamilyRetro),
   misc(image: ImageAssets.platformFamilyMisc),
   ;
 
@@ -35,6 +36,8 @@ enum GamePlatformFamily {
         return l10n.atari;
       case GamePlatformFamily.nokia:
         return l10n.nokia;
+      case GamePlatformFamily.retro:
+        return l10n.retro;
       case GamePlatformFamily.misc:
         return l10n.misc;
     }
@@ -265,7 +268,24 @@ enum GamePlatform {
     icon: ImageAssets.iconXBoxSeries,
   ),
   // #### SEGA ############################################################## //
+  // ### Handhelds ########################################################## //
+  segaGameGear(
+    family: GamePlatformFamily.sega,
+    name: "SEGA Game Gear",
+    abbreviation: "SGG",
+    type: GamePlatformType.handheld,
+    controller: ImageAssets.controllerSegaGameGear,
+    icon: ImageAssets.iconSegaGameGear,
+  ),
   // ### Stationaries ####################################################### //
+  segaMasterSystem(
+    family: GamePlatformFamily.sega,
+    name: "SEGA Master System",
+    abbreviation: "SMS",
+    type: GamePlatformType.stationary,
+    controller: ImageAssets.controllerSegaMasterSystem,
+    icon: ImageAssets.iconSegaMasterSystem,
+  ),
   segaMegaDrive(
     family: GamePlatformFamily.sega,
     name: "SEGA Mega Drive",
@@ -282,14 +302,6 @@ enum GamePlatform {
     controller: ImageAssets.controllerSega32X,
     icon: ImageAssets.iconSega32X,
   ),
-  segaGameGear(
-    family: GamePlatformFamily.sega,
-    name: "SEGA Game Gear",
-    abbreviation: "SGG",
-    type: GamePlatformType.handheld,
-    controller: ImageAssets.controllerSegaGameGear,
-    icon: ImageAssets.iconSegaGameGear,
-  ),
   segaSaturn(
     family: GamePlatformFamily.sega,
     name: "SEGA Saturn",
@@ -297,6 +309,14 @@ enum GamePlatform {
     type: GamePlatformType.stationary,
     controller: ImageAssets.controllerSegaSaturn,
     icon: ImageAssets.iconSegaSaturn,
+  ),
+  segaMegaCD(
+    family: GamePlatformFamily.sega,
+    name: "SEGA Mega CD",
+    abbreviation: "SCD",
+    type: GamePlatformType.stationary,
+    controller: ImageAssets.controllerSegaMegaCD,
+    icon: ImageAssets.iconSegaMegaCD,
   ),
   segaDreamcast(
     family: GamePlatformFamily.sega,
@@ -349,6 +369,56 @@ enum GamePlatform {
     type: GamePlatformType.handheld,
     controller: ImageAssets.controllerNokiaNGage,
     icon: ImageAssets.iconNokiaNGage,
+  ),
+  // #### Retro ############################################################# //
+  // ### Stationaries ####################################################### //
+  retro3do(
+    family: GamePlatformFamily.retro,
+    name: "3DO",
+    abbreviation: "3DO",
+    type: GamePlatformType.stationary,
+    controller: ImageAssets.controllerRetro3DO,
+    icon: ImageAssets.iconRetro3DO,
+  ),
+  retroColecovision(
+    family: GamePlatformFamily.retro,
+    name: "Colecovision",
+    abbreviation: "Colecovision",
+    type: GamePlatformType.stationary,
+    controller: ImageAssets.controllerRetroColecovision,
+    icon: ImageAssets.iconRetroColecovision,
+  ),
+  retroIntellivision(
+    family: GamePlatformFamily.retro,
+    name: "Intellivision",
+    abbreviation: "Intellivision",
+    type: GamePlatformType.stationary,
+    controller: ImageAssets.controllerRetroIntellivision,
+    icon: ImageAssets.iconRetroIntellivision,
+  ),
+  retroMagnavoxOdyssey(
+    family: GamePlatformFamily.retro,
+    name: "Magnavox Odyssey",
+    abbreviation: "MO",
+    type: GamePlatformType.stationary,
+    controller: ImageAssets.controllerRetroMagnavoxOdyssey,
+    icon: ImageAssets.iconRetroMagnavoxOdyssey,
+  ),
+  retroNeoGeo(
+    family: GamePlatformFamily.retro,
+    name: "Neo Geo",
+    abbreviation: "NG",
+    type: GamePlatformType.stationary,
+    controller: ImageAssets.controllerRetroNeoGeo,
+    icon: ImageAssets.iconRetroNeoGeo,
+  ),
+  retroPhilipsCDi(
+    family: GamePlatformFamily.retro,
+    name: "Philips CDi",
+    abbreviation: "CDi",
+    type: GamePlatformType.stationary,
+    controller: ImageAssets.controllerRetroPhilipsCDi,
+    icon: ImageAssets.iconRetroPhilipsCDi,
   ),
   // #### PC ################################################################ //
   // ### Stationaries ####################################################### //
