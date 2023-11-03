@@ -49,15 +49,13 @@ FutureOr<List<GamePlatformFamily>> activeGamePlatformFamilies(
 ) async {
   final activePlatforms = await ref.watch(activeGamePlatformsProvider.future);
 
-  final List<GamePlatformFamily> families = [];
+  final Set<GamePlatformFamily> families = {};
 
   for (final platform in activePlatforms) {
-    if (!families.contains(platform.family)) {
-      families.add(platform.family);
-    }
+    families.add(platform.family);
   }
 
-  return families;
+  return families.toList();
 }
 
 @riverpod

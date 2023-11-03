@@ -106,6 +106,32 @@ void main() {
         expect(isFilterActive, true);
       });
       test(
+          "returns true if a platform family filter is active while some families are inactive",
+          () async {
+        SharedPreferences.setMockInitialValues(
+          {},
+        );
+        final List<GamePlatform> activePlatforms =
+            List.from(GamePlatform.values);
+        activePlatforms.removeWhere(
+          (element) => element.family == GamePlatformFamily.microsoft,
+        );
+        await container
+            .read(activeGamePlatformsProvider.notifier)
+            .updatePlatforms(activePlatforms);
+
+        await container.read(gameFilterProvider.notifier).setFilters(
+              const GameFilters(
+                platformFamilies: [GamePlatformFamily.nintendo],
+              ),
+            );
+
+        final isFilterActive =
+            await container.read(isAnyFilterActiveProvider.future);
+
+        expect(isFilterActive, true);
+      });
+      test(
           "returns false if a platform family filter is active that is filtering an inactive family",
           () async {
         SharedPreferences.setMockInitialValues(
@@ -205,6 +231,80 @@ void main() {
         TestGames.gameOuterWilds,
         TestGames.gameDistance,
         TestGames.gameSsx3,
+      ]);
+    });
+    test(
+        "returns games of all platforms if platform filters match non-disabled platforms",
+        () async {
+      SharedPreferences.setMockInitialValues({});
+      final List<GamePlatform> fewerPlatforms = GamePlatform.values
+          .where((element) => element.family != GamePlatformFamily.pc)
+          .toList();
+      await container
+          .read(activeGamePlatformsProvider.notifier)
+          .updatePlatforms(
+            fewerPlatforms,
+          );
+
+      await container.read(gameFilterProvider.notifier).setFilters(
+            GameFilters(
+              platforms: fewerPlatforms,
+            ),
+          );
+
+      final originalGames = [
+        TestGames.gameOuterWilds,
+        TestGames.gameDistance,
+        TestGames.gameSsx3,
+        TestGames.gameOriAndTheBlindForest,
+      ];
+
+      final result =
+          await container.read(applyGameFiltersProvider(originalGames).future);
+
+      expect(result, [
+        TestGames.gameOuterWilds,
+        TestGames.gameDistance,
+        TestGames.gameSsx3,
+        TestGames.gameOriAndTheBlindForest,
+      ]);
+    });
+    test(
+        "correctly applies filters if platform filters contain disabled platforms",
+        () async {
+      SharedPreferences.setMockInitialValues({});
+      final List<GamePlatform> fewerPlatforms = GamePlatform.values
+          .where((element) => element.family != GamePlatformFamily.pc)
+          .toList();
+      await container
+          .read(activeGamePlatformsProvider.notifier)
+          .updatePlatforms(
+            fewerPlatforms,
+          );
+
+      await container.read(gameFilterProvider.notifier).setFilters(
+            GameFilters(
+              platforms: fewerPlatforms
+                  .where(
+                    (element) => element.family != GamePlatformFamily.nintendo,
+                  )
+                  .toList(),
+            ),
+          );
+
+      final originalGames = [
+        TestGames.gameOuterWilds,
+        TestGames.gameDistance,
+        TestGames.gameSsx3,
+        TestGames.gameOriAndTheBlindForest,
+      ];
+
+      final result =
+          await container.read(applyGameFiltersProvider(originalGames).future);
+
+      expect(result, [
+        TestGames.gameSsx3,
+        TestGames.gameOriAndTheBlindForest,
       ]);
     });
     test("correctly applies platform family filters", () async {

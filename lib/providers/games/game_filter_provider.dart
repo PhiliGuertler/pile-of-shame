@@ -61,20 +61,30 @@ FutureOr<List<Game>> applyGameFilters(
 ) async {
   final filters = await ref.watch(gameFilterProvider.future);
 
-  final allPlatforms = await ref.watch(activeGamePlatformsProvider.future);
-  final logicalPlatforms = allPlatforms.length == filters.platforms.length
-      ? GamePlatform.values
-      : filters.platforms;
-  final allPlatformFamilies =
+  final activeGamePlatforms =
+      await ref.watch(activeGamePlatformsProvider.future);
+  final activeGamePlatformFamilies =
       await ref.watch(activeGamePlatformFamiliesProvider.future);
-  final logicalPlatformFamilies =
-      allPlatformFamilies.length == filters.platformFamilies.length
-          ? GamePlatformFamily.values
-          : filters.platformFamilies;
+
+  // use the platforms and families that are both in filters and actives
+  List<GamePlatform> commonPlatforms = activeGamePlatforms
+      .toSet()
+      .intersection(filters.platforms.toSet())
+      .toList();
+  if (commonPlatforms.length == activeGamePlatforms.length) {
+    commonPlatforms = GamePlatform.values;
+  }
+  List<GamePlatformFamily> commonPlatformFamilies = activeGamePlatformFamilies
+      .toSet()
+      .intersection(filters.platformFamilies.toSet())
+      .toList();
+  if (commonPlatformFamilies.length == activeGamePlatformFamilies.length) {
+    commonPlatformFamilies = GamePlatformFamily.values;
+  }
 
   final result = games.where((Game game) {
-    return logicalPlatforms.contains(game.platform) &&
-        logicalPlatformFamilies.contains(game.platform.family) &&
+    return commonPlatforms.contains(game.platform) &&
+        commonPlatformFamilies.contains(game.platform.family) &&
         filters.playstatuses.contains(game.status) &&
         filters.ageRatings.contains(game.usk) &&
         filters.isFavorite.contains(game.isFavorite) &&
