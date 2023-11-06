@@ -1,15 +1,66 @@
-import 'package:currency_textfield/currency_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:pile_of_shame/providers/format_provider.dart';
+
+class FormattedNumberTextEditingController extends TextEditingController {
+  final NumberFormat formatter;
+  final double initialValue;
+  final int numDecimals;
+
+  double _value;
+  String _displayText;
+
+  double get doubleValue => double.parse(_value.toStringAsFixed(numDecimals));
+
+  FormattedNumberTextEditingController({
+    required this.formatter,
+    this.initialValue = 0.0,
+    this.numDecimals = 2,
+  })  : _value = initialValue,
+        _displayText = formatter.format(initialValue) {
+    text = formatter.format(_value);
+    selection = TextSelection.fromPosition(TextPosition(offset: text.length));
+    addListener(_listener);
+  }
+
+  @override
+  void dispose() {
+    removeListener(_listener);
+    super.dispose();
+  }
+
+  void _listener() {
+    if (_displayText == text) {
+      selection = TextSelection.fromPosition(TextPosition(offset: text.length));
+      return;
+    }
+
+    final bool shouldRemoveLastCharacter =
+        text.length == _displayText.length - 1;
+
+    // remove all non-digit characters from the string
+    String textNumberString = text.replaceAll(RegExp(r'[^\d]'), "");
+    if (shouldRemoveLastCharacter) {
+      textNumberString =
+          textNumberString.substring(0, textNumberString.length - 1);
+    }
+    // read text as int and divide it by 100
+    final textValue = int.tryParse(textNumberString) ?? 0;
+    _value = textValue * 0.01;
+    // Setting the text triggers another listener call, so we have to store the
+    // updated value before re-triggering that to avoid stack overflows.
+    _displayText = formatter.format(_value);
+    text = _displayText;
+    selection = TextSelection.fromPosition(TextPosition(offset: text.length));
+  }
+}
 
 class NumberInputField extends ConsumerWidget {
   final Widget label;
   final double? initialValue;
   final String? helperText;
   final bool enabled;
-  final bool isCurrency;
 
   /// Defaults to TextInputAction.next
   final TextInputAction textInputAction;
@@ -23,7 +74,6 @@ class NumberInputField extends ConsumerWidget {
     this.onChanged,
     this.helperText,
     this.enabled = true,
-    this.isCurrency = false,
     this.validator,
   });
 
@@ -37,7 +87,6 @@ class NumberInputField extends ConsumerWidget {
       textInputAction: textInputAction,
       onChanged: onChanged,
       helperText: helperText,
-      isCurrency: isCurrency,
       validator: validator,
       numberFormatter: numberFormatter,
     );
@@ -49,7 +98,6 @@ class _InternalNumberInputField extends ConsumerStatefulWidget {
   final double? initialValue;
   final String? helperText;
   final bool enabled;
-  final bool isCurrency;
 
   /// Defaults to TextInputAction.next
   final TextInputAction textInputAction;
@@ -65,7 +113,6 @@ class _InternalNumberInputField extends ConsumerStatefulWidget {
     this.onChanged,
     this.helperText,
     this.enabled = true,
-    this.isCurrency = false,
     this.validator,
   });
 
@@ -75,34 +122,25 @@ class _InternalNumberInputField extends ConsumerStatefulWidget {
 }
 
 class _NumberInputFieldState extends ConsumerState<_InternalNumberInputField> {
-  late CurrencyTextFieldController _controller;
+  late FormattedNumberTextEditingController _controller;
+
+  void _listener() {
+    widget.onChanged?.call(_controller.doubleValue);
+  }
 
   @override
   void initState() {
     super.initState();
-    _controller = CurrencyTextFieldController(
-      initDoubleValue: widget.initialValue ?? 0.0,
-      enableNegative: false,
-      currencyOnLeft: false,
-      decimalSymbol: widget.numberFormatter.symbols.DECIMAL_SEP,
-      thousandSymbol: widget.numberFormatter.symbols.GROUP_SEP,
-      currencySymbol: widget.numberFormatter.currencySymbol,
+    _controller = FormattedNumberTextEditingController(
+      formatter: widget.numberFormatter,
+      initialValue: widget.initialValue ?? 0.0,
     );
-    _controller.addListener(() {
-      String fieldContent = _controller.value.text;
-      fieldContent =
-          fieldContent.replaceAll(widget.numberFormatter.currencySymbol, "");
-      if (fieldContent.isEmpty) {
-        widget.onChanged?.call(0.0);
-      } else {
-        final value = widget.numberFormatter.parse(fieldContent.trim());
-        widget.onChanged?.call(value.toDouble());
-      }
-    });
+    _controller.addListener(_listener);
   }
 
   @override
   void dispose() {
+    _controller.removeListener(_listener);
     _controller.dispose();
     super.dispose();
   }

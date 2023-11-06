@@ -20,7 +20,6 @@ class PriceInputField extends StatelessWidget {
       label: Text(AppLocalizations.of(context)!.price),
       initialValue: value,
       onChanged: onChanged,
-      isCurrency: true,
       enabled: enabled,
     );
   }

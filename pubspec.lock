@@ -217,14 +217,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.0"
-  currency_textfield:
-    dependency: "direct main"
-    description:
-      name: currency_textfield
-      sha256: cc86c8ca67da961fe4379e61f24a21e731f56e2c1f9303e28d153a2a85004ac6
-      url: "https://pub.dev"
-    source: hosted
-    version: "4.0.0"
   custom_lint:
     dependency: "direct dev"
     description:
