@@ -10,6 +10,7 @@ import 'package:pile_of_shame/features/games/add_or_edit_game/widgets/price_inpu
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/utils/constants.dart';
 import 'package:pile_of_shame/widgets/app_scaffold.dart';
+import 'package:pile_of_shame/widgets/image_container.dart';
 
 class AddDLCScreen extends ConsumerStatefulWidget {
   final EditableDLC? initialValue;
@@ -74,6 +75,58 @@ class _AddDLCScreenState extends ConsumerState<AddDLCScreen> {
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
+                        Padding(
+                          padding: const EdgeInsets.only(right: 8.0),
+                          child: Center(
+                            child: ImageContainer(
+                              child: InkWell(
+                                borderRadius: BorderRadius.circular(
+                                  ImageContainer.borderRadius,
+                                ),
+                                onTap: () {
+                                  final newValue = !editableDLC.wasGifted;
+                                  ref
+                                      .read(
+                                        addDLCProvider(widget.initialValue)
+                                            .notifier,
+                                      )
+                                      .updateDLC(
+                                        editableDLC.copyWith(
+                                          wasGifted: newValue,
+                                        ),
+                                      );
+                                },
+                                child: Center(
+                                  child: Icon(
+                                    Icons.cake_sharp,
+                                    color:
+                                        Theme.of(context).colorScheme.primary,
+                                  )
+                                      .animate(
+                                        target: editableDLC.wasGifted ? 0 : 1,
+                                      )
+                                      .shake()
+                                      .scale(
+                                        begin: const Offset(1.0, 1.0),
+                                        end: const Offset(1.2, 1.2),
+                                        curve: Curves.easeInOutBack,
+                                      )
+                                      .then()
+                                      .swap(
+                                        builder: (context, child) =>
+                                            const Icon(Icons.cake_outlined)
+                                                .animate()
+                                                .scale(
+                                                  begin: const Offset(1.2, 1.2),
+                                                  end: const Offset(1.0, 1.0),
+                                                  curve: Curves.easeInOutBack,
+                                                ),
+                                      ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
                         Expanded(
                           child: PriceInputField(
                             enabled: !editableDLC.wasGifted,
@@ -88,65 +141,6 @@ class _AddDLCScreenState extends ConsumerState<AddDLCScreen> {
                                     editableDLC.copyWith(price: value),
                                   );
                             },
-                          ),
-                        ),
-                        InkWell(
-                          onTap: () {
-                            final newValue = !editableDLC.wasGifted;
-                            ref
-                                .read(
-                                  addDLCProvider(widget.initialValue).notifier,
-                                )
-                                .updateDLC(
-                                  editableDLC.copyWith(
-                                    wasGifted: newValue,
-                                  ),
-                                );
-                          },
-                          child: SizedBox(
-                            width: 80.0,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Icon(
-                                  Icons.cake_sharp,
-                                  color: Theme.of(context).colorScheme.primary,
-                                )
-                                    .animate(
-                                      target: editableDLC.wasGifted ? 0 : 1,
-                                    )
-                                    .shake()
-                                    .scale(
-                                      begin: const Offset(1.0, 1.0),
-                                      end: const Offset(1.2, 1.2),
-                                      curve: Curves.easeInOutBack,
-                                    )
-                                    .then()
-                                    .swap(
-                                      builder: (context, child) =>
-                                          const Icon(Icons.cake_outlined)
-                                              .animate()
-                                              .scale(
-                                                begin: const Offset(1.2, 1.2),
-                                                end: const Offset(1.0, 1.0),
-                                                curve: Curves.easeInOutBack,
-                                              ),
-                                    ),
-                                Text(
-                                  AppLocalizations.of(context)!.gift,
-                                  style: editableDLC.wasGifted
-                                      ? Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium!
-                                          .copyWith(
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .primary,
-                                          )
-                                      : null,
-                                ),
-                              ],
-                            ),
                           ),
                         ),
                       ],
