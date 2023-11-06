@@ -15,6 +15,7 @@ import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/models/play_status.dart';
 import 'package:pile_of_shame/utils/constants.dart';
 import 'package:pile_of_shame/widgets/app_scaffold.dart';
+import 'package:pile_of_shame/widgets/image_container.dart';
 import 'package:pile_of_shame/widgets/segmented_action_card.dart';
 
 class AddGameScreen extends ConsumerStatefulWidget {
@@ -196,6 +197,60 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
+                        Padding(
+                          padding: const EdgeInsets.only(right: 8.0),
+                          child: Center(
+                            child: ImageContainer(
+                              child: InkWell(
+                                borderRadius: BorderRadius.circular(
+                                  ImageContainer.borderRadius,
+                                ),
+                                onTap: () {
+                                  final newValue = !editableGame.wasGifted;
+                                  ref
+                                      .read(
+                                        addGameProvider(
+                                          widget.initialValue,
+                                          widget.initialPlayStatus,
+                                        ).notifier,
+                                      )
+                                      .updateGame(
+                                        editableGame.copyWith(
+                                          wasGifted: newValue,
+                                        ),
+                                      );
+                                },
+                                child: Center(
+                                  child: Icon(
+                                    Icons.cake_sharp,
+                                    color:
+                                        Theme.of(context).colorScheme.primary,
+                                  )
+                                      .animate(
+                                        target: editableGame.wasGifted ? 0 : 1,
+                                      )
+                                      .shake()
+                                      .scale(
+                                        begin: const Offset(1.0, 1.0),
+                                        end: const Offset(1.2, 1.2),
+                                        curve: Curves.easeInOutBack,
+                                      )
+                                      .then()
+                                      .swap(
+                                        builder: (context, child) =>
+                                            const Icon(Icons.cake_outlined)
+                                                .animate()
+                                                .scale(
+                                                  begin: const Offset(1.2, 1.2),
+                                                  end: const Offset(1.0, 1.0),
+                                                  curve: Curves.easeInOutBack,
+                                                ),
+                                      ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
                         Expanded(
                           child: PriceInputField(
                             enabled: !editableGame.wasGifted,
@@ -212,68 +267,6 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
                                     editableGame.copyWith(price: value),
                                   );
                             },
-                          ),
-                        ),
-                        InkWell(
-                          onTap: () {
-                            final newValue = !editableGame.wasGifted;
-                            ref
-                                .read(
-                                  addGameProvider(
-                                    widget.initialValue,
-                                    widget.initialPlayStatus,
-                                  ).notifier,
-                                )
-                                .updateGame(
-                                  editableGame.copyWith(
-                                    wasGifted: newValue,
-                                  ),
-                                );
-                          },
-                          child: SizedBox(
-                            width: 80.0,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Icon(
-                                  Icons.cake_sharp,
-                                  color: Theme.of(context).colorScheme.primary,
-                                )
-                                    .animate(
-                                      target: editableGame.wasGifted ? 0 : 1,
-                                    )
-                                    .shake()
-                                    .scale(
-                                      begin: const Offset(1.0, 1.0),
-                                      end: const Offset(1.2, 1.2),
-                                      curve: Curves.easeInOutBack,
-                                    )
-                                    .then()
-                                    .swap(
-                                      builder: (context, child) =>
-                                          const Icon(Icons.cake_outlined)
-                                              .animate()
-                                              .scale(
-                                                begin: const Offset(1.2, 1.2),
-                                                end: const Offset(1.0, 1.0),
-                                                curve: Curves.easeInOutBack,
-                                              ),
-                                    ),
-                                Text(
-                                  AppLocalizations.of(context)!.gift,
-                                  style: editableGame.wasGifted
-                                      ? Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium!
-                                          .copyWith(
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .primary,
-                                          )
-                                      : null,
-                                ),
-                              ],
-                            ),
                           ),
                         ),
                       ],
