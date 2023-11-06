@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class ImageContainer extends StatelessWidget {
   static const double imageSize = 45.0;
+  static const double borderRadius = 8.0;
 
   final Widget? child;
   final Color? backgroundColor;
@@ -12,7 +13,7 @@ class ImageContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return ClipRRect(
       borderRadius: const BorderRadius.all(
-        Radius.circular(8.0),
+        Radius.circular(borderRadius),
       ),
       child: Container(
         width: imageSize,
