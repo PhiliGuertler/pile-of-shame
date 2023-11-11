@@ -1,7 +1,6 @@
 import 'package:fuzzywuzzy/fuzzywuzzy.dart' as fuzzy;
 import 'package:pile_of_shame/extensions/string_extensions.dart';
 import 'package:pile_of_shame/models/game.dart';
-import 'package:pile_of_shame/providers/l10n_provider.dart';
 import 'package:pile_of_shame/utils/constants.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -30,29 +29,10 @@ List<Game> applyGameSearch(ApplyGameSearchRef ref, List<Game> games) {
 
   final term = searchTerm.prepareForCaseInsensitiveSearch();
 
-  final l10n = ref.watch(l10nProvider);
-
   final fuzzySearchResultNames = fuzzy.extractAll<Game>(
     query: term,
     choices: games,
     getter: (game) => game.name.prepareForCaseInsensitiveSearch(),
-    cutoff: minFuzzySearchScore,
-  );
-
-  final fuzzySearchResultPlatformAbbreviations = fuzzy.extractAll<Game>(
-    query: term,
-    choices: games,
-    getter: (game) => game.platform
-        .localizedAbbreviation(l10n)
-        .prepareForCaseInsensitiveSearch(),
-    cutoff: minFuzzySearchScore,
-  );
-
-  final fuzzySearchResultPlatforms = fuzzy.extractAll(
-    query: term,
-    choices: games,
-    getter: (game) =>
-        game.platform.localizedName(l10n).prepareForCaseInsensitiveSearch(),
     cutoff: minFuzzySearchScore,
   );
 
@@ -64,9 +44,6 @@ List<Game> applyGameSearch(ApplyGameSearchRef ref, List<Game> games) {
 
   final Set<Game> resultingGames = {};
   resultingGames.addAll(fuzzySearchResultNames.map((e) => e.choice));
-  resultingGames.addAll(fuzzySearchResultPlatforms.map((e) => e.choice));
-  resultingGames
-      .addAll(fuzzySearchResultPlatformAbbreviations.map((e) => e.choice));
   resultingGames.addAll(exactSearch);
 
   return resultingGames.toList();
