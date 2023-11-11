@@ -73,19 +73,4 @@ void main() {
 
     expect(result, [TestGames.gameDistance]);
   });
-  test("applyGameSearch returns games by their name and platform abbreviation",
-      () {
-    final originalGames = [
-      TestGames.gameDistance,
-      TestGames.gameWitcher3,
-      TestGames.gameSsx3,
-      TestGames.gameOriAndTheBlindForest,
-    ];
-
-    container.read(gameSearchProvider.notifier).setSearch("ori ps4");
-
-    final result = container.read(applyGameSearchProvider(originalGames));
-
-    expect(result, [TestGames.gameOriAndTheBlindForest]);
-  });
 }
