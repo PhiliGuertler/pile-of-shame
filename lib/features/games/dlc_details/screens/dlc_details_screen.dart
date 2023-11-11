@@ -76,7 +76,10 @@ class DLCDetailsScreen extends ConsumerWidget {
                           final dlcIndex = updatedDLCs
                               .indexWhere((element) => element.id == dlc.id);
                           updatedDLCs[dlcIndex] = result.toDLC();
-                          final updatedGame = game.copyWith(dlcs: updatedDLCs);
+                          final updatedGame = game.copyWith(
+                            dlcs: updatedDLCs,
+                            lastModified: DateTime.now(),
+                          );
 
                           final database =
                               await ref.read(databaseProvider.future);
