@@ -55,6 +55,12 @@ class PlatformDropdown extends ConsumerWidget {
             .contains(term)) {
           return true;
         }
+        if (option
+            .localizedAbbreviation(l10n)
+            .prepareForCaseInsensitiveSearch()
+            .contains(term)) {
+          return true;
+        }
 
         final platformNameScore = fuzzy.ratio(
           term,
