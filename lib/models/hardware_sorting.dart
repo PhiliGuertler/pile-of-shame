@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:pile_of_shame/extensions/string_extensions.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/hardware.dart';
 
@@ -18,7 +19,10 @@ class HardwareSorterByName extends HardwareSorter {
   @override
   int compareGames(VideoGameHardware a, VideoGameHardware b, bool isAscending) {
     final factor = isAscending ? 1 : -1;
-    return a.name.toLowerCase().compareTo(b.name.toLowerCase()) * factor;
+    return a.name
+            .prepareForCaseInsensitiveSearch()
+            .compareTo(b.name.prepareForCaseInsensitiveSearch()) *
+        factor;
   }
 }
 
