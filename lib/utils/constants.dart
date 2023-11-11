@@ -5,4 +5,4 @@ const double minimumToolbarHeight = 56.0;
 const double overlayRadius = 50.0;
 const double textSlotWidth = 65.0;
 const double secondaryHeight = 32.0;
-const int minFuzzySearchScore = 80;
+const int minFuzzySearchScore = 90;

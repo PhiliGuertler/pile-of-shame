@@ -55,6 +55,12 @@ class PlatformDropdown extends ConsumerWidget {
             .contains(term)) {
           return true;
         }
+        if (option
+            .localizedAbbreviation(l10n)
+            .prepareForCaseInsensitiveSearch()
+            .contains(term)) {
+          return true;
+        }
 
         final platformNameScore = fuzzy.ratio(
           term,
@@ -64,14 +70,9 @@ class PlatformDropdown extends ConsumerWidget {
           term,
           option.localizedAbbreviation(l10n).prepareForCaseInsensitiveSearch(),
         );
-        final platformFamilyScore = fuzzy.ratio(
-          term,
-          option.family.toLocale(l10n).prepareForCaseInsensitiveSearch(),
-        );
 
         return platformNameScore >= minFuzzySearchScore ||
-            platformAbbreviationScore >= minFuzzySearchScore ||
-            platformFamilyScore >= minFuzzySearchScore;
+            platformAbbreviationScore >= minFuzzySearchScore;
       },
       optionBuilder: (context, option, onTap) => ListTile(
         key: ValueKey(option.abbreviation),
