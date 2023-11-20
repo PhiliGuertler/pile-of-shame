@@ -10,15 +10,6 @@
             "type": "dart"
         },
         {
-            "name": "pile_of_shame (appium-tests)",
-            "request": "launch",
-            "type": "dart",
-            "flutterMode": "debug",
-            "args": [
-                "--dart-define=FLUTTER_APPIUM_TEST=true"
-            ]
-        },
-        {
             "name": "pile_of_shame (profile mode)",
             "request": "launch",
             "type": "dart",
