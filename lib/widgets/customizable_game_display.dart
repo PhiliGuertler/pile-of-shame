@@ -73,7 +73,8 @@ class CustomizableGameDisplay extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final currencyFormatter = ref.watch(currencyFormatProvider(context));
+    final currencyFormatter =
+        ref.watch(currencyFormatProvider(Localizations.localeOf(context)));
 
     final settings = ref.watch(customizeGameDisplaysProvider);
 

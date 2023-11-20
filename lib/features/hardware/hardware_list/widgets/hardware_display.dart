@@ -44,7 +44,8 @@ class _HardwareDisplayState extends ConsumerState<HardwareDisplay>
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
 
-    final currencyFormatter = ref.watch(currencyFormatProvider(context));
+    final currencyFormatter =
+        ref.watch(currencyFormatProvider(Localizations.localeOf(context)));
 
     final AsyncValue<List<VideoGameHardware>> asyncHardware =
         ref.watch(sortedHardwareByPlatformProvider(widget.platform));

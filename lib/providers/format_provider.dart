@@ -7,7 +7,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'format_provider.g.dart';
 
 @riverpod
-NumberFormat currencyFormat(CurrencyFormatRef ref, BuildContext context) {
+NumberFormat currencyFormat(CurrencyFormatRef ref, Locale locale) {
   final appTheme = ref.watch(appThemeSettingsProvider);
 
   final currencySymbol = appTheme.when(
@@ -19,31 +19,31 @@ NumberFormat currencyFormat(CurrencyFormatRef ref, BuildContext context) {
   return NumberFormat.currency(
     decimalDigits: 2,
     symbol: currencySymbol.symbol,
-    locale: Localizations.localeOf(context).toLanguageTag(),
+    locale: locale.toLanguageTag(),
   );
 }
 
 @riverpod
-NumberFormat percentFormat(PercentFormatRef ref, BuildContext context) {
+NumberFormat percentFormat(PercentFormatRef ref, Locale locale) {
   return NumberFormat.percentPattern(
-    Localizations.localeOf(context).toLanguageTag(),
+    locale.toLanguageTag(),
   );
 }
 
 @riverpod
-NumberFormat numberFormat(NumberFormatRef ref, BuildContext context) {
+NumberFormat numberFormat(NumberFormatRef ref, Locale locale) {
   return NumberFormat.decimalPatternDigits(
     decimalDigits: 2,
-    locale: Localizations.localeOf(context).toLanguageTag(),
+    locale: locale.toLanguageTag(),
   );
 }
 
 @riverpod
-DateFormat dateFormat(DateFormatRef ref, BuildContext context) {
-  return DateFormat.yMd(Localizations.localeOf(context).toLanguageTag());
+DateFormat dateFormat(DateFormatRef ref, Locale locale) {
+  return DateFormat.yMd(locale.toLanguageTag());
 }
 
 @riverpod
-DateFormat timeFormat(TimeFormatRef ref, BuildContext context) {
-  return DateFormat.Hms(Localizations.localeOf(context).toLanguageTag());
+DateFormat timeFormat(TimeFormatRef ref, Locale locale) {
+  return DateFormat.Hms(locale.toLanguageTag());
 }

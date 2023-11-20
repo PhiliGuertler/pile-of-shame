@@ -16,7 +16,8 @@ class LastModifiedDisplay extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final dateFormatter = ref.watch(dateFormatProvider(context));
+    final dateFormatter =
+        ref.watch(dateFormatProvider(Localizations.localeOf(context)));
 
     return SizedBox(
       height: ImageContainer.imageSize,

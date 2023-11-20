@@ -79,7 +79,8 @@ class NumberInputField extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final numberFormatter = ref.watch(currencyFormatProvider(context));
+    final numberFormatter =
+        ref.watch(currencyFormatProvider(Localizations.localeOf(context)));
     return _InternalNumberInputField(
       label: label,
       enabled: enabled,

@@ -26,8 +26,10 @@ class PriceAndLastModifiedDisplay extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final currencyFormatter = ref.watch(currencyFormatProvider(context));
-    final dateFormatter = ref.watch(dateFormatProvider(context));
+    final currencyFormatter =
+        ref.watch(currencyFormatProvider(Localizations.localeOf(context)));
+    final dateFormatter =
+        ref.watch(dateFormatProvider(Localizations.localeOf(context)));
 
     return SizedBox(
       width: textSlotWidth,
