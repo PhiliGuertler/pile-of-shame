@@ -24,7 +24,8 @@ class _HardwareEntryState extends ConsumerState<HardwareEntry> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
 
-    final currencyFormatter = ref.watch(currencyFormatProvider(context));
+    final currencyFormatter =
+        ref.watch(currencyFormatProvider(Localizations.localeOf(context)));
 
     return ListTile(
       contentPadding: const EdgeInsets.symmetric(horizontal: 16.0),

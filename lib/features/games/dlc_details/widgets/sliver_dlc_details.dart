@@ -22,9 +22,12 @@ class SliverDLCDetails extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final dateFormatter = ref.watch(dateFormatProvider(context));
-    final timeFormatter = ref.watch(timeFormatProvider(context));
-    final currencyFormatter = ref.watch(currencyFormatProvider(context));
+    final dateFormatter =
+        ref.watch(dateFormatProvider(Localizations.localeOf(context)));
+    final timeFormatter =
+        ref.watch(timeFormatProvider(Localizations.localeOf(context)));
+    final currencyFormatter =
+        ref.watch(currencyFormatProvider(Localizations.localeOf(context)));
 
     return SliverList.list(
       children: [

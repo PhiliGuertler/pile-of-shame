@@ -81,6 +81,7 @@ void main() {
       ]);
     });
     test('Successfully writes a list of games to the games file', () async {
+      when(mockFile.readAsString()).thenAnswer((realInvocation) async => "");
       when(mockFileUtils.openFile(gameFileName))
           .thenAnswer((realInvocation) async => mockFile);
 

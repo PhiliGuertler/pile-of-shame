@@ -37,9 +37,12 @@ class _SliverGameDetailsState extends ConsumerState<SliverGameDetails> {
 
   @override
   Widget build(BuildContext context) {
-    final dateFormatter = ref.watch(dateFormatProvider(context));
-    final timeFormatter = ref.watch(timeFormatProvider(context));
-    final currencyFormatter = ref.watch(currencyFormatProvider(context));
+    final dateFormatter =
+        ref.watch(dateFormatProvider(Localizations.localeOf(context)));
+    final timeFormatter =
+        ref.watch(timeFormatProvider(Localizations.localeOf(context)));
+    final currencyFormatter =
+        ref.watch(currencyFormatProvider(Localizations.localeOf(context)));
 
     for (int i = dismissedDLCs.length - 1; i >= 0; --i) {
       final String dismissed = dismissedDLCs[i];

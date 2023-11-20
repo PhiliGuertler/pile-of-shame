@@ -41,7 +41,8 @@ class _GameDisplayScreenState extends ConsumerState<GameDisplayScreen> {
     final l10n = AppLocalizations.of(context)!;
 
     final settings = ref.watch(customizeGameDisplaysProvider);
-    final currencyFormatter = ref.watch(currencyFormatProvider(context));
+    final currencyFormatter =
+        ref.watch(currencyFormatProvider(Localizations.localeOf(context)));
     final exampleGame = Game(
       id: "game-preview",
       name: "Outer Wilds",

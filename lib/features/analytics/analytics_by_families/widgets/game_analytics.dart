@@ -27,9 +27,12 @@ class GameAnalytics extends ConsumerWidget {
     final l10n = AppLocalizations.of(context)!;
     final textTheme = Theme.of(context).textTheme;
 
-    final currencyFormatter = ref.watch(currencyFormatProvider(context));
-    final percentFormatter = ref.watch(percentFormatProvider(context));
-    final numberFormatter = ref.watch(numberFormatProvider(context));
+    final currencyFormatter =
+        ref.watch(currencyFormatProvider(Localizations.localeOf(context)));
+    final percentFormatter =
+        ref.watch(percentFormatProvider(Localizations.localeOf(context)));
+    final numberFormatter =
+        ref.watch(numberFormatProvider(Localizations.localeOf(context)));
 
     final GameData gameData = GameData(
       games: games,

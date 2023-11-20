@@ -27,7 +27,8 @@ class HardwareAnalytics extends ConsumerWidget {
     final l10n = AppLocalizations.of(context)!;
     final textTheme = Theme.of(context).textTheme;
 
-    final currencyFormatter = ref.watch(currencyFormatProvider(context));
+    final currencyFormatter =
+        ref.watch(currencyFormatProvider(Localizations.localeOf(context)));
 
     final HardwareData hardwareData = HardwareData(
       hardware: hardware,

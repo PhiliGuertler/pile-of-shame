@@ -19,7 +19,8 @@ class SliverListSummary extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
-    final currencyFormatter = ref.watch(currencyFormatProvider(context));
+    final currencyFormatter =
+        ref.watch(currencyFormatProvider(Localizations.localeOf(context)));
 
     return SliverToBoxAdapter(
       child: Padding(
