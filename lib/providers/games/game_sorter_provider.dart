@@ -1,6 +1,6 @@
+import 'package:misc_utils/misc_utils.dart';
 import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/models/game_sorting.dart';
-import 'package:pile_of_shame/providers/mixins/persistable_mixin.dart';
 import 'package:pile_of_shame/utils/sorter_utils.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 

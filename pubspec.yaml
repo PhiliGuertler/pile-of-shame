@@ -33,6 +33,8 @@ dependencies:
   fuzzywuzzy: ^1.1.6
   intl: any
   json_annotation: ^4.8.1
+  misc_utils:
+    path: packages/misc_utils
   package_info_plus: ^4.1.0
   path_provider: ^2.1.0
   riverpod_annotation: ^2.1.1

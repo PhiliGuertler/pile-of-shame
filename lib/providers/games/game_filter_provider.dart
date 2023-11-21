@@ -1,12 +1,12 @@
 // ignore_for_file: use_setters_to_change_properties
 
+import 'package:misc_utils/misc_utils.dart';
 import 'package:pile_of_shame/models/age_restriction.dart';
 import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/models/game_filters.dart';
 import 'package:pile_of_shame/models/game_platforms.dart';
 import 'package:pile_of_shame/models/play_status.dart';
 import 'package:pile_of_shame/providers/games/game_platforms_provider.dart';
-import 'package:pile_of_shame/providers/mixins/persistable_mixin.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'game_filter_provider.g.dart';

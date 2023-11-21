@@ -1,0 +1,21 @@
+name: misc_utils
+description: Miscellaneous utilities that are useful in different projects
+version: 0.0.1
+
+environment:
+  sdk: '>=3.2.0 <4.0.0'
+  flutter: ">=1.17.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  shared_preferences: ^2.2.2
+
+dev_dependencies:
+  custom_lint: any
+  flutter_lints: ^2.0.0
+  flutter_test:
+    sdk: flutter
+  lint: ^2.1.2
+
+flutter:

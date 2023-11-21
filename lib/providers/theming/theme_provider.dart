@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:misc_utils/misc_utils.dart';
 import 'package:pile_of_shame/models/theming/theme.dart';
-import 'package:pile_of_shame/providers/mixins/persistable_mixin.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'theme_provider.g.dart';

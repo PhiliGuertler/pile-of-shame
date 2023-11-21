@@ -630,6 +630,13 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.4"
+  misc_utils:
+    dependency: "direct main"
+    description:
+      path: "packages/misc_utils"
+      relative: true
+    source: path
+    version: "0.0.1"
   mockito:
     dependency: "direct dev"
     description:
