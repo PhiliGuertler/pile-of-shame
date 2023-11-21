@@ -46,11 +46,13 @@ class DebugSecretCodeInput extends StatefulWidget {
   final bool isAreaVisible;
   final VoidCallback onSecretEnteredCorrectly;
   final Widget? child;
+  final List<MorseCode> secretCode;
 
   const DebugSecretCodeInput({
     super.key,
     this.isAreaVisible = false,
     required this.onSecretEnteredCorrectly,
+    required this.secretCode,
     this.child,
   });
 
@@ -61,7 +63,6 @@ class DebugSecretCodeInput extends StatefulWidget {
 class _DebugSecretCodeInputState extends State<DebugSecretCodeInput> {
   int secretInputProgress = 0;
   int secretInputCodeProgress = 0;
-  List<MorseCode> secretInputs = [MorseCode.p, MorseCode.s];
   Timer resetSecretTimer = Timer(Duration.zero, () {});
 
   void handleSecretInput(Morse press) {
@@ -74,14 +75,14 @@ class _DebugSecretCodeInputState extends State<DebugSecretCodeInput> {
         });
       });
     });
-    if (secretInputProgress < secretInputs.length) {
-      final MorseCode code = secretInputs[secretInputProgress];
+    if (secretInputProgress < widget.secretCode.length) {
+      final MorseCode code = widget.secretCode[secretInputProgress];
       if (secretInputCodeProgress < code.code.length) {
         final Morse morse = code.code[secretInputCodeProgress];
         if (morse == press) {
           HapticFeedback.lightImpact();
           if (secretInputCodeProgress + 1 >= code.code.length) {
-            if (secretInputProgress + 1 >= secretInputs.length) {
+            if (secretInputProgress + 1 >= widget.secretCode.length) {
               widget.onSecretEnteredCorrectly();
               setState(() {
                 secretInputCodeProgress = 0;
@@ -106,9 +107,9 @@ class _DebugSecretCodeInputState extends State<DebugSecretCodeInput> {
         }
       }
     }
-    if (secretInputs.length > secretInputProgress) {
+    if (widget.secretCode.length > secretInputProgress) {
       debugPrint(
-        '$secretInputProgress / ${secretInputs.length} ($secretInputCodeProgress / ${secretInputs[secretInputProgress].code.length})',
+        '$secretInputProgress / ${widget.secretCode.length} ($secretInputCodeProgress / ${widget.secretCode[secretInputProgress].code.length})',
       );
     }
   }
