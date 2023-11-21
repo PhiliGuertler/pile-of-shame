@@ -11,6 +11,7 @@ class AppearanceScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
     final themeSettings = ref.watch(themeSettingsProvider);
 
     return AppScaffold(
@@ -19,62 +20,10 @@ class AppearanceScreen extends ConsumerWidget {
       ),
       body: ListView(
         children: [
-          RadioListTile(
-            title: Row(
-              children: [
-                const Padding(
-                  padding: EdgeInsets.only(right: 16.0),
-                  child: Icon(Icons.light_mode_rounded),
-                ),
-                Text(AppLocalizations.of(context)!.light),
-              ],
-            ),
-            onChanged: (value) {
-              if (value != null) {
-                ref.read(themeSettingsProvider.notifier).setThemeMode(value);
-              }
-            },
-            controlAffinity: ListTileControlAffinity.trailing,
-            groupValue: themeSettings.asData?.value.themeMode,
-            value: ThemeMode.light,
-          ),
-          RadioListTile(
-            title: Row(
-              children: [
-                const Padding(
-                  padding: EdgeInsets.only(right: 16.0),
-                  child: Icon(Icons.dark_mode_rounded),
-                ),
-                Text(AppLocalizations.of(context)!.dark),
-              ],
-            ),
-            onChanged: (value) {
-              if (value != null) {
-                ref.read(themeSettingsProvider.notifier).setThemeMode(value);
-              }
-            },
-            controlAffinity: ListTileControlAffinity.trailing,
-            groupValue: themeSettings.asData?.value.themeMode,
-            value: ThemeMode.dark,
-          ),
-          RadioListTile(
-            title: Row(
-              children: [
-                const Padding(
-                  padding: EdgeInsets.only(right: 16.0),
-                  child: Icon(Icons.settings_rounded),
-                ),
-                Text(AppLocalizations.of(context)!.systemDefined),
-              ],
-            ),
-            onChanged: (value) {
-              if (value != null) {
-                ref.read(themeSettingsProvider.notifier).setThemeMode(value);
-              }
-            },
-            controlAffinity: ListTileControlAffinity.trailing,
-            groupValue: themeSettings.asData?.value.themeMode,
-            value: ThemeMode.system,
+          BrightnessSelectionRadioGroup(
+            darkLabel: l10n.dark,
+            lightLabel: l10n.light,
+            systemLabel: l10n.systemDefined,
           ),
           themeSettings.maybeWhen(
             data: (themeSettings) => Padding(
