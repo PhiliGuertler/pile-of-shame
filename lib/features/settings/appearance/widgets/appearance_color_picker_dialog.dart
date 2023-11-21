@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
-import 'package:pile_of_shame/providers/theming/theme_provider.dart';
+import 'package:theming/theming.dart';
 
 class AppearanceColorPickerDialog extends ConsumerWidget {
   const AppearanceColorPickerDialog({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final themeSettings = ref.watch(appThemeSettingsProvider);
+    final themeSettings = ref.watch(themeSettingsProvider);
 
     return AlertDialog(
       title: Text(AppLocalizations.of(context)!.chooseAColor),
@@ -37,7 +37,7 @@ class AppearanceColorPickerDialog extends ConsumerWidget {
             orElse: () => Colors.orange,
           ),
           onColorChanged: (value) {
-            ref.read(appThemeSettingsProvider.notifier).setPrimaryColor(value);
+            ref.read(themeSettingsProvider.notifier).setPrimaryColor(value);
           },
         ),
       ),

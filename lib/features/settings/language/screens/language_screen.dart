@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pile_of_shame/extensions/locale_extensions.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
-import 'package:pile_of_shame/providers/theming/theme_provider.dart';
 import 'package:pile_of_shame/widgets/app_scaffold.dart';
 import 'package:pile_of_shame/widgets/fade_in_image_asset.dart';
+import 'package:theming/theming.dart';
 
 class LanguageScreen extends ConsumerWidget {
   const LanguageScreen({super.key});
@@ -13,7 +13,7 @@ class LanguageScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     const flagDimension = 32.0;
 
-    final themeSettings = ref.watch(appThemeSettingsProvider);
+    final themeSettings = ref.watch(themeSettingsProvider);
 
     return AppScaffold(
       appBar: AppBar(
@@ -41,7 +41,7 @@ class LanguageScreen extends ConsumerWidget {
               ),
               onChanged: (value) {
                 ref
-                    .read(appThemeSettingsProvider.notifier)
+                    .read(themeSettingsProvider.notifier)
                     .setLocale(locale.toLanguageTag());
               },
               controlAffinity: ListTileControlAffinity.trailing,
@@ -72,7 +72,7 @@ class LanguageScreen extends ConsumerWidget {
               ],
             ),
             onChanged: (value) {
-              ref.read(appThemeSettingsProvider.notifier).setLocale(null);
+              ref.read(themeSettingsProvider.notifier).setLocale(null);
             },
             controlAffinity: ListTileControlAffinity.trailing,
             groupValue: themeSettings.asData?.value.locale,
