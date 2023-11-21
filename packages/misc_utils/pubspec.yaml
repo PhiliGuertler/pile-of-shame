@@ -7,8 +7,12 @@ environment:
   flutter: ">=1.17.0"
 
 dependencies:
+  file_picker: ^6.1.1
   flutter:
     sdk: flutter
+  flutter_file_dialog: ^3.0.2
+  path_provider: ^2.1.1
+  share_plus: ^7.2.1
   shared_preferences: ^2.2.2
 
 dev_dependencies:
@@ -17,5 +21,9 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   lint: ^2.1.2
+  # Testing path_provider requires these dependency
+  path_provider_platform_interface: ^2.1.0
+  # Testing path_provider requires this dependency
+  plugin_platform_interface: any
 
 flutter:

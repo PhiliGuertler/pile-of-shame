@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:golden_toolkit/golden_toolkit.dart';
+import 'package:misc_utils/misc_utils.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:pile_of_shame/features/analytics/analytics_by_families/providers/analytics_provider.dart';
@@ -20,7 +21,6 @@ import 'package:pile_of_shame/providers/file_provider.dart';
 import 'package:pile_of_shame/providers/games/game_platforms_provider.dart';
 import 'package:pile_of_shame/providers/games/game_provider.dart';
 import 'package:pile_of_shame/providers/hardware/hardware_provider.dart';
-import 'package:pile_of_shame/utils/file_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:theming/theming.dart';
 
