@@ -10,7 +10,6 @@ import 'package:pile_of_shame/providers/l10n_provider.dart';
 import 'package:pile_of_shame/utils/constants.dart';
 import 'package:pile_of_shame/utils/validators.dart';
 import 'package:pile_of_shame/widgets/game_platform_icon.dart';
-import 'package:pile_of_shame/widgets/input/dropdown_search_field.dart';
 
 class PlatformDropdown extends ConsumerWidget {
   final GamePlatform? value;

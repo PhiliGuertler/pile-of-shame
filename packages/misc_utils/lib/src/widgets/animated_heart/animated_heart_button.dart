@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-
-import 'package:pile_of_shame/widgets/animated/animated_heart/animated_heart.dart';
+import 'package:misc_utils/src/widgets/animated_heart/animated_heart.dart';
 
 class AnimatedHeartButton extends StatefulWidget {
   final bool isFilled;

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class DropdownSearchField<T> extends ConsumerStatefulWidget {
+class DropdownSearchField<T> extends StatefulWidget {
   final void Function(T value) onChanged;
   final Widget? prefix;
   final List<T> options;
@@ -24,12 +23,10 @@ class DropdownSearchField<T> extends ConsumerStatefulWidget {
   });
 
   @override
-  ConsumerState<DropdownSearchField<T>> createState() =>
-      _CategorySearchFieldState<T>();
+  State<DropdownSearchField<T>> createState() => _CategorySearchFieldState<T>();
 }
 
-class _CategorySearchFieldState<T>
-    extends ConsumerState<DropdownSearchField<T>> {
+class _CategorySearchFieldState<T> extends State<DropdownSearchField<T>> {
   late SearchController _searchController;
 
   @override
