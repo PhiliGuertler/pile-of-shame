@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:pile_of_shame/providers/format_provider.dart';
 
 class FormattedNumberTextEditingController extends TextEditingController {
   final NumberFormat formatter;
@@ -56,7 +54,7 @@ class FormattedNumberTextEditingController extends TextEditingController {
   }
 }
 
-class NumberInputField extends ConsumerWidget {
+class NumberInputField extends StatelessWidget {
   final Widget label;
   final double? initialValue;
   final String? helperText;
@@ -67,8 +65,11 @@ class NumberInputField extends ConsumerWidget {
   final void Function(double value)? onChanged;
   final String? Function(String? value)? validator;
 
+  final NumberFormat numberFormatter;
+
   const NumberInputField({
     required this.label,
+    required this.numberFormatter,
     this.initialValue,
     this.textInputAction = TextInputAction.next,
     this.onChanged,
@@ -78,9 +79,7 @@ class NumberInputField extends ConsumerWidget {
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final numberFormatter =
-        ref.watch(currencyFormatProvider(Localizations.localeOf(context)));
+  Widget build(BuildContext context) {
     return _InternalNumberInputField(
       label: label,
       enabled: enabled,
@@ -94,7 +93,7 @@ class NumberInputField extends ConsumerWidget {
   }
 }
 
-class _InternalNumberInputField extends ConsumerStatefulWidget {
+class _InternalNumberInputField extends StatefulWidget {
   final Widget label;
   final double? initialValue;
   final String? helperText;
@@ -118,11 +117,10 @@ class _InternalNumberInputField extends ConsumerStatefulWidget {
   });
 
   @override
-  ConsumerState<_InternalNumberInputField> createState() =>
-      _NumberInputFieldState();
+  State<_InternalNumberInputField> createState() => _NumberInputFieldState();
 }
 
-class _NumberInputFieldState extends ConsumerState<_InternalNumberInputField> {
+class _NumberInputFieldState extends State<_InternalNumberInputField> {
   late FormattedNumberTextEditingController _controller;
 
   void _listener() {

@@ -8,3 +8,4 @@ export 'src/widgets/debug_secret_code_input.dart'
     show DebugSecretCodeInput, MorseCode;
 export 'src/widgets/dropdown_search_field.dart' show DropdownSearchField;
 export 'src/widgets/material_page_slide_route.dart' show MaterialPageSlideRoute;
+export 'src/widgets/number_input_field.dart' show NumberInputField;
