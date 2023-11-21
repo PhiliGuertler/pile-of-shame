@@ -1,9 +1,9 @@
 import 'package:intl/intl.dart';
+import 'package:misc_utils/misc_utils.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/chart_data.dart';
 import 'package:pile_of_shame/models/game_platforms.dart';
 import 'package:pile_of_shame/models/hardware.dart';
-import 'package:pile_of_shame/utils/pair.dart';
 
 class HardwareData {
   final List<VideoGameHardware> hardware;
