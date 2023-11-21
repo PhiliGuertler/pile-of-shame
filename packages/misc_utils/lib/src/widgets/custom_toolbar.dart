@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:pile_of_shame/utils/constants.dart';
 
 class CustomToolbar extends StatelessWidget {
+  static const double overlayRadius = 50.0;
+
   final List<Widget>? actions;
   final double backgroundOpacity;
   final Widget? title;

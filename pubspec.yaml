@@ -41,7 +41,6 @@ dependencies:
   shared_preferences: ^2.2.0
   theming:
     path: packages/theming
-  transparent_image: ^2.0.1
   url_launcher: ^6.1.14
   uuid: ^4.2.1
 

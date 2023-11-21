@@ -12,7 +12,6 @@ import 'package:pile_of_shame/providers/database/database_provider.dart';
 import 'package:pile_of_shame/providers/hardware/hardware_provider.dart';
 import 'package:pile_of_shame/utils/constants.dart';
 import 'package:pile_of_shame/widgets/app_scaffold.dart';
-import 'package:pile_of_shame/widgets/slivers/sliver_fancy_image_app_bar.dart';
 
 class HardwareDetailsScreen extends ConsumerWidget {
   final String hardwareId;
@@ -35,7 +34,7 @@ class HardwareDetailsScreen extends ConsumerWidget {
             ),
             slivers: [
               SliverFancyImageAppBar(
-                imageAsset: hardware.platform.controller,
+                imagePath: hardware.platform.controller.value,
                 title: Text(hardware.name),
                 actions: [
                   IconButton(
@@ -134,19 +133,19 @@ class HardwareDetailsScreen extends ConsumerWidget {
               ),
             ],
           ),
-          loading: () => const CustomScrollView(
-            physics: NeverScrollableScrollPhysics(),
+          loading: () => CustomScrollView(
+            physics: const NeverScrollableScrollPhysics(),
             slivers: [
               SliverFancyImageAppBar(
-                imageAsset: ImageAssets.loading,
+                imagePath: ImageAssets.loading.value,
               ),
-              SliverGameDetailsSkeleton(),
+              const SliverGameDetailsSkeleton(),
             ],
           ),
           error: (error, stackTrace) => CustomScrollView(
             slivers: [
               SliverFancyImageAppBar(
-                imageAsset: GamePlatform.unknown.controller,
+                imagePath: GamePlatform.unknown.controller.value,
               ),
               SliverToBoxAdapter(
                 child: Text(error.toString()),

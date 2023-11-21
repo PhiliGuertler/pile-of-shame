@@ -2,6 +2,7 @@ import 'package:custom_nested_scroll_view/custom_nested_scroll_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:misc_utils/misc_utils.dart';
 import 'package:pile_of_shame/features/analytics/analytics_by_families/providers/analytics_provider.dart';
 import 'package:pile_of_shame/features/analytics/analytics_by_families/widgets/sliver_analytics_details.dart';
 import 'package:pile_of_shame/features/games/games_list/widgets/slivers/sliver_grouped_games.dart';
@@ -13,7 +14,6 @@ import 'package:pile_of_shame/models/game_sorting.dart';
 import 'package:pile_of_shame/utils/constants.dart';
 import 'package:pile_of_shame/widgets/app_scaffold.dart';
 import 'package:pile_of_shame/widgets/skeletons/skeleton_game_display.dart';
-import 'package:pile_of_shame/widgets/slivers/sliver_fancy_image_app_bar.dart';
 import 'package:pile_of_shame/widgets/slivers/sliver_list_summary.dart';
 
 class AnalyticsByPlatformScreen extends ConsumerWidget {
@@ -33,7 +33,7 @@ class AnalyticsByPlatformScreen extends ConsumerWidget {
         child: CustomNestedScrollView(
           headerSliverBuilder: (context, innerBoxIsScrolled) => [
             SliverFancyImageAppBar(
-              imageAsset: platform.controller,
+              imagePath: platform.controller.value,
               title: Text(
                 platform.localizedName(l10n),
               ),

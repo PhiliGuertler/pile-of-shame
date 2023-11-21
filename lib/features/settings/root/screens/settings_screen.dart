@@ -18,7 +18,6 @@ import 'package:pile_of_shame/providers/database/database_provider.dart';
 import 'package:pile_of_shame/providers/debug_provider.dart';
 import 'package:pile_of_shame/utils/constants.dart';
 import 'package:pile_of_shame/widgets/segmented_action_card.dart';
-import 'package:pile_of_shame/widgets/slivers/sliver_fancy_image_header.dart';
 
 class SettingsScreen extends ConsumerWidget {
   final ScrollController scrollController;
@@ -34,8 +33,8 @@ class SettingsScreen extends ConsumerWidget {
       child: CustomScrollView(
         controller: scrollController,
         slivers: [
-          const SliverFancyImageHeader(
-            imageAsset: ImageAssets.gear,
+          SliverFancyImageHeader(
+            imagePath: ImageAssets.gear.value,
             height: 250,
           ),
           SliverToBoxAdapter(

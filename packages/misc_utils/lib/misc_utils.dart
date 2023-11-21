@@ -10,3 +10,7 @@ export 'src/widgets/dropdown_search_field.dart' show DropdownSearchField;
 export 'src/widgets/material_page_slide_route.dart' show MaterialPageSlideRoute;
 export 'src/widgets/number_input_field.dart' show NumberInputField;
 export 'src/widgets/skeleton.dart' show Skeleton;
+export 'src/widgets/slivers/sliver_fancy_image_app_bar.dart'
+    show SliverFancyImageAppBar;
+export 'src/widgets/slivers/sliver_fancy_image_header.dart'
+    show SliverFancyImageHeader;

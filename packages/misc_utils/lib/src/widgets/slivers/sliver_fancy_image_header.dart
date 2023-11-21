@@ -2,9 +2,9 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:pile_of_shame/models/assets.dart';
-import 'package:pile_of_shame/utils/constants.dart';
-import 'package:pile_of_shame/widgets/fade_in_image_asset.dart';
+import 'package:flutter_animate/flutter_animate.dart';
+import 'package:misc_utils/src/utils/constants.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class SliverFancyImageHeader extends StatelessWidget {
   final double stretchTriggerOffset;
@@ -12,7 +12,7 @@ class SliverFancyImageHeader extends StatelessWidget {
   final double minHeight;
   final double height;
   final List<StretchMode> stretchModes;
-  final ImageAssets imageAsset;
+  final String imagePath;
 
   const SliverFancyImageHeader({
     super.key,
@@ -23,14 +23,14 @@ class SliverFancyImageHeader extends StatelessWidget {
     this.stretchModes = const [
       StretchMode.zoomBackground,
     ],
-    required this.imageAsset,
+    required this.imagePath,
   });
 
   @override
   Widget build(BuildContext context) {
     return SliverPersistentHeader(
       delegate: _SliverFancyImageHeaderDelegate(
-        imageAssets: imageAsset,
+        imagePath: imagePath,
         height: height,
         minHeight: minHeight,
         stretchConfiguration: OverScrollHeaderStretchConfiguration(
@@ -47,10 +47,10 @@ class _SliverFancyImageHeaderDelegate extends SliverPersistentHeaderDelegate {
   final double minHeight;
   final double height;
   final List<StretchMode> stretchModes;
-  final ImageAssets imageAssets;
+  final String imagePath;
 
   const _SliverFancyImageHeaderDelegate({
-    required this.imageAssets,
+    required this.imagePath,
     required this.minHeight,
     required this.height,
     required this.stretchConfiguration,
@@ -74,11 +74,16 @@ class _SliverFancyImageHeaderDelegate extends SliverPersistentHeaderDelegate {
           stretchModes: stretchModes,
           background: SizedBox(
             height: math.max(height - shrinkOffset, minHeight),
-            child: FadeInImageAsset(
-              asset: imageAssets,
+            child: FadeInImage(
+              fadeInDuration: defaultFadeInDuration,
+              fadeOutDuration: defaultFadeInDuration,
               width: double.infinity,
               height: double.infinity,
-            ),
+              fit: BoxFit.cover,
+              placeholder: MemoryImage(kTransparentImage),
+              image: AssetImage(imagePath),
+              fadeInCurve: Curves.easeInOut,
+            ).animate().fadeIn(),
           ),
         ),
       ),
@@ -96,6 +101,9 @@ class _SliverFancyImageHeaderDelegate extends SliverPersistentHeaderDelegate {
 
   @override
   bool shouldRebuild(covariant _SliverFancyImageHeaderDelegate oldDelegate) {
-    return minHeight != oldDelegate.minHeight || height != oldDelegate.height;
+    return minHeight != oldDelegate.minHeight ||
+        height != oldDelegate.height ||
+        imagePath != oldDelegate.imagePath ||
+        stretchModes != oldDelegate.stretchModes;
   }
 }

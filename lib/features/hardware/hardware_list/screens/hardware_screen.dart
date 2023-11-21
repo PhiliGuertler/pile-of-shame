@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:misc_utils/misc_utils.dart';
 import 'package:pile_of_shame/features/hardware/hardware_list/widgets/hardware_display.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/assets.dart';
 import 'package:pile_of_shame/providers/hardware/hardware_provider.dart';
 import 'package:pile_of_shame/utils/constants.dart';
-import 'package:pile_of_shame/widgets/slivers/sliver_fancy_image_header.dart';
 
 class HardwareScreen extends ConsumerWidget {
   final ScrollController scrollController;
@@ -64,8 +64,8 @@ class HardwareScreen extends ConsumerWidget {
                       parent: AlwaysScrollableScrollPhysics(),
                     ),
                     slivers: [
-                      const SliverFancyImageHeader(
-                        imageAsset: ImageAssets.pc,
+                      SliverFancyImageHeader(
+                        imagePath: ImageAssets.pc.value,
                         height: 300,
                       ),
                       SliverToBoxAdapter(
@@ -88,15 +88,15 @@ class HardwareScreen extends ConsumerWidget {
             ),
           );
         },
-        loading: () => const CustomScrollView(
+        loading: () => CustomScrollView(
           slivers: [
-            SliverFancyImageHeader(imageAsset: ImageAssets.loading),
+            SliverFancyImageHeader(imagePath: ImageAssets.loading.value),
           ],
         ),
         error: (error, stackTrace) => CustomScrollView(
           slivers: [
-            const SliverFancyImageHeader(
-              imageAsset: ImageAssets.deadGame,
+            SliverFancyImageHeader(
+              imagePath: ImageAssets.deadGame.value,
               height: 300,
             ),
             SliverToBoxAdapter(

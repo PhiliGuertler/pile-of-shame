@@ -3,11 +3,9 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pile_of_shame/models/assets.dart';
-import 'package:pile_of_shame/utils/constants.dart';
-import 'package:pile_of_shame/widgets/custom_toolbar.dart';
-import 'package:pile_of_shame/widgets/fade_in_image_asset.dart';
+import 'package:misc_utils/src/utils/constants.dart';
+import 'package:misc_utils/src/widgets/custom_toolbar.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 // Creates a drawer-like gap at the bottom of the clipped area
 class InvertedCornerClipPath extends CustomClipper<Path> {
@@ -36,12 +34,15 @@ class InvertedCornerClipPath extends CustomClipper<Path> {
   bool shouldReclip(covariant CustomClipper<Path> oldClipper) => false;
 }
 
-class SliverFancyImageAppBar extends ConsumerWidget {
+class SliverFancyImageAppBar extends StatelessWidget {
   final double stretchTriggerOffset;
   final Future<void> Function()? onStretchTrigger;
   final double height;
   final List<StretchMode> stretchModes;
-  final ImageAssets imageAsset;
+  final String imagePath;
+
+  /// radius of the corners.
+  /// negative values will display an inset at the bottom like the top of a drawer
   final double borderRadius;
 
   final Widget? title;
@@ -56,15 +57,15 @@ class SliverFancyImageAppBar extends ConsumerWidget {
     this.stretchModes = const [
       StretchMode.zoomBackground,
     ],
-    required this.imageAsset,
+    required this.imagePath,
     this.title,
     this.actions,
-    this.borderRadius = defaultSheetCurvature,
+    this.borderRadius = -48.0,
     this.bottom,
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final safePadding = MediaQuery.of(context).padding;
     final minHeight = safePadding.top +
         minimumToolbarHeight +
@@ -74,7 +75,7 @@ class SliverFancyImageAppBar extends ConsumerWidget {
       pinned: true,
       delegate: _SliverFancyImageAppBarDelegate(
         borderRadius: borderRadius,
-        imageAsset: imageAsset,
+        imagePath: imagePath,
         height: height,
         minHeight: minHeight,
         stretchConfiguration: OverScrollHeaderStretchConfiguration(
@@ -126,7 +127,7 @@ class _SliverFancyImageAppBarDelegate extends SliverPersistentHeaderDelegate {
   final double height;
   final double minHeight;
   final List<StretchMode> stretchModes;
-  final ImageAssets imageAsset;
+  final String imagePath;
   final Widget? title;
   final List<Widget>? actions;
   final double borderRadius;
@@ -135,7 +136,7 @@ class _SliverFancyImageAppBarDelegate extends SliverPersistentHeaderDelegate {
   final Widget? bottom;
 
   const _SliverFancyImageAppBarDelegate({
-    required this.imageAsset,
+    required this.imagePath,
     required this.height,
     required this.minHeight,
     required this.stretchConfiguration,
@@ -207,11 +208,16 @@ class _SliverFancyImageAppBarDelegate extends SliverPersistentHeaderDelegate {
                   children: [
                     Opacity(
                       opacity: currentOpacity,
-                      child: FadeInImageAsset(
-                        asset: imageAsset,
+                      child: FadeInImage(
+                        fadeInDuration: defaultFadeInDuration,
+                        fadeOutDuration: defaultFadeInDuration,
                         width: double.infinity,
                         height: double.infinity,
-                      ).animate(delay: 200.ms).fadeIn(),
+                        fit: BoxFit.cover,
+                        placeholder: MemoryImage(kTransparentImage),
+                        image: AssetImage(imagePath),
+                        fadeInCurve: Curves.easeInOut,
+                      ).animate().fadeIn(),
                     ),
                     Material(
                       color: ElevationOverlay.applySurfaceTint(
@@ -269,7 +275,7 @@ class _SliverFancyImageAppBarDelegate extends SliverPersistentHeaderDelegate {
     return minHeight != oldDelegate.minHeight ||
         height != oldDelegate.height ||
         themeColor != oldDelegate.themeColor ||
-        imageAsset != oldDelegate.imageAsset ||
+        imagePath != oldDelegate.imagePath ||
         title != oldDelegate.title ||
         actions != oldDelegate.actions ||
         borderRadius != oldDelegate.borderRadius;

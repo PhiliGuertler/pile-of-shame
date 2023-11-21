@@ -12,7 +12,6 @@ import 'package:pile_of_shame/providers/database/database_provider.dart';
 import 'package:pile_of_shame/providers/games/game_provider.dart';
 import 'package:pile_of_shame/utils/constants.dart';
 import 'package:pile_of_shame/widgets/app_scaffold.dart';
-import 'package:pile_of_shame/widgets/slivers/sliver_fancy_image_app_bar.dart';
 
 class GameDetailsScreen extends ConsumerStatefulWidget {
   final String gameId;
@@ -41,21 +40,21 @@ class _GameDetailsScreenState extends ConsumerState<GameDetailsScreen> {
               slivers: [
                 SliverFancyImageAppBar(
                   key: const ValueKey('error-appbar'),
-                  imageAsset: GamePlatform.unknown.controller,
+                  imagePath: GamePlatform.unknown.controller.value,
                 ),
                 SliverToBoxAdapter(
                   child: Text(error.toString()),
                 ),
               ],
             ).animate().fadeIn(),
-            loading: () => const CustomScrollView(
-              physics: NeverScrollableScrollPhysics(),
+            loading: () => CustomScrollView(
+              physics: const NeverScrollableScrollPhysics(),
               slivers: [
                 SliverFancyImageAppBar(
-                  key: ValueKey('loading-appbar'),
-                  imageAsset: ImageAssets.loading,
+                  key: const ValueKey('loading-appbar'),
+                  imagePath: ImageAssets.loading.value,
                 ),
-                SliverGameDetailsSkeleton(),
+                const SliverGameDetailsSkeleton(),
               ],
             ).animate().fadeIn(duration: 1.seconds),
             data: (game) => CustomScrollView(
@@ -65,7 +64,7 @@ class _GameDetailsScreenState extends ConsumerState<GameDetailsScreen> {
               slivers: [
                 SliverFancyImageAppBar(
                   key: const ValueKey('appbar'),
-                  imageAsset: game.platform.controller,
+                  imagePath: game.platform.controller.value,
                   actions: [
                     IconButton(
                       icon: const Icon(Icons.edit),
