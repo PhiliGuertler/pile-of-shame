@@ -11,74 +11,18 @@ class LanguageScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    const flagDimension = 32.0;
-
-    final themeSettings = ref.watch(themeSettingsProvider);
-
     return AppScaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.language),
       ),
-      body: ListView(
-        children: [
-          ...AppLocalizations.supportedLocales.map(
-            (locale) => RadioListTile(
-              title: Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(right: 16.0),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(4.0),
-                      child: SizedBox(
-                        width: flagDimension,
-                        height: flagDimension,
-                        child: FadeInImageAsset(asset: locale.countryAsset()),
-                      ),
-                    ),
-                  ),
-                  Text(locale.fullName()),
-                ],
-              ),
-              onChanged: (value) {
-                ref
-                    .read(themeSettingsProvider.notifier)
-                    .setLocale(locale.toLanguageTag());
-              },
-              controlAffinity: ListTileControlAffinity.trailing,
-              groupValue: themeSettings.asData?.value.locale,
-              value: locale.toLanguageTag(),
-            ),
-          ),
-          RadioListTile(
-            title: Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(right: 16.0),
-                  child: Container(
-                    width: flagDimension,
-                    height: flagDimension,
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.primaryContainer,
-                      borderRadius:
-                          const BorderRadius.all(Radius.circular(4.0)),
-                    ),
-                    child: Icon(
-                      Icons.settings_suggest_rounded,
-                      color: Theme.of(context).colorScheme.onPrimaryContainer,
-                    ),
-                  ),
-                ),
-                Text(AppLocalizations.of(context)!.systemLanguage),
-              ],
-            ),
-            onChanged: (value) {
-              ref.read(themeSettingsProvider.notifier).setLocale(null);
-            },
-            controlAffinity: ListTileControlAffinity.trailing,
-            groupValue: themeSettings.asData?.value.locale,
-            value: null,
-          ),
-        ],
+      body: SingleChildScrollView(
+        child: LanguageSelectionRadioGroup(
+          supportedLocales: AppLocalizations.supportedLocales,
+          localeToImage: (locale) =>
+              FadeInImageAsset(asset: locale.countryAsset()),
+          localeToName: (locale) => locale.fullName(),
+          systemLanguageLabel: AppLocalizations.of(context)!.systemLanguage,
+        ),
       ),
     );
   }
