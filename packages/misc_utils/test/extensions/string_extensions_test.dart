@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:pile_of_shame/extensions/string_extensions.dart';
+import 'package:misc_utils/src/extensions/string_extensions.dart';
 
 void main() {
   group("removeDiacritics", () {

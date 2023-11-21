@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:misc_utils/misc_utils.dart';
 import 'package:pile_of_shame/features/games/game_details/widgets/sliver_game_details.dart';
 import 'package:pile_of_shame/features/hardware/add_or_edit_hardware/models/editable_hardware.dart';
 import 'package:pile_of_shame/features/hardware/add_or_edit_hardware/screens/add_or_edit_hardware_screen.dart';
@@ -9,7 +10,6 @@ import 'package:pile_of_shame/models/assets.dart';
 import 'package:pile_of_shame/models/game_platforms.dart';
 import 'package:pile_of_shame/providers/database/database_provider.dart';
 import 'package:pile_of_shame/providers/hardware/hardware_provider.dart';
-import 'package:pile_of_shame/transitions/material_page_slide_route.dart';
 import 'package:pile_of_shame/utils/constants.dart';
 import 'package:pile_of_shame/widgets/app_scaffold.dart';
 import 'package:pile_of_shame/widgets/slivers/sliver_fancy_image_app_bar.dart';

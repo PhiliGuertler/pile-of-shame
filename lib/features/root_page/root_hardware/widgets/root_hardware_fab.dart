@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:misc_utils/misc_utils.dart';
 import 'package:pile_of_shame/features/hardware/add_or_edit_hardware/models/editable_hardware.dart';
 import 'package:pile_of_shame/features/hardware/add_or_edit_hardware/screens/add_or_edit_hardware_screen.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/providers/database/database_provider.dart';
-import 'package:pile_of_shame/transitions/material_page_slide_route.dart';
 import 'package:pile_of_shame/widgets/collapsing_floating_action_button.dart';
 
 class RootHardwareFab extends ConsumerWidget {
