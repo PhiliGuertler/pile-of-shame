@@ -14,6 +14,19 @@ os.chdir(script_directory)
 os.chdir('..')
 
 # Run initialization steps
+# initialize
+
+# misc_utils
+os.chdir('./packages/misc_utils')
 subprocess.run(['flutter', 'pub', 'get'], check=True)
-subprocess.run(['flutter', 'gen-l10n'], check=True)
 subprocess.run(['dart', 'run', 'build_runner', 'build', '--delete-conflicting-outputs'], check=True)
+os.chdir('../..')
+
+os.chdir('./packages/theming')
+subprocess.run(['flutter', 'pub', 'get'], check=True)
+subprocess.run(['dart', 'run', 'build_runner', 'build', '--delete-conflicting-outputs'], check=True)
+os.chdir('../..')
+
+subprocess.run(['flutter', 'pub', 'get'], check=True)
+subprocess.run(['dart', 'run', 'build_runner', 'build', '--delete-conflicting-outputs'], check=True)
+subprocess.run(['flutter', 'gen-l10n'], check=True)
