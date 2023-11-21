@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:misc_utils/misc_utils.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/custom_game_display_settings.dart';
 import 'package:pile_of_shame/models/game.dart';
@@ -17,7 +18,6 @@ import 'package:pile_of_shame/widgets/play_status_icon.dart';
 import 'package:pile_of_shame/widgets/price_and_last_modified_display.dart';
 import 'package:pile_of_shame/widgets/price_only_display.dart';
 import 'package:pile_of_shame/widgets/progressing_icon.dart';
-import 'package:pile_of_shame/widgets/skeletons/skeleton.dart';
 import 'package:pile_of_shame/widgets/skeletons/skeleton_image_container.dart';
 import 'package:pile_of_shame/widgets/swipe_to_trigger.dart';
 import 'package:pile_of_shame/widgets/usk_logo.dart';

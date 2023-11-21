@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:misc_utils/misc_utils.dart';
 import 'package:pile_of_shame/features/games/games_list/widgets/slivers/sliver_sort_games_order.dart';
 import 'package:pile_of_shame/features/hardware/hardware_list/widgets/slivers/sliver_sort_hardware_by.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/hardware_sorting.dart';
 import 'package:pile_of_shame/providers/hardware/hardware_sorter_provider.dart';
 import 'package:pile_of_shame/utils/constants.dart';
-import 'package:pile_of_shame/widgets/skeletons/skeleton.dart';
 
 class HardwareSorterDrawer extends ConsumerWidget {
   const HardwareSorterDrawer({super.key});

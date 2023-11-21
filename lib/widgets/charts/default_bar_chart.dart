@@ -3,10 +3,10 @@ import 'dart:math';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:misc_utils/misc_utils.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/chart_data.dart';
 import 'package:pile_of_shame/utils/color_utils.dart';
-import 'package:pile_of_shame/widgets/skeletons/skeleton.dart';
 
 class DefaultBarChart extends StatelessWidget {
   static const double barWidth = 15.0;
