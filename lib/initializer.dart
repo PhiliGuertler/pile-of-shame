@@ -4,8 +4,8 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pile_of_shame/app.dart';
 import 'package:pile_of_shame/providers/debug_provider.dart';
-import 'package:theming/theming.dart';
 
 class Initializer {
   void setupInitialization() {

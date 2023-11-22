@@ -5,4 +5,4 @@ export 'src/widgets/brightness_selection_radio_group.dart'
     show BrightnessSelectionRadioGroup;
 export 'src/widgets/language_selection_radio_group.dart'
     show LanguageSelectionRadioGroup;
-export 'src/widgets/themed_app.dart' show ThemedApp, scaffoldMessengerKey;
+export 'src/widgets/themed_app.dart' show ThemedApp;

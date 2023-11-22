@@ -5,9 +5,6 @@ import 'package:intl/intl.dart';
 import 'package:theming/src/models/theme.dart';
 import 'package:theming/src/providers/theme_provider.dart';
 
-final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey =
-    GlobalKey<ScaffoldMessengerState>();
-
 /// An application with customizable locale, primary color and theme-mode
 /// via themeSettingsProvider.
 /// This application defaults to the system language if supported.
@@ -18,9 +15,12 @@ class ThemedApp extends ConsumerWidget {
   final Iterable<Locale> supportedLocales;
   final Widget home;
 
+  final GlobalKey<ScaffoldMessengerState>? scaffoldMessengerKey;
+
   const ThemedApp({
     super.key,
     this.horizontalPadding = 24.0,
+    this.scaffoldMessengerKey,
     required this.localizationsDelegates,
     required this.supportedLocales,
     required this.home,
