@@ -3,10 +3,10 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:misc_utils/misc_utils.dart';
 import 'package:pile_of_shame/models/age_restriction.dart';
 import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/providers/custom_game_display.dart';
-import 'package:pile_of_shame/widgets/image_container.dart';
 
 class USKLogo extends ConsumerWidget {
   final USK ageRestriction;

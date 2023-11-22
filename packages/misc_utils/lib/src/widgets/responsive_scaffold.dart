@@ -1,7 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
-class AppScaffold extends StatelessWidget {
+class ResponsiveScaffold extends StatelessWidget {
   static const mobileBreakpointWidth = 800.0;
 
   // Scaffold fields
@@ -34,7 +34,7 @@ class AppScaffold extends StatelessWidget {
   // Custom fields
   final bool isLoginRequired;
 
-  const AppScaffold({
+  const ResponsiveScaffold({
     super.key,
     this.appBar,
     this.backgroundColor,

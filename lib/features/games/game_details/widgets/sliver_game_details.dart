@@ -10,11 +10,9 @@ import 'package:pile_of_shame/providers/database/database_provider.dart';
 import 'package:pile_of_shame/providers/format_provider.dart';
 import 'package:pile_of_shame/utils/constants.dart';
 import 'package:pile_of_shame/widgets/game_platform_icon.dart';
-import 'package:pile_of_shame/widgets/image_container.dart';
 import 'package:pile_of_shame/widgets/note.dart';
 import 'package:pile_of_shame/widgets/play_status_display.dart';
 import 'package:pile_of_shame/widgets/play_status_icon.dart';
-import 'package:pile_of_shame/widgets/segmented_action_card.dart';
 import 'package:pile_of_shame/widgets/skeletons/skeleton_list_tile.dart';
 import 'package:pile_of_shame/widgets/usk_logo.dart';
 
@@ -207,24 +205,6 @@ class _SliverGameDetailsState extends ConsumerState<SliverGameDetails> {
                       game: widget.game,
                       dlcId: dlc.id,
                     ),
-                    onDelete: () async {
-                      setState(() {
-                        dismissedDLCs.add(dlc.id);
-                      });
-
-                      final updatedGame = widget.game.copyWith(
-                        dlcs: widget.game.dlcs
-                            .where((element) => element.id != dlc.id)
-                            .toList(),
-                      );
-                      final database = await ref.read(databaseProvider.future);
-                      final update =
-                          database.updateGame(updatedGame.id, updatedGame);
-
-                      await ref
-                          .read(databaseStorageProvider)
-                          .persistDatabase(update);
-                    },
                   ),
                 ),
             addDLCActionCardItem,

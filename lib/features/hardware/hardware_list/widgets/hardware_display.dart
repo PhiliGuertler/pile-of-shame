@@ -9,7 +9,6 @@ import 'package:pile_of_shame/models/hardware.dart';
 import 'package:pile_of_shame/providers/format_provider.dart';
 import 'package:pile_of_shame/providers/hardware/hardware_provider.dart';
 import 'package:pile_of_shame/widgets/skeletons/skeleton_list_tile.dart';
-import 'package:pile_of_shame/widgets/slide_expandable.dart';
 
 class HardwareDisplay extends ConsumerStatefulWidget {
   final GamePlatform platform;
@@ -53,7 +52,7 @@ class _HardwareDisplayState extends ConsumerState<HardwareDisplay>
         ref.watch(hardwareTotalPriceByPlatformProvider(widget.platform));
 
     return SlideExpandable(
-      imageAsset: widget.platform.controller,
+      imagePath: widget.platform.controller.value,
       title: Text(
         widget.platform.localizedAbbreviation(l10n),
       ),

@@ -6,7 +6,6 @@ import 'package:pile_of_shame/features/games/add_or_edit_game/screens/add_or_edi
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/play_status.dart';
 import 'package:pile_of_shame/providers/database/database_provider.dart';
-import 'package:pile_of_shame/widgets/collapsing_floating_action_button.dart';
 
 class RootGamesFab extends ConsumerWidget {
   final bool isExtended;

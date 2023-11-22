@@ -17,7 +17,6 @@ import 'package:pile_of_shame/models/database.dart';
 import 'package:pile_of_shame/providers/database/database_provider.dart';
 import 'package:pile_of_shame/providers/debug_provider.dart';
 import 'package:pile_of_shame/utils/constants.dart';
-import 'package:pile_of_shame/widgets/segmented_action_card.dart';
 
 class SettingsScreen extends ConsumerWidget {
   final ScrollController scrollController;
@@ -26,6 +25,8 @@ class SettingsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final isDebugMode = ref.watch(debugFeatureAccessProvider);
+
     final errorContainer = Theme.of(context).colorScheme.errorContainer;
     final onErrorContainer = Theme.of(context).colorScheme.onErrorContainer;
 
@@ -53,6 +54,7 @@ class SettingsScreen extends ConsumerWidget {
           ),
           SliverToBoxAdapter(
             child: SegmentedActionCard(
+              isDebugMode: isDebugMode,
               items: [
                 SegmentedActionCardItem(
                   leading: const Icon(Icons.dark_mode),
@@ -150,6 +152,7 @@ class SettingsScreen extends ConsumerWidget {
           ),
           SliverToBoxAdapter(
             child: SegmentedActionCard(
+              isDebugMode: isDebugMode,
               items: [
                 SegmentedActionCardItem.debug(
                   leading: const Icon(Icons.engineering),

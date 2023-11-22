@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:misc_utils/misc_utils.dart';
 import 'package:pile_of_shame/features/games/add_or_edit_game/widgets/name_input_field.dart';
 import 'package:pile_of_shame/features/games/add_or_edit_game/widgets/notes_input_field.dart';
 import 'package:pile_of_shame/features/games/add_or_edit_game/widgets/platform_dropdown.dart';
@@ -10,7 +11,6 @@ import 'package:pile_of_shame/features/hardware/add_or_edit_hardware/providers/e
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/utils/constants.dart';
 import 'package:pile_of_shame/widgets/app_scaffold.dart';
-import 'package:pile_of_shame/widgets/image_container.dart';
 
 class AddOrEditHardwareScreen extends ConsumerStatefulWidget {
   final EditableHardware? initialValue;

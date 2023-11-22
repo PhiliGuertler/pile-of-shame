@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:misc_utils/misc_utils.dart';
 import 'package:pile_of_shame/models/custom_game_display_settings.dart';
 import 'package:pile_of_shame/providers/custom_game_display.dart';
 import 'package:pile_of_shame/utils/constants.dart';
-import 'package:pile_of_shame/widgets/image_container.dart';
 
 class EndDragTargetSlot extends StatelessWidget {
   final GameDisplayLeadingTrailing currentValue;

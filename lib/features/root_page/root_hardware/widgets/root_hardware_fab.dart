@@ -5,7 +5,6 @@ import 'package:pile_of_shame/features/hardware/add_or_edit_hardware/models/edit
 import 'package:pile_of_shame/features/hardware/add_or_edit_hardware/screens/add_or_edit_hardware_screen.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/providers/database/database_provider.dart';
-import 'package:pile_of_shame/widgets/collapsing_floating_action_button.dart';
 
 class RootHardwareFab extends ConsumerWidget {
   final bool isExtended;

@@ -6,7 +6,6 @@ import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/providers/database/database_provider.dart';
 import 'package:pile_of_shame/providers/format_provider.dart';
 import 'package:pile_of_shame/widgets/game_platform_icon.dart';
-import 'package:pile_of_shame/widgets/image_container.dart';
 import 'package:pile_of_shame/widgets/note.dart';
 import 'package:pile_of_shame/widgets/play_status_display.dart';
 import 'package:pile_of_shame/widgets/play_status_icon.dart';

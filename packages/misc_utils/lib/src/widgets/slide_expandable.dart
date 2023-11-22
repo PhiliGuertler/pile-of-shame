@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pile_of_shame/models/assets.dart';
-import 'package:pile_of_shame/utils/constants.dart';
-import 'package:pile_of_shame/widgets/fade_in_image_asset.dart';
+import 'package:misc_utils/src/utils/constants.dart';
+import 'package:transparent_image/transparent_image.dart';
 
-class SlideExpandable extends ConsumerStatefulWidget {
-  final ImageAssets imageAsset;
+class SlideExpandable extends StatefulWidget {
+  final String imagePath;
   final Widget title;
   final Widget subtitle;
   final Widget trailing;
@@ -14,7 +12,7 @@ class SlideExpandable extends ConsumerStatefulWidget {
 
   const SlideExpandable({
     super.key,
-    required this.imageAsset,
+    required this.imagePath,
     required this.title,
     required this.subtitle,
     required this.trailing,
@@ -22,10 +20,10 @@ class SlideExpandable extends ConsumerStatefulWidget {
   });
 
   @override
-  ConsumerState<SlideExpandable> createState() => _SlideExpandableState();
+  State<SlideExpandable> createState() => _SlideExpandableState();
 }
 
-class _SlideExpandableState extends ConsumerState<SlideExpandable>
+class _SlideExpandableState extends State<SlideExpandable>
     with SingleTickerProviderStateMixin {
   late AnimationController controller;
   bool isAnimationForward = true;
@@ -135,7 +133,7 @@ class _SlideExpandableState extends ConsumerState<SlideExpandable>
                             Expanded(
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(
-                                  horizontal: defaultPaddingX - 8.0,
+                                  horizontal: 16.0,
                                 ),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -186,10 +184,16 @@ class _SlideExpandableState extends ConsumerState<SlideExpandable>
                               bottomRight: Radius.circular(30.0),
                               topRight: Radius.circular(12.0),
                             ),
-                            child: FadeInImageAsset(
-                              asset: widget.imageAsset,
-                              height: 80,
-                            ).animate(delay: 200.ms).fadeIn(),
+                            child: FadeInImage(
+                              fadeInDuration: defaultFadeInDuration,
+                              fadeOutDuration: defaultFadeInDuration,
+                              width: double.infinity,
+                              height: 80.0,
+                              fit: BoxFit.cover,
+                              placeholder: MemoryImage(kTransparentImage),
+                              image: AssetImage(widget.imagePath),
+                              fadeInCurve: Curves.easeInOut,
+                            ).animate().fadeIn(),
                           ),
                         ),
                       ],

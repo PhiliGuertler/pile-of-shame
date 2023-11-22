@@ -19,7 +19,6 @@ import 'package:pile_of_shame/widgets/price_and_last_modified_display.dart';
 import 'package:pile_of_shame/widgets/price_only_display.dart';
 import 'package:pile_of_shame/widgets/progressing_icon.dart';
 import 'package:pile_of_shame/widgets/skeletons/skeleton_image_container.dart';
-import 'package:pile_of_shame/widgets/swipe_to_trigger.dart';
 import 'package:pile_of_shame/widgets/usk_logo.dart';
 
 class LeadingTrailingGameDisplaySlot extends StatelessWidget {
