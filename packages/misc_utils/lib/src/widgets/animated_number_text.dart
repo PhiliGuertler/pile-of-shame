@@ -1,31 +1,31 @@
 import 'package:flutter/material.dart';
 
-class AnimatedCurrency extends ImplicitlyAnimatedWidget {
-  final double currency;
-  final String Function(double value) formatCurrency;
+class AnimatedNumberText extends ImplicitlyAnimatedWidget {
+  final double number;
+  final String Function(double value) formatNumber;
   final TextStyle? style;
 
-  const AnimatedCurrency({
+  const AnimatedNumberText({
     super.key,
     super.curve,
-    required this.currency,
+    required this.number,
     required super.duration,
-    required this.formatCurrency,
+    required this.formatNumber,
     this.style,
   });
 
   @override
   ImplicitlyAnimatedWidgetState<ImplicitlyAnimatedWidget> createState() =>
-      _AnimatedCurrencyState();
+      _AnimatedNumberText();
 }
 
-class _AnimatedCurrencyState extends AnimatedWidgetBaseState<AnimatedCurrency> {
+class _AnimatedNumberText extends AnimatedWidgetBaseState<AnimatedNumberText> {
   Tween<double>? _count;
 
   @override
   Widget build(BuildContext context) {
     return Text(
-      widget.formatCurrency(_count?.evaluate(animation) ?? 0),
+      widget.formatNumber(_count?.evaluate(animation) ?? 0),
       style: widget.style,
       maxLines: 1,
     );
@@ -35,7 +35,7 @@ class _AnimatedCurrencyState extends AnimatedWidgetBaseState<AnimatedCurrency> {
   void forEachTween(TweenVisitor<dynamic> visitor) {
     _count = visitor(
       _count,
-      widget.currency,
+      widget.number,
       (dynamic value) => Tween<double>(begin: value as double),
     )! as Tween<double>;
   }

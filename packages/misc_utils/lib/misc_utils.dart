@@ -4,6 +4,7 @@ export 'src/utils/file_utils.dart' show FileUtils;
 export 'src/utils/pair.dart' show Pair;
 export 'src/widgets/animated_heart/animated_heart_button.dart'
     show AnimatedHeartButton;
+export 'src/widgets/animated_number_text.dart' show AnimatedNumberText;
 export 'src/widgets/collapsing_floating_action_button.dart'
     show CollapsingFloatingActionButton;
 export 'src/widgets/debug_secret_code_input.dart'
