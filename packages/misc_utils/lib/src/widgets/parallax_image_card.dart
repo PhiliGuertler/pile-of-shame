@@ -47,8 +47,6 @@ class _ParallaxBackgroundState extends State<ParallaxBackground> {
           key: _backgroundImageKey,
           fadeInDuration: defaultFadeInDuration,
           fadeOutDuration: defaultFadeInDuration,
-          width: double.infinity,
-          height: double.infinity,
           fit: BoxFit.cover,
           placeholder: MemoryImage(kTransparentImage),
           image: AssetImage(widget.imagePath),
