@@ -70,6 +70,8 @@ class CustomizableGameDisplay extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
+
     final currencyFormatter =
         ref.watch(currencyFormatProvider(Localizations.localeOf(context)));
 
@@ -106,12 +108,12 @@ class CustomizableGameDisplay extends ConsumerWidget {
             secondaryWidget = AgeRatingTextDisplay.fromGame(game: game);
           case GameDisplaySecondary.platformText:
             secondaryWidget = Text(
-              game.platform.localizedName(AppLocalizations.of(context)!),
+              game.platform.localizedName(l10n),
             );
           case GameDisplaySecondary.price:
             secondaryWidget = Text(
-              game.wasGifted && game.fullPrice() < 0.01
-                  ? AppLocalizations.of(context)!.gift
+              game.fullPrice() < 0.01
+                  ? game.priceVariant.toLocaleString(l10n)
                   : currencyFormatter.format(game.fullPrice()),
             );
           case GameDisplaySecondary.none:

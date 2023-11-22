@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:misc_utils/misc_utils.dart';
 import 'package:pile_of_shame/features/games/add_or_edit_game/models/editable_game.dart';
 import 'package:pile_of_shame/features/games/add_or_edit_game/providers/edit_game_provider.dart';
 import 'package:pile_of_shame/features/games/add_or_edit_game/widgets/name_input_field.dart';
@@ -9,6 +7,7 @@ import 'package:pile_of_shame/features/games/add_or_edit_game/widgets/notes_inpu
 import 'package:pile_of_shame/features/games/add_or_edit_game/widgets/play_status_dropdown.dart';
 import 'package:pile_of_shame/features/games/add_or_edit_game/widgets/price_input_field.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
+import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/utils/constants.dart';
 import 'package:pile_of_shame/widgets/app_scaffold.dart';
 
@@ -75,61 +74,11 @@ class _AddDLCScreenState extends ConsumerState<AddDLCScreen> {
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.only(right: 8.0),
-                          child: Center(
-                            child: ImageContainer(
-                              child: InkWell(
-                                borderRadius: BorderRadius.circular(
-                                  ImageContainer.borderRadius,
-                                ),
-                                onTap: () {
-                                  final newValue = !editableDLC.wasGifted;
-                                  ref
-                                      .read(
-                                        addDLCProvider(widget.initialValue)
-                                            .notifier,
-                                      )
-                                      .updateDLC(
-                                        editableDLC.copyWith(
-                                          wasGifted: newValue,
-                                        ),
-                                      );
-                                },
-                                child: Center(
-                                  child: Icon(
-                                    Icons.cake_sharp,
-                                    color:
-                                        Theme.of(context).colorScheme.primary,
-                                  )
-                                      .animate(
-                                        target: editableDLC.wasGifted ? 0 : 1,
-                                      )
-                                      .shake()
-                                      .scale(
-                                        begin: const Offset(1.0, 1.0),
-                                        end: const Offset(1.2, 1.2),
-                                        curve: Curves.easeInOutBack,
-                                      )
-                                      .then()
-                                      .swap(
-                                        builder: (context, child) =>
-                                            const Icon(Icons.cake_outlined)
-                                                .animate()
-                                                .scale(
-                                                  begin: const Offset(1.2, 1.2),
-                                                  end: const Offset(1.0, 1.0),
-                                                  curve: Curves.easeInOutBack,
-                                                ),
-                                      ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
+                        // TODO: Add a dropdown or something similar for the price variant
                         Expanded(
                           child: PriceInputField(
-                            enabled: !editableDLC.wasGifted,
+                            enabled:
+                                editableDLC.priceVariant == PriceVariant.bought,
                             value: editableDLC.price,
                             onChanged: (value) {
                               ref

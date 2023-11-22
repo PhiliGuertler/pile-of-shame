@@ -1,10 +1,46 @@
+import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/age_restriction.dart';
 import 'package:pile_of_shame/models/game_platforms.dart';
 import 'package:pile_of_shame/models/play_status.dart';
 
 part 'game.freezed.dart';
 part 'game.g.dart';
+
+enum PriceVariant {
+  bought,
+  borrowed,
+  gifted,
+  onWishList,
+  ;
+
+  String toLocaleString(AppLocalizations l10n) {
+    switch (this) {
+      case PriceVariant.bought:
+        return l10n.boughtForFree;
+      case PriceVariant.gifted:
+        return l10n.gift;
+      case PriceVariant.borrowed:
+        return l10n.borrowed;
+      case PriceVariant.onWishList:
+        return l10n.onWishList;
+    }
+  }
+
+  IconData toIconData() {
+    switch (this) {
+      case PriceVariant.bought:
+        return Icons.attach_money;
+      case PriceVariant.gifted:
+        return Icons.cake;
+      case PriceVariant.borrowed:
+        return Icons.people;
+      case PriceVariant.onWishList:
+        return Icons.receipt_long;
+    }
+  }
+}
 
 @freezed
 class DLC with _$DLC {
@@ -17,7 +53,7 @@ class DLC with _$DLC {
     @Default(0.0) double price,
     String? notes,
     @Default(false) bool isFavorite,
-    @Default(false) bool wasGifted,
+    @Default(PriceVariant.bought) PriceVariant priceVariant,
   }) = _DLC;
   const DLC._();
 
@@ -38,7 +74,7 @@ class Game with _$Game {
     @Default([]) List<DLC> dlcs,
     String? notes,
     @Default(false) bool isFavorite,
-    @Default(false) bool wasGifted,
+    @Default(PriceVariant.bought) PriceVariant priceVariant,
   }) = _Game;
   const Game._();
 

@@ -47,6 +47,45 @@ class Gamev1 with _$Gamev1 {
   factory Gamev1.fromJson(Map<String, dynamic> json) => _$Gamev1FromJson(json);
 }
 
+@freezed
+class DLCv2 with _$DLCv2 {
+  const factory DLCv2({
+    required String id,
+    required String name,
+    required PlayStatus status,
+    required DateTime lastModified,
+    required DateTime createdAt,
+    @Default(0.0) double price,
+    String? notes,
+    @Default(false) bool isFavorite,
+    @Default(false) bool wasGifted,
+  }) = _DLCv2;
+  const DLCv2._();
+
+  factory DLCv2.fromJson(Map<String, dynamic> json) => _$DLCv2FromJson(json);
+}
+
+@freezed
+class Gamev2 with _$Gamev2 {
+  const factory Gamev2({
+    required String id,
+    required String name,
+    required GamePlatform platform,
+    required PlayStatus status,
+    required DateTime lastModified,
+    required DateTime createdAt,
+    required double price,
+    @Default(USK.usk0) USK usk,
+    @Default([]) List<DLCv2> dlcs,
+    String? notes,
+    @Default(false) bool isFavorite,
+    @Default(false) bool wasGifted,
+  }) = _Gamev2;
+  const Gamev2._();
+
+  factory Gamev2.fromJson(Map<String, dynamic> json) => _$Gamev2FromJson(json);
+}
+
 /// GamesList of Gamev1 and DLCv1
 @freezed
 class GamesListv1 with _$GamesListv1 {
@@ -62,7 +101,7 @@ class GamesListv1 with _$GamesListv1 {
 @freezed
 class GamesListv2 with _$GamesListv2 {
   const factory GamesListv2({
-    required List<Game> games,
+    required List<Gamev2> games,
     // GamesListv2 is missing the Map of platforms to hardware
   }) = _GamesListv2;
   const GamesListv2._();
@@ -71,12 +110,24 @@ class GamesListv2 with _$GamesListv2 {
       _$GamesListv2FromJson(json);
 }
 
+@freezed
+class GamesListv3 with _$GamesListv3 {
+  const factory GamesListv3({
+    required List<Game> games,
+    // GamesListv2 is missing the Map of platforms to hardware
+  }) = _GamesListv3;
+  const GamesListv3._();
+
+  factory GamesListv3.fromJson(Map<String, dynamic> json) =>
+      _$GamesListv3FromJson(json);
+}
+
 /// Migrates the database
 class DatabaseMigrator {
   const DatabaseMigrator._();
 
-  static DLC migrateDLCv1(DLCv1 dlc) {
-    return DLC(
+  static DLCv2 migrateDLCv1(DLCv1 dlc) {
+    return DLCv2(
       createdAt: dlc.lastModified,
       id: dlc.id,
       name: dlc.name,
@@ -89,8 +140,26 @@ class DatabaseMigrator {
     );
   }
 
-  static Game migrateGamev1(Gamev1 game) {
-    return Game(
+  static DLC migrateDLCv2(DLCv2 dlc) {
+    return DLC(
+      createdAt: dlc.lastModified,
+      id: dlc.id,
+      name: dlc.name,
+      status: dlc.status,
+      lastModified: dlc.lastModified,
+      price: dlc.price,
+      notes: dlc.notes,
+      isFavorite: dlc.isFavorite,
+      priceVariant: dlc.wasGifted
+          ? PriceVariant.gifted
+          : dlc.status == PlayStatus.onWishList
+              ? PriceVariant.onWishList
+              : PriceVariant.bought,
+    );
+  }
+
+  static Gamev2 migrateGamev1(Gamev1 game) {
+    return Gamev2(
       createdAt: game.lastModified,
       id: game.id,
       name: game.name,
@@ -106,13 +175,40 @@ class DatabaseMigrator {
     );
   }
 
+  static Game migrateGamev2(Gamev2 game) {
+    return Game(
+      createdAt: game.lastModified,
+      id: game.id,
+      name: game.name,
+      platform: game.platform,
+      status: game.status,
+      lastModified: game.lastModified,
+      price: game.price,
+      usk: game.usk,
+      dlcs: game.dlcs.map((e) => migrateDLCv2(e)).toList(),
+      notes: game.notes,
+      isFavorite: game.isFavorite,
+      priceVariant: game.wasGifted
+          ? PriceVariant.gifted
+          : game.status == PlayStatus.onWishList
+              ? PriceVariant.onWishList
+              : PriceVariant.bought,
+    );
+  }
+
   static GamesListv2 migrateGamesListV1(GamesListv1 gamesList) {
     return GamesListv2(
       games: gamesList.games.map((e) => migrateGamev1(e)).toList(),
     );
   }
 
-  static Database migrateGamesListV2(GamesListv2 gamesList) {
+  static GamesListv3 migrateGamesListV2(GamesListv2 gamesList) {
+    return GamesListv3(
+      games: gamesList.games.map((e) => migrateGamev2(e)).toList(),
+    );
+  }
+
+  static Database migrateGamesListV3(GamesListv3 gamesList) {
     return Database(
       games: gamesList.games,
       hardware: [],
@@ -129,30 +225,51 @@ class DatabaseMigrator {
     }
 
     // ### Migration steps in reverse order ################################# //
-    if (result == null) {
-      try {
-        final GamesListv2 gamesV2 = GamesListv2.fromJson(jsonMap);
-        result = migrateGamesListV2(gamesV2);
-      } catch (error) {
-        result = null;
-      }
-    }
+    GamesListv3? gamesV3;
+    GamesListv2? gamesV2;
+    GamesListv1? gamesV1;
 
+    // Attempt to deserialize from newest to oldest
     if (result == null) {
       try {
-        final GamesListv1 gamesV1 = GamesListv1.fromJson(jsonMap);
-        final GamesListv2 gamesV2 = migrateGamesListV1(gamesV1);
-        result = migrateGamesListV2(gamesV2);
+        gamesV3 = GamesListv3.fromJson(jsonMap);
       } catch (error) {
         // fall through to the previous migration step
-        result = null;
       }
     }
-    // ### /Migration steps in reverse order ################################ //
 
+    if (result == null) {
+      try {
+        gamesV2 = GamesListv2.fromJson(jsonMap);
+      } catch (error) {
+        // fall through to the previous migration step
+      }
+    }
+
+    if (result == null) {
+      try {
+        gamesV1 = GamesListv1.fromJson(jsonMap);
+      } catch (error) {
+        // fall through to the previous migration step
+      }
+    }
+
+    // Migrate from olders to newest
+    if (gamesV1 != null) {
+      gamesV2 = migrateGamesListV1(gamesV1);
+    }
+    if (gamesV2 != null) {
+      gamesV3 = migrateGamesListV2(gamesV2);
+    }
+    if (gamesV3 != null) {
+      result = migrateGamesListV3(gamesV3);
+    }
+
+    // Throw an exception if loading failed
     if (result == null) {
       throw Exception("Failed to load games");
     }
+
     return result;
   }
 }
