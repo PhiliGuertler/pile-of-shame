@@ -18,15 +18,17 @@ os.chdir('..')
 
 # misc_utils
 os.chdir('./packages/misc_utils')
-subprocess.run(['flutter', 'pub', 'get'], check=True)
-subprocess.run(['dart', 'run', 'build_runner', 'build', '--delete-conflicting-outputs'], check=True)
+subprocess.run(['flutter', 'pub', 'get'], check=True, shell=True)
+subprocess.run(['dart', 'run', 'build_runner', 'build', '--delete-conflicting-outputs'], check=True, shell=True)
 os.chdir('../..')
 
+# theming
 os.chdir('./packages/theming')
-subprocess.run(['flutter', 'pub', 'get'], check=True)
-subprocess.run(['dart', 'run', 'build_runner', 'build', '--delete-conflicting-outputs'], check=True)
+subprocess.run(['flutter', 'pub', 'get'], check=True, shell=True)
+subprocess.run(['dart', 'run', 'build_runner', 'build', '--delete-conflicting-outputs'], check=True, shell=True)
 os.chdir('../..')
 
-subprocess.run(['flutter', 'pub', 'get'], check=True)
-subprocess.run(['dart', 'run', 'build_runner', 'build', '--delete-conflicting-outputs'], check=True)
-subprocess.run(['flutter', 'gen-l10n'], check=True)
+# pile_of_shame
+subprocess.run(['flutter', 'pub', 'get'], check=True, shell=True)
+subprocess.run(['dart', 'run', 'build_runner', 'build', '--delete-conflicting-outputs'], check=True, shell=True)
+subprocess.run(['flutter', 'gen-l10n'], check=True, shell=True)

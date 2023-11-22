@@ -6,11 +6,17 @@ Written in Flutter.
 [![style: lint](https://img.shields.io/badge/style-lint-4BC0F5.svg)](https://pub.dev/packages/lint)
 
 ## Setup
+This project relies on a git submodule.
+Make sure to fetch it before attempting to build.
+
 Make sure to generate some files before hitting run.
-For conveninence, the script `scripts/init_project.py` will perform these actions in the order listed here.
+For conveninence, the script [`scripts/init_project.py`](scripts/init_project.py) will perform these actions in the order listed here.
 1. Fetch the dependencies of the project by running `flutter pub get`
 2. Generate localizations using `flutter gen-l10n`
 3. Generate other files by running `dart run build_runner build --delete-conflicting-outputs`
+
+Steps 1 and 3 have to be done in each subdirectory of `packages`.
+Again, [`scripts/init_project.py`](scripts/init_project.py) will perform these actions for convenience.
 
 ## Localization (l10n)
 Localization uses flutter's l10n generator.
