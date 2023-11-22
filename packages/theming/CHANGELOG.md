@@ -1,3 +1,13 @@
-## 0.0.1
+## 1.0.0
 
-* TODO: Describe initial release.
+Added these models:
+- AppTheme
+
+Added these Providers:
+- themeSettingsProvider
+
+Added these widgets:
+- AppearanceColorPicker
+- BrightnessSelectionRadioGroup
+- LanguageSelectionRadioGroup
+- ThemedApp

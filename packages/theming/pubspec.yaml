@@ -1,6 +1,6 @@
 name: theming
-description: "A new Flutter package project."
-version: 0.0.1
+description: A collection of theming related widgets and utilities using riverpod
+version: 1.0.0
 publish_to: none
 
 environment:

@@ -1,3 +1,32 @@
-## 0.0.1
+## 1.0.0
 
-* TODO: Describe initial release.
+Added these widgets:
+- AnimatedHeartButton
+- AnimatedNumberText
+- CollapsingFloatingActionbutton
+- DebugSecretCodeInput
+- DropdownSearchField
+- ImageContainer
+- MaterialPageSlideRoute
+- Note
+- NumberInputField
+- ParallaxImageCard
+- ResponsiveScaffold
+- SegmentedActionCard
+- Skeleton
+- SlideExpandable
+- SwipeToTrigger
+
+Added these slivers:
+- SliverFancyImageAppBar
+- SliverFancyImageHeader
+
+Added these extensions:
+- Diacritics (on String)
+
+Added these mixins:
+- Persistable
+
+Added these utils:
+- FileUtils
+- Pair
