@@ -15,6 +15,7 @@ export 'src/widgets/material_page_slide_route.dart' show MaterialPageSlideRoute;
 export 'src/widgets/note.dart' show Note;
 export 'src/widgets/number_input_field.dart' show NumberInputField;
 export 'src/widgets/parallax_image_card.dart' show ParallaxImageCard;
+export 'src/widgets/progressing_icon.dart' show ProgressingIcon;
 export 'src/widgets/responsive_scaffold.dart' show ResponsiveScaffold;
 export 'src/widgets/segmented_action_card.dart'
     show SegmentedActionCard, SegmentedActionCardItem;

@@ -16,7 +16,6 @@ import 'package:pile_of_shame/widgets/play_status_display.dart';
 import 'package:pile_of_shame/widgets/play_status_icon.dart';
 import 'package:pile_of_shame/widgets/price_and_last_modified_display.dart';
 import 'package:pile_of_shame/widgets/price_only_display.dart';
-import 'package:pile_of_shame/widgets/progressing_icon.dart';
 import 'package:pile_of_shame/widgets/skeletons/skeleton_image_container.dart';
 import 'package:pile_of_shame/widgets/usk_logo.dart';
 

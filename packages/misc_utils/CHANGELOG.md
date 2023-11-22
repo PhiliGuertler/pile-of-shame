@@ -11,6 +11,7 @@ Added these widgets:
 - Note
 - NumberInputField
 - ParallaxImageCard
+- ProgressingIcon
 - ResponsiveScaffold
 - SegmentedActionCard
 - Skeleton
