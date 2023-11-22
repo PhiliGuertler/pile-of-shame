@@ -12,6 +12,7 @@ export 'src/widgets/debug_secret_code_input.dart'
 export 'src/widgets/dropdown_search_field.dart' show DropdownSearchField;
 export 'src/widgets/image_container.dart' show ImageContainer;
 export 'src/widgets/material_page_slide_route.dart' show MaterialPageSlideRoute;
+export 'src/widgets/note.dart' show Note;
 export 'src/widgets/number_input_field.dart' show NumberInputField;
 export 'src/widgets/parallax_image_card.dart' show ParallaxImageCard;
 export 'src/widgets/responsive_scaffold.dart' show ResponsiveScaffold;

@@ -12,7 +12,6 @@ import 'package:pile_of_shame/utils/constants.dart';
 import 'package:pile_of_shame/widgets/age_rating_text_display.dart';
 import 'package:pile_of_shame/widgets/game_platform_icon.dart';
 import 'package:pile_of_shame/widgets/last_modified_display.dart';
-import 'package:pile_of_shame/widgets/note.dart';
 import 'package:pile_of_shame/widgets/play_status_display.dart';
 import 'package:pile_of_shame/widgets/play_status_icon.dart';
 import 'package:pile_of_shame/widgets/price_and_last_modified_display.dart';
@@ -302,6 +301,7 @@ class _NotesOverlayState extends State<NotesOverlay> {
                   });
                 },
                 child: Note(
+                  label: AppLocalizations.of(context)!.notes,
                   child: Text(widget.notes[index]),
                 ),
               ),

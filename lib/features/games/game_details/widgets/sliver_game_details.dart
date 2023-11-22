@@ -10,7 +10,6 @@ import 'package:pile_of_shame/providers/database/database_provider.dart';
 import 'package:pile_of_shame/providers/format_provider.dart';
 import 'package:pile_of_shame/utils/constants.dart';
 import 'package:pile_of_shame/widgets/game_platform_icon.dart';
-import 'package:pile_of_shame/widgets/note.dart';
 import 'package:pile_of_shame/widgets/play_status_display.dart';
 import 'package:pile_of_shame/widgets/play_status_icon.dart';
 import 'package:pile_of_shame/widgets/skeletons/skeleton_list_tile.dart';
@@ -81,6 +80,7 @@ class _SliverGameDetailsState extends ConsumerState<SliverGameDetails> {
       children: [
         if (widget.game.notes != null && widget.game.notes!.isNotEmpty)
           Note(
+            label: AppLocalizations.of(context)!.notes,
             child: Text(widget.game.notes!),
           ),
         ListTile(

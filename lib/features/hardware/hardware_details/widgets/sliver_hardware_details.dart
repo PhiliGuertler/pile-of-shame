@@ -5,7 +5,6 @@ import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/hardware.dart';
 import 'package:pile_of_shame/providers/format_provider.dart';
 import 'package:pile_of_shame/widgets/game_platform_icon.dart';
-import 'package:pile_of_shame/widgets/note.dart';
 
 class SliverHardwareDetails extends ConsumerWidget {
   final VideoGameHardware hardware;
@@ -27,6 +26,7 @@ class SliverHardwareDetails extends ConsumerWidget {
       children: [
         if (hardware.notes != null && hardware.notes!.isNotEmpty)
           Note(
+            label: AppLocalizations.of(context)!.notes,
             child: Text(hardware.notes!),
           ),
         ListTile(
