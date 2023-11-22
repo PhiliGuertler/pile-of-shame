@@ -142,7 +142,7 @@ class DatabaseMigrator {
 
   static DLC migrateDLCv2(DLCv2 dlc) {
     return DLC(
-      createdAt: dlc.lastModified,
+      createdAt: dlc.createdAt,
       id: dlc.id,
       name: dlc.name,
       status: dlc.status,
@@ -177,7 +177,7 @@ class DatabaseMigrator {
 
   static Game migrateGamev2(Gamev2 game) {
     return Game(
-      createdAt: game.lastModified,
+      createdAt: game.createdAt,
       id: game.id,
       name: game.name,
       platform: game.platform,
