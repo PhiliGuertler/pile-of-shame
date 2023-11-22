@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:misc_utils/misc_utils.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:pile_of_shame/features/developer_tools/debug_menu/screens/debug_menu_screen.dart';
 import 'package:pile_of_shame/features/settings/about/screens/about_screen.dart';
@@ -16,9 +17,6 @@ import 'package:pile_of_shame/models/database.dart';
 import 'package:pile_of_shame/providers/database/database_provider.dart';
 import 'package:pile_of_shame/providers/debug_provider.dart';
 import 'package:pile_of_shame/utils/constants.dart';
-import 'package:pile_of_shame/utils/debug/debug_secret_code_input.dart';
-import 'package:pile_of_shame/widgets/segmented_action_card.dart';
-import 'package:pile_of_shame/widgets/slivers/sliver_fancy_image_header.dart';
 
 class SettingsScreen extends ConsumerWidget {
   final ScrollController scrollController;
@@ -27,6 +25,8 @@ class SettingsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final isDebugMode = ref.watch(debugFeatureAccessProvider);
+
     final errorContainer = Theme.of(context).colorScheme.errorContainer;
     final onErrorContainer = Theme.of(context).colorScheme.onErrorContainer;
 
@@ -34,8 +34,8 @@ class SettingsScreen extends ConsumerWidget {
       child: CustomScrollView(
         controller: scrollController,
         slivers: [
-          const SliverFancyImageHeader(
-            imageAsset: ImageAssets.gear,
+          SliverFancyImageHeader(
+            imagePath: ImageAssets.gear.value,
             height: 250,
           ),
           SliverToBoxAdapter(
@@ -54,6 +54,7 @@ class SettingsScreen extends ConsumerWidget {
           ),
           SliverToBoxAdapter(
             child: SegmentedActionCard(
+              isDebugMode: isDebugMode,
               items: [
                 SegmentedActionCardItem(
                   leading: const Icon(Icons.dark_mode),
@@ -151,6 +152,7 @@ class SettingsScreen extends ConsumerWidget {
           ),
           SliverToBoxAdapter(
             child: SegmentedActionCard(
+              isDebugMode: isDebugMode,
               items: [
                 SegmentedActionCardItem.debug(
                   leading: const Icon(Icons.engineering),
@@ -266,6 +268,7 @@ class SettingsScreen extends ConsumerWidget {
               child: Padding(
                 padding: const EdgeInsets.all(defaultPaddingX),
                 child: DebugSecretCodeInput(
+                  secretCode: const [MorseCode.p, MorseCode.s],
                   onSecretEnteredCorrectly: () {
                     final newDebugState = ref
                         .read(debugFeatureAccessProvider.notifier)

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:misc_utils/misc_utils.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:pile_of_shame/models/database.dart';
@@ -16,7 +17,6 @@ import 'package:pile_of_shame/providers/games/game_filter_provider.dart';
 import 'package:pile_of_shame/providers/games/game_provider.dart';
 import 'package:pile_of_shame/providers/games/game_search_provider.dart';
 import 'package:pile_of_shame/providers/games/game_sorter_provider.dart';
-import 'package:pile_of_shame/utils/file_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../test_resources/test_games.dart';

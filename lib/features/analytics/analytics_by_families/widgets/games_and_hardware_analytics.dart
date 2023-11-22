@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:misc_utils/misc_utils.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/assets.dart';
 import 'package:pile_of_shame/models/game.dart';
@@ -11,7 +12,6 @@ import 'package:pile_of_shame/utils/game_data.dart';
 import 'package:pile_of_shame/utils/hardware_data.dart';
 import 'package:pile_of_shame/widgets/charts/default_comparison_chart.dart';
 import 'package:pile_of_shame/widgets/charts/highlightable_charts.dart';
-import 'package:pile_of_shame/widgets/slide_expandable.dart';
 
 class GamesAndHardwareAnalytics extends ConsumerWidget {
   const GamesAndHardwareAnalytics({
@@ -56,7 +56,7 @@ class GamesAndHardwareAnalytics extends ConsumerWidget {
         EdgeInsets.only(left: 16.0, right: 16.0, top: 8.0, bottom: 8.0);
 
     return SlideExpandable(
-      imageAsset: ImageAssets.pieChart,
+      imagePath: ImageAssets.pieChart.value,
       title: Text(
         l10n.miscAnalytics,
       ),

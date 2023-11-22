@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:misc_utils/misc_utils.dart';
 import 'package:pile_of_shame/features/settings/game_display/widgets/feedback_container.dart';
 import 'package:pile_of_shame/models/custom_game_display_settings.dart';
-import 'package:pile_of_shame/widgets/image_container.dart';
 
 class DraggableGameDisplayLeadingTrailing extends StatelessWidget {
   final GameDisplayLeadingTrailing value;

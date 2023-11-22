@@ -2,8 +2,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pile_of_shame/models/game_grouping.dart';
 import 'package:pile_of_shame/providers/games/game_group_provider.dart';
-import 'package:pile_of_shame/providers/theming/theme_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:theming/theming.dart';
 
 import '../../test_resources/test_games.dart';
 
@@ -70,7 +70,7 @@ void main() {
     await container.read(groupGamesProvider.notifier).setGrouping(
           const GameGrouping(groupStrategy: GroupStrategy.byPlatformFamily),
         );
-    await container.read(appThemeSettingsProvider.notifier).setLocale("de");
+    await container.read(themeSettingsProvider.notifier).setLocale("de");
 
     final groupedGames =
         await container.read(applyGameGroupProvider(games).future);
@@ -96,7 +96,7 @@ void main() {
     await container
         .read(groupGamesProvider.notifier)
         .setGrouping(const GameGrouping());
-    await container.read(appThemeSettingsProvider.notifier).setLocale("de");
+    await container.read(themeSettingsProvider.notifier).setLocale("de");
 
     final groupedGames =
         await container.read(applyGameGroupProvider(games).future);

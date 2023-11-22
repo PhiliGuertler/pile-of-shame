@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:pile_of_shame/widgets/skeletons/skeleton.dart';
+import 'package:misc_utils/misc_utils.dart';
 
 class LegendEntry extends StatefulWidget {
   const LegendEntry({

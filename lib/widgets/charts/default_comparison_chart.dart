@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:misc_utils/misc_utils.dart';
 import 'package:pile_of_shame/providers/format_provider.dart';
-import 'package:pile_of_shame/widgets/animated/animated_currency.dart';
 
 class DefaultComparisonChart extends ConsumerWidget {
   const DefaultComparisonChart({
@@ -82,10 +82,10 @@ class DefaultComparisonChart extends ConsumerWidget {
                             height: height,
                             child: progress > 0.1
                                 ? Center(
-                                    child: AnimatedCurrency(
-                                      currency: left,
+                                    child: AnimatedNumberText(
+                                      number: left,
                                       duration: 250.ms,
-                                      formatCurrency: (value) =>
+                                      formatNumber: (value) =>
                                           formatValue != null
                                               ? formatValue!(value)
                                               : currencyFormatter.format(value),
@@ -131,10 +131,10 @@ class DefaultComparisonChart extends ConsumerWidget {
                             height: height,
                             child: progress < 0.9
                                 ? Center(
-                                    child: AnimatedCurrency(
-                                      currency: right,
+                                    child: AnimatedNumberText(
+                                      number: right,
                                       duration: 250.ms,
-                                      formatCurrency: (value) =>
+                                      formatNumber: (value) =>
                                           formatValue != null
                                               ? formatValue!(value)
                                               : currencyFormatter.format(value),

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import 'package:pile_of_shame/widgets/skeletons/skeleton.dart';
+import 'package:misc_utils/misc_utils.dart';
 import 'package:pile_of_shame/widgets/skeletons/skeleton_image_container.dart';
 
 class ListTileSkeleton extends StatelessWidget {

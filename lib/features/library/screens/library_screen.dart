@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:misc_utils/misc_utils.dart';
 import 'package:pile_of_shame/features/analytics/analytics_by_families/screens/analytics_by_families_screen.dart';
 import 'package:pile_of_shame/features/games/games_by_playstatus/screens/favorite_games_screen.dart';
 import 'package:pile_of_shame/features/games/games_by_playstatus/screens/games_by_playstatus_screen.dart';
@@ -12,7 +13,6 @@ import 'package:pile_of_shame/models/play_status.dart';
 import 'package:pile_of_shame/providers/games/game_platforms_provider.dart';
 import 'package:pile_of_shame/providers/games/game_provider.dart';
 import 'package:pile_of_shame/utils/constants.dart';
-import 'package:pile_of_shame/widgets/parallax_image_card.dart';
 
 int _countGamesForPlayStatus(List<Game> games, List<PlayStatus> statuses) {
   return games.fold<int>(
@@ -87,7 +87,7 @@ class LibraryScreen extends ConsumerWidget {
                 padding: const EdgeInsets.only(top: 16.0),
                 child: ParallaxImageCard(
                   key: const ValueKey("library_playing"),
-                  imageAsset: ImageAssets.controllerUnknown,
+                  imagePath: ImageAssets.controllerUnknown.value,
                   title: PlayStatus.playing.toLocaleString(l10n),
                   subtitle: l10n.nGames(
                     _countGamesForPlayStatus(games, [PlayStatus.playing]),
@@ -105,7 +105,7 @@ class LibraryScreen extends ConsumerWidget {
                 padding: const EdgeInsets.only(top: 16.0),
                 child: ParallaxImageCard(
                   key: const ValueKey("library_pile_of_shame"),
-                  imageAsset: ImageAssets.gamePile,
+                  imagePath: ImageAssets.gamePile.value,
                   title: PlayStatus.onPileOfShame.toLocaleString(l10n),
                   subtitle: l10n.nGames(
                     _countGamesForPlayStatus(games, [PlayStatus.onPileOfShame]),
@@ -122,7 +122,7 @@ class LibraryScreen extends ConsumerWidget {
                 padding: const EdgeInsets.only(top: 16.0),
                 child: ParallaxImageCard(
                   key: const ValueKey("library_on_wish_list"),
-                  imageAsset: ImageAssets.list,
+                  imagePath: ImageAssets.list.value,
                   title: PlayStatus.onWishList.toLocaleString(l10n),
                   subtitle: l10n.nGames(
                     _countGamesForPlayStatus(games, [PlayStatus.onWishList]),
@@ -139,7 +139,7 @@ class LibraryScreen extends ConsumerWidget {
                 padding: const EdgeInsets.only(top: 16.0),
                 child: ParallaxImageCard(
                   key: const ValueKey("library_favorites"),
-                  imageAsset: ImageAssets.favorite,
+                  imagePath: ImageAssets.favorite.value,
                   title: l10n.favorites,
                   subtitle: l10n.nGames(
                     _countFavoriteGames(
@@ -154,7 +154,7 @@ class LibraryScreen extends ConsumerWidget {
                 padding: const EdgeInsets.only(top: 16.0),
                 child: ParallaxImageCard(
                   key: const ValueKey("library_completed"),
-                  imageAsset: ImageAssets.barChart,
+                  imagePath: ImageAssets.barChart.value,
                   title: PlayStatus.completed.toLocaleString(l10n),
                   subtitle: l10n.nGames(
                     _countGamesForPlayStatus(
@@ -175,7 +175,7 @@ class LibraryScreen extends ConsumerWidget {
                 padding: const EdgeInsets.only(top: 16.0),
                 child: ParallaxImageCard(
                   key: const ValueKey("library_cancelled"),
-                  imageAsset: ImageAssets.deadGame,
+                  imagePath: ImageAssets.deadGame.value,
                   title: PlayStatus.cancelled.toLocaleString(l10n),
                   subtitle: l10n.nGames(
                     _countGamesForPlayStatus(
@@ -195,7 +195,7 @@ class LibraryScreen extends ConsumerWidget {
                 padding: const EdgeInsets.only(top: 16.0),
                 child: ParallaxImageCard(
                   key: const ValueKey("library_with_notes"),
-                  imageAsset: ImageAssets.notes,
+                  imagePath: ImageAssets.notes.value,
                   title: l10n.gamesWithNotes,
                   subtitle: l10n.nGames(
                     _countGamesWithNotes(
@@ -217,7 +217,7 @@ class LibraryScreen extends ConsumerWidget {
                 padding: const EdgeInsets.only(top: 16.0),
                 child: ParallaxImageCard(
                   key: const ValueKey("library_analytics"),
-                  imageAsset: ImageAssets.library,
+                  imagePath: ImageAssets.library.value,
                   title: AppLocalizations.of(context)!.gameLibrary,
                   subtitle: l10n.nGames(games.length),
                   openBuilderOnTap: (context, openContainer) =>
@@ -228,7 +228,7 @@ class LibraryScreen extends ConsumerWidget {
                 Padding(
                   padding: const EdgeInsets.only(top: 16.0),
                   child: ParallaxImageCard(
-                    imageAsset: family.image,
+                    imagePath: family.image.value,
                     title: family.toLocale(AppLocalizations.of(context)!),
                     subtitle: l10n.nGames(
                       _countGamesForPlatformFamily(games, [family]),

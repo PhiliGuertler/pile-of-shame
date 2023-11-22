@@ -2,12 +2,12 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:misc_utils/misc_utils.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/database.dart';
 import 'package:pile_of_shame/providers/database/database_provider.dart';
 import 'package:pile_of_shame/providers/file_provider.dart';
 import 'package:pile_of_shame/widgets/app_scaffold.dart';
-import 'package:pile_of_shame/widgets/segmented_action_card.dart';
 
 class ImportGamesScreen extends ConsumerStatefulWidget {
   const ImportGamesScreen({super.key});

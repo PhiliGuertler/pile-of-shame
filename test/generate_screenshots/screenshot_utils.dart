@@ -8,8 +8,8 @@ import 'package:golden_toolkit/golden_toolkit.dart';
 import 'package:intl/intl.dart';
 import 'package:pile_of_shame/app.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
-import 'package:pile_of_shame/models/theming/theme.dart';
 import 'package:pile_of_shame/utils/constants.dart';
+import 'package:theming/theming.dart';
 
 enum ScreenSizes {
   android(size: Size(1107, 1968), density: 3),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:misc_utils/misc_utils.dart';
 import 'package:pile_of_shame/features/games/games_list/widgets/slivers/sliver_grouped_games.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/assets.dart';
@@ -8,7 +9,6 @@ import 'package:pile_of_shame/providers/games/game_provider.dart';
 import 'package:pile_of_shame/utils/constants.dart';
 import 'package:pile_of_shame/widgets/error_display.dart';
 import 'package:pile_of_shame/widgets/skeletons/skeleton_game_display.dart';
-import 'package:pile_of_shame/widgets/slivers/sliver_fancy_image_header.dart';
 import 'package:pile_of_shame/widgets/slivers/sliver_list_summary.dart';
 
 class GamesScreen extends ConsumerWidget {
@@ -39,8 +39,8 @@ class GamesScreen extends ConsumerWidget {
                 : null,
             slivers: [
               if (!hasGames)
-                const SliverFancyImageHeader(
-                  imageAsset: ImageAssets.gamePile,
+                SliverFancyImageHeader(
+                  imagePath: ImageAssets.gamePile.value,
                   height: 300.0,
                 ),
               if (!hasGames)

@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:misc_utils/misc_utils.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
-import 'package:pile_of_shame/models/theming/theme.dart';
-import 'package:pile_of_shame/providers/theming/theme_provider.dart';
+import 'package:pile_of_shame/models/app_currency.dart';
+import 'package:pile_of_shame/providers/currency_provider.dart';
 import 'package:pile_of_shame/widgets/app_scaffold.dart';
-import 'package:pile_of_shame/widgets/image_container.dart';
 
 class CurrencyScreen extends ConsumerWidget {
   const CurrencyScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final themeSettings = ref.watch(appThemeSettingsProvider);
+    final currencySettings = ref.watch(currencySettingsProvider);
 
     final l10n = AppLocalizations.of(context)!;
 
@@ -51,11 +51,11 @@ class CurrencyScreen extends ConsumerWidget {
               ),
               onChanged: (value) {
                 ref
-                    .read(appThemeSettingsProvider.notifier)
+                    .read(currencySettingsProvider.notifier)
                     .setCurrencySymbol(currency);
               },
               controlAffinity: ListTileControlAffinity.trailing,
-              groupValue: themeSettings.asData?.value.currency,
+              groupValue: currencySettings.asData?.value.currency,
               value: currency,
             ),
           ),

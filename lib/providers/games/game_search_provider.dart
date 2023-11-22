@@ -1,5 +1,5 @@
 import 'package:fuzzywuzzy/fuzzywuzzy.dart' as fuzzy;
-import 'package:pile_of_shame/extensions/string_extensions.dart';
+import 'package:misc_utils/misc_utils.dart';
 import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/utils/constants.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';

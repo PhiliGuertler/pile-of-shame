@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:misc_utils/misc_utils.dart';
 import 'package:pile_of_shame/features/games/games_list/widgets/slivers/sliver_grouped_games.dart';
 import 'package:pile_of_shame/features/games/games_list/widgets/slivers/sliver_sort_games_by.dart';
 import 'package:pile_of_shame/features/games/games_list/widgets/slivers/sliver_sort_games_order.dart';
@@ -10,7 +11,6 @@ import 'package:pile_of_shame/models/game_sorting.dart';
 import 'package:pile_of_shame/utils/constants.dart';
 import 'package:pile_of_shame/widgets/app_scaffold.dart';
 import 'package:pile_of_shame/widgets/skeletons/skeleton_game_display.dart';
-import 'package:pile_of_shame/widgets/slivers/sliver_fancy_image_app_bar.dart';
 import 'package:pile_of_shame/widgets/slivers/sliver_list_summary.dart';
 
 class GamesListScreen extends ConsumerWidget {
@@ -88,7 +88,7 @@ class GamesListScreen extends ConsumerWidget {
         slivers: [
           SliverFancyImageAppBar(
             title: Text(title),
-            imageAsset: imageAsset,
+            imagePath: imageAsset.value,
             actions: [
               Builder(
                 builder: (context) {

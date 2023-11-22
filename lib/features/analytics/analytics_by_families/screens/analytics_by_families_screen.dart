@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:misc_utils/misc_utils.dart';
 import 'package:pile_of_shame/features/analytics/analytics_by_families/providers/analytics_provider.dart';
 import 'package:pile_of_shame/features/analytics/analytics_by_families/widgets/sliver_analytics_details.dart';
 import 'package:pile_of_shame/features/analytics/analytics_by_platform/screens/analytics_by_platform_screen.dart';
@@ -13,8 +14,6 @@ import 'package:pile_of_shame/utils/constants.dart';
 import 'package:pile_of_shame/utils/grouper_utils.dart';
 import 'package:pile_of_shame/widgets/app_scaffold.dart';
 import 'package:pile_of_shame/widgets/image_list_tile.dart';
-import 'package:pile_of_shame/widgets/slivers/sliver_fancy_image_app_bar.dart';
-import 'package:pile_of_shame/widgets/slivers/sliver_fancy_image_header.dart';
 
 class AnalyticsByFamiliesScreen extends ConsumerWidget {
   const AnalyticsByFamiliesScreen({super.key, this.family});
@@ -34,7 +33,7 @@ class AnalyticsByFamiliesScreen extends ConsumerWidget {
         ),
         slivers: [
           SliverFancyImageAppBar(
-            imageAsset: family?.image ?? ImageAssets.library,
+            imagePath: family?.image.value ?? ImageAssets.library.value,
             title: Text(
               family != null ? family!.toLocale(l10n) : l10n.gameLibrary,
             ),
@@ -51,14 +50,14 @@ class AnalyticsByFamiliesScreen extends ConsumerWidget {
                         ),
                       ]
                     : [
-                        const SliverPadding(
-                          padding: EdgeInsets.symmetric(
+                        SliverPadding(
+                          padding: const EdgeInsets.symmetric(
                             horizontal: defaultPaddingX,
                           ),
                           sliver: SliverOpacity(
                             opacity: 0.7,
                             sliver: SliverFancyImageHeader(
-                              imageAsset: ImageAssets.pieChart,
+                              imagePath: ImageAssets.pieChart.value,
                               height: 250,
                             ),
                           ),

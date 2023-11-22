@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:misc_utils/misc_utils.dart';
 import 'package:pile_of_shame/features/games/add_or_edit_game/models/editable_game.dart';
 import 'package:pile_of_shame/features/games/add_or_edit_game/screens/add_or_edit_dlc_screen.dart';
 import 'package:pile_of_shame/features/games/dlc_details/widgets/sliver_dlc_details.dart';
@@ -9,9 +10,7 @@ import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/models/game_platforms.dart';
 import 'package:pile_of_shame/providers/database/database_provider.dart';
 import 'package:pile_of_shame/providers/games/game_provider.dart';
-import 'package:pile_of_shame/transitions/material_page_slide_route.dart';
 import 'package:pile_of_shame/widgets/app_scaffold.dart';
-import 'package:pile_of_shame/widgets/slivers/sliver_fancy_image_app_bar.dart';
 
 class DLCDetailsScreen extends ConsumerWidget {
   final Game game;
@@ -34,19 +33,19 @@ class DLCDetailsScreen extends ConsumerWidget {
           onRefresh: () => ref.refresh(gamesProvider.future),
           child: dlc.when(
             skipLoadingOnReload: true,
-            loading: () => const CustomScrollView(
-              physics: NeverScrollableScrollPhysics(),
+            loading: () => CustomScrollView(
+              physics: const NeverScrollableScrollPhysics(),
               slivers: [
                 SliverFancyImageAppBar(
-                  imageAsset: ImageAssets.loading,
+                  imagePath: ImageAssets.loading.value,
                 ),
-                SliverDLCDetailsSkeleton(),
+                const SliverDLCDetailsSkeleton(),
               ],
             ),
             error: (error, stackTrace) => CustomScrollView(
               slivers: [
                 SliverFancyImageAppBar(
-                  imageAsset: GamePlatform.unknown.controller,
+                  imagePath: GamePlatform.unknown.controller.value,
                 ),
                 Text(error.toString()),
               ],
@@ -57,7 +56,7 @@ class DLCDetailsScreen extends ConsumerWidget {
               ),
               slivers: [
                 SliverFancyImageAppBar(
-                  imageAsset: game.platform.controller,
+                  imagePath: game.platform.controller.value,
                   actions: [
                     IconButton(
                       icon: const Icon(Icons.edit),

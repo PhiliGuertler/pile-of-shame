@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:misc_utils/misc_utils.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/providers/database/database_provider.dart';
 import 'package:pile_of_shame/providers/format_provider.dart';
-import 'package:pile_of_shame/widgets/animated/animated_heart/animated_heart_button.dart';
 import 'package:pile_of_shame/widgets/game_platform_icon.dart';
-import 'package:pile_of_shame/widgets/image_container.dart';
-import 'package:pile_of_shame/widgets/note.dart';
 import 'package:pile_of_shame/widgets/play_status_display.dart';
 import 'package:pile_of_shame/widgets/play_status_icon.dart';
-import 'package:pile_of_shame/widgets/skeletons/skeleton.dart';
 import 'package:pile_of_shame/widgets/skeletons/skeleton_list_tile.dart';
 import 'package:pile_of_shame/widgets/usk_logo.dart';
 
@@ -33,6 +30,7 @@ class SliverDLCDetails extends ConsumerWidget {
       children: [
         if (dlc.notes != null && dlc.notes!.isNotEmpty)
           Note(
+            label: AppLocalizations.of(context)!.notes,
             child: Text(dlc.notes!),
           ),
         ListTile(
