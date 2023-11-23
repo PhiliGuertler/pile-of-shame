@@ -4,6 +4,7 @@ import 'package:pile_of_shame/features/games/add_or_edit_game/widgets/name_input
 import 'package:pile_of_shame/features/games/add_or_edit_game/widgets/notes_input_field.dart';
 import 'package:pile_of_shame/features/games/add_or_edit_game/widgets/platform_dropdown.dart';
 import 'package:pile_of_shame/features/games/add_or_edit_game/widgets/price_input_field.dart';
+import 'package:pile_of_shame/features/games/add_or_edit_game/widgets/price_variant_dropdown.dart';
 import 'package:pile_of_shame/features/hardware/add_or_edit_hardware/models/editable_hardware.dart';
 import 'package:pile_of_shame/features/hardware/add_or_edit_hardware/providers/edit_hardware_provider.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
@@ -83,30 +84,50 @@ class _AddOrEditHardwareScreenState
                 Padding(
                   padding:
                       const EdgeInsets.symmetric(horizontal: defaultPaddingX),
-                  child: IntrinsicHeight(
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        // TODO: Add a dropdown or something simlar for the priceVariant
-                        Expanded(
-                          child: PriceInputField(
-                            enabled: editableHardware.priceVariant ==
-                                PriceVariant.bought,
-                            value: editableHardware.price,
-                            onChanged: (value) {
-                              ref
-                                  .read(
-                                    addHardwareProvider(
-                                      widget.initialValue,
-                                    ).notifier,
-                                  )
-                                  .updateHardware(
-                                    editableHardware.copyWith(price: value),
-                                  );
-                            },
-                          ),
-                        ),
-                      ],
+                  child: PriceVariantDropdown(
+                    value: editableHardware.priceVariant,
+                    onSelect: (selection) {
+                      ref
+                          .read(
+                            addHardwareProvider(
+                              widget.initialValue,
+                            ).notifier,
+                          )
+                          .updateHardware(
+                            editableHardware.copyWith(priceVariant: selection),
+                          );
+                    },
+                  ),
+                ),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: defaultPaddingX),
+                  child: AnimatedSize(
+                    curve: Curves.easeInOutBack,
+                    duration: const Duration(milliseconds: 200),
+                    child: Builder(
+                      builder: (context) {
+                        if (editableHardware.priceVariant ==
+                            PriceVariant.gifted) {
+                          return const SizedBox(
+                            height: 0,
+                          );
+                        }
+                        return PriceInputField(
+                          value: editableHardware.price,
+                          onChanged: (value) {
+                            ref
+                                .read(
+                                  addHardwareProvider(
+                                    widget.initialValue,
+                                  ).notifier,
+                                )
+                                .updateHardware(
+                                  editableHardware.copyWith(price: value),
+                                );
+                          },
+                        );
+                      },
                     ),
                   ),
                 ),

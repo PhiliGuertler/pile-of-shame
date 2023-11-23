@@ -237,8 +237,6 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
                         }
 
                         return PriceInputField(
-                          enabled:
-                              editableGame.priceVariant != PriceVariant.gifted,
                           value: editableGame.price,
                           onChanged: (value) {
                             ref
