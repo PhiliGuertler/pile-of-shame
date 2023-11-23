@@ -106,7 +106,7 @@ void main() {
       expect(migrated.notes, "Some kind of Note");
       expect(migrated.price, 69.99);
       expect(migrated.status, PlayStatus.onWishList);
-      expect(migrated.priceVariant, PriceVariant.onWishList);
+      expect(migrated.priceVariant, PriceVariant.observing);
     });
   });
 
@@ -307,7 +307,7 @@ void main() {
       expect(migrated.notes, "Some kind of Note");
       expect(migrated.price, 59.49);
       expect(migrated.status, PlayStatus.onWishList);
-      expect(migrated.priceVariant, PriceVariant.onWishList);
+      expect(migrated.priceVariant, PriceVariant.observing);
       expect(migrated.platform, GamePlatform.atariJaguar);
       expect(migrated.dlcs, [
         DLCv3(
@@ -316,7 +316,7 @@ void main() {
           status: PlayStatus.onWishList,
           lastModified: DateTime(2023, 4, 21),
           createdAt: DateTime(2023, 4, 20),
-          priceVariant: PriceVariant.onWishList,
+          priceVariant: PriceVariant.observing,
           price: 24.95,
           isFavorite: false,
           notes: null,
@@ -415,7 +415,7 @@ void main() {
       status: PlayStatus.onWishList,
       isFavorite: true,
       notes: "Some kind of Note",
-      priceVariant: PriceVariant.onWishList,
+      priceVariant: PriceVariant.observing,
       price: 24.3,
     );
 
@@ -475,7 +475,7 @@ void main() {
       isFavorite: true,
       notes: "Some kind of Note",
       price: 25,
-      priceVariant: PriceVariant.onWishList,
+      priceVariant: PriceVariant.observing,
       platform: GamePlatform.gameBoy,
       usk: USK.usk12,
       dlcs: [

@@ -12,19 +12,19 @@ enum PriceVariant {
   bought,
   borrowed,
   gifted,
-  onWishList,
+  observing,
   ;
 
   String toLocaleString(AppLocalizations l10n) {
     switch (this) {
       case PriceVariant.bought:
-        return l10n.boughtForFree;
+        return l10n.bought;
       case PriceVariant.gifted:
-        return l10n.gift;
+        return l10n.gifted;
       case PriceVariant.borrowed:
         return l10n.borrowed;
-      case PriceVariant.onWishList:
-        return l10n.onWishList;
+      case PriceVariant.observing:
+        return l10n.observing;
     }
   }
 
@@ -36,8 +36,8 @@ enum PriceVariant {
         return Icons.cake;
       case PriceVariant.borrowed:
         return Icons.people;
-      case PriceVariant.onWishList:
-        return Icons.receipt_long;
+      case PriceVariant.observing:
+        return Icons.visibility;
     }
   }
 }

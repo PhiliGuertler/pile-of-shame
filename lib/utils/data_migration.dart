@@ -302,7 +302,7 @@ class DatabaseMigrator {
       priceVariant: dlc.wasGifted
           ? PriceVariant.gifted
           : dlc.status == PlayStatus.onWishList
-              ? PriceVariant.onWishList
+              ? PriceVariant.observing
               : PriceVariant.bought,
     );
   }
@@ -340,7 +340,7 @@ class DatabaseMigrator {
       priceVariant: game.wasGifted
           ? PriceVariant.gifted
           : game.status == PlayStatus.onWishList
-              ? PriceVariant.onWishList
+              ? PriceVariant.observing
               : PriceVariant.bought,
     );
   }
