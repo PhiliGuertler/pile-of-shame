@@ -9,6 +9,7 @@ import 'package:pile_of_shame/features/games/add_or_edit_game/widgets/notes_inpu
 import 'package:pile_of_shame/features/games/add_or_edit_game/widgets/platform_dropdown.dart';
 import 'package:pile_of_shame/features/games/add_or_edit_game/widgets/play_status_dropdown.dart';
 import 'package:pile_of_shame/features/games/add_or_edit_game/widgets/price_input_field.dart';
+import 'package:pile_of_shame/features/games/add_or_edit_game/widgets/price_variant_dropdown.dart';
 import 'package:pile_of_shame/features/games/add_or_edit_game/widgets/usk_dropdown.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/game.dart';
@@ -177,6 +178,14 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
                   child: PlayStatusDropdown(
                     value: editableGame.status,
                     onSelect: (selection) {
+                      PriceVariant variant = selection == PlayStatus.onWishList
+                          ? PriceVariant.observing
+                          : editableGame.priceVariant;
+
+                      if (variant == PriceVariant.observing &&
+                          selection != PlayStatus.onWishList) {
+                        variant = PriceVariant.bought;
+                      }
                       ref
                           .read(
                             addGameProvider(
@@ -184,38 +193,67 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
                               widget.initialPlayStatus,
                             ).notifier,
                           )
-                          .updateGame(editableGame.copyWith(status: selection));
+                          .updateGame(
+                            editableGame.copyWith(
+                              status: selection,
+                              priceVariant: variant,
+                            ),
+                          );
                     },
                   ),
                 ),
                 Padding(
                   padding:
                       const EdgeInsets.symmetric(horizontal: defaultPaddingX),
-                  child: IntrinsicHeight(
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        // TODO: Add a dropdown or something similar for the price variant
-                        Expanded(
-                          child: PriceInputField(
-                            enabled: editableGame.priceVariant ==
-                                PriceVariant.bought,
-                            value: editableGame.price,
-                            onChanged: (value) {
-                              ref
-                                  .read(
-                                    addGameProvider(
-                                      widget.initialValue,
-                                      widget.initialPlayStatus,
-                                    ).notifier,
-                                  )
-                                  .updateGame(
-                                    editableGame.copyWith(price: value),
-                                  );
-                            },
-                          ),
-                        ),
-                      ],
+                  child: PriceVariantDropdown(
+                    enabled: editableGame.status != PlayStatus.onWishList,
+                    value: editableGame.priceVariant,
+                    onSelect: (selection) {
+                      ref
+                          .read(
+                            addGameProvider(
+                              widget.initialValue,
+                              widget.initialPlayStatus,
+                            ).notifier,
+                          )
+                          .updateGame(
+                            editableGame.copyWith(priceVariant: selection),
+                          );
+                    },
+                  ),
+                ),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: defaultPaddingX),
+                  child: AnimatedSize(
+                    curve: Curves.easeInOutBack,
+                    duration: const Duration(milliseconds: 200),
+                    child: Builder(
+                      builder: (context) {
+                        if (editableGame.priceVariant == PriceVariant.gifted) {
+                          return const SizedBox(
+                            height: 0,
+                          );
+                        }
+
+                        return PriceInputField(
+                          enabled:
+                              editableGame.priceVariant != PriceVariant.gifted,
+                          value: editableGame.price,
+                          onChanged: (value) {
+                            ref
+                                .read(
+                                  addGameProvider(
+                                    widget.initialValue,
+                                    widget.initialPlayStatus,
+                                  ).notifier,
+                                )
+                                .updateGame(
+                                  editableGame.copyWith(price: value),
+                                );
+                          },
+                        );
+                      },
                     ),
                   ),
                 ),
