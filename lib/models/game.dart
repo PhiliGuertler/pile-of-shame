@@ -2,6 +2,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:pile_of_shame/models/age_restriction.dart';
 import 'package:pile_of_shame/models/game_platforms.dart';
 import 'package:pile_of_shame/models/play_status.dart';
+import 'package:pile_of_shame/models/price_variant.dart';
 
 part 'game.freezed.dart';
 part 'game.g.dart';
@@ -17,7 +18,7 @@ class DLC with _$DLC {
     @Default(0.0) double price,
     String? notes,
     @Default(false) bool isFavorite,
-    @Default(false) bool wasGifted,
+    @Default(PriceVariant.bought) PriceVariant priceVariant,
   }) = _DLC;
   const DLC._();
 
@@ -38,7 +39,7 @@ class Game with _$Game {
     @Default([]) List<DLC> dlcs,
     String? notes,
     @Default(false) bool isFavorite,
-    @Default(false) bool wasGifted,
+    @Default(PriceVariant.bought) PriceVariant priceVariant,
   }) = _Game;
   const Game._();
 
@@ -49,6 +50,16 @@ class Game with _$Game {
     double result = price;
     for (final dlc in dlcs) {
       result += dlc.price;
+    }
+    return result;
+  }
+
+  double fullPriceNonWishlist() {
+    double result = price;
+    for (final dlc in dlcs) {
+      if (dlc.status != PlayStatus.onWishList) {
+        result += dlc.price;
+      }
     }
     return result;
   }

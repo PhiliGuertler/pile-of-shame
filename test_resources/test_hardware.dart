@@ -1,5 +1,6 @@
 import 'package:pile_of_shame/models/game_platforms.dart';
 import 'package:pile_of_shame/models/hardware.dart';
+import 'package:pile_of_shame/models/price_variant.dart';
 
 class TestHardware {
   const TestHardware._();
@@ -13,14 +14,14 @@ class TestHardware {
     createdAt: DateTime(2023),
   );
   static const String consoleJson =
-      '{"id":"console","name":"Console","platform":"PS5","price":499.99,"lastModified":"2023-01-01T00:00:00.000","createdAt":"2023-01-01T00:00:00.000","notes":null,"wasGifted":false}';
+      '{"id":"console","name":"Console","platform":"PS5","price":499.99,"lastModified":"2023-01-01T00:00:00.000","createdAt":"2023-01-01T00:00:00.000","notes":null,"priceVariant":"bought"}';
   static final giftedConsole = VideoGameHardware(
     id: 'console-gift',
     name: "Gifted Console",
     platform: GamePlatform.playStation5,
     lastModified: DateTime(2023),
     createdAt: DateTime(2023),
-    wasGifted: true,
+    priceVariant: PriceVariant.gifted,
     notes: "This console was gifted to me!",
   );
   static final controllerRed = VideoGameHardware(

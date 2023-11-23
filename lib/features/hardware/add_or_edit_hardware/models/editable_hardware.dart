@@ -1,6 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:pile_of_shame/models/game_platforms.dart';
 import 'package:pile_of_shame/models/hardware.dart';
+import 'package:pile_of_shame/models/price_variant.dart';
 import 'package:uuid/uuid.dart';
 
 part 'editable_hardware.freezed.dart';
@@ -13,7 +14,7 @@ class EditableHardware with _$EditableHardware {
     double? price,
     String? notes,
     DateTime? createdAt,
-    @Default(false) bool wasGifted,
+    @Default(PriceVariant.bought) PriceVariant priceVariant,
     GamePlatform? platform,
   }) = _EditableHardware;
   const EditableHardware._();
@@ -26,7 +27,7 @@ class EditableHardware with _$EditableHardware {
       name: hardware.name,
       price: hardware.price,
       notes: hardware.notes,
-      wasGifted: hardware.wasGifted,
+      priceVariant: hardware.priceVariant,
       createdAt: hardware.createdAt,
       platform: hardware.platform,
     );
@@ -42,11 +43,11 @@ class EditableHardware with _$EditableHardware {
     return VideoGameHardware(
       id: uuid ?? const Uuid().v4(),
       name: name!.trim(),
-      price: wasGifted ? 0.0 : price ?? 0.0,
+      price: priceVariant != PriceVariant.bought ? 0.0 : price ?? 0.0,
       lastModified: DateTime.now(),
       createdAt: createdAt ?? DateTime.now(),
       notes: notes,
-      wasGifted: wasGifted,
+      priceVariant: priceVariant,
       platform: platform!,
     );
   }

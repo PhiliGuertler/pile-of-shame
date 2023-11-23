@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:misc_utils/misc_utils.dart';
 import 'package:pile_of_shame/features/games/add_or_edit_game/models/editable_game.dart';
 import 'package:pile_of_shame/features/games/add_or_edit_game/screens/add_or_edit_dlc_screen.dart';
+import 'package:pile_of_shame/features/games/add_or_edit_game/widgets/price_variant_dropdown.dart';
 import 'package:pile_of_shame/features/games/dlc_details/screens/dlc_details_screen.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/game.dart';
@@ -33,6 +34,8 @@ class _SliverGameDetailsState extends ConsumerState<SliverGameDetails> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     final dateFormatter =
         ref.watch(dateFormatProvider(Localizations.localeOf(context)));
     final timeFormatter =
@@ -55,7 +58,7 @@ class _SliverGameDetailsState extends ConsumerState<SliverGameDetails> {
     final addDLCActionCardItem = SegmentedActionCardItem(
       key: const ValueKey("add_dlc"),
       leading: const Icon(Icons.add),
-      title: Text(AppLocalizations.of(context)!.addDLC),
+      title: Text(l10n.addDLC),
       onTap: () async {
         final EditableDLC? result =
             await Navigator.of(context).push<EditableDLC?>(
@@ -79,12 +82,15 @@ class _SliverGameDetailsState extends ConsumerState<SliverGameDetails> {
     return SliverList.list(
       children: [
         if (widget.game.notes != null && widget.game.notes!.isNotEmpty)
-          Note(
-            label: AppLocalizations.of(context)!.notes,
-            child: Text(widget.game.notes!),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Note(
+              label: l10n.notes,
+              child: Text(widget.game.notes!),
+            ),
           ),
         ListTile(
-          title: Text(AppLocalizations.of(context)!.gameName),
+          title: Text(l10n.gameName),
           subtitle: Text(widget.game.name),
           trailing: AnimatedHeartButton(
             isFilled: widget.game.isFavorite,
@@ -99,22 +105,13 @@ class _SliverGameDetailsState extends ConsumerState<SliverGameDetails> {
           ),
         ),
         ListTile(
-          leading: widget.game.wasGifted
-              ? ImageContainer(
-                  child: Icon(
-                    Icons.cake_sharp,
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
-                )
-              : null,
+          leading: PriceVariantIcon(priceVariant: widget.game.priceVariant),
           title: Text(
-            shouldShowPriceSum
-                ? AppLocalizations.of(context)!.priceWithDLCs
-                : AppLocalizations.of(context)!.price,
+            shouldShowPriceSum ? l10n.priceWithDLCs : l10n.price,
           ),
           subtitle: Text(
-            widget.game.wasGifted && widget.game.fullPrice() < 0.01
-                ? AppLocalizations.of(context)!.gift
+            widget.game.fullPrice() < 0.01
+                ? widget.game.priceVariant.toLocaleString(l10n)
                 : currencyFormatter.format(
                     shouldShowPriceSum
                         ? widget.game.fullPrice()
@@ -131,49 +128,48 @@ class _SliverGameDetailsState extends ConsumerState<SliverGameDetails> {
           ),
         ),
         ListTile(
-          title: Text(AppLocalizations.of(context)!.lastModified),
-          subtitle: Text(
-            AppLocalizations.of(context)!.dateAtTime(
-              dateFormatter.format(widget.game.lastModified),
-              timeFormatter.format(widget.game.lastModified),
-            ),
-          ),
-        ),
-        ListTile(
-          title: Text(AppLocalizations.of(context)!.createdAt),
-          subtitle: Text(
-            AppLocalizations.of(context)!.dateAtTime(
-              dateFormatter.format(widget.game.createdAt),
-              timeFormatter.format(widget.game.createdAt),
-            ),
-          ),
-        ),
-        ListTile(
           leading: PlayStatusIcon(
             playStatus: widget.game.status,
           ),
-          title: Text(AppLocalizations.of(context)!.status),
+          title: Text(l10n.status),
           subtitle: Text(
-            widget.game.status.toLocaleString(AppLocalizations.of(context)!),
+            widget.game.status.toLocaleString(l10n),
           ),
         ),
         ListTile(
           leading: GamePlatformIcon(
             platform: widget.game.platform,
           ),
-          title: Text(AppLocalizations.of(context)!.platform),
+          title: Text(l10n.platform),
           subtitle: Text(
-            widget.game.platform.localizedName(AppLocalizations.of(context)!),
+            widget.game.platform.localizedName(l10n),
           ),
         ),
         ListTile(
           leading: USKLogo(
             ageRestriction: widget.game.usk,
           ),
-          title: Text(AppLocalizations.of(context)!.ageRating),
+          title: Text(l10n.ageRating),
           subtitle: Text(
-            AppLocalizations.of(context)!
-                .ratedN(widget.game.usk.age.toString()),
+            l10n.ratedN(widget.game.usk.age.toString()),
+          ),
+        ),
+        ListTile(
+          title: Text(l10n.lastModified),
+          subtitle: Text(
+            l10n.dateAtTime(
+              dateFormatter.format(widget.game.lastModified),
+              timeFormatter.format(widget.game.lastModified),
+            ),
+          ),
+        ),
+        ListTile(
+          title: Text(l10n.createdAt),
+          subtitle: Text(
+            l10n.dateAtTime(
+              dateFormatter.format(widget.game.createdAt),
+              timeFormatter.format(widget.game.createdAt),
+            ),
           ),
         ),
         Padding(
@@ -197,8 +193,8 @@ class _SliverGameDetailsState extends ConsumerState<SliverGameDetails> {
                     leading: PlayStatusIcon(playStatus: dlc.status),
                     title: Text(dlc.name),
                     subtitle: Text(
-                      dlc.wasGifted
-                          ? AppLocalizations.of(context)!.gift
+                      dlc.price < 0.01
+                          ? dlc.priceVariant.toLocaleString(l10n)
                           : currencyFormatter.format(dlc.price),
                     ),
                     openBuilderOnTap: (context, action) => DLCDetailsScreen(
@@ -213,7 +209,7 @@ class _SliverGameDetailsState extends ConsumerState<SliverGameDetails> {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: defaultPaddingX),
           child: Text(
-            AppLocalizations.of(context)!.nDLCs(widget.game.dlcs.length),
+            l10n.nDLCs(widget.game.dlcs.length),
             textAlign: TextAlign.end,
           ),
         ),

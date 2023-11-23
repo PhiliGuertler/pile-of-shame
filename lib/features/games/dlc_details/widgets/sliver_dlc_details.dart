@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:misc_utils/misc_utils.dart';
+import 'package:pile_of_shame/features/games/add_or_edit_game/widgets/price_variant_dropdown.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/providers/database/database_provider.dart';
@@ -19,6 +20,8 @@ class SliverDLCDetails extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
+
     final dateFormatter =
         ref.watch(dateFormatProvider(Localizations.localeOf(context)));
     final timeFormatter =
@@ -29,17 +32,20 @@ class SliverDLCDetails extends ConsumerWidget {
     return SliverList.list(
       children: [
         if (dlc.notes != null && dlc.notes!.isNotEmpty)
-          Note(
-            label: AppLocalizations.of(context)!.notes,
-            child: Text(dlc.notes!),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Note(
+              label: l10n.notes,
+              child: Text(dlc.notes!),
+            ),
           ),
         ListTile(
-          title: Text(AppLocalizations.of(context)!.gameName),
+          title: Text(l10n.gameName),
           subtitle: Text(game.name),
           trailing: const Chip(label: Text("DLC")),
         ),
         ListTile(
-          title: Text(AppLocalizations.of(context)!.dlcName),
+          title: Text(l10n.dlcName),
           subtitle: Text(dlc.name),
           trailing: AnimatedHeartButton(
             isFilled: dlc.isFavorite,
@@ -59,62 +65,53 @@ class SliverDLCDetails extends ConsumerWidget {
           ),
         ),
         ListTile(
-          leading: dlc.wasGifted
-              ? ImageContainer(
-                  child: Icon(
-                    Icons.cake_sharp,
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
-                )
-              : null,
-          title: Text(AppLocalizations.of(context)!.price),
+          leading: PriceVariantIcon(priceVariant: dlc.priceVariant),
+          title: Text(l10n.price),
           subtitle: Text(
-            dlc.wasGifted
-                ? AppLocalizations.of(context)!.gift
+            dlc.price < 0.01
+                ? dlc.priceVariant.toLocaleString(l10n)
                 : currencyFormatter.format(dlc.price),
-          ),
-        ),
-        ListTile(
-          title: Text(AppLocalizations.of(context)!.lastModified),
-          subtitle: Text(
-            AppLocalizations.of(context)!.dateAtTime(
-              dateFormatter.format(dlc.lastModified),
-              timeFormatter.format(dlc.lastModified),
-            ),
-          ),
-        ),
-        ListTile(
-          title: Text(AppLocalizations.of(context)!.createdAt),
-          subtitle: Text(
-            AppLocalizations.of(context)!.dateAtTime(
-              dateFormatter.format(dlc.createdAt),
-              timeFormatter.format(dlc.createdAt),
-            ),
           ),
         ),
         ListTile(
           leading: PlayStatusIcon(
             playStatus: dlc.status,
           ),
-          title: Text(AppLocalizations.of(context)!.status),
-          subtitle:
-              Text(dlc.status.toLocaleString(AppLocalizations.of(context)!)),
+          title: Text(l10n.status),
+          subtitle: Text(dlc.status.toLocaleString(l10n)),
         ),
         ListTile(
           leading: GamePlatformIcon(
             platform: game.platform,
           ),
-          title: Text(AppLocalizations.of(context)!.platform),
-          subtitle:
-              Text(game.platform.localizedName(AppLocalizations.of(context)!)),
+          title: Text(l10n.platform),
+          subtitle: Text(game.platform.localizedName(l10n)),
         ),
         ListTile(
           leading: USKLogo(
             ageRestriction: game.usk,
           ),
-          title: Text(AppLocalizations.of(context)!.ageRating),
+          title: Text(l10n.ageRating),
           subtitle: Text(
-            AppLocalizations.of(context)!.ratedN(game.usk.age.toString()),
+            l10n.ratedN(game.usk.age.toString()),
+          ),
+        ),
+        ListTile(
+          title: Text(l10n.lastModified),
+          subtitle: Text(
+            l10n.dateAtTime(
+              dateFormatter.format(dlc.lastModified),
+              timeFormatter.format(dlc.lastModified),
+            ),
+          ),
+        ),
+        ListTile(
+          title: Text(l10n.createdAt),
+          subtitle: Text(
+            l10n.dateAtTime(
+              dateFormatter.format(dlc.createdAt),
+              timeFormatter.format(dlc.createdAt),
+            ),
           ),
         ),
         const SizedBox(height: 48.0),

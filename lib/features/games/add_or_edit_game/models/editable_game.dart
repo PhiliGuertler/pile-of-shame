@@ -3,6 +3,7 @@ import 'package:pile_of_shame/models/age_restriction.dart';
 import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/models/game_platforms.dart';
 import 'package:pile_of_shame/models/play_status.dart';
+import 'package:pile_of_shame/models/price_variant.dart';
 import 'package:uuid/uuid.dart';
 
 part 'editable_game.freezed.dart';
@@ -17,7 +18,7 @@ class EditableDLC with _$EditableDLC {
     double? price,
     String? notes,
     @Default(false) bool isFavorite,
-    @Default(false) bool wasGifted,
+    @Default(PriceVariant.bought) PriceVariant priceVariant,
   }) = _EditableDLC;
   const EditableDLC._();
 
@@ -30,7 +31,7 @@ class EditableDLC with _$EditableDLC {
       status: dlc.status,
       notes: dlc.notes,
       isFavorite: dlc.isFavorite,
-      wasGifted: dlc.wasGifted,
+      priceVariant: dlc.priceVariant,
     );
   }
 
@@ -47,10 +48,10 @@ class EditableDLC with _$EditableDLC {
       lastModified: DateTime.now(),
       name: name!.trim(),
       status: status,
-      price: wasGifted ? 0.0 : price ?? 0.0,
+      price: priceVariant == PriceVariant.gifted ? 0.0 : price ?? 0.0,
       notes: notes != null ? notes!.trim() : notes,
       isFavorite: isFavorite,
-      wasGifted: wasGifted,
+      priceVariant: priceVariant,
     );
   }
 }
@@ -68,7 +69,7 @@ class EditableGame with _$EditableGame {
     @Default([]) List<DLC> dlcs,
     String? notes,
     @Default(false) bool isFavorite,
-    @Default(false) bool wasGifted,
+    @Default(PriceVariant.bought) PriceVariant priceVariant,
   }) = _EditableGame;
   const EditableGame._();
 
@@ -84,7 +85,7 @@ class EditableGame with _$EditableGame {
       dlcs: game.dlcs,
       notes: game.notes,
       isFavorite: game.isFavorite,
-      wasGifted: game.wasGifted,
+      priceVariant: game.priceVariant,
     );
   }
 
@@ -105,12 +106,12 @@ class EditableGame with _$EditableGame {
       status: status,
       lastModified: DateTime.now(),
       createdAt: createdAt ?? DateTime.now(),
-      price: wasGifted ? 0.0 : price ?? 0.0,
+      price: priceVariant == PriceVariant.gifted ? 0.0 : price ?? 0.0,
       usk: usk,
       dlcs: dlcs,
       notes: notes != null ? notes!.trim() : notes,
       isFavorite: isFavorite,
-      wasGifted: wasGifted,
+      priceVariant: priceVariant,
     );
   }
 }

@@ -16,6 +16,7 @@ import 'package:pile_of_shame/models/custom_game_display_settings.dart';
 import 'package:pile_of_shame/models/database.dart';
 import 'package:pile_of_shame/models/game_platforms.dart';
 import 'package:pile_of_shame/models/hardware.dart';
+import 'package:pile_of_shame/models/price_variant.dart';
 import 'package:pile_of_shame/providers/database/database_file_provider.dart';
 import 'package:pile_of_shame/providers/file_provider.dart';
 import 'package:pile_of_shame/providers/games/game_platforms_provider.dart';
@@ -108,7 +109,7 @@ void main() {
             VideoGameHardware(
               id: "ssx",
               name: "Console",
-              wasGifted: true,
+              priceVariant: PriceVariant.gifted,
               platform: TestGames.gameSsx3.platform,
               lastModified: DateTime(2023),
               createdAt: DateTime(2023),
@@ -138,7 +139,7 @@ void main() {
               VideoGameHardware(
                 id: "ssx",
                 name: "Console",
-                wasGifted: true,
+                priceVariant: PriceVariant.borrowed,
                 platform: TestGames.gameSsx3.platform,
                 lastModified: DateTime(2023),
                 createdAt: DateTime(2023),

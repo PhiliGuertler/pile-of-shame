@@ -1,5 +1,6 @@
 import 'package:pile_of_shame/models/game_platforms.dart';
 import 'package:pile_of_shame/models/hardware.dart';
+import 'package:pile_of_shame/models/price_variant.dart';
 import 'package:pile_of_shame/providers/database/database_provider.dart';
 import 'package:pile_of_shame/providers/hardware/hardware_sorter_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -102,7 +103,8 @@ FutureOr<double?> hardwareTotalPriceByPlatform(
 
   final isAllGifted = hardware.fold<bool>(
     true,
-    (previousValue, element) => element.wasGifted && previousValue,
+    (previousValue, element) =>
+        (element.priceVariant == PriceVariant.gifted) && previousValue,
   );
 
   return isAllGifted

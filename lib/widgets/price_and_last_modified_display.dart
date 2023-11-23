@@ -1,26 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pile_of_shame/models/game.dart';
+import 'package:pile_of_shame/models/price_variant.dart';
 import 'package:pile_of_shame/providers/format_provider.dart';
 import 'package:pile_of_shame/utils/constants.dart';
 
 class PriceAndLastModifiedDisplay extends ConsumerWidget {
   final double price;
-  final bool wasGifted;
+  final PriceVariant priceVariant;
   final DateTime lastModified;
 
   const PriceAndLastModifiedDisplay({
     super.key,
     required this.price,
     required this.lastModified,
-    required this.wasGifted,
+    required this.priceVariant,
   });
 
   factory PriceAndLastModifiedDisplay.fromGame({required Game game}) {
     return PriceAndLastModifiedDisplay(
       price: game.fullPrice(),
       lastModified: game.lastModified,
-      wasGifted: game.wasGifted && game.fullPrice() < 0.01,
+      priceVariant: game.priceVariant,
     );
   }
 
@@ -39,12 +40,12 @@ class PriceAndLastModifiedDisplay extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.end,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            if (wasGifted)
+            if (price < 0.01)
               Icon(
-                Icons.cake_sharp,
-                color: Theme.of(context).colorScheme.primary,
+                priceVariant.iconData,
+                color: priceVariant.backgroundColor,
               ),
-            if (!wasGifted) Text(currencyFormatter.format(price)),
+            if (!(price < 0.01)) Text(currencyFormatter.format(price)),
             Text(dateFormatter.format(lastModified)),
           ],
         ),

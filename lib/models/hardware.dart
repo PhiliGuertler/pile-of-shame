@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:pile_of_shame/models/game_platforms.dart';
+import 'package:pile_of_shame/models/price_variant.dart';
 
 part 'hardware.freezed.dart';
 part 'hardware.g.dart';
@@ -14,7 +15,7 @@ class VideoGameHardware with _$VideoGameHardware {
     required DateTime lastModified,
     required DateTime createdAt,
     String? notes,
-    @Default(false) bool wasGifted,
+    @Default(PriceVariant.bought) PriceVariant priceVariant,
   }) = _VideoGameHardware;
 
   factory VideoGameHardware.fromJson(Map<String, dynamic> json) =>

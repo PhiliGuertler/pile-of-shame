@@ -6,6 +6,7 @@ import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/assets.dart';
 import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/providers/format_provider.dart';
+import 'package:pile_of_shame/utils/constants.dart';
 import 'package:pile_of_shame/utils/game_data.dart';
 import 'package:pile_of_shame/widgets/charts/default_comparison_chart.dart';
 import 'package:pile_of_shame/widgets/charts/highlightable_charts.dart';
@@ -52,82 +53,111 @@ class GameAnalytics extends ConsumerWidget {
       subtitle: Container(),
       trailing: Container(),
       children: [
-        ListTile(
-          contentPadding: chartPadding,
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                l10n.priceDistribution,
-                style: textTheme.titleLarge,
+        Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: defaultPaddingX,
+            vertical: 8.0,
+          ),
+          child: Text(
+            l10n.analyticsExcludeWishlistedGames,
+          ),
+        ),
+        if (gameData.hasNonWishlistedGames)
+          ListTile(
+            contentPadding: chartPadding,
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  l10n.priceDistribution,
+                  style: textTheme.titleLarge,
+                ),
+                Text(
+                  currencyFormatter.format(gameData.toTotalPrice()),
+                ),
+              ],
+            ),
+            subtitle: DefaultComparisonChart(
+              left: gameData.toTotalBasePrice(),
+              leftText:
+                  "${currencyFormatter.format(gameData.toTotalBasePrice())} ${l10n.games}",
+              right: gameData.toTotalDLCPrice(),
+              rightText:
+                  "${currencyFormatter.format(gameData.toTotalDLCPrice())} ${l10n.dlcs}",
+              animationDelay: 50.ms,
+            ),
+          ),
+        if (gameData.hasNonWishlistedGames)
+          ListTile(
+            contentPadding: chartPadding,
+            title: Text(
+              l10n.gameAndDLCAmount,
+              style: textTheme.titleLarge,
+            ),
+            subtitle: DefaultComparisonChart(
+              left: gameData.toGameCount().toDouble(),
+              leftText: l10n.nGames(gameData.toGameCount()),
+              right: gameData.toDLCCount().toDouble(),
+              rightText: l10n.nDLCs(gameData.toDLCCount()),
+              formatValue: (value) => value.toStringAsFixed(0),
+              animationDelay: 100.ms,
+            ),
+          ),
+        if (gameData.hasNonWishlistedGames)
+          ListTile(
+            contentPadding: chartPadding,
+            title: Text(
+              l10n.averagePrice,
+              style: textTheme.titleLarge,
+            ),
+            subtitle: DefaultComparisonChart(
+              left: gameData.toAveragePrice(),
+              leftText:
+                  "${currencyFormatter.format(gameData.toAveragePrice())} ${l10n.average}",
+              right: gameData.toMedianPrice(),
+              rightText:
+                  "${currencyFormatter.format(gameData.toMedianPrice())} ${l10n.median}",
+              animationDelay: 150.ms,
+            ),
+          ),
+        if (gameData.hasNonWishlistedGames)
+          ListTile(
+            contentPadding: chartPadding,
+            title: Text(
+              l10n.completionRate,
+              style: textTheme.titleLarge,
+            ),
+            subtitle: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 16.0),
+              child: HighlightablePieChart(
+                data: gameData.toCompletedData(),
+                formatData: (data) => l10n.nGames(data.toInt()),
+                formatTotalData: (totalData) =>
+                    percentFormatter.format(gameData.toCompletedPercentage()),
+                animationDelay: 200.ms,
               ),
-              Text(
-                currencyFormatter.format(gameData.toTotalPrice()),
-              ),
-            ],
+            ),
           ),
-          subtitle: DefaultComparisonChart(
-            left: gameData.toTotalBasePrice(),
-            leftText:
-                "${currencyFormatter.format(gameData.toTotalBasePrice())} ${l10n.games}",
-            right: gameData.toTotalDLCPrice(),
-            rightText:
-                "${currencyFormatter.format(gameData.toTotalDLCPrice())} ${l10n.dlcs}",
-            animationDelay: 50.ms,
-          ),
-        ),
         ListTile(
           contentPadding: chartPadding,
           title: Text(
-            l10n.gameAndDLCAmount,
-            style: textTheme.titleLarge,
-          ),
-          subtitle: DefaultComparisonChart(
-            left: gameData.toGameCount().toDouble(),
-            leftText: l10n.nGames(gameData.toGameCount()),
-            right: gameData.toDLCCount().toDouble(),
-            rightText: l10n.nDLCs(gameData.toDLCCount()),
-            formatValue: (value) => value.toStringAsFixed(0),
-            animationDelay: 100.ms,
-          ),
-        ),
-        ListTile(
-          contentPadding: chartPadding,
-          title: Text(
-            l10n.averagePrice,
-            style: textTheme.titleLarge,
-          ),
-          subtitle: DefaultComparisonChart(
-            left: gameData.toAveragePrice(),
-            leftText:
-                "${currencyFormatter.format(gameData.toAveragePrice())} ${l10n.average}",
-            right: gameData.toMedianPrice(),
-            rightText:
-                "${currencyFormatter.format(gameData.toMedianPrice())} ${l10n.median}",
-            animationDelay: 150.ms,
-          ),
-        ),
-        ListTile(
-          contentPadding: chartPadding,
-          title: Text(
-            l10n.completionRate,
+            "${l10n.priceVariant}*",
             style: textTheme.titleLarge,
           ),
           subtitle: Padding(
             padding: const EdgeInsets.symmetric(vertical: 16.0),
             child: HighlightablePieChart(
-              data: gameData.toCompletedData(),
+              data: gameData.toPriceVariantData(),
               formatData: (data) => l10n.nGames(data.toInt()),
-              formatTotalData: (totalData) =>
-                  percentFormatter.format(gameData.toCompletedPercentage()),
-              animationDelay: 200.ms,
+              formatTotalData: (totalData) => "",
+              animationDelay: 250.ms,
             ),
           ),
         ),
         ListTile(
           contentPadding: chartPadding,
           title: Text(
-            l10n.status,
+            "${l10n.status}*",
             style: textTheme.titleLarge,
           ),
           subtitle: Padding(
@@ -140,90 +170,95 @@ class GameAnalytics extends ConsumerWidget {
             ),
           ),
         ),
-        ListTile(
-          contentPadding: chartPadding,
-          title: Text(
-            l10n.ageRating,
-            style: textTheme.titleLarge,
-          ),
-          subtitle: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 16.0),
-            child: HighlightablePieChart(
-              data: gameData.toAgeRatingData(),
-              formatData: (data) => l10n.nGames(data.toInt()),
-              formatTotalData: (totalData) =>
-                  "${l10n.average}:\n${numberFormatter.format(gameData.toAverageAgeRating())}",
-              animationDelay: 300.ms,
-            ),
-          ),
-        ),
-        ListTile(
-          contentPadding: chartPadding,
-          title: Text(
-            l10n.priceDistribution,
-            style: textTheme.titleLarge,
-          ),
-          subtitle: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 16.0),
-            child: HighlightableCompactBarChart(
-              data: gameData.toPriceDistribution(
-                5.0,
-              ),
-              formatData: (data) => l10n.nGames(data.toInt()),
-              animationDelay: 350.ms,
-            ),
-          ),
-        ),
-        if (hasPlatformDistributionCharts)
+        if (gameData.hasNonWishlistedGames)
           ListTile(
             contentPadding: chartPadding,
             title: Text(
-              l10n.platformDistribution,
+              l10n.ageRating,
               style: textTheme.titleLarge,
             ),
             subtitle: Padding(
               padding: const EdgeInsets.symmetric(vertical: 16.0),
-              child: HighlightableBarChart(
-                data: gameData.toPlatformDistribution(),
-                formatData: (data, [isPrimary]) => l10n.nGames(data.toInt()),
-                animationDelay: 400.ms,
+              child: HighlightablePieChart(
+                data: gameData.toAgeRatingData(),
+                formatData: (data) => l10n.nGames(data.toInt()),
+                formatTotalData: (totalData) =>
+                    "${l10n.average}:\n${numberFormatter.format(gameData.toAverageAgeRating())}",
+                animationDelay: 300.ms,
               ),
             ),
           ),
-        if (hasPlatformDistributionCharts)
+        if (gameData.hasNonWishlistedGames)
           ListTile(
             contentPadding: chartPadding,
             title: Text(
-              l10n.priceDistributionByPlatform,
+              l10n.priceDistribution,
               style: textTheme.titleLarge,
             ),
             subtitle: Padding(
               padding: const EdgeInsets.symmetric(vertical: 16.0),
-              child: HighlightableBarChart(
-                data: gameData.toPlatformPriceDistribution(),
-                formatData: (data, [isPrimary]) =>
-                    currencyFormatter.format(data),
-                animationDelay: 450.ms,
+              child: HighlightableCompactBarChart(
+                data: gameData.toPriceDistribution(
+                  5.0,
+                ),
+                formatData: (data) => l10n.nGames(data.toInt()),
+                animationDelay: 350.ms,
               ),
             ),
           ),
+        if (hasPlatformDistributionCharts)
+          if (gameData.hasNonWishlistedGames)
+            ListTile(
+              contentPadding: chartPadding,
+              title: Text(
+                l10n.platformDistribution,
+                style: textTheme.titleLarge,
+              ),
+              subtitle: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 16.0),
+                child: HighlightableBarChart(
+                  data: gameData.toPlatformDistribution(),
+                  formatData: (data, [isPrimary]) => l10n.nGames(data.toInt()),
+                  animationDelay: 400.ms,
+                ),
+              ),
+            ),
+        if (hasPlatformDistributionCharts)
+          if (gameData.hasNonWishlistedGames)
+            ListTile(
+              contentPadding: chartPadding,
+              title: Text(
+                l10n.priceDistributionByPlatform,
+                style: textTheme.titleLarge,
+              ),
+              subtitle: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 16.0),
+                child: HighlightableBarChart(
+                  data: gameData.toPlatformPriceDistribution(),
+                  formatData: (data, [isPrimary]) =>
+                      currencyFormatter.format(data),
+                  animationDelay: 450.ms,
+                ),
+              ),
+            ),
         if (hasFamilyDistributionChart)
-          ListTile(
-            contentPadding: chartPadding,
-            title: Text(
-              l10n.priceDistributionByPlatformFamily,
-              style: textTheme.titleLarge,
-            ),
-            subtitle: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16.0),
-              child: HighlightableBarChart(
-                data: gameData.toPlatformFamilyPriceDistribution(),
-                formatData: (data, [isPrimary]) =>
-                    currencyFormatter.format(data),
-                animationDelay: 500.ms,
+          if (gameData.hasNonWishlistedGames)
+            ListTile(
+              contentPadding: chartPadding,
+              title: Text(
+                l10n.priceDistributionByPlatformFamily,
+                style: textTheme.titleLarge,
+              ),
+              subtitle: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 16.0),
+                child: HighlightableBarChart(
+                  data: gameData.toPlatformFamilyPriceDistribution(),
+                  formatData: (data, [isPrimary]) =>
+                      currencyFormatter.format(data),
+                  animationDelay: 500.ms,
+                ),
               ),
             ),
-          ),
       ],
     );
   }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:misc_utils/misc_utils.dart';
 import 'package:pile_of_shame/features/games/add_or_edit_game/models/editable_game.dart';
@@ -10,10 +9,12 @@ import 'package:pile_of_shame/features/games/add_or_edit_game/widgets/notes_inpu
 import 'package:pile_of_shame/features/games/add_or_edit_game/widgets/platform_dropdown.dart';
 import 'package:pile_of_shame/features/games/add_or_edit_game/widgets/play_status_dropdown.dart';
 import 'package:pile_of_shame/features/games/add_or_edit_game/widgets/price_input_field.dart';
+import 'package:pile_of_shame/features/games/add_or_edit_game/widgets/price_variant_dropdown.dart';
 import 'package:pile_of_shame/features/games/add_or_edit_game/widgets/usk_dropdown.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/models/play_status.dart';
+import 'package:pile_of_shame/models/price_variant.dart';
 import 'package:pile_of_shame/utils/constants.dart';
 import 'package:pile_of_shame/widgets/app_scaffold.dart';
 
@@ -178,6 +179,14 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
                   child: PlayStatusDropdown(
                     value: editableGame.status,
                     onSelect: (selection) {
+                      PriceVariant variant = selection == PlayStatus.onWishList
+                          ? PriceVariant.observing
+                          : editableGame.priceVariant;
+
+                      if (variant == PriceVariant.observing &&
+                          selection != PlayStatus.onWishList) {
+                        variant = PriceVariant.bought;
+                      }
                       ref
                           .read(
                             addGameProvider(
@@ -185,90 +194,65 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
                               widget.initialPlayStatus,
                             ).notifier,
                           )
-                          .updateGame(editableGame.copyWith(status: selection));
+                          .updateGame(
+                            editableGame.copyWith(
+                              status: selection,
+                              priceVariant: variant,
+                            ),
+                          );
                     },
                   ),
                 ),
                 Padding(
                   padding:
                       const EdgeInsets.symmetric(horizontal: defaultPaddingX),
-                  child: IntrinsicHeight(
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(right: 8.0),
-                          child: Center(
-                            child: ImageContainer(
-                              child: InkWell(
-                                borderRadius: BorderRadius.circular(
-                                  ImageContainer.borderRadius,
-                                ),
-                                onTap: () {
-                                  final newValue = !editableGame.wasGifted;
-                                  ref
-                                      .read(
-                                        addGameProvider(
-                                          widget.initialValue,
-                                          widget.initialPlayStatus,
-                                        ).notifier,
-                                      )
-                                      .updateGame(
-                                        editableGame.copyWith(
-                                          wasGifted: newValue,
-                                        ),
-                                      );
-                                },
-                                child: Center(
-                                  child: Icon(
-                                    Icons.cake_sharp,
-                                    color:
-                                        Theme.of(context).colorScheme.primary,
-                                  )
-                                      .animate(
-                                        target: editableGame.wasGifted ? 0 : 1,
-                                      )
-                                      .shake()
-                                      .scale(
-                                        begin: const Offset(1.0, 1.0),
-                                        end: const Offset(1.2, 1.2),
-                                        curve: Curves.easeInOutBack,
-                                      )
-                                      .then()
-                                      .swap(
-                                        builder: (context, child) =>
-                                            const Icon(Icons.cake_outlined)
-                                                .animate()
-                                                .scale(
-                                                  begin: const Offset(1.2, 1.2),
-                                                  end: const Offset(1.0, 1.0),
-                                                  curve: Curves.easeInOutBack,
-                                                ),
-                                      ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          child: PriceInputField(
-                            enabled: !editableGame.wasGifted,
-                            value: editableGame.price,
-                            onChanged: (value) {
-                              ref
-                                  .read(
-                                    addGameProvider(
-                                      widget.initialValue,
-                                      widget.initialPlayStatus,
-                                    ).notifier,
-                                  )
-                                  .updateGame(
-                                    editableGame.copyWith(price: value),
-                                  );
-                            },
-                          ),
-                        ),
-                      ],
+                  child: PriceVariantDropdown(
+                    enabled: editableGame.status != PlayStatus.onWishList,
+                    value: editableGame.priceVariant,
+                    onSelect: (selection) {
+                      ref
+                          .read(
+                            addGameProvider(
+                              widget.initialValue,
+                              widget.initialPlayStatus,
+                            ).notifier,
+                          )
+                          .updateGame(
+                            editableGame.copyWith(priceVariant: selection),
+                          );
+                    },
+                  ),
+                ),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: defaultPaddingX),
+                  child: AnimatedSize(
+                    curve: Curves.easeInOutBack,
+                    duration: const Duration(milliseconds: 200),
+                    child: Builder(
+                      builder: (context) {
+                        if (editableGame.priceVariant == PriceVariant.gifted) {
+                          return const SizedBox(
+                            height: 0,
+                          );
+                        }
+
+                        return PriceInputField(
+                          value: editableGame.price,
+                          onChanged: (value) {
+                            ref
+                                .read(
+                                  addGameProvider(
+                                    widget.initialValue,
+                                    widget.initialPlayStatus,
+                                  ).notifier,
+                                )
+                                .updateGame(
+                                  editableGame.copyWith(price: value),
+                                );
+                          },
+                        );
+                      },
                     ),
                   ),
                 ),

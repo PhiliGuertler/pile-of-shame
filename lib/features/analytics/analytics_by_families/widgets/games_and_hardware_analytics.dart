@@ -7,6 +7,7 @@ import 'package:pile_of_shame/models/assets.dart';
 import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/models/hardware.dart';
 import 'package:pile_of_shame/providers/format_provider.dart';
+import 'package:pile_of_shame/utils/constants.dart';
 import 'package:pile_of_shame/utils/game_and_hardware_data.dart';
 import 'package:pile_of_shame/utils/game_data.dart';
 import 'package:pile_of_shame/utils/hardware_data.dart';
@@ -63,6 +64,15 @@ class GamesAndHardwareAnalytics extends ConsumerWidget {
       subtitle: Container(),
       trailing: Container(),
       children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: defaultPaddingX,
+            vertical: 8.0,
+          ),
+          child: Text(
+            l10n.analyticsExcludeWishlistedGames,
+          ),
+        ),
         ListTile(
           contentPadding: chartPadding,
           title: Row(
