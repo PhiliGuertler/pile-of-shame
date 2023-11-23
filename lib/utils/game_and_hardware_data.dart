@@ -5,6 +5,7 @@ import 'package:pile_of_shame/models/chart_data.dart';
 import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/models/game_platforms.dart';
 import 'package:pile_of_shame/models/hardware.dart';
+import 'package:pile_of_shame/models/play_status.dart';
 
 class GameAndHardwareData {
   final List<Game> games;
@@ -19,7 +20,15 @@ class GameAndHardwareData {
     required this.currencyFormatter,
   });
 
+  Iterable<Game> get _nonWishlistGames =>
+      games.where((element) => element.status != PlayStatus.onWishList);
+
+  int get relevantGamesCount => _nonWishlistGames.length;
+  bool get hasNonWishlistedGames => relevantGamesCount > 0;
+
   List<ChartData> toPlatformFamilyPriceDistribution() {
+    final relevantGames = _nonWishlistGames;
+
     final List<Pair<GamePlatformFamily, double>> platformFamilyHardwarePrices =
         [
       for (var i = 0; i < GamePlatformFamily.values.length; ++i)
@@ -42,7 +51,7 @@ class GameAndHardwareData {
       platformFamilyCount[ware.platform.family.index].second++;
     }
 
-    for (final game in games) {
+    for (final game in relevantGames) {
       platformFamilyGamePrices[game.platform.family.index].second +=
           game.fullPrice();
       platformFamilyCount[game.platform.family.index].second++;
@@ -73,6 +82,8 @@ class GameAndHardwareData {
   }
 
   List<ChartData> toPlatformPriceDistribution() {
+    final relevantGames = _nonWishlistGames;
+
     final List<Pair<GamePlatform, double>> platformHardwarePrices = [
       for (var i = 0; i < GamePlatform.values.length; ++i)
         Pair(GamePlatform.values[i], 0),
@@ -93,7 +104,7 @@ class GameAndHardwareData {
       platformCount[ware.platform.index].second++;
     }
 
-    for (final game in games) {
+    for (final game in relevantGames) {
       platformGamePrices[game.platform.index].second += game.fullPrice();
       platformCount[game.platform.index].second++;
     }
