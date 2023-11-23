@@ -1,6 +1,5 @@
 Version 1.3
 
-Welcome to Pile of Shame, an app to manage your game library!
 Version 1.3 changes how gifted games and hardware work.
 Instead of only being able to indicate that a game has been gifted, you can now also select that a game has been borrowed or purchased.
 Games on your wish list will receive the status "observing".

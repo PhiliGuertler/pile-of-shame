@@ -1,6 +1,5 @@
 Version 1.3
 
-Hallo bei Pile of Shame, einer App zum Verwalten Deiner Spielebibliothek!
 Version 1.3 ändert wie geschenkte Spiele und Hardware funktionieren.
 Anstatt nur die Möglichkeit anzugeben, dass ein Spiel geschenkt wurde, kannst Du nun auch auswählen, dass ein Spiel geliehen oder gekauft wurde.
 Spiele auf Deiner Wunschliste erhalten den Status "in Beobachtung".
