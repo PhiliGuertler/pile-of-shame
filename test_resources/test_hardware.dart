@@ -14,7 +14,7 @@ class TestHardware {
     createdAt: DateTime(2023),
   );
   static const String consoleJson =
-      '{"id":"console","name":"Console","platform":"PS5","price":499.99,"lastModified":"2023-01-01T00:00:00.000","createdAt":"2023-01-01T00:00:00.000","notes":null,"wasGifted":false}';
+      '{"id":"console","name":"Console","platform":"PS5","price":499.99,"lastModified":"2023-01-01T00:00:00.000","createdAt":"2023-01-01T00:00:00.000","notes":null,"priceVariant":"bought"}';
   static final giftedConsole = VideoGameHardware(
     id: 'console-gift',
     name: "Gifted Console",

@@ -96,7 +96,7 @@ class TestGames {
     usk: USK.usk18,
   );
   static const String gameWitcher3Json =
-      '{"id":"witcher-3","name":"The Witcher 3: Wild Hunt","platform":"Gog","status":"completed","lastModified":"2023-01-01T00:00:00.000","createdAt":"2015-05-19T00:00:00.000","price":59.99,"usk":"usk18","dlcs":[{"id":"witcher-3-hearts-of-stone","name":"Hearts of Stone","status":"completed","lastModified":"2023-01-02T00:00:00.000","createdAt":"2015-10-13T00:00:00.000","price":9.99,"notes":"This one contains Gaunter O\'Dim","isFavorite":false,"wasGifted":false},{"id":"witcher-3-blood-and-wine","name":"Hearts of Stone","status":"playing","lastModified":"2023-01-02T00:00:00.000","createdAt":"2016-05-31T00:00:00.000","price":19.99,"notes":"Let\'s head to Toussaint","isFavorite":true,"wasGifted":false}],"notes":null,"isFavorite":false,"wasGifted":false}';
+      '{"id":"witcher-3","name":"The Witcher 3: Wild Hunt","platform":"Gog","status":"completed","lastModified":"2023-01-01T00:00:00.000","createdAt":"2015-05-19T00:00:00.000","price":59.99,"usk":"usk18","dlcs":[{"id":"witcher-3-hearts-of-stone","name":"Hearts of Stone","status":"completed","lastModified":"2023-01-02T00:00:00.000","createdAt":"2015-10-13T00:00:00.000","price":9.99,"notes":"This one contains Gaunter O\'Dim","isFavorite":false,"priceVariant":"bought"},{"id":"witcher-3-blood-and-wine","name":"Hearts of Stone","status":"playing","lastModified":"2023-01-02T00:00:00.000","createdAt":"2016-05-31T00:00:00.000","price":19.99,"notes":"Let\'s head to Toussaint","isFavorite":true,"priceVariant":"bought"}],"notes":null,"isFavorite":false,"priceVariant":"bought"}';
   // ### /The Witcher 3: Wild Hunt ########################################## //
 
   static final Game gameDistance = Game(
