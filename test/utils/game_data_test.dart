@@ -29,6 +29,7 @@ void main() {
           TestGames.gameDistance, // playing -> incomplete
           TestGames.gameSsx3, // completed100Percent -> completed
           TestGames.gameOriAndTheBlindForest, // onPileOfShame -> incomplete
+          TestGames.gameInscryption, // onWishList -> ignored
         ],
         l10n: l10n,
         currencyFormatter: currencyFormatter,
@@ -61,6 +62,7 @@ void main() {
           TestGames.gameDistance, // playing
           TestGames.gameSsx3, // completed100Percent
           TestGames.gameOriAndTheBlindForest, // onPileOfShame
+          TestGames.gameInscryption, // onWishlist
         ],
         l10n: l10n,
         currencyFormatter: currencyFormatter,
@@ -68,7 +70,7 @@ void main() {
 
       final result = data.toPlayStatusData();
 
-      expect(result.length, 5);
+      expect(result.length, 6);
       int index = 0;
       // First, the completed games ordered by their play-status index
       expect(result[index].title, l10n.replaying);
@@ -90,6 +92,10 @@ void main() {
 
       expect(result[index].title, l10n.onPileOfShame);
       expect(result[index].value, 1.0);
+      ++index;
+
+      expect(result[index].title, l10n.onWishList);
+      expect(result[index].value, 1.0);
     });
   });
   group("toAgeRatingData", () {
@@ -100,7 +106,9 @@ void main() {
       final result = data.toAgeRatingData();
       expect(result, []);
     });
-    test("returns a sorted list of game-count by age-rating as expected", () {
+    test(
+        "returns a sorted list of game-count by age-rating as expected while ignoring wishlisted games",
+        () {
       final GameData data = GameData(
         games: [
           TestGames.gameDarkSouls, // usk16
@@ -108,6 +116,7 @@ void main() {
           TestGames.gameWitcher3, // usk18
           TestGames.gameSsx3, // usk6
           TestGames.gameOriAndTheBlindForest, // usk12
+          TestGames.gameInscryption, // usk16 (wishlisted)
         ],
         l10n: l10n,
         currencyFormatter: currencyFormatter,
@@ -141,7 +150,9 @@ void main() {
       final result = data.toPriceDistribution(10.0);
       expect(result, []);
     });
-    test("returns a distribution of the total prices as expected", () {
+    test(
+        "returns a distribution of the total prices as expected while ignoring wishlisted games",
+        () {
       final GameData data = GameData(
         games: [
           TestGames.gameDarkSouls, // 39.99+9.99 = 49.98
@@ -150,6 +161,7 @@ void main() {
           TestGames.gameDistance, // 19.99
           TestGames.gameSsx3, // 39.95
           TestGames.gameOriAndTheBlindForest, // 25
+          TestGames.gameInscryption, // 20 (wishlisted)
         ],
         l10n: l10n,
         currencyFormatter: currencyFormatter,
@@ -235,7 +247,9 @@ void main() {
       final result = data.toPlatformDistribution();
       expect(result, []);
     });
-    test("returns a distribution of the platforms as expected", () {
+    test(
+        "returns a distribution of the platforms as expected while ignoring wishlisted games",
+        () {
       final GameData data = GameData(
         games: [
           TestGames.gameDarkSouls, // playstation4
@@ -244,6 +258,7 @@ void main() {
           TestGames.gameDistance, // steam
           TestGames.gameSsx3, // playstation2
           TestGames.gameOriAndTheBlindForest, // playstation4
+          TestGames.gameInscryption, // steam (wishlisted)
         ],
         l10n: l10n,
         currencyFormatter: currencyFormatter,
@@ -288,7 +303,9 @@ void main() {
       final result = data.toPlatformPriceDistribution();
       expect(result, []);
     });
-    test("returns a the prices of the platforms as expected", () {
+    test(
+        "returns a the prices of the platforms as expected while ignoring wishlisted games",
+        () {
       final GameData data = GameData(
         games: [
           TestGames.gameDarkSouls, // playstation4, 39.99+9.99 = 49.98
@@ -297,6 +314,7 @@ void main() {
           TestGames.gameDistance, // steam, 19.99
           TestGames.gameSsx3, // playstation2, 39.95
           TestGames.gameOriAndTheBlindForest, // playstation4, 25
+          TestGames.gameInscryption, // steam, 20 (wishlisted)
         ],
         l10n: l10n,
         currencyFormatter: currencyFormatter,
@@ -362,6 +380,8 @@ void main() {
             platform: GamePlatform.xboxOne,
             price: 0.0,
           ), // microsoft, 0
+          TestGames.gameInscryption
+              .copyWith(platform: GamePlatform.pcMisc), // pc, 20 (wishlisted)
         ],
         l10n: l10n,
         currencyFormatter: currencyFormatter,
@@ -413,7 +433,8 @@ void main() {
       final result = data.toGameCount();
       expect(result, 0);
     });
-    test("returns the game count as expected", () {
+    test("returns the game count as expected while ignoring wishlisted games",
+        () {
       final GameData data = GameData(
         games: [
           TestGames.gameDarkSouls,
@@ -422,6 +443,7 @@ void main() {
           TestGames.gameDistance,
           TestGames.gameSsx3,
           TestGames.gameOriAndTheBlindForest,
+          TestGames.gameInscryption, // (wishlisted)
         ],
         l10n: l10n,
         currencyFormatter: currencyFormatter,
@@ -479,6 +501,7 @@ void main() {
           TestGames.gameDistance, // 19.99
           TestGames.gameSsx3, // 39.95
           TestGames.gameOriAndTheBlindForest, // 25
+          TestGames.gameInscryption, // 20 (wishlisted)
         ],
         l10n: l10n,
         currencyFormatter: currencyFormatter,
@@ -511,7 +534,9 @@ void main() {
       final result = data.toTotalBasePrice();
       expect(result, 0);
     });
-    test("returns the sum of total prices as expected", () {
+    test(
+        "returns the sum of total prices as expected while ignoring wishlisted games",
+        () {
       final GameData data = GameData(
         games: [
           TestGames.gameDarkSouls, // 39.99
@@ -520,6 +545,7 @@ void main() {
           TestGames.gameDistance, // 19.99
           TestGames.gameSsx3, // 39.95
           TestGames.gameOriAndTheBlindForest, // 25
+          TestGames.gameInscryption, // 20 (wishlisted)
         ],
         l10n: l10n,
         currencyFormatter: currencyFormatter,
@@ -574,7 +600,7 @@ void main() {
       expect(result, 0);
     });
     test(
-        "returns the average of the total prices as expected while ignoring wishlisted DLCs",
+        "returns the average of the total prices as expected while ignoring wishlisted games and DLCs",
         () {
       final GameData data = GameData(
         games: [
@@ -584,6 +610,7 @@ void main() {
           TestGames.gameDistance, // 19.99
           TestGames.gameSsx3, // 39.95
           TestGames.gameOriAndTheBlindForest, // 25
+          TestGames.gameInscryption, // 20 (wishlisted)
         ],
         l10n: l10n,
         currencyFormatter: currencyFormatter,
@@ -617,15 +644,18 @@ void main() {
       final result = data.toMedianPrice();
       expect(result, 0);
     });
-    test("returns the median of the total prices as expected", () {
+    test(
+        "returns the median of the total prices as expected while ignoring wishlisted games",
+        () {
       final GameData data = GameData(
         games: [
-          TestGames.gameDarkSouls, // 39.99+9.99 = 49.98
-          TestGames.gameOuterWilds, // 24.99+19.99 = 44.98 (Median)
+          TestGames.gameDarkSouls, // 39.99 (+9.99 wishlisted) = 39.99 (Median)
+          TestGames.gameOuterWilds, // 24.99+19.99 = 44.98
           TestGames.gameWitcher3, // 59.99+19.99+9.99 = 89.97
           TestGames.gameDistance, // 19.99
           TestGames.gameSsx3, // 39.95
           TestGames.gameOriAndTheBlindForest, // 25
+          TestGames.gameInscryption, // 20 (Wishlisted)
         ],
         l10n: l10n,
         currencyFormatter: currencyFormatter,
@@ -634,7 +664,7 @@ void main() {
       final result = data.toMedianPrice();
 
       expect(
-        (result - 44.98).abs() < 0.001,
+        (result - 39.99).abs() < 0.001,
         true,
       );
     });
@@ -647,7 +677,9 @@ void main() {
       final result = data.toAverageAgeRating();
       expect(result, 0.0);
     });
-    test("returns the correct average of age ratings", () {
+    test(
+        "returns the correct average of age ratings while ignoring wishlisted games",
+        () {
       final GameData data = GameData(
         games: [
           TestGames.gameDarkSouls, // usk16
@@ -655,6 +687,7 @@ void main() {
           TestGames.gameWitcher3, // usk18
           TestGames.gameSsx3, // usk6
           TestGames.gameOriAndTheBlindForest, // usk12
+          TestGames.gameInscryption, // usk16 (wishlisted)
         ],
         l10n: l10n,
         currencyFormatter: currencyFormatter,
@@ -682,6 +715,7 @@ void main() {
           TestGames.gameDistance, // playing -> incomplete
           TestGames.gameSsx3, // completed100Percent -> completed
           TestGames.gameOriAndTheBlindForest, // onPileOfShame -> incomplete
+          TestGames.gameInscryption, // onWishlist -> ignored
         ],
         l10n: l10n,
         currencyFormatter: currencyFormatter,

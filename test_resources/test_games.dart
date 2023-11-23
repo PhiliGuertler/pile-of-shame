@@ -133,4 +133,16 @@ class TestGames {
     dlcs: [],
     usk: USK.usk12,
   );
+
+  static final Game gameInscryption = Game(
+    id: 'inscryption',
+    lastModified: DateTime(2023, 1, 4),
+    createdAt: DateTime(2022, 8, 8),
+    name: 'Inscryption',
+    platform: GamePlatform.steam,
+    price: 20,
+    status: PlayStatus.onWishList,
+    dlcs: [],
+    usk: USK.usk16,
+  );
 }

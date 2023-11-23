@@ -103,12 +103,14 @@ class GameData {
   }
 
   List<ChartData> toPriceVariantData() {
+    final relevantGames = games;
+
     final List<Pair<PriceVariant, int>> priceVariantCount = [
       for (var i = 0; i < PriceVariant.values.length; ++i)
         Pair(PriceVariant.values[i], 0),
     ];
 
-    for (final game in games) {
+    for (final game in relevantGames) {
       priceVariantCount[game.priceVariant.index].second++;
     }
 
@@ -389,10 +391,12 @@ class GameData {
 
     if (relevantGames.isEmpty) return 0.0;
 
-    final List<Game> sortedGames = List.from(games);
-    sortedGames.sort((a, b) => a.fullPrice().compareTo(b.fullPrice()));
+    final List<Game> sortedGames = List.from(relevantGames);
+    sortedGames.sort(
+      (a, b) => a.fullPriceNonWishlist().compareTo(b.fullPriceNonWishlist()),
+    );
 
-    return sortedGames[sortedGames.length ~/ 2].fullPrice();
+    return sortedGames[sortedGames.length ~/ 2].fullPriceNonWishlist();
   }
 
   double toAverageAgeRating() {
