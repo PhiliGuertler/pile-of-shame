@@ -31,7 +31,7 @@ enum PriceVariant {
   IconData toIconData() {
     switch (this) {
       case PriceVariant.bought:
-        return Icons.attach_money;
+        return Icons.savings;
       case PriceVariant.gifted:
         return Icons.cake;
       case PriceVariant.borrowed:
