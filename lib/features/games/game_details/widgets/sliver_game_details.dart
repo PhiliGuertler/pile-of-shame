@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:misc_utils/misc_utils.dart';
 import 'package:pile_of_shame/features/games/add_or_edit_game/models/editable_game.dart';
 import 'package:pile_of_shame/features/games/add_or_edit_game/screens/add_or_edit_dlc_screen.dart';
+import 'package:pile_of_shame/features/games/add_or_edit_game/widgets/price_variant_dropdown.dart';
 import 'package:pile_of_shame/features/games/dlc_details/screens/dlc_details_screen.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/game.dart';
@@ -104,12 +105,7 @@ class _SliverGameDetailsState extends ConsumerState<SliverGameDetails> {
           ),
         ),
         ListTile(
-          leading: ImageContainer(
-            child: Icon(
-              widget.game.priceVariant.toIconData(),
-              color: Theme.of(context).colorScheme.primary,
-            ),
-          ),
+          leading: PriceVariantIcon(priceVariant: widget.game.priceVariant),
           title: Text(
             shouldShowPriceSum ? l10n.priceWithDLCs : l10n.price,
           ),
@@ -129,24 +125,6 @@ class _SliverGameDetailsState extends ConsumerState<SliverGameDetails> {
                 shouldShowPriceSum = !shouldShowPriceSum;
               });
             },
-          ),
-        ),
-        ListTile(
-          title: Text(l10n.lastModified),
-          subtitle: Text(
-            l10n.dateAtTime(
-              dateFormatter.format(widget.game.lastModified),
-              timeFormatter.format(widget.game.lastModified),
-            ),
-          ),
-        ),
-        ListTile(
-          title: Text(l10n.createdAt),
-          subtitle: Text(
-            l10n.dateAtTime(
-              dateFormatter.format(widget.game.createdAt),
-              timeFormatter.format(widget.game.createdAt),
-            ),
           ),
         ),
         ListTile(
@@ -174,6 +152,24 @@ class _SliverGameDetailsState extends ConsumerState<SliverGameDetails> {
           title: Text(l10n.ageRating),
           subtitle: Text(
             l10n.ratedN(widget.game.usk.age.toString()),
+          ),
+        ),
+        ListTile(
+          title: Text(l10n.lastModified),
+          subtitle: Text(
+            l10n.dateAtTime(
+              dateFormatter.format(widget.game.lastModified),
+              timeFormatter.format(widget.game.lastModified),
+            ),
+          ),
+        ),
+        ListTile(
+          title: Text(l10n.createdAt),
+          subtitle: Text(
+            l10n.dateAtTime(
+              dateFormatter.format(widget.game.createdAt),
+              timeFormatter.format(widget.game.createdAt),
+            ),
           ),
         ),
         Padding(

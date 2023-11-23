@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:misc_utils/misc_utils.dart';
+import 'package:pile_of_shame/features/games/add_or_edit_game/widgets/price_variant_dropdown.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/providers/database/database_provider.dart';
@@ -64,35 +65,12 @@ class SliverDLCDetails extends ConsumerWidget {
           ),
         ),
         ListTile(
-          leading: ImageContainer(
-            child: Icon(
-              dlc.priceVariant.toIconData(),
-              color: Theme.of(context).colorScheme.primary,
-            ),
-          ),
+          leading: PriceVariantIcon(priceVariant: dlc.priceVariant),
           title: Text(l10n.price),
           subtitle: Text(
             dlc.price < 0.01
                 ? dlc.priceVariant.toLocaleString(l10n)
                 : currencyFormatter.format(dlc.price),
-          ),
-        ),
-        ListTile(
-          title: Text(l10n.lastModified),
-          subtitle: Text(
-            l10n.dateAtTime(
-              dateFormatter.format(dlc.lastModified),
-              timeFormatter.format(dlc.lastModified),
-            ),
-          ),
-        ),
-        ListTile(
-          title: Text(l10n.createdAt),
-          subtitle: Text(
-            l10n.dateAtTime(
-              dateFormatter.format(dlc.createdAt),
-              timeFormatter.format(dlc.createdAt),
-            ),
           ),
         ),
         ListTile(
@@ -116,6 +94,24 @@ class SliverDLCDetails extends ConsumerWidget {
           title: Text(l10n.ageRating),
           subtitle: Text(
             l10n.ratedN(game.usk.age.toString()),
+          ),
+        ),
+        ListTile(
+          title: Text(l10n.lastModified),
+          subtitle: Text(
+            l10n.dateAtTime(
+              dateFormatter.format(dlc.lastModified),
+              timeFormatter.format(dlc.lastModified),
+            ),
+          ),
+        ),
+        ListTile(
+          title: Text(l10n.createdAt),
+          subtitle: Text(
+            l10n.dateAtTime(
+              dateFormatter.format(dlc.createdAt),
+              timeFormatter.format(dlc.createdAt),
+            ),
           ),
         ),
         const SizedBox(height: 48.0),
