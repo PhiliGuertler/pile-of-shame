@@ -14,9 +14,9 @@ import 'package:pile_of_shame/features/games/game_details/screens/game_details_s
 import 'package:pile_of_shame/features/root_page/root_page.dart';
 import 'package:pile_of_shame/models/custom_game_display_settings.dart';
 import 'package:pile_of_shame/models/database.dart';
-import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/models/game_platforms.dart';
 import 'package:pile_of_shame/models/hardware.dart';
+import 'package:pile_of_shame/models/price_variant.dart';
 import 'package:pile_of_shame/providers/database/database_file_provider.dart';
 import 'package:pile_of_shame/providers/file_provider.dart';
 import 'package:pile_of_shame/providers/games/game_platforms_provider.dart';

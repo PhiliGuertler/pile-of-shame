@@ -1,11 +1,13 @@
 import 'package:intl/intl.dart';
 import 'package:misc_utils/misc_utils.dart';
+import 'package:pile_of_shame/features/games/add_or_edit_game/widgets/price_variant_dropdown.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/age_restriction.dart';
 import 'package:pile_of_shame/models/chart_data.dart';
 import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/models/game_platforms.dart';
 import 'package:pile_of_shame/models/play_status.dart';
+import 'package:pile_of_shame/models/price_variant.dart';
 import 'package:pile_of_shame/widgets/play_status_icon.dart';
 import 'package:pile_of_shame/widgets/usk_logo.dart';
 
@@ -22,8 +24,16 @@ class GameData {
 
   bool get hasData => games.isNotEmpty;
 
+  Iterable<Game> get _nonWishlistGames =>
+      games.where((element) => element.status != PlayStatus.onWishList);
+
+  int get relevantGamesCount => _nonWishlistGames.length;
+  bool get hasNonWishlistedGames => relevantGamesCount > 0;
+
   List<ChartData> toCompletedData() {
-    final completedGamesCount = games.fold(
+    final relevantGames = _nonWishlistGames;
+
+    final completedGamesCount = relevantGames.fold(
       0,
       (previousValue, element) =>
           element.status.isCompleted ? previousValue + 1 : previousValue,
@@ -38,10 +48,10 @@ class GameData {
             playStatus: PlayStatus.completed,
           ),
         ),
-      if (completedGamesCount < games.length)
+      if (completedGamesCount < relevantGames.length)
         ChartData(
           title: l10n.incomplete,
-          value: (games.length - completedGamesCount).toDouble(),
+          value: (relevantGames.length - completedGamesCount).toDouble(),
           color: PlayStatus.cancelled.backgroundColor,
           alternativeTitle: const PlayStatusIcon(
             playStatus: PlayStatus.cancelled,
@@ -51,12 +61,14 @@ class GameData {
   }
 
   List<ChartData> toPlayStatusData() {
+    final relevantGames = games;
+
     final List<Pair<PlayStatus, int>> statusCount = [
       for (var i = 0; i < PlayStatus.values.length; ++i)
         Pair(PlayStatus.values[i], 0),
     ];
 
-    for (final game in games) {
+    for (final game in relevantGames) {
       statusCount[game.status.index].second++;
     }
 
@@ -90,12 +102,45 @@ class GameData {
     return result;
   }
 
+  List<ChartData> toPriceVariantData() {
+    final List<Pair<PriceVariant, int>> priceVariantCount = [
+      for (var i = 0; i < PriceVariant.values.length; ++i)
+        Pair(PriceVariant.values[i], 0),
+    ];
+
+    for (final game in games) {
+      priceVariantCount[game.priceVariant.index].second++;
+    }
+
+    final List<ChartData> result = [];
+    for (var i = 0; i < PriceVariant.values.length; ++i) {
+      final priceVariant = priceVariantCount[i].first;
+      final count = priceVariantCount[i].second;
+      result.add(
+        ChartData(
+          title: priceVariant.toLocaleString(l10n),
+          value: count.toDouble(),
+          color: priceVariant.backgroundColor,
+          alternativeTitle: PriceVariantIcon(
+            priceVariant: priceVariant,
+          ),
+        ),
+      );
+    }
+
+    result.removeWhere((element) => element.value < 0.01);
+
+    return result;
+  }
+
   List<ChartData> toAgeRatingData() {
+    final relevantGames = _nonWishlistGames;
+
     final List<Pair<USK, int>> ageRatings = [
       for (var i = 0; i < USK.values.length; ++i) Pair(USK.values[i], 0),
     ];
 
-    for (final game in games) {
+    for (final game in relevantGames) {
       ageRatings[game.usk.index].second++;
     }
 
@@ -124,13 +169,15 @@ class GameData {
   List<ChartData> toPriceDistribution(double interval) {
     assert(interval > 0.0);
 
+    final relevantGames = _nonWishlistGames;
+
     final List<Pair<double, int>> priceDistribution = [];
 
     int processedGames = 0;
     double priceCap = 0.001;
 
-    while (processedGames < games.length) {
-      int matchingGames = games.fold(
+    while (processedGames < relevantGames.length) {
+      int matchingGames = relevantGames.fold(
         0,
         (previousValue, element) =>
             element.fullPrice() < priceCap ? previousValue + 1 : previousValue,
@@ -159,11 +206,13 @@ class GameData {
   }
 
   List<ChartData> toPlatformDistribution() {
+    final relevantGames = _nonWishlistGames;
+
     final List<Pair<GamePlatform, int>> platformCounts = [
       for (var i = 0; i < GamePlatform.values.length; ++i)
         Pair(GamePlatform.values[i], 0),
     ];
-    for (final game in games) {
+    for (final game in relevantGames) {
       platformCounts[game.platform.index].second++;
     }
 
@@ -191,6 +240,8 @@ class GameData {
   }
 
   List<ChartData> toPlatformPriceDistribution() {
+    final relevantGames = _nonWishlistGames;
+
     final List<Pair<GamePlatform, double>> platformPrices = [
       for (var i = 0; i < GamePlatform.values.length; ++i)
         Pair(GamePlatform.values[i], 0),
@@ -201,7 +252,7 @@ class GameData {
         Pair(GamePlatform.values[i], 0),
     ];
 
-    for (final game in games) {
+    for (final game in relevantGames) {
       platformPrices[game.platform.index].second += game.fullPrice();
       platformCount[game.platform.index].second++;
     }
@@ -229,6 +280,8 @@ class GameData {
   }
 
   List<ChartData> toPlatformFamilyPriceDistribution() {
+    final relevantGames = _nonWishlistGames;
+
     final List<Pair<GamePlatformFamily, double>> platformFamilyPrices = [
       for (var i = 0; i < GamePlatformFamily.values.length; ++i)
         Pair(GamePlatformFamily.values[i], 0),
@@ -239,7 +292,7 @@ class GameData {
         Pair(GamePlatformFamily.values[i], 0),
     ];
 
-    for (final game in games) {
+    for (final game in relevantGames) {
       platformFamilyPrices[game.platform.family.index].second +=
           game.fullPrice();
       platformFamilyCount[game.platform.family.index].second++;
@@ -268,50 +321,73 @@ class GameData {
   }
 
   int toGameCount() {
-    return games.length;
+    final relevantGames = _nonWishlistGames;
+
+    return relevantGames.length;
   }
 
   int toDLCCount() {
-    return games.fold(
+    final relevantGames = _nonWishlistGames;
+
+    return relevantGames.fold(
       0,
-      (previousValue, element) => element.dlcs.length + previousValue,
+      (previousValue, element) =>
+          element.dlcs
+              .where((element) => element.status != PlayStatus.onWishList)
+              .length +
+          previousValue,
     );
   }
 
   double toTotalPrice() {
-    return games.fold(
+    final relevantGames = _nonWishlistGames;
+
+    return relevantGames.fold(
       0.0,
-      (previousValue, element) => element.fullPrice() + previousValue,
+      (previousValue, element) =>
+          element.fullPriceNonWishlist() + previousValue,
     );
   }
 
   double toTotalBasePrice() {
-    return games.fold(
+    final relevantGames = _nonWishlistGames;
+
+    return relevantGames.fold(
       0.0,
       (previousValue, element) => element.price + previousValue,
     );
   }
 
   double toTotalDLCPrice() {
-    return games.fold(
+    final relevantGames = _nonWishlistGames;
+
+    return relevantGames.fold(
       0.0,
       (previousValue, element) =>
           element.dlcs.fold(
             0.0,
-            (previousValue, element) => element.price + previousValue,
+            (previousValue, element) =>
+                (element.status != PlayStatus.onWishList
+                    ? element.price
+                    : 0.0) +
+                previousValue,
           ) +
           previousValue,
     );
   }
 
   double toAveragePrice() {
-    if (games.isEmpty) return 0.0;
+    final relevantGames = _nonWishlistGames;
+
+    if (relevantGames.isEmpty) return 0.0;
 
     return toTotalPrice() / toGameCount();
   }
 
   double toMedianPrice() {
-    if (games.isEmpty) return 0.0;
+    final relevantGames = _nonWishlistGames;
+
+    if (relevantGames.isEmpty) return 0.0;
 
     final List<Game> sortedGames = List.from(games);
     sortedGames.sort((a, b) => a.fullPrice().compareTo(b.fullPrice()));
@@ -320,9 +396,15 @@ class GameData {
   }
 
   double toAverageAgeRating() {
-    if (games.isEmpty) return 0.0;
+    final relevantGames = _nonWishlistGames;
+
+    if (relevantGames.isEmpty) return 0.0;
 
     final ageRatings = toAgeRatingData();
+    final totalData = ageRatings.fold(
+      0.0,
+      (previousValue, element) => element.value + previousValue,
+    );
 
     // compute the sum of all age ratings
     final ageRatingSum = ageRatings.fold(
@@ -331,15 +413,21 @@ class GameData {
           element.value * element.secondaryValue! + previousValue,
     );
 
-    return ageRatingSum / games.length;
+    return ageRatingSum / totalData;
   }
 
   double toCompletedPercentage() {
     final completedData = toCompletedData();
+
+    final totalData = completedData.fold(
+      0.0,
+      (previousValue, element) => element.value + previousValue,
+    );
+
     try {
       final completed = completedData
           .firstWhere((element) => element.title == l10n.completed);
-      return completed.value / games.length;
+      return completed.value / totalData;
     } catch (error) {
       // ignore error
     }

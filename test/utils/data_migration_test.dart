@@ -7,6 +7,7 @@ import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/models/game_platforms.dart';
 import 'package:pile_of_shame/models/hardware.dart';
 import 'package:pile_of_shame/models/play_status.dart';
+import 'package:pile_of_shame/models/price_variant.dart';
 import 'package:pile_of_shame/utils/data_migration.dart';
 
 void main() {

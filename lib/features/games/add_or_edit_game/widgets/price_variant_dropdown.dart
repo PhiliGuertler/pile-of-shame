@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:misc_utils/misc_utils.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
-import 'package:pile_of_shame/models/game.dart';
+import 'package:pile_of_shame/models/price_variant.dart';
 
 class PriceVariantIcon extends StatelessWidget {
   final PriceVariant priceVariant;
@@ -11,9 +11,10 @@ class PriceVariantIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ImageContainer(
+      backgroundColor: priceVariant.backgroundColor,
       child: Icon(
-        priceVariant.toIconData(),
-        color: Theme.of(context).colorScheme.onPrimaryContainer,
+        priceVariant.iconData,
+        color: priceVariant.foregroundColor,
       ),
     );
   }

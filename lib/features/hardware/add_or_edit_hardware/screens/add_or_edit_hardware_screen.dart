@@ -8,7 +8,7 @@ import 'package:pile_of_shame/features/games/add_or_edit_game/widgets/price_vari
 import 'package:pile_of_shame/features/hardware/add_or_edit_hardware/models/editable_hardware.dart';
 import 'package:pile_of_shame/features/hardware/add_or_edit_hardware/providers/edit_hardware_provider.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
-import 'package:pile_of_shame/models/game.dart';
+import 'package:pile_of_shame/models/price_variant.dart';
 import 'package:pile_of_shame/utils/constants.dart';
 import 'package:pile_of_shame/widgets/app_scaffold.dart';
 

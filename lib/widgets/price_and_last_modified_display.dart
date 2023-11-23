@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pile_of_shame/models/game.dart';
+import 'package:pile_of_shame/models/price_variant.dart';
 import 'package:pile_of_shame/providers/format_provider.dart';
 import 'package:pile_of_shame/utils/constants.dart';
 
@@ -41,8 +42,8 @@ class PriceAndLastModifiedDisplay extends ConsumerWidget {
           children: [
             if (price < 0.01)
               Icon(
-                priceVariant.toIconData(),
-                color: Theme.of(context).colorScheme.primary,
+                priceVariant.iconData,
+                color: priceVariant.backgroundColor,
               ),
             if (!(price < 0.01)) Text(currencyFormatter.format(price)),
             Text(dateFormatter.format(lastModified)),

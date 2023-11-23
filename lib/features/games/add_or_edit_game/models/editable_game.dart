@@ -3,6 +3,7 @@ import 'package:pile_of_shame/models/age_restriction.dart';
 import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/models/game_platforms.dart';
 import 'package:pile_of_shame/models/play_status.dart';
+import 'package:pile_of_shame/models/price_variant.dart';
 import 'package:uuid/uuid.dart';
 
 part 'editable_game.freezed.dart';

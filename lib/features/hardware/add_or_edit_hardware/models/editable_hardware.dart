@@ -1,7 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/models/game_platforms.dart';
 import 'package:pile_of_shame/models/hardware.dart';
+import 'package:pile_of_shame/models/price_variant.dart';
 import 'package:uuid/uuid.dart';
 
 part 'editable_hardware.freezed.dart';

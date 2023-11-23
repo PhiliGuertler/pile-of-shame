@@ -1,46 +1,11 @@
-import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/age_restriction.dart';
 import 'package:pile_of_shame/models/game_platforms.dart';
 import 'package:pile_of_shame/models/play_status.dart';
+import 'package:pile_of_shame/models/price_variant.dart';
 
 part 'game.freezed.dart';
 part 'game.g.dart';
-
-enum PriceVariant {
-  bought,
-  borrowed,
-  gifted,
-  observing,
-  ;
-
-  String toLocaleString(AppLocalizations l10n) {
-    switch (this) {
-      case PriceVariant.bought:
-        return l10n.bought;
-      case PriceVariant.gifted:
-        return l10n.gifted;
-      case PriceVariant.borrowed:
-        return l10n.borrowed;
-      case PriceVariant.observing:
-        return l10n.observing;
-    }
-  }
-
-  IconData toIconData() {
-    switch (this) {
-      case PriceVariant.bought:
-        return Icons.savings;
-      case PriceVariant.gifted:
-        return Icons.cake;
-      case PriceVariant.borrowed:
-        return Icons.people;
-      case PriceVariant.observing:
-        return Icons.visibility;
-    }
-  }
-}
 
 @freezed
 class DLC with _$DLC {
@@ -85,6 +50,16 @@ class Game with _$Game {
     double result = price;
     for (final dlc in dlcs) {
       result += dlc.price;
+    }
+    return result;
+  }
+
+  double fullPriceNonWishlist() {
+    double result = price;
+    for (final dlc in dlcs) {
+      if (dlc.status != PlayStatus.onWishList) {
+        result += dlc.price;
+      }
     }
     return result;
   }

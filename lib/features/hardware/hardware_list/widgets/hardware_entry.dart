@@ -43,8 +43,8 @@ class _HardwareEntryState extends ConsumerState<HardwareEntry> {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Icon(
-                  widget.hardware.priceVariant.toIconData(),
-                  color: Theme.of(context).colorScheme.primary,
+                  widget.hardware.priceVariant.iconData,
+                  color: widget.hardware.priceVariant.backgroundColor,
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 8.0),
