@@ -55,6 +55,24 @@ int _countGamesForPlatformFamily(
   );
 }
 
+int _countGamesForPlatformFamilyNonWishlisted(
+  List<Game> games,
+  List<GamePlatformFamily> families,
+) {
+  return games.where((game) => game.status != PlayStatus.onWishList).fold<int>(
+        0,
+        (previousValue, element) =>
+            (families.contains(element.platform.family) ? 1 : 0) +
+            previousValue,
+      );
+}
+
+int _countGamesNonWishlisted(
+  List<Game> games,
+) {
+  return games.where((game) => game.status != PlayStatus.onWishList).length;
+}
+
 class LibraryScreen extends ConsumerWidget {
   final ScrollController scrollController;
 
@@ -215,26 +233,57 @@ class LibraryScreen extends ConsumerWidget {
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 16.0),
-                child: ParallaxImageCard(
-                  key: const ValueKey("library_analytics"),
-                  imagePath: ImageAssets.library.value,
-                  title: AppLocalizations.of(context)!.gameLibrary,
-                  subtitle: l10n.nGames(games.length),
-                  openBuilderOnTap: (context, openContainer) =>
-                      const AnalyticsByFamiliesScreen(),
+                child: Builder(
+                  builder: (context) {
+                    final int gameCount = games.length;
+                    final int nonWishlistedGames =
+                        _countGamesNonWishlisted(games);
+
+                    String wishlistString = "";
+                    if (nonWishlistedGames < gameCount) {
+                      wishlistString =
+                          ", ${gameCount - nonWishlistedGames} ${PlayStatus.onWishList.toLocaleString(l10n)}";
+                    }
+
+                    return ParallaxImageCard(
+                      key: const ValueKey("library_analytics"),
+                      imagePath: ImageAssets.library.value,
+                      title: AppLocalizations.of(context)!.gameLibrary,
+                      subtitle:
+                          "${l10n.nGames(nonWishlistedGames)}$wishlistString",
+                      openBuilderOnTap: (context, openContainer) =>
+                          const AnalyticsByFamiliesScreen(),
+                    );
+                  },
                 ),
               ),
               for (final family in families)
                 Padding(
                   padding: const EdgeInsets.only(top: 16.0),
-                  child: ParallaxImageCard(
-                    imagePath: family.image.value,
-                    title: family.toLocale(AppLocalizations.of(context)!),
-                    subtitle: l10n.nGames(
-                      _countGamesForPlatformFamily(games, [family]),
-                    ),
-                    openBuilderOnTap: (context, openContainer) =>
-                        AnalyticsByFamiliesScreen(family: family),
+                  child: Builder(
+                    builder: (context) {
+                      final int gameCount =
+                          _countGamesForPlatformFamily(games, [family]);
+                      final int nonWishlistedGames =
+                          _countGamesForPlatformFamilyNonWishlisted(games, [
+                        family,
+                      ]);
+
+                      String wishlistString = "";
+                      if (nonWishlistedGames < gameCount) {
+                        wishlistString =
+                            ", ${gameCount - nonWishlistedGames} ${PlayStatus.onWishList.toLocaleString(l10n)}";
+                      }
+
+                      return ParallaxImageCard(
+                        imagePath: family.image.value,
+                        title: family.toLocale(AppLocalizations.of(context)!),
+                        subtitle:
+                            "${l10n.nGames(nonWishlistedGames)}$wishlistString",
+                        openBuilderOnTap: (context, openContainer) =>
+                            AnalyticsByFamiliesScreen(family: family),
+                      );
+                    },
                   ),
                 ),
               const SizedBox(

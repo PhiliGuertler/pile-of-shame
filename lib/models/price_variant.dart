@@ -4,22 +4,22 @@ import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 enum PriceVariant {
   bought(
     iconData: Icons.shopping_cart,
-    backgroundColor: Color.fromRGBO(67, 160, 71, 1),
+    backgroundColor: Color.fromRGBO(148, 228, 152, 1),
     foregroundColor: Colors.black,
   ),
   borrowed(
     iconData: Icons.people,
-    backgroundColor: Color.fromRGBO(251, 140, 0, 1),
+    backgroundColor: Color.fromRGBO(223, 184, 136, 1),
     foregroundColor: Colors.black,
   ),
   gifted(
     iconData: Icons.cake,
-    backgroundColor: Color.fromRGBO(0, 172, 193, 1),
+    backgroundColor: Color.fromRGBO(142, 231, 243, 1),
     foregroundColor: Colors.black,
   ),
   observing(
     iconData: Icons.visibility,
-    backgroundColor: Color.fromRGBO(142, 36, 170, 1),
+    backgroundColor: Color.fromRGBO(222, 166, 238, 1),
     foregroundColor: Colors.black,
   ),
   ;
