@@ -32,7 +32,9 @@ jobs:
     runs-on: ubuntu-latest
     environment: Android
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
       - name: Set env
         run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
         # Setup environment
@@ -48,11 +50,27 @@ jobs:
           channel: 'stable'
           cache: true
         # Fetch dependencies and generate code
-      - name: Flutter - fetch dependencies
+        ## packages
+        ### theming
+      - name: theming - fetch dependencies
+        working-directory: ./packages/theming
         run: flutter pub get
-      - name: Flutter - generate Localizations
+      - name: theming - generate code using build_runner
+        working-directory: ./packages/theming
+        run: dart run build_runner build
+        ### misc_utils
+      - name: misc_utils - fetch dependencies
+        working-directory: ./packages/misc_utils
+        run: flutter pub get
+      - name: misc_utils - generate code using build_runner
+        working-directory: ./packages/misc_utils
+        run: dart run build_runner build
+        ## pile_of_shame
+      - name: pile_of_shame - fetch dependencies
+        run: flutter pub get
+      - name: pile_of_shame - generate Localizations
         run: flutter gen-l10n
-      - name: Flutter - generate code using build_runner
+      - name: pile_of_shame - generate code using build_runner
         run: dart run build_runner build
         # Prepare for build signing
       - name: Android App-Signing - prepare secrets directory
@@ -76,7 +94,9 @@ jobs:
     runs-on: ubuntu-latest
     environment: Android
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
       - name: Set env
         run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
         # Setup environment
@@ -92,11 +112,27 @@ jobs:
           channel: 'stable'
           cache: true
         # Fetch dependencies and generate code
-      - name: Flutter - fetch dependencies
+        ## packages
+        ### theming
+      - name: theming - fetch dependencies
+        working-directory: ./packages/theming
         run: flutter pub get
-      - name: Flutter - generate Localizations
+      - name: theming - generate code using build_runner
+        working-directory: ./packages/theming
+        run: dart run build_runner build
+        ### misc_utils
+      - name: misc_utils - fetch dependencies
+        working-directory: ./packages/misc_utils
+        run: flutter pub get
+      - name: misc_utils - generate code using build_runner
+        working-directory: ./packages/misc_utils
+        run: dart run build_runner build
+        ## pile_of_shame
+      - name: pile_of_shame - fetch dependencies
+        run: flutter pub get
+      - name: pile_of_shame - generate Localizations
         run: flutter gen-l10n
-      - name: Flutter - generate code using build_runner
+      - name: pile_of_shame - generate code using build_runner
         run: dart run build_runner build
         # Prepare for build signing
       - name: Android App-Signing - prepare secrets directory
