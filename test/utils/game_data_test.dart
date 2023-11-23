@@ -440,10 +440,11 @@ void main() {
       final result = data.toDLCCount();
       expect(result, 0);
     });
-    test("returns the game count as expected", () {
+    test("returns the game count as expected while ignoring wishlisted DLCs",
+        () {
       final GameData data = GameData(
         games: [
-          TestGames.gameDarkSouls, // 1 DLC
+          TestGames.gameDarkSouls, // 1 DLC, wishlisted
           TestGames.gameOuterWilds, // 1 DLC
           TestGames.gameWitcher3, // 2 DLCs
           TestGames.gameDistance, // 0
@@ -456,7 +457,7 @@ void main() {
 
       final result = data.toDLCCount();
 
-      expect(result, 4);
+      expect(result, 3);
     });
   });
   group("toTotalPrice", () {
@@ -467,10 +468,12 @@ void main() {
       final result = data.toTotalPrice();
       expect(result, 0);
     });
-    test("returns the sum of total prices as expected", () {
+    test(
+        "returns the sum of total prices as expected while ignoring wishlisted dlcs and games",
+        () {
       final GameData data = GameData(
         games: [
-          TestGames.gameDarkSouls, // 39.99+9.99 = 49.98
+          TestGames.gameDarkSouls, // 39.99 (+9.99 wishlisted) = 39.99
           TestGames.gameOuterWilds, // 24.99+19.99 = 44.98
           TestGames.gameWitcher3, // 59.99+19.99+9.99 = 89.97
           TestGames.gameDistance, // 19.99
@@ -486,7 +489,6 @@ void main() {
       expect(
         (result -
                     (39.99 +
-                        9.99 +
                         24.99 +
                         19.99 +
                         59.99 +
@@ -539,10 +541,12 @@ void main() {
       final result = data.toTotalDLCPrice();
       expect(result, 0);
     });
-    test("returns the sum of total prices as expected", () {
+    test(
+        "returns the sum of total prices as expected while ignoring wishlisted DLCs",
+        () {
       final GameData data = GameData(
         games: [
-          TestGames.gameDarkSouls, // 9.99
+          TestGames.gameDarkSouls, // 9.99, wishlisted
           TestGames.gameOuterWilds, // 19.99
           TestGames.gameWitcher3, // 19.99 + 9.99
           TestGames.gameDistance, // 0
@@ -556,7 +560,7 @@ void main() {
       final result = data.toTotalDLCPrice();
 
       expect(
-        (result - (9.99 + 19.99 + 19.99 + 9.99)).abs() < 0.001,
+        (result - (19.99 + 19.99 + 9.99)).abs() < 0.001,
         true,
       );
     });
@@ -569,10 +573,12 @@ void main() {
       final result = data.toAveragePrice();
       expect(result, 0);
     });
-    test("returns the average of the total prices as expected", () {
+    test(
+        "returns the average of the total prices as expected while ignoring wishlisted DLCs",
+        () {
       final GameData data = GameData(
         games: [
-          TestGames.gameDarkSouls, // 39.99+9.99 = 49.98
+          TestGames.gameDarkSouls, // 39.99 (+9.99 wishlisted) = 39.99
           TestGames.gameOuterWilds, // 24.99+19.99 = 44.98
           TestGames.gameWitcher3, // 59.99+19.99+9.99 = 89.97
           TestGames.gameDistance, // 19.99
@@ -588,7 +594,6 @@ void main() {
       expect(
         (result -
                     (39.99 +
-                            9.99 +
                             24.99 +
                             19.99 +
                             59.99 +
