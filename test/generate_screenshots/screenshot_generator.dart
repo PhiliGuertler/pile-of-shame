@@ -52,6 +52,16 @@ void main() {
     container = ProviderContainer(
       overrides: [
         fileUtilsProvider.overrideWithValue(mockFileUtils),
+        gamesProvider.overrideWith(
+          (provider) => [
+            TestGames.gameDarkSouls,
+            TestGames.gameDistance,
+            TestGames.gameOriAndTheBlindForest,
+            TestGames.gameOuterWilds,
+            TestGames.gameSsx3,
+            TestGames.gameWitcher3,
+          ],
+        ),
         gameByIdProvider('witcher-3')
             .overrideWith((provider) => TestGames.gameWitcher3),
         gamesGroupedProvider.overrideWith(
@@ -116,12 +126,6 @@ void main() {
             ),
           ],
         ),
-        hardwareTotalPriceByPlatformProvider(TestGames.gameDarkSouls.platform)
-            .overrideWith((provider) => 499.95),
-        hardwareTotalPriceByPlatformProvider(TestGames.gameDistance.platform)
-            .overrideWith((provider) => 419.95),
-        hardwareTotalPriceByPlatformProvider(TestGames.gameSsx3.platform)
-            .overrideWith((provider) => 0),
         gamePlatformFamiliesWithSavedGamesProvider.overrideWith(
           (ref) => GamePlatformFamily.values,
         ),
@@ -303,9 +307,17 @@ void main() {
             screen: const RootPage(),
             interactBeforeScreenshot: (tester) async {
               await ScreenshotUtils.pumpIt(tester);
+              expect(
+                find.byKey(const ValueKey("root_library")),
+                findsOneWidget,
+              );
               await tester.tap(find.byKey(const ValueKey("root_library")));
               await ScreenshotUtils.pumpIt(tester);
 
+              expect(
+                find.byKey(const ValueKey("library_pile_of_shame")),
+                findsOneWidget,
+              );
               await tester.scrollUntilVisible(
                 find.byKey(const ValueKey("library_pile_of_shame")),
                 200.0,

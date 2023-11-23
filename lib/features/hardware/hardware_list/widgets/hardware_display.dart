@@ -6,6 +6,7 @@ import 'package:pile_of_shame/features/hardware/hardware_list/widgets/hardware_e
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/game_platforms.dart';
 import 'package:pile_of_shame/models/hardware.dart';
+import 'package:pile_of_shame/models/price_variant.dart';
 import 'package:pile_of_shame/providers/format_provider.dart';
 import 'package:pile_of_shame/providers/hardware/hardware_provider.dart';
 import 'package:pile_of_shame/widgets/skeletons/skeleton_list_tile.dart';
@@ -48,8 +49,6 @@ class _HardwareDisplayState extends ConsumerState<HardwareDisplay>
 
     final AsyncValue<List<VideoGameHardware>> asyncHardware =
         ref.watch(sortedHardwareByPlatformProvider(widget.platform));
-    final AsyncValue<double?> asyncPriceSum =
-        ref.watch(hardwareTotalPriceByPlatformProvider(widget.platform));
 
     return SlideExpandable(
       imagePath: widget.platform.controller.value,
@@ -59,16 +58,33 @@ class _HardwareDisplayState extends ConsumerState<HardwareDisplay>
       subtitle: Text(
         widget.platform.localizedName(l10n),
       ),
-      trailing: asyncPriceSum.when(
+      trailing: asyncHardware.when(
         skipLoadingOnReload: true,
-        data: (sum) => sum != null
-            ? Text(
-                currencyFormatter.format(sum),
-              )
-            : Icon(
-                Icons.cake,
-                color: Theme.of(context).colorScheme.primary,
-              ),
+        data: (hardware) {
+          // compute the sum of hardware prices
+          final sum = hardware.fold(
+            0.0,
+            (previousValue, element) => element.price + previousValue,
+          );
+          if (sum < 0.01) {
+            final Set<PriceVariant> priceVariants = {};
+
+            for (final ware in hardware) {
+              priceVariants.add(ware.priceVariant);
+            }
+
+            if (priceVariants.length == 1) {
+              final variant = priceVariants.toList()[0];
+              return Icon(
+                variant.iconData,
+                color: variant.backgroundColor,
+              );
+            }
+          }
+          return Text(
+            currencyFormatter.format(sum),
+          );
+        },
         error: (error, stackTrace) => Text(error.toString()),
         loading: () => const Skeleton(),
       ),

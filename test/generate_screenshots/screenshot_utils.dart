@@ -30,6 +30,8 @@ class ScreenshotUtils {
   ScreenshotUtils._();
 
   static Future<void> pumpIt(WidgetTester tester) async {
+    // HACK: Seems like a riverpod issue prevents us from running pumpAndSettle without timeouts
+    // await tester.pumpAndSettle();
     for (int i = 0; i < 50; ++i) {
       await tester.pump(const Duration(seconds: 1));
     }
