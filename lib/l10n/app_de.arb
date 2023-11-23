@@ -9,6 +9,7 @@
   "all": "Alle",
   "allGamesDeleted": "Alle Spiele gelöscht",
   "analytics": "Analysen",
+  "analyticsExcludeWishlistedGames": "Die folgenden Analysen behandeln ausschließlich Spiele, die nicht auf Deiner Wunschliste sind, wenn kein Sternchen im Titel der Grafik steht.",
   "analyticsGames": "Spieleanalyse",
   "appName": "Pile of shame",
   "appSettings": "App-Einstellungen",

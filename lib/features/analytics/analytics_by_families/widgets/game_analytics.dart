@@ -6,6 +6,7 @@ import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/assets.dart';
 import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/providers/format_provider.dart';
+import 'package:pile_of_shame/utils/constants.dart';
 import 'package:pile_of_shame/utils/game_data.dart';
 import 'package:pile_of_shame/widgets/charts/default_comparison_chart.dart';
 import 'package:pile_of_shame/widgets/charts/highlightable_charts.dart';
@@ -52,6 +53,15 @@ class GameAnalytics extends ConsumerWidget {
       subtitle: Container(),
       trailing: Container(),
       children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: defaultPaddingX,
+            vertical: 8.0,
+          ),
+          child: Text(
+            l10n.analyticsExcludeWishlistedGames,
+          ),
+        ),
         if (gameData.hasNonWishlistedGames)
           ListTile(
             contentPadding: chartPadding,
@@ -131,7 +141,7 @@ class GameAnalytics extends ConsumerWidget {
         ListTile(
           contentPadding: chartPadding,
           title: Text(
-            l10n.priceVariant,
+            "${l10n.priceVariant}*",
             style: textTheme.titleLarge,
           ),
           subtitle: Padding(
@@ -147,7 +157,7 @@ class GameAnalytics extends ConsumerWidget {
         ListTile(
           contentPadding: chartPadding,
           title: Text(
-            l10n.status,
+            "${l10n.status}*",
             style: textTheme.titleLarge,
           ),
           subtitle: Padding(

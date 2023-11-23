@@ -45,6 +45,7 @@
   "all": "all",
   "allGamesDeleted": "All games deleted",
   "analytics": "Analytics",
+  "analyticsExcludeWishlistedGames": "The following analytics deal exclusively with games that are not on your wish list if there is no asterisk in the title of the graphic.",
   "analyticsGames": "Game analytics",
   "appName": "Pile of shame",
   "appSettings": "App-Settings",
