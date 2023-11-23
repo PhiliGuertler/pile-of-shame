@@ -1,3 +1,4 @@
+import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/models/game_platforms.dart';
 import 'package:pile_of_shame/models/hardware.dart';
 
@@ -20,7 +21,7 @@ class TestHardware {
     platform: GamePlatform.playStation5,
     lastModified: DateTime(2023),
     createdAt: DateTime(2023),
-    wasGifted: true,
+    priceVariant: PriceVariant.gifted,
     notes: "This console was gifted to me!",
   );
   static final controllerRed = VideoGameHardware(

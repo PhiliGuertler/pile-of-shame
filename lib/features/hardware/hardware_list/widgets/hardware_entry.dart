@@ -38,18 +38,18 @@ class _HardwareEntryState extends ConsumerState<HardwareEntry> {
         ),
       ),
       title: Text(widget.hardware.name),
-      subtitle: widget.hardware.wasGifted
+      subtitle: widget.hardware.price < 0.01
           ? Row(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Icon(
-                  Icons.cake,
+                  widget.hardware.priceVariant.toIconData(),
                   color: Theme.of(context).colorScheme.primary,
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 8.0),
                   child: Text(
-                    l10n.gift,
+                    widget.hardware.priceVariant.toLocaleString(l10n),
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                 ),

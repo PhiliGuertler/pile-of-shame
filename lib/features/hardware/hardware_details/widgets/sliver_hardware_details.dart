@@ -34,18 +34,16 @@ class SliverHardwareDetails extends ConsumerWidget {
           subtitle: Text(hardware.name),
         ),
         ListTile(
-          leading: hardware.wasGifted
-              ? ImageContainer(
-                  child: Icon(
-                    Icons.cake_sharp,
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
-                )
-              : null,
+          leading: ImageContainer(
+            child: Icon(
+              hardware.priceVariant.toIconData(),
+              color: Theme.of(context).colorScheme.primary,
+            ),
+          ),
           title: Text(l10n.price),
           subtitle: Text(
-            hardware.wasGifted && hardware.price < 0.01
-                ? l10n.gift
+            hardware.price < 0.01
+                ? hardware.priceVariant.toLocaleString(l10n)
                 : currencyFormatter.format(hardware.price),
           ),
         ),

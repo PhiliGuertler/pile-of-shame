@@ -325,6 +325,56 @@ void main() {
     });
   });
 
+  group("VideoGameHardwarev1 -> VideoGameHardwarev2", () {
+    test("correctly migrates gifted VideoGameHardwarev1 -> VideoGameHardwarev2",
+        () {
+      final VideoGameHardwarev1 hardwarev1 = VideoGameHardwarev1(
+        id: "123456",
+        lastModified: DateTime(2023, 4, 20),
+        createdAt: DateTime(2023, 4, 19),
+        name: "Ye olden Hardware",
+        notes: "Some kind of Note",
+        wasGifted: true,
+        platform: GamePlatform.atariJaguar,
+        price: 0,
+      );
+
+      final VideoGameHardwarev2 migrated =
+          DatabaseMigrator.migrateHardwarev1(hardwarev1);
+      expect(migrated.id, "123456");
+      expect(migrated.createdAt, DateTime(2023, 4, 19));
+      expect(migrated.lastModified, DateTime(2023, 4, 20));
+      expect(migrated.name, "Ye olden Hardware");
+      expect(migrated.notes, "Some kind of Note");
+      expect(migrated.price, 0);
+      expect(migrated.priceVariant, PriceVariant.gifted);
+      expect(migrated.platform, GamePlatform.atariJaguar);
+    });
+    test("correctly migrates bought Gamev2 -> Gamev3", () {
+      final VideoGameHardwarev1 hardwarev1 = VideoGameHardwarev1(
+        id: "123456",
+        lastModified: DateTime(2023, 4, 20),
+        createdAt: DateTime(2023, 4, 19),
+        name: "Ye olden Hardware",
+        notes: "Some kind of Note",
+        wasGifted: false,
+        platform: GamePlatform.atariJaguar,
+        price: 0,
+      );
+
+      final VideoGameHardwarev2 migrated =
+          DatabaseMigrator.migrateHardwarev1(hardwarev1);
+      expect(migrated.id, "123456");
+      expect(migrated.createdAt, DateTime(2023, 4, 19));
+      expect(migrated.lastModified, DateTime(2023, 4, 20));
+      expect(migrated.name, "Ye olden Hardware");
+      expect(migrated.notes, "Some kind of Note");
+      expect(migrated.price, 0);
+      expect(migrated.priceVariant, PriceVariant.bought);
+      expect(migrated.platform, GamePlatform.atariJaguar);
+    });
+  });
+
   group("loadAndMigrateGamesFromJson", () {
     final DLCv1 dlcv1 = DLCv1(
       id: "123456",
@@ -433,12 +483,23 @@ void main() {
       ],
     );
 
-    final VideoGameHardware hardware = VideoGameHardware(
+    final VideoGameHardwarev1 hardware = VideoGameHardwarev1(
       id: "hardiwary",
       name: "Some Hardware",
       platform: GamePlatform.gameBoyAdvance,
       lastModified: DateTime(2023, 4, 10),
       createdAt: DateTime(2023, 4, 10),
+      notes: null,
+      price: 0,
+      wasGifted: true,
+    );
+    final VideoGameHardware migratedHardware = VideoGameHardware(
+      id: "hardiwary",
+      name: "Some Hardware",
+      platform: GamePlatform.gameBoyAdvance,
+      lastModified: DateTime(2023, 4, 10),
+      createdAt: DateTime(2023, 4, 10),
+      priceVariant: PriceVariant.gifted,
     );
 
     test("throws on malformed json", () {
@@ -491,7 +552,7 @@ void main() {
         result,
         Database(
           games: [migratedGame2],
-          hardware: [hardware],
+          hardware: [migratedHardware],
         ),
       );
     });

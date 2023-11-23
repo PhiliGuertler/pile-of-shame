@@ -167,7 +167,7 @@ class Gamev3 with _$Gamev3 {
 
 // ### VideoGameHardware #################################################### //
 
-/// Current VideoGameHardware (from App-Version 0.9.2)
+/// VideoGameHardware with wasGifted instead of priceVariant (before App-Version 1.3.0)
 @freezed
 class VideoGameHardwarev1 with _$VideoGameHardwarev1 {
   const factory VideoGameHardwarev1({
@@ -184,6 +184,25 @@ class VideoGameHardwarev1 with _$VideoGameHardwarev1 {
 
   factory VideoGameHardwarev1.fromJson(Map<String, dynamic> json) =>
       _$VideoGameHardwarev1FromJson(json);
+}
+
+/// Current VideoGameHardware (from App-Version 1.3.0)
+@freezed
+class VideoGameHardwarev2 with _$VideoGameHardwarev2 {
+  const factory VideoGameHardwarev2({
+    required String id,
+    required String name,
+    required GamePlatform platform,
+    required double price,
+    required DateTime lastModified,
+    required DateTime createdAt,
+    required String? notes,
+    required PriceVariant priceVariant,
+  }) = _VideoGameHardwarev2;
+  const VideoGameHardwarev2._();
+
+  factory VideoGameHardwarev2.fromJson(Map<String, dynamic> json) =>
+      _$VideoGameHardwarev2FromJson(json);
 
   VideoGameHardware toHardware() {
     return VideoGameHardware(
@@ -194,7 +213,7 @@ class VideoGameHardwarev1 with _$VideoGameHardwarev1 {
       lastModified: lastModified,
       createdAt: createdAt,
       notes: notes,
-      wasGifted: wasGifted,
+      priceVariant: priceVariant,
     );
   }
 }
@@ -244,7 +263,7 @@ class Databasev1 with _$Databasev1 {
 class Databasev2 with _$Databasev2 {
   const factory Databasev2({
     required List<Gamev3> games,
-    required List<VideoGameHardwarev1> hardware,
+    required List<VideoGameHardwarev2> hardware,
   }) = _Databasev2;
   const Databasev2._();
 
@@ -326,6 +345,20 @@ class DatabaseMigrator {
     );
   }
 
+  static VideoGameHardwarev2 migrateHardwarev1(VideoGameHardwarev1 hardware) {
+    return VideoGameHardwarev2(
+      priceVariant:
+          hardware.wasGifted ? PriceVariant.gifted : PriceVariant.bought,
+      createdAt: hardware.createdAt,
+      id: hardware.id,
+      lastModified: hardware.lastModified,
+      name: hardware.name,
+      notes: hardware.notes,
+      platform: hardware.platform,
+      price: hardware.price,
+    );
+  }
+
   static GamesListv2 migrateGamesListV1(GamesListv1 gamesList) {
     return GamesListv2(
       games: gamesList.games.map((e) => migrateGamev1(e)).toList(),
@@ -342,7 +375,7 @@ class DatabaseMigrator {
   static Databasev2 migrateDatabaseV1(Databasev1 database) {
     return Databasev2(
       games: database.games.map((e) => migrateGamev2(e)).toList(),
-      hardware: database.hardware,
+      hardware: database.hardware.map((e) => migrateHardwarev1(e)).toList(),
     );
   }
 
