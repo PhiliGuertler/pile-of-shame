@@ -1,9 +1,11 @@
 import 'package:intl/intl.dart';
 import 'package:misc_utils/misc_utils.dart';
+import 'package:pile_of_shame/features/games/add_or_edit_game/widgets/price_variant_dropdown.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/models/chart_data.dart';
 import 'package:pile_of_shame/models/game_platforms.dart';
 import 'package:pile_of_shame/models/hardware.dart';
+import 'package:pile_of_shame/models/price_variant.dart';
 
 class HardwareData {
   final List<VideoGameHardware> hardware;
@@ -78,6 +80,37 @@ class HardwareData {
     result.sort(
       (a, b) => b.value.compareTo(a.value),
     );
+
+    return result;
+  }
+
+  List<ChartData> toPriceVariantData() {
+    final List<Pair<PriceVariant, int>> priceVariantCount = [
+      for (var i = 0; i < PriceVariant.values.length; ++i)
+        Pair(PriceVariant.values[i], 0),
+    ];
+
+    for (final ware in hardware) {
+      priceVariantCount[ware.priceVariant.index].second++;
+    }
+
+    final List<ChartData> result = [];
+    for (var i = 0; i < PriceVariant.values.length; ++i) {
+      final priceVariant = priceVariantCount[i].first;
+      final count = priceVariantCount[i].second;
+      result.add(
+        ChartData(
+          title: priceVariant.toLocaleString(l10n),
+          value: count.toDouble(),
+          color: priceVariant.backgroundColor,
+          alternativeTitle: PriceVariantIcon(
+            priceVariant: priceVariant,
+          ),
+        ),
+      );
+    }
+
+    result.removeWhere((element) => element.value < 0.01);
 
     return result;
   }

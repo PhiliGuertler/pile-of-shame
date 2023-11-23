@@ -66,6 +66,22 @@ class HardwareAnalytics extends ConsumerWidget {
         ListTile(
           contentPadding: chartPadding,
           title: Text(
+            l10n.priceVariant,
+            style: textTheme.titleLarge,
+          ),
+          subtitle: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 16.0),
+            child: HighlightablePieChart(
+              data: hardwareData.toPriceVariantData(),
+              formatData: (data) => l10n.nHardware(data.toInt()),
+              formatTotalData: (totalData) => "",
+              animationDelay: 250.ms,
+            ),
+          ),
+        ),
+        ListTile(
+          contentPadding: chartPadding,
+          title: Text(
             l10n.priceDistribution,
             style: textTheme.titleLarge,
           ),
