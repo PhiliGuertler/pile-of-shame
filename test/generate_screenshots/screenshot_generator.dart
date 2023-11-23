@@ -116,12 +116,6 @@ void main() {
             ),
           ],
         ),
-        hardwareTotalPriceByPlatformProvider(TestGames.gameDarkSouls.platform)
-            .overrideWith((provider) => 499.95),
-        hardwareTotalPriceByPlatformProvider(TestGames.gameDistance.platform)
-            .overrideWith((provider) => 419.95),
-        hardwareTotalPriceByPlatformProvider(TestGames.gameSsx3.platform)
-            .overrideWith((provider) => 0),
         gamePlatformFamiliesWithSavedGamesProvider.overrideWith(
           (ref) => GamePlatformFamily.values,
         ),

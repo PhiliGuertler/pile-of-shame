@@ -1,6 +1,5 @@
 import 'package:pile_of_shame/models/game_platforms.dart';
 import 'package:pile_of_shame/models/hardware.dart';
-import 'package:pile_of_shame/models/price_variant.dart';
 import 'package:pile_of_shame/providers/database/database_provider.dart';
 import 'package:pile_of_shame/providers/hardware/hardware_sorter_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -92,27 +91,6 @@ FutureOr<VideoGameHardware> hardwareById(
   } catch (error) {
     throw Exception("No hardware with id '$id' found");
   }
-}
-
-@riverpod
-FutureOr<double?> hardwareTotalPriceByPlatform(
-  HardwareTotalPriceByPlatformRef ref,
-  GamePlatform platform,
-) async {
-  final hardware = await ref.watch(hardwareByPlatformProvider(platform).future);
-
-  final isAllGifted = hardware.fold<bool>(
-    true,
-    (previousValue, element) =>
-        (element.priceVariant == PriceVariant.gifted) && previousValue,
-  );
-
-  return isAllGifted
-      ? null
-      : hardware.fold<double>(
-          0.0,
-          (previousValue, element) => element.price + previousValue,
-        );
 }
 
 @riverpod
