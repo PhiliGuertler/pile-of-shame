@@ -2,9 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pile_of_shame/initializer.dart';
 import 'package:pile_of_shame/receive_share_app.dart';
+import 'package:theming/theming.dart';
 
 void main() async {
-  final providerContainer = ProviderContainer();
+  final providerContainer = ProviderContainer(
+    overrides: [
+      defaultAppColorProvider.overrideWithValue(const Color(0xFF3B0000)),
+    ],
+  );
 
   final Initializer initializer = Initializer();
   initializer.setupInitialization();
