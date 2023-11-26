@@ -10,11 +10,7 @@ class AppearanceColorPickerDialog extends StatelessWidget {
     return AlertDialog(
       title: Text(AppLocalizations.of(context)!.chooseAColor),
       content: const SingleChildScrollView(
-        child: AppearanceColorPicker(
-          additionalColors: [
-            Color(0xFF3B0000),
-          ],
-        ),
+        child: AppearanceColorPicker(),
       ),
       actions: [
         TextButton(
