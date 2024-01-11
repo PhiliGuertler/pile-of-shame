@@ -22,7 +22,11 @@ enum PriceVariant {
     backgroundColor: Color.fromRGBO(222, 166, 238, 1),
     foregroundColor: Colors.black,
   ),
-  ;
+  freeToPlay(
+    iconData: Icons.play_circle,
+    backgroundColor: Color.fromRGBO(238, 172, 205, 1),
+    foregroundColor: Colors.black,
+  );
 
   final Color foregroundColor;
   final Color backgroundColor;
@@ -44,6 +48,8 @@ enum PriceVariant {
         return l10n.borrowed;
       case PriceVariant.observing:
         return l10n.observing;
+      case PriceVariant.freeToPlay:
+        return l10n.freeToPlay;
     }
   }
 }
