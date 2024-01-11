@@ -231,7 +231,9 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
                     duration: const Duration(milliseconds: 200),
                     child: Builder(
                       builder: (context) {
-                        if (editableGame.priceVariant == PriceVariant.gifted) {
+                        if (editableGame.priceVariant == PriceVariant.gifted ||
+                            editableGame.priceVariant ==
+                                PriceVariant.freeToPlay) {
                           return const SizedBox(
                             height: 0,
                           );
