@@ -1,0 +1,13 @@
+Versão 1.4
+
+Esta versão introduz novas línguas (geradas com inteligência artificial).
+Foram também corrigidas algumas incoerências.
+Novas línguas:
+- Espanhol
+- francês, alemão
+- português
+- Russo
+- Japonês
+- Coreano
+
+Diverte-te com o Pile of Shame!
