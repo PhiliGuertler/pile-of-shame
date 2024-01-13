@@ -13,6 +13,9 @@ os.chdir(script_directory)
 # now jump to the root directory of the repository
 os.chdir('../ios/')
 
+# This script cleans up the iOS project.
+# Use it if iOS randomly stops building correctly.
+
 print('Removing Podfile.lock')
 subprocess.run(['rm', '-f', './Podfile.lock'], check=True)
 print('Removing pod repo trunk')

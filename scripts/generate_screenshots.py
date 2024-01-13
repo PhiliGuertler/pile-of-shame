@@ -14,8 +14,13 @@ os.chdir(script_directory)
 # now jump to the root directory of the repository
 os.chdir('..')
 
+# Windows requires the shell=True option on subprocesses that use the 'flutter' or 'dart' commands with arguments.
+requireShellFlag = os.name == 'nt'
+
+# This script generates screenshots for the google play store entry using widget tests and the golden_toolkit.
+
 # generate screenshots
-subprocess.run(['flutter', 'test', 'test/generate_screenshots/screenshot_generator.dart', '--update-goldens'], check=True, shell=True)
+subprocess.run(['flutter', 'test', 'test/generate_screenshots/screenshot_generator.dart', '--update-goldens'], check=True, shell=requireShellFlag)
 
 locales = ['de-DE', 'en-US']
 sizes = [['android', 'phoneScreenshots'], ['android7inch', 'sevenInchScreenshots'], ['android10inch', 'tenInchScreenshots']]
