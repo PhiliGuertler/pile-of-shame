@@ -45,8 +45,17 @@ class PriceAndLastModifiedDisplay extends ConsumerWidget {
                 priceVariant.iconData,
                 color: priceVariant.backgroundColor,
               ),
-            if (!(price < 0.01)) Text(currencyFormatter.format(price)),
-            Text(dateFormatter.format(lastModified)),
+            if (!(price < 0.01))
+              Text(
+                currencyFormatter.format(price),
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+              ),
+            Text(
+              dateFormatter.format(lastModified),
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+            ),
           ],
         ),
       ),

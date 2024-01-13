@@ -26,6 +26,8 @@ class PlayStatusDisplay extends StatelessWidget {
         child: Center(
           child: Text(
             playStatus.toLocaleString(AppLocalizations.of(context)!),
+            overflow: TextOverflow.ellipsis,
+            maxLines: 1,
             style: TextStyle(
               color: playStatus.foregroundColor,
             ),

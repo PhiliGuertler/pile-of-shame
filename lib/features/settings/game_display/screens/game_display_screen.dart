@@ -298,6 +298,8 @@ class _GameDisplayScreenState extends ConsumerState<GameDisplayScreen> {
                                   exampleGame.platform.localizedName(
                                     AppLocalizations.of(context)!,
                                   ),
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
                                 ),
                               ),
                             ),
@@ -313,6 +315,8 @@ class _GameDisplayScreenState extends ConsumerState<GameDisplayScreen> {
                                 child: Text(
                                   currencyFormatter
                                       .format(exampleGame.fullPrice()),
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
                                 ),
                               ),
                             ),
@@ -342,6 +346,8 @@ class _GameDisplayScreenState extends ConsumerState<GameDisplayScreen> {
                                     ),
                                     Text(
                                       AppLocalizations.of(context)!.delete,
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 1,
                                       style: TextStyle(
                                         color: Theme.of(context)
                                             .colorScheme

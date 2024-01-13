@@ -28,7 +28,11 @@ class LastModifiedDisplay extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.end,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(dateFormatter.format(lastModified)),
+            Text(
+              dateFormatter.format(lastModified),
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+            ),
           ],
         ),
       ),

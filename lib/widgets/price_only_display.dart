@@ -40,7 +40,12 @@ class PriceOnlyDisplay extends ConsumerWidget {
                 priceVariant.iconData,
                 color: priceVariant.backgroundColor,
               ),
-            if (!(price < 0.01)) Text(currencyFormatter.format(price)),
+            if (!(price < 0.01))
+              Text(
+                currencyFormatter.format(price),
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+              ),
           ],
         ),
       ),
