@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pile_of_shame/extensions/locale_extensions.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
 import 'package:pile_of_shame/widgets/app_scaffold.dart';
-import 'package:pile_of_shame/widgets/fade_in_image_asset.dart';
 import 'package:theming/theming.dart';
 
 class LanguageScreen extends ConsumerWidget {
@@ -18,8 +17,12 @@ class LanguageScreen extends ConsumerWidget {
       body: SingleChildScrollView(
         child: LanguageSelectionRadioGroup(
           supportedLocales: AppLocalizations.supportedLocales,
-          localeToImage: (locale) =>
-              FadeInImageAsset(asset: locale.countryAsset()),
+          localeToImage: (locale) => Center(
+            child: Text(
+              locale.countryAssetEmoji(),
+              style: Theme.of(context).textTheme.headlineSmall,
+            ),
+          ),
           localeToName: (locale) => locale.fullName(),
           systemLanguageLabel: AppLocalizations.of(context)!.systemLanguage,
         ),

@@ -69,7 +69,6 @@ flutter:
 
   assets:
     - assets/app/
-    - assets/languages/
     - assets/misc/
     - assets/platform_families/
     - assets/platforms/controllers/atari/

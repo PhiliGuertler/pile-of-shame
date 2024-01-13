@@ -3,9 +3,6 @@ enum ImageAssets {
   appLogo(value: 'assets/app/logo.png'),
   appLogoForeground(value: 'assets/app/logo_foreground.png'),
   appLogoSplash(value: 'assets/app/logo_splash.png'),
-  // language
-  languageEnglish(value: 'assets/languages/english.png'),
-  languageGerman(value: 'assets/languages/german.png'),
   // misc
   barChart(value: 'assets/misc/bar_chart.webp'),
   deadGame(value: 'assets/misc/dead_game.webp'),
