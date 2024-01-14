@@ -43,6 +43,16 @@ for locale in locales:
         copyFiles(locale, size[0], size[1])
 
 # Use the english images for korean and japanese, as their glyphs are not loaded by golden_toolkit somehow.
+def rename_files_in_subdirectories(basePath, locale):
+    for root, dirs, files in os.walk(basePath):
+        for filename in files:
+            if filename.endswith("_en-US.png"):
+                oldPath = os.path.join(root, filename)
+                newFilename = filename.replace("_en-US", f"_{locale}")
+                newPath = os.path.join(root, newFilename)
+
+                os.rename(oldPath, newPath)
+
 def copyEnglishFiles(locale):
     sourceDir = './android/fastlane/metadata/android/en-US/images/'
     targetDir = './android/fastlane/metadata/android/'+locale+'/images/'
@@ -50,6 +60,7 @@ def copyEnglishFiles(locale):
     if os.path.exists(targetDir):
         shutil.rmtree(targetDir)
     shutil.copytree(sourceDir, targetDir)
+    rename_files_in_subdirectories(targetDir, locale)
 
 copyEnglishFiles('ja-JP')
 copyEnglishFiles('ko-KR')
