@@ -22,7 +22,7 @@ requireShellFlag = os.name == 'nt'
 # generate screenshots
 subprocess.run(['flutter', 'test', 'test/generate_screenshots/screenshot_generator.dart', '--update-goldens'], check=True, shell=requireShellFlag)
 
-locales = ['de-DE', 'en-US']
+locales = ['de-DE', 'en-US', 'es-ES', 'fr-FR', 'pt-PT', 'ru-RU']
 sizes = [['android', 'phoneScreenshots'], ['android7inch', 'sevenInchScreenshots'], ['android10inch', 'tenInchScreenshots']]
 screens = ['game_list', 'add_game', 'game_details', 'hardware_list', 'library_list', 'analytics_all_list']
 
@@ -41,3 +41,15 @@ def copyFiles(locale, prefix, target):
 for locale in locales:
     for size in sizes:
         copyFiles(locale, size[0], size[1])
+
+# Use the english images for korean and japanese, as their glyphs are not loaded by golden_toolkit somehow.
+def copyEnglishFiles(locale):
+    sourceDir = './android/fastlane/metadata/android/en-US/images/'
+    targetDir = './android/fastlane/metadata/android/'+locale+'/images/'
+
+    if os.path.exists(targetDir):
+        shutil.rmtree(targetDir)
+    shutil.copytree(sourceDir, targetDir)
+
+copyEnglishFiles('ja-JP')
+copyEnglishFiles('ko-KR')
