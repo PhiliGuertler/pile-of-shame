@@ -177,18 +177,26 @@ class DefaultComparisonChart extends ConsumerWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.only(left: 8.0),
-                              child: Text(
-                                leftText ?? "",
-                                style: leftStyle,
+                            Flexible(
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 8.0),
+                                child: Text(
+                                  leftText ?? "",
+                                  style: leftStyle,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
                               ),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.only(right: 8.0),
-                              child: Text(
-                                rightText ?? "",
-                                style: rightStyle,
+                            Flexible(
+                              child: Padding(
+                                padding: const EdgeInsets.only(right: 8.0),
+                                child: Text(
+                                  rightText ?? "",
+                                  style: rightStyle,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
                               ),
                             ),
                           ],

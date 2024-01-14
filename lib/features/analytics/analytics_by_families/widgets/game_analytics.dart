@@ -68,9 +68,13 @@ class GameAnalytics extends ConsumerWidget {
             title: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  l10n.priceDistribution,
-                  style: textTheme.titleLarge,
+                Expanded(
+                  child: Text(
+                    l10n.priceDistribution,
+                    style: textTheme.titleLarge,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                  ),
                 ),
                 Text(
                   currencyFormatter.format(gameData.toTotalPrice()),
