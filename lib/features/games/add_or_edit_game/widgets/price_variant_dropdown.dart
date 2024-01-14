@@ -43,8 +43,13 @@ class PriceVariantDropdown extends StatelessWidget {
     } else {
       content = DropdownButtonFormField<PriceVariant>(
         key: const ValueKey("price_variant"),
+        isExpanded: true,
         decoration: InputDecoration(
-          label: Text("${l10n.priceVariant}*"),
+          label: Text(
+            "${l10n.priceVariant}*",
+            overflow: TextOverflow.ellipsis,
+            maxLines: 1,
+          ),
           suffixIcon: const Icon(Icons.expand_more),
           prefixIcon: Padding(
             padding: const EdgeInsets.only(right: 8.0),
@@ -63,7 +68,11 @@ class PriceVariantDropdown extends StatelessWidget {
         selectedItemBuilder: (context) => PriceVariant.values
             .where((element) => element != PriceVariant.observing)
             .map(
-              (variant) => Text(variant.toLocaleString(l10n)),
+              (variant) => Text(
+                variant.toLocaleString(l10n),
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+              ),
             )
             .toList(),
         // Don't display the default icon, instead display nothing

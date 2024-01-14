@@ -2,18 +2,17 @@ import 'dart:ui';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pile_of_shame/extensions/locale_extensions.dart';
-import 'package:pile_of_shame/models/assets.dart';
 
 void main() {
   group("LanguageName", () {
     test("throws if the country code is not supported", () {
-      const Locale testLocale = Locale("fr");
+      const Locale testLocale = Locale("zh");
       try {
         testLocale.fullName();
       } catch (error) {
         expect(
           error.toString(),
-          "Exception: LanguageCode 'fr' is not supported",
+          "Exception: LanguageCode 'zh' is not supported",
         );
         return;
       }
@@ -26,27 +25,6 @@ void main() {
     test("returns 'English' for Locale 'en'", () {
       const Locale testLocale = Locale("en");
       expect(testLocale.fullName(), "English");
-    });
-  });
-
-  group("LanguageIcon", () {
-    test("throws if the country code is not supported", () {
-      const Locale testLocale = Locale("fr");
-      try {
-        testLocale.countryAsset();
-      } catch (error) {
-        expect(error.toString(), "Exception: Language 'fr' is not supported");
-        return;
-      }
-      fail("no exception thrown");
-    });
-    test("returns correct asset for Locale 'de'", () {
-      const Locale testLocale = Locale("de");
-      expect(testLocale.countryAsset(), ImageAssets.languageGerman);
-    });
-    test("returns correct asset for Locale 'en'", () {
-      const Locale testLocale = Locale("en");
-      expect(testLocale.countryAsset(), ImageAssets.languageEnglish);
     });
   });
 }

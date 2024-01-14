@@ -32,6 +32,9 @@ class SettingsScreen extends ConsumerWidget {
 
     return SafeArea(
       child: CustomScrollView(
+        physics: const BouncingScrollPhysics(
+          parent: AlwaysScrollableScrollPhysics(),
+        ),
         controller: scrollController,
         slivers: [
           SliverFancyImageHeader(

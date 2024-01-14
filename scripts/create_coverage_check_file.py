@@ -16,6 +16,8 @@ os.chdir('..')
 
 os.chdir('./test')
 
+# This script generates a test file that includes all non-generated source files to provide a valid base for coverage tests.
+
 with open('coverage_helper_test.dart', 'w+') as file:
     file.write('// ######################################################### //\n')
     file.write('// ### This file is auto generated. Please do not modify ### //\n')

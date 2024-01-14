@@ -13,8 +13,13 @@ class USKDropdown extends StatelessWidget {
   Widget build(BuildContext context) {
     return DropdownButtonFormField<USK>(
       key: const ValueKey("age_rating"),
+      isExpanded: true,
       decoration: InputDecoration(
-        label: Text(AppLocalizations.of(context)!.ageRating),
+        label: Text(
+          AppLocalizations.of(context)!.ageRating,
+          overflow: TextOverflow.ellipsis,
+          maxLines: 1,
+        ),
         prefixIcon: Padding(
           padding: const EdgeInsets.only(right: 8.0),
           child: USKLogo(ageRestriction: value),
@@ -28,7 +33,13 @@ class USKDropdown extends StatelessWidget {
       },
       // Display the text of selected items only, as the prefix-icon takes care of the logo
       selectedItemBuilder: (context) => USK.values
-          .map((usk) => Text(usk.toRatedString(AppLocalizations.of(context)!)))
+          .map(
+            (usk) => Text(
+              usk.toRatedString(AppLocalizations.of(context)!),
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+            ),
+          )
           .toList(),
       // Don't display the default icon, instead display nothing
       icon: const SizedBox(),
@@ -46,6 +57,8 @@ class USKDropdown extends StatelessWidget {
                   Text(
                     usk.toRatedString(AppLocalizations.of(context)!),
                     key: ValueKey(usk.toString()),
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
                   ),
                 ],
               ),

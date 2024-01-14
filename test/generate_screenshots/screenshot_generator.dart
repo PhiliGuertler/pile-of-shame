@@ -30,6 +30,8 @@ import '../../test_resources/test_games.dart';
 import 'screenshot_generator.mocks.dart';
 import 'screenshot_utils.dart';
 
+const Color appColor = Color(0xFF3B0000);
+
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
@@ -173,6 +175,10 @@ void main() {
     const languages = {
       "de": "Füge Deine Spiele zur Bibliothek hinzu",
       "en": "Add your games to the library",
+      "pt": "Adicionar os seus jogos à biblioteca",
+      "es": "Añade tus juegos a la biblioteca",
+      "fr": "Ajoute tes jeux à la bibliothèque",
+      "ru": "Добавьте свои игры в библиотеку",
     };
 
     for (final language in languages.entries) {
@@ -186,6 +192,7 @@ void main() {
             appTheme: AppTheme(
               locale: language.key,
               themeMode: themeMode,
+              primaryColor: appColor,
             ),
             description: language.value,
             container: container,
@@ -200,6 +207,10 @@ void main() {
     const languages = {
       "de": "Sieh Dir Details zu Deinen Spielen an",
       "en": "Display the details of your games",
+      "pt": "Ver detalhes sobre os seus jogos",
+      "es": "Ver detalles sobre tus partidas",
+      "fr": "Consultez les détails de vos jeux",
+      "ru": "Просмотр подробной информации о ваших играх",
     };
 
     for (final language in languages.entries) {
@@ -215,6 +226,7 @@ void main() {
             appTheme: AppTheme(
               locale: language.key,
               themeMode: themeMode,
+              primaryColor: appColor,
             ),
             description: language.value,
             container: container,
@@ -229,6 +241,10 @@ void main() {
     const languages = {
       "de": "Behalte den Überblick über all Deine Spiele",
       "en": "Keep track of all your games",
+      "pt": "Mantenha o registo de todos os seus jogos",
+      "es": "Lleva la cuenta de todas tus partidas",
+      "fr": "Garde une vue d'ensemble de tous tes jeux",
+      "ru": "Следите за всеми своими играми",
     };
 
     for (final language in languages.entries) {
@@ -242,6 +258,7 @@ void main() {
             appTheme: AppTheme(
               locale: language.key,
               themeMode: themeMode,
+              primaryColor: appColor,
             ),
             description: language.value,
             container: container,
@@ -256,6 +273,10 @@ void main() {
     const languages = {
       "de": "Behalte den Überblick über Deine Spielehardware",
       "en": "Keep track of all your gaming hardware",
+      "pt": "Mantenha o controlo do seu hardware de jogo",
+      "es": "Controla tu hardware de juego",
+      "fr": "Garde une vue d'ensemble de ton matériel de jeu",
+      "ru": "Следите за своим игровым оборудованием",
     };
 
     for (final language in languages.entries) {
@@ -282,6 +303,7 @@ void main() {
             appTheme: AppTheme(
               locale: language.key,
               themeMode: themeMode,
+              primaryColor: appColor,
             ),
             description: language.value,
             container: container,
@@ -296,6 +318,10 @@ void main() {
     const languages = {
       "de": "Gönn Dir Details zu Deiner Bibliothek",
       "en": "Have a look at details of your library",
+      "pt": "Mime-se com pormenores sobre a sua biblioteca",
+      "es": "Regálate detalles sobre tu biblioteca",
+      "fr": "Offre-toi des détails sur ta bibliothèque",
+      "ru": "Побалуйте себя подробной информацией о вашей библиотеке",
     };
 
     for (final language in languages.entries) {
@@ -328,6 +354,7 @@ void main() {
             appTheme: AppTheme(
               locale: language.key,
               themeMode: themeMode,
+              primaryColor: appColor,
             ),
             description: language.value,
             container: container,
@@ -342,6 +369,10 @@ void main() {
     const languages = {
       "de": "Schau Dir Statistiken zu Deiner Bibliothek an",
       "en": "Display analytics of your library",
+      "pt": "Veja as estatísticas da sua biblioteca",
+      "es": "Eche un vistazo a las estadísticas de su biblioteca",
+      "fr": "Consultez les statistiques de votre bibliothèque",
+      "ru": "Посмотрите статистику по вашей библиотеке",
     };
 
     for (final language in languages.entries) {
@@ -386,6 +417,7 @@ void main() {
             appTheme: AppTheme(
               locale: language.key,
               themeMode: themeMode,
+              primaryColor: appColor,
             ),
             description: language.value,
             container: container,

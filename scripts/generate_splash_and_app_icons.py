@@ -14,8 +14,11 @@ os.chdir(script_directory)
 # now jump to the root directory of the repository
 os.chdir('..')
 
+# Windows requires the shell=True option on subprocesses that use the 'flutter' or 'dart' commands with arguments.
+requireShellFlag = os.name == 'nt'
+
 # generate app icon
-subprocess.run(['dart', 'run', 'flutter_launcher_icons'], check=True, shell=True)
+subprocess.run(['dart', 'run', 'flutter_launcher_icons'], check=True, shell=requireShellFlag)
 shutil.copy('./assets/app/logo.png', './android/fastlane/metadata/android/de-DE/images/icon.png')
 # generate splash screens
-subprocess.run(['dart', 'run', 'flutter_native_splash:create'], check=True, shell=True)
+subprocess.run(['dart', 'run', 'flutter_native_splash:create'], check=True, shell=requireShellFlag)

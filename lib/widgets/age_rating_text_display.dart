@@ -23,6 +23,8 @@ class AgeRatingTextDisplay extends StatelessWidget {
         child: Center(
           child: Text(
             usk.toRatedString(AppLocalizations.of(context)!),
+            overflow: TextOverflow.ellipsis,
+            maxLines: 1,
             style: TextStyle(
               color: usk.color.computeLuminance() > 0.5
                   ? Colors.black
