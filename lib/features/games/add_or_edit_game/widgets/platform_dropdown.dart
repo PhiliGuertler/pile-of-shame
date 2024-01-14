@@ -76,13 +76,21 @@ class PlatformDropdown extends ConsumerWidget {
       optionBuilder: (context, option, onTap) => ListTile(
         key: ValueKey(option.abbreviation),
         leading: GamePlatformIcon(platform: option),
-        title: Text(option.localizedName(AppLocalizations.of(context)!)),
+        title: Text(
+          option.localizedName(AppLocalizations.of(context)!),
+          overflow: TextOverflow.ellipsis,
+          maxLines: 1,
+        ),
         onTap: onTap,
       ),
       valueBuilder: (context, option, onTap) => GamePlatformInputField(
         key: const ValueKey("game_platform_input"),
         value: option,
-        label: Text("${AppLocalizations.of(context)!.platform}*"),
+        label: Text(
+          "${AppLocalizations.of(context)!.platform}*",
+          overflow: TextOverflow.ellipsis,
+          maxLines: 1,
+        ),
         onTap: onTap,
         validator: Validators.validateFieldIsRequired(context),
       ),

@@ -17,8 +17,13 @@ class PlayStatusDropdown extends StatelessWidget {
   Widget build(BuildContext context) {
     return DropdownButtonFormField<PlayStatus>(
       key: const ValueKey("play_status"),
+      isExpanded: true,
       decoration: InputDecoration(
-        label: Text("${AppLocalizations.of(context)!.status}*"),
+        label: Text(
+          "${AppLocalizations.of(context)!.status}*",
+          overflow: TextOverflow.ellipsis,
+          maxLines: 1,
+        ),
         suffixIcon: const Icon(Icons.expand_more),
         prefixIcon: Padding(
           padding: const EdgeInsets.only(right: 8.0),
@@ -33,8 +38,11 @@ class PlayStatusDropdown extends StatelessWidget {
       // Display the text of selected items only, as the prefix-icon takes care of the logo
       selectedItemBuilder: (context) => PlayStatus.values
           .map(
-            (status) =>
-                Text(status.toLocaleString(AppLocalizations.of(context)!)),
+            (status) => Text(
+              status.toLocaleString(AppLocalizations.of(context)!),
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+            ),
           )
           .toList(),
       // Don't display the default icon, instead display nothing
