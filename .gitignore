@@ -136,7 +136,10 @@ app.*.symbols
 !**/ios/**/default.perspectivev3
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 !/dev/ci/**/Gemfile.lock
+!**/android/Gemfile.lock
+!**/ios/Gemfile.lock
 !.vscode/settings.json
+!.vscode/launch.json
 
 # Android Studio will place build artifacts here
 /android/app/debug
