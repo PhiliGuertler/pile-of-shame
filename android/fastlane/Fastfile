@@ -31,7 +31,7 @@ platform :android do
       # By default, the symbols are stored here after building the app in release-mode: "../build/app/intermediates/merged_native_libs/release/out/lib/*"
       # Fastlane's zip function cannot zip the contents of the lib directory itself, so you will have to do that manually like this: "zip -r native-debug-symbols.zip arm64-v8a armeabi-v7a x86_64"
       mapping_paths: ["native-debug-symbols.zip", "mapping.txt"],
-      metadata_path: "../fastlane/metadata",
+      metadata_path: "../fastlane/metadata/android",
       skip_upload_apk: true,
       skip_upload_metadata: true,
       skip_upload_images: true,
@@ -47,7 +47,7 @@ platform :android do
       track_promote_to: "alpha",
       # version code is available via flutter_version plugin
       version_code: flutter_version()["version_code"],
-      metadata_path: "../fastlane/metadata",
+      metadata_path: "../fastlane/metadata/android",
       skip_upload_apk: true,
       skip_upload_aab: true,
       skip_upload_metadata: true,
@@ -64,7 +64,7 @@ platform :android do
       track_promote_to: "beta",
       # version code is available via flutter_version plugin
       version_code: flutter_version()["version_code"],
-      metadata_path: "../fastlane/metadata",
+      metadata_path: "../fastlane/metadata/android",
       skip_upload_apk: true,
       skip_upload_aab: true,
       skip_upload_metadata: true,
@@ -81,7 +81,7 @@ platform :android do
       track_promote_to: "production",
       # version code is available via flutter_version plugin
       version_code: flutter_version()["version_code"],
-      metadata_path: "../fastlane/metadata",
+      metadata_path: "../fastlane/metadata/android",
       skip_upload_apk: true,
       skip_upload_aab: true,
     )
@@ -97,7 +97,7 @@ platform :android do
       aab: "../build/app/outputs/bundle/release/app-release.aab",
       # version code is available via flutter_version plugin
       version_code: flutter_version()["version_code"],
-      metadata_path: "../fastlane/metadata",
+      metadata_path: "../fastlane/metadata/android",
     )
   end
 end
