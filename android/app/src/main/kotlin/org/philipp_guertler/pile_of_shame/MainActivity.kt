@@ -1,4 +1,4 @@
-package com.example.pile_of_shame
+package org.philipp_guertler.pile_of_shame
 import android.os.Bundle
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import io.flutter.embedding.android.FlutterActivity

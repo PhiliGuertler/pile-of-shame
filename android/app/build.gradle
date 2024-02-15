@@ -29,7 +29,7 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    namespace "com.example.pile_of_shame"
+    namespace "org.philipp_guertler.pile_of_shame"
     compileSdkVersion flutter.compileSdkVersion
     ndkVersion flutter.ndkVersion
 
