@@ -32,7 +32,7 @@ apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
-    namespace "com.example.pile_of_shame"
+    namespace "org.philipp_guertler.pile_of_shame"
     compileSdkVersion flutter.compileSdkVersion
     ndkVersion flutter.ndkVersion
 
