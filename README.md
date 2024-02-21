@@ -57,13 +57,13 @@ Simply run `scripts/generate_screenshots.py` to re-generate them.
 ## Screenshots
 
 <p align="center">
-    <img src="./android/fastlane/metadata/android/en-US/images/phoneScreenshots/1_en-US.png" width="300">
-    <img src="./android/fastlane/metadata/android/en-US/images/phoneScreenshots/2_en-US.png" width="300">
+    <img src="./fastlane/metadata/android/en-US/images/phoneScreenshots/1_en-US.png" width="300">
+    <img src="./fastlane/metadata/android/en-US/images/phoneScreenshots/2_en-US.png" width="300">
 </p>
 <p align="center">
-    <img src="./android/fastlane/metadata/android/en-US/images/phoneScreenshots/3_en-US.png" width="300">
-    <img src="./android/fastlane/metadata/android/en-US/images/phoneScreenshots/4_en-US.png" width="300">
+    <img src="./fastlane/metadata/android/en-US/images/phoneScreenshots/3_en-US.png" width="300">
+    <img src="./fastlane/metadata/android/en-US/images/phoneScreenshots/4_en-US.png" width="300">
 <p align="center">
-    <img src="./android/fastlane/metadata/android/en-US/images/phoneScreenshots/5_en-US.png" width="300">
-    <img src="./android/fastlane/metadata/android/en-US/images/phoneScreenshots/6_en-US.png" width="300">
+    <img src="./fastlane/metadata/android/en-US/images/phoneScreenshots/5_en-US.png" width="300">
+    <img src="./fastlane/metadata/android/en-US/images/phoneScreenshots/6_en-US.png" width="300">
 </p>
