@@ -47,7 +47,7 @@ class EndDragTargetSlot extends StatelessWidget {
             spreadRadius: 5.0,
             color: isHovered
                 ? Colors.green.withOpacity(0.7)
-                : Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.7),
+                : Theme.of(context).colorScheme.surfaceContainerHighest.withOpacity(0.7),
             blurRadius: 5.0,
           ),
           end: BoxShadow(
@@ -94,7 +94,7 @@ class BottomDragTargetSlot extends StatelessWidget {
             spreadRadius: 5.0,
             color: isHovered
                 ? Colors.green.withOpacity(0.7)
-                : Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.7),
+                : Theme.of(context).colorScheme.surfaceContainerHighest.withOpacity(0.7),
             blurRadius: 5.0,
           ),
           end: BoxShadow(
@@ -146,7 +146,7 @@ class _GameDisplayDragTargetState extends ConsumerState<GameDisplayDragTarget> {
               isVisible: widget.isEndPieceMoving,
             );
           },
-          onAccept: (data) {
+          onAcceptWithDetails: (data) {
             ref
                 .read(customizeGameDisplaysProvider.notifier)
                 .setCustomGameDisplay(
@@ -175,7 +175,7 @@ class _GameDisplayDragTargetState extends ConsumerState<GameDisplayDragTarget> {
               isVisible: widget.isEndPieceMoving,
             );
           },
-          onAccept: (data) {
+          onAcceptWithDetails: (data) {
             ref
                 .read(customizeGameDisplaysProvider.notifier)
                 .setCustomGameDisplay(
@@ -204,7 +204,7 @@ class _GameDisplayDragTargetState extends ConsumerState<GameDisplayDragTarget> {
               isVisible: widget.isBottomBarMoving,
             );
           },
-          onAccept: (data) {
+          onAcceptWithDetails: (data) {
             ref
                 .read(customizeGameDisplaysProvider.notifier)
                 .setCustomGameDisplay(

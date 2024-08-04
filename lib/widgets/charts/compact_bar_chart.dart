@@ -168,7 +168,7 @@ class CompactBarChart extends StatelessWidget {
                         return BarTooltipItem(
                           formatData(rod.toY),
                           TextStyle(
-                            color: Theme.of(context).colorScheme.onBackground,
+                            color: Theme.of(context).colorScheme.onSurface,
                             fontWeight: FontWeight.bold,
                           ),
                         );

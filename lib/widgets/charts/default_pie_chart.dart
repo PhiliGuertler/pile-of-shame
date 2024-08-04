@@ -117,7 +117,7 @@ class DefaultPieChart extends StatelessWidget {
               child: Text(
                 totalLabel,
                 style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                      backgroundColor: Theme.of(context).colorScheme.background,
+                      backgroundColor: Theme.of(context).colorScheme.surface,
                     ),
                 textAlign: TextAlign.center,
               ),
