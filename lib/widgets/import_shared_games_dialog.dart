@@ -43,7 +43,7 @@ class _ImportSharedGamesState extends ConsumerState<ImportSharedGames> {
 
       await ref.read(databaseStorageProvider).persistDatabase(games);
 
-      if (context.mounted) {
+      if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(AppLocalizations.of(context)!.importSuccessful),
@@ -55,7 +55,7 @@ class _ImportSharedGamesState extends ConsumerState<ImportSharedGames> {
       setState(() {
         isLoading = false;
       });
-      if (context.mounted) {
+      if (mounted) {
         throw Exception(AppLocalizations.of(context)!.importFailed);
       }
     }
