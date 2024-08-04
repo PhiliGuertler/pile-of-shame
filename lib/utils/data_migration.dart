@@ -28,6 +28,20 @@ class DLCv1 with _$DLCv1 {
   const DLCv1._();
 
   factory DLCv1.fromJson(Map<String, dynamic> json) => _$DLCv1FromJson(json);
+
+  DLCv2 migrate() {
+    return DLCv2(
+      createdAt: lastModified,
+      id: id,
+      name: name,
+      status: status,
+      lastModified: lastModified,
+      price: price,
+      notes: notes,
+      isFavorite: isFavorite,
+      wasGifted: wasGifted,
+    );
+  }
 }
 
 /// DLC with wasGifted instead of priceVariant (before App-Version 1.3.0)
@@ -47,9 +61,27 @@ class DLCv2 with _$DLCv2 {
   const DLCv2._();
 
   factory DLCv2.fromJson(Map<String, dynamic> json) => _$DLCv2FromJson(json);
+
+  DLCv3 migrate() {
+    return DLCv3(
+      createdAt: createdAt,
+      id: id,
+      name: name,
+      status: status,
+      lastModified: lastModified,
+      price: price,
+      notes: notes,
+      isFavorite: isFavorite,
+      priceVariant: wasGifted
+          ? PriceVariant.gifted
+          : status == PlayStatus.onWishList
+              ? PriceVariant.observing
+              : PriceVariant.bought,
+    );
+  }
 }
 
-/// Current DLC with every field mandatory for parsing (from App-Version 1.3.0)
+/// DLC with every field mandatory for parsing (before App-Version 1.6.0)
 @freezed
 class DLCv3 with _$DLCv3 {
   const factory DLCv3({
@@ -67,16 +99,51 @@ class DLCv3 with _$DLCv3 {
 
   factory DLCv3.fromJson(Map<String, dynamic> json) => _$DLCv3FromJson(json);
 
-  DLC toDLC() {
-    return DLC(
+  DLCv4 migrate() {
+    return DLCv4(
+      version: 1,
       id: id,
-      createdAt: createdAt,
-      lastModified: lastModified,
       name: name,
       status: status,
-      isFavorite: isFavorite,
-      notes: notes,
+      lastModified: lastModified,
+      createdAt: createdAt,
       price: price,
+      notes: notes,
+      isFavorite: isFavorite,
+      priceVariant: priceVariant,
+    );
+  }
+}
+
+/// Current DLC with version counter (from App-Version 1.6.0)
+@freezed
+class DLCv4 with _$DLCv4 {
+  const factory DLCv4({
+    required int version,
+    required String id,
+    required String name,
+    required PlayStatus status,
+    required DateTime lastModified,
+    required DateTime createdAt,
+    required double price,
+    required String? notes,
+    required bool isFavorite,
+    required PriceVariant priceVariant,
+  }) = _DLCv4;
+  const DLCv4._();
+
+  factory DLCv4.fromJson(Map<String, dynamic> json) => _$DLCv4FromJson(json);
+
+  DLC migrate() {
+    return DLC(
+      id: id,
+      name: name,
+      status: status,
+      lastModified: lastModified,
+      createdAt: createdAt,
+      price: price,
+      notes: notes,
+      isFavorite: isFavorite,
       priceVariant: priceVariant,
     );
   }
@@ -103,6 +170,23 @@ class Gamev1 with _$Gamev1 {
   const Gamev1._();
 
   factory Gamev1.fromJson(Map<String, dynamic> json) => _$Gamev1FromJson(json);
+
+  Gamev2 migrate() {
+    return Gamev2(
+      createdAt: lastModified,
+      id: id,
+      name: name,
+      platform: platform,
+      status: status,
+      lastModified: lastModified,
+      price: price,
+      usk: usk,
+      dlcs: dlcs.map((e) => e.migrate()).toList(),
+      notes: notes,
+      isFavorite: isFavorite,
+      wasGifted: wasGifted,
+    );
+  }
 }
 
 /// Game with wasGifted instead of priceVariant (before App-Version 1.3.0)
@@ -125,9 +209,30 @@ class Gamev2 with _$Gamev2 {
   const Gamev2._();
 
   factory Gamev2.fromJson(Map<String, dynamic> json) => _$Gamev2FromJson(json);
+
+  Gamev3 migrate() {
+    return Gamev3(
+      createdAt: createdAt,
+      id: id,
+      name: name,
+      platform: platform,
+      status: status,
+      lastModified: lastModified,
+      price: price,
+      usk: usk,
+      dlcs: dlcs.map((e) => e.migrate()).toList(),
+      notes: notes,
+      isFavorite: isFavorite,
+      priceVariant: wasGifted
+          ? PriceVariant.gifted
+          : status == PlayStatus.onWishList
+              ? PriceVariant.observing
+              : PriceVariant.bought,
+    );
+  }
 }
 
-/// Current Game with every field mandatory for parsing (from App-Version 1.3.0)
+/// Game with every field mandatory for parsing (before App-Version 1.6.0)
 @freezed
 class Gamev3 with _$Gamev3 {
   const factory Gamev3({
@@ -148,7 +253,48 @@ class Gamev3 with _$Gamev3 {
 
   factory Gamev3.fromJson(Map<String, dynamic> json) => _$Gamev3FromJson(json);
 
-  Game toGame() {
+  Gamev4 migrate() {
+    return Gamev4(
+      version: 1,
+      id: id,
+      name: name,
+      platform: platform,
+      status: status,
+      lastModified: lastModified,
+      createdAt: createdAt,
+      price: price,
+      usk: usk,
+      dlcs: dlcs.map((e) => e.migrate()).toList(),
+      notes: notes,
+      isFavorite: isFavorite,
+      priceVariant: priceVariant,
+    );
+  }
+}
+
+/// Current Game with version counter (from App-Version 1.6.0)
+@freezed
+class Gamev4 with _$Gamev4 {
+  const factory Gamev4({
+    required int version,
+    required String id,
+    required String name,
+    required GamePlatform platform,
+    required PlayStatus status,
+    required DateTime lastModified,
+    required DateTime createdAt,
+    required double price,
+    required USK usk,
+    required List<DLCv4> dlcs,
+    required String? notes,
+    required bool isFavorite,
+    required PriceVariant priceVariant,
+  }) = _Gamev4;
+  const Gamev4._();
+
+  factory Gamev4.fromJson(Map<String, dynamic> json) => _$Gamev4FromJson(json);
+
+  Game migrate() {
     return Game(
       id: id,
       name: name,
@@ -157,11 +303,15 @@ class Gamev3 with _$Gamev3 {
       lastModified: lastModified,
       createdAt: createdAt,
       price: price,
-      dlcs: dlcs.map((e) => e.toDLC()).toList(),
-      isFavorite: isFavorite,
-      notes: notes,
-      priceVariant: priceVariant,
       usk: usk,
+      dlcs: dlcs
+          .map(
+            (e) => e.migrate(),
+          )
+          .toList(),
+      notes: notes,
+      isFavorite: isFavorite,
+      priceVariant: priceVariant,
     );
   }
 }
@@ -185,9 +335,22 @@ class VideoGameHardwarev1 with _$VideoGameHardwarev1 {
 
   factory VideoGameHardwarev1.fromJson(Map<String, dynamic> json) =>
       _$VideoGameHardwarev1FromJson(json);
+
+  VideoGameHardwarev2 migrate() {
+    return VideoGameHardwarev2(
+      priceVariant: wasGifted ? PriceVariant.gifted : PriceVariant.bought,
+      createdAt: createdAt,
+      id: id,
+      lastModified: lastModified,
+      name: name,
+      notes: notes,
+      platform: platform,
+      price: price,
+    );
+  }
 }
 
-/// Current VideoGameHardware (from App-Version 1.3.0)
+/// VideoGameHardware with priceVariant instead of wasGifted (before App-Version 1.6.0)
 @freezed
 class VideoGameHardwarev2 with _$VideoGameHardwarev2 {
   const factory VideoGameHardwarev2({
@@ -205,7 +368,41 @@ class VideoGameHardwarev2 with _$VideoGameHardwarev2 {
   factory VideoGameHardwarev2.fromJson(Map<String, dynamic> json) =>
       _$VideoGameHardwarev2FromJson(json);
 
-  VideoGameHardware toHardware() {
+  VideoGameHardwarev3 migrate() {
+    return VideoGameHardwarev3(
+      version: 1,
+      id: id,
+      name: name,
+      platform: platform,
+      price: price,
+      lastModified: lastModified,
+      createdAt: createdAt,
+      notes: notes,
+      priceVariant: priceVariant,
+    );
+  }
+}
+
+/// Current VideoGameHardware with version counter (from App-Version 1.6.0)
+@freezed
+class VideoGameHardwarev3 with _$VideoGameHardwarev3 {
+  const factory VideoGameHardwarev3({
+    required int version,
+    required String id,
+    required String name,
+    required GamePlatform platform,
+    required double price,
+    required DateTime lastModified,
+    required DateTime createdAt,
+    required String? notes,
+    required PriceVariant priceVariant,
+  }) = _VideoGameHardwarev3;
+  const VideoGameHardwarev3._();
+
+  factory VideoGameHardwarev3.fromJson(Map<String, dynamic> json) =>
+      _$VideoGameHardwarev3FromJson(json);
+
+  VideoGameHardware migrate() {
     return VideoGameHardware(
       id: id,
       name: name,
@@ -231,6 +428,12 @@ class GamesListv1 with _$GamesListv1 {
 
   factory GamesListv1.fromJson(Map<String, dynamic> json) =>
       _$GamesListv1FromJson(json);
+
+  GamesListv2 migrate() {
+    return GamesListv2(
+      games: games.map((e) => e.migrate()).toList(),
+    );
+  }
 }
 
 /// GameList with Gamev2 without hardware (before App-Version 0.9.2)
@@ -244,6 +447,13 @@ class GamesListv2 with _$GamesListv2 {
 
   factory GamesListv2.fromJson(Map<String, dynamic> json) =>
       _$GamesListv2FromJson(json);
+
+  Databasev1 migrate() {
+    return Databasev1(
+      games: games,
+      hardware: [],
+    );
+  }
 }
 
 /// Database with Gamev2 (before App-Version 1.3.0)
@@ -257,9 +467,16 @@ class Databasev1 with _$Databasev1 {
 
   factory Databasev1.fromJson(Map<String, dynamic> json) =>
       _$Databasev1FromJson(json);
+
+  Databasev2 migrate() {
+    return Databasev2(
+      games: games.map((e) => e.migrate()).toList(),
+      hardware: hardware.map((e) => e.migrate()).toList(),
+    );
+  }
 }
 
-/// Database with Gamev3 (from App-Version 1.3.0)
+/// Database with Gamev3 (before App-Version 1.6.0)
 @freezed
 class Databasev2 with _$Databasev2 {
   const factory Databasev2({
@@ -270,127 +487,45 @@ class Databasev2 with _$Databasev2 {
 
   factory Databasev2.fromJson(Map<String, dynamic> json) =>
       _$Databasev2FromJson(json);
+
+  Databasev3 migrate() {
+    return Databasev3(
+      version: 1,
+      games: games.map((e) => e.migrate()).toList(),
+      hardware: hardware.map((e) => e.migrate()).toList(),
+    );
+  }
+}
+
+/// Database with Gamev4 and version (from App-Version 1.6.0)
+@freezed
+class Databasev3 with _$Databasev3 {
+  const factory Databasev3({
+    required int version,
+    required List<Gamev4> games,
+    required List<VideoGameHardwarev3> hardware,
+  }) = _Databasev3;
+  const Databasev3._();
+
+  factory Databasev3.fromJson(Map<String, dynamic> json) =>
+      _$Databasev3FromJson(json);
+
+  Database migrate() {
+    return Database(
+      games: games.map((e) => e.migrate()).toList(),
+      hardware: hardware.map((e) => e.migrate()).toList(),
+    );
+  }
 }
 
 /// Migrates the database
 class DatabaseMigrator {
   const DatabaseMigrator._();
 
-  static DLCv2 migrateDLCv1(DLCv1 dlc) {
-    return DLCv2(
-      createdAt: dlc.lastModified,
-      id: dlc.id,
-      name: dlc.name,
-      status: dlc.status,
-      lastModified: dlc.lastModified,
-      price: dlc.price,
-      notes: dlc.notes,
-      isFavorite: dlc.isFavorite,
-      wasGifted: dlc.wasGifted,
-    );
-  }
-
-  static DLCv3 migrateDLCv2(DLCv2 dlc) {
-    return DLCv3(
-      createdAt: dlc.createdAt,
-      id: dlc.id,
-      name: dlc.name,
-      status: dlc.status,
-      lastModified: dlc.lastModified,
-      price: dlc.price,
-      notes: dlc.notes,
-      isFavorite: dlc.isFavorite,
-      priceVariant: dlc.wasGifted
-          ? PriceVariant.gifted
-          : dlc.status == PlayStatus.onWishList
-              ? PriceVariant.observing
-              : PriceVariant.bought,
-    );
-  }
-
-  static Gamev2 migrateGamev1(Gamev1 game) {
-    return Gamev2(
-      createdAt: game.lastModified,
-      id: game.id,
-      name: game.name,
-      platform: game.platform,
-      status: game.status,
-      lastModified: game.lastModified,
-      price: game.price,
-      usk: game.usk,
-      dlcs: game.dlcs.map((e) => migrateDLCv1(e)).toList(),
-      notes: game.notes,
-      isFavorite: game.isFavorite,
-      wasGifted: game.wasGifted,
-    );
-  }
-
-  static Gamev3 migrateGamev2(Gamev2 game) {
-    return Gamev3(
-      createdAt: game.createdAt,
-      id: game.id,
-      name: game.name,
-      platform: game.platform,
-      status: game.status,
-      lastModified: game.lastModified,
-      price: game.price,
-      usk: game.usk,
-      dlcs: game.dlcs.map((e) => migrateDLCv2(e)).toList(),
-      notes: game.notes,
-      isFavorite: game.isFavorite,
-      priceVariant: game.wasGifted
-          ? PriceVariant.gifted
-          : game.status == PlayStatus.onWishList
-              ? PriceVariant.observing
-              : PriceVariant.bought,
-    );
-  }
-
-  static VideoGameHardwarev2 migrateHardwarev1(VideoGameHardwarev1 hardware) {
-    return VideoGameHardwarev2(
-      priceVariant:
-          hardware.wasGifted ? PriceVariant.gifted : PriceVariant.bought,
-      createdAt: hardware.createdAt,
-      id: hardware.id,
-      lastModified: hardware.lastModified,
-      name: hardware.name,
-      notes: hardware.notes,
-      platform: hardware.platform,
-      price: hardware.price,
-    );
-  }
-
-  static GamesListv2 migrateGamesListV1(GamesListv1 gamesList) {
-    return GamesListv2(
-      games: gamesList.games.map((e) => migrateGamev1(e)).toList(),
-    );
-  }
-
-  static Databasev1 migrateGamesListV2(GamesListv2 gamesList) {
-    return Databasev1(
-      games: gamesList.games,
-      hardware: [],
-    );
-  }
-
-  static Databasev2 migrateDatabaseV1(Databasev1 database) {
-    return Databasev2(
-      games: database.games.map((e) => migrateGamev2(e)).toList(),
-      hardware: database.hardware.map((e) => migrateHardwarev1(e)).toList(),
-    );
-  }
-
-  static Database migrateLatestModelToDatabase(Databasev2 database) {
-    return Database(
-      games: database.games.map((game) => game.toGame()).toList(),
-      hardware:
-          database.hardware.map((hardware) => hardware.toHardware()).toList(),
-    );
-  }
-
   static Database loadAndMigrateGamesFromJson(Map<String, dynamic> jsonMap) {
     // ### Migration steps in reverse order ################################# //
     Database? result;
+    Databasev3? databaseV3;
     Databasev2? databaseV2;
     Databasev1? databaseV1;
     GamesListv2? gamesV2;
@@ -417,19 +552,27 @@ class DatabaseMigrator {
     } catch (error) {
       // fall through
     }
+    try {
+      databaseV3 = Databasev3.fromJson(jsonMap);
+    } catch (error) {
+      // fall through
+    }
 
     // Migrate from olders to newest
     if (gamesV1 != null && gamesV2 == null) {
-      gamesV2 = migrateGamesListV1(gamesV1);
+      gamesV2 = gamesV1.migrate();
     }
     if (gamesV2 != null && databaseV1 == null) {
-      databaseV1 = migrateGamesListV2(gamesV2);
+      databaseV1 = gamesV2.migrate();
     }
     if (databaseV1 != null && databaseV2 == null) {
-      databaseV2 = migrateDatabaseV1(databaseV1);
+      databaseV2 = databaseV1.migrate();
     }
-    if (databaseV2 != null) {
-      result = migrateLatestModelToDatabase(databaseV2);
+    if (databaseV2 != null && databaseV3 == null) {
+      databaseV3 = databaseV2.migrate();
+    }
+    if (databaseV3 != null) {
+      result = databaseV3.migrate();
     }
 
     // Throw an exception if loading failed
