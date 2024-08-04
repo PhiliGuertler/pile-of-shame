@@ -74,7 +74,7 @@ class DefaultComparisonChart extends ConsumerWidget {
                                   ? Border.all(
                                       color: Theme.of(context)
                                           .colorScheme
-                                          .background,
+                                          .surface,
                                     )
                                   : null,
                             ),
@@ -122,7 +122,7 @@ class DefaultComparisonChart extends ConsumerWidget {
                                   ? Border.all(
                                       color: Theme.of(context)
                                           .colorScheme
-                                          .background,
+                                          .surface,
                                     )
                                   : null,
                             ),

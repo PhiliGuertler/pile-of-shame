@@ -32,7 +32,7 @@ class _ImportGamesScreenState extends ConsumerState<ImportGamesScreen> {
 
         await ref.read(databaseStorageProvider).persistDatabase(games);
 
-        if (context.mounted) {
+        if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(AppLocalizations.of(context)!.importSuccessful),
@@ -43,12 +43,12 @@ class _ImportGamesScreenState extends ConsumerState<ImportGamesScreen> {
         setState(() {
           isLoading = false;
         });
-        if (context.mounted) {
+        if (mounted) {
           throw Exception(AppLocalizations.of(context)!.importFailed);
         }
       }
     } else {
-      if (context.mounted) {
+      if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(AppLocalizations.of(context)!.importCancelled),

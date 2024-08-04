@@ -47,7 +47,10 @@ class EndDragTargetSlot extends StatelessWidget {
             spreadRadius: 5.0,
             color: isHovered
                 ? Colors.green.withOpacity(0.7)
-                : Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.7),
+                : Theme.of(context)
+                    .colorScheme
+                    .surfaceContainerHighest
+                    .withOpacity(0.7),
             blurRadius: 5.0,
           ),
           end: BoxShadow(
@@ -94,7 +97,10 @@ class BottomDragTargetSlot extends StatelessWidget {
             spreadRadius: 5.0,
             color: isHovered
                 ? Colors.green.withOpacity(0.7)
-                : Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.7),
+                : Theme.of(context)
+                    .colorScheme
+                    .surfaceContainerHighest
+                    .withOpacity(0.7),
             blurRadius: 5.0,
           ),
           end: BoxShadow(
@@ -146,11 +152,11 @@ class _GameDisplayDragTargetState extends ConsumerState<GameDisplayDragTarget> {
               isVisible: widget.isEndPieceMoving,
             );
           },
-          onAccept: (data) {
+          onAcceptWithDetails: (data) {
             ref
                 .read(customizeGameDisplaysProvider.notifier)
                 .setCustomGameDisplay(
-                  settings.copyWith(leading: data),
+                  settings.copyWith(leading: data.data),
                 );
             setState(() {
               isLeadingHovered = false;
@@ -175,11 +181,11 @@ class _GameDisplayDragTargetState extends ConsumerState<GameDisplayDragTarget> {
               isVisible: widget.isEndPieceMoving,
             );
           },
-          onAccept: (data) {
+          onAcceptWithDetails: (data) {
             ref
                 .read(customizeGameDisplaysProvider.notifier)
                 .setCustomGameDisplay(
-                  settings.copyWith(trailing: data),
+                  settings.copyWith(trailing: data.data),
                 );
             setState(() {
               isTrailingHovered = false;
@@ -204,11 +210,11 @@ class _GameDisplayDragTargetState extends ConsumerState<GameDisplayDragTarget> {
               isVisible: widget.isBottomBarMoving,
             );
           },
-          onAccept: (data) {
+          onAcceptWithDetails: (data) {
             ref
                 .read(customizeGameDisplaysProvider.notifier)
                 .setCustomGameDisplay(
-                  settings.copyWith(secondary: data),
+                  settings.copyWith(secondary: data.data),
                 );
             setState(() {
               isSecondaryHovered = false;

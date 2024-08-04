@@ -171,14 +171,14 @@ class CustomizableGameDisplay extends ConsumerWidget {
                   (triggerProgress - 1.0).clamp(0, double.infinity);
               final double untilTrigger = triggerProgress.clamp(0.0, 1.0);
               return ColoredBox(
-                color: Theme.of(context).colorScheme.surfaceVariant,
+                color: Theme.of(context).colorScheme.surfaceContainerHighest,
                 child: Transform.scale(
                   scale: 1.0 + triggerOvershoot,
                   child: ProgressingIcon(
                     progress: untilTrigger,
                     icon: Icons.open_in_full,
                     backgroundColor:
-                        Theme.of(context).colorScheme.surfaceVariant,
+                        Theme.of(context).colorScheme.surfaceContainerHighest,
                   ),
                 ),
               );
@@ -224,7 +224,7 @@ class CustomizableGameDisplay extends ConsumerWidget {
               child: Icon(
                 Icons.note,
                 size: favoriteSize,
-                color: Theme.of(context).colorScheme.surfaceVariant,
+                color: Theme.of(context).colorScheme.surfaceContainerHighest,
               )
                   .animate()
                   .rotate(

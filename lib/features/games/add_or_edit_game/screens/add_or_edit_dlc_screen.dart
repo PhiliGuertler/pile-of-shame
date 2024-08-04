@@ -109,7 +109,7 @@ class _AddDLCScreenState extends ConsumerState<AddDLCScreen> {
                     duration: const Duration(milliseconds: 200),
                     child: Builder(
                       builder: (context) {
-                        if (editableDLC.priceVariant == PriceVariant.gifted) {
+                        if (!editableDLC.priceVariant.hasPrice) {
                           return const SizedBox(
                             height: 0,
                           );

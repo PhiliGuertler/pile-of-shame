@@ -291,7 +291,7 @@ class SettingsScreen extends ConsumerWidget {
                           style: TextStyle(
                             color: Theme.of(context)
                                 .colorScheme
-                                .onBackground
+                                .onSurface
                                 .withOpacity(0.5),
                           ),
                         );

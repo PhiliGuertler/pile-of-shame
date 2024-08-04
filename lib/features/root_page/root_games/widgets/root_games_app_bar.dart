@@ -115,7 +115,7 @@ class _RootGamesAppBarState extends ConsumerState<RootGamesAppBar> {
                   result = ClipRRect(
                     borderRadius: BorderRadius.circular(16.0),
                     child: ColoredBox(
-                      color: Theme.of(context).colorScheme.background,
+                      color: Theme.of(context).colorScheme.surface,
                       child: result,
                     )
                         .animate(

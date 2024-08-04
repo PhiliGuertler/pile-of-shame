@@ -38,7 +38,7 @@ class _ExportGamesScreenState extends ConsumerState<ExportGamesScreen> {
         'games-$currentDateTime.json',
       );
       if (success) {
-        if (context.mounted) {
+        if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(AppLocalizations.of(context)!.exportSucceeded),
@@ -50,7 +50,7 @@ class _ExportGamesScreenState extends ConsumerState<ExportGamesScreen> {
       setState(() {
         isLoading = false;
       });
-      if (context.mounted) {
+      if (mounted) {
         throw Exception(AppLocalizations.of(context)!.exportFailed);
       }
     }

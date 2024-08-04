@@ -24,7 +24,7 @@ void main() {
         wasGifted: true,
       );
 
-      final DLCv2 migrated = DatabaseMigrator.migrateDLCv1(dlcv1);
+      final DLCv2 migrated = dlcv1.migrate();
       expect(migrated.id, "123456");
       expect(migrated.createdAt, DateTime(2023, 4, 20));
       expect(migrated.isFavorite, true);
@@ -50,7 +50,7 @@ void main() {
         price: 0,
       );
 
-      final DLCv3 migrated = DatabaseMigrator.migrateDLCv2(dlcv2);
+      final DLCv3 migrated = dlcv2.migrate();
       expect(migrated.id, "123456");
       expect(migrated.createdAt, DateTime(2023, 4, 19));
       expect(migrated.isFavorite, true);
@@ -74,7 +74,7 @@ void main() {
         wasGifted: false,
       );
 
-      final DLCv3 migrated = DatabaseMigrator.migrateDLCv2(dlcv2);
+      final DLCv3 migrated = dlcv2.migrate();
       expect(migrated.id, "123456");
       expect(migrated.createdAt, DateTime(2023, 4, 19));
       expect(migrated.isFavorite, true);
@@ -98,7 +98,7 @@ void main() {
         wasGifted: false,
       );
 
-      final DLCv3 migrated = DatabaseMigrator.migrateDLCv2(dlcv2);
+      final DLCv3 migrated = dlcv2.migrate();
       expect(migrated.id, "123456");
       expect(migrated.createdAt, DateTime(2023, 4, 19));
       expect(migrated.isFavorite, true);
@@ -138,7 +138,7 @@ void main() {
         ],
       );
 
-      final Gamev2 migrated = DatabaseMigrator.migrateGamev1(gamev1);
+      final Gamev2 migrated = gamev1.migrate();
       expect(migrated.id, "123456");
       expect(migrated.createdAt, DateTime(2023, 4, 20));
       expect(migrated.isFavorite, true);
@@ -192,7 +192,7 @@ void main() {
         ],
       );
 
-      final Gamev3 migrated = DatabaseMigrator.migrateGamev2(gamev2);
+      final Gamev3 migrated = gamev2.migrate();
       expect(migrated.id, "123456");
       expect(migrated.createdAt, DateTime(2023, 4, 19));
       expect(migrated.isFavorite, true);
@@ -246,7 +246,7 @@ void main() {
         ],
       );
 
-      final Gamev3 migrated = DatabaseMigrator.migrateGamev2(gamev2);
+      final Gamev3 migrated = gamev2.migrate();
       expect(migrated.id, "123456");
       expect(migrated.createdAt, DateTime(2023, 4, 19));
       expect(migrated.isFavorite, true);
@@ -299,7 +299,7 @@ void main() {
         ],
       );
 
-      final Gamev3 migrated = DatabaseMigrator.migrateGamev2(gamev2);
+      final Gamev3 migrated = gamev2.migrate();
       expect(migrated.id, "123456");
       expect(migrated.createdAt, DateTime(2023, 4, 19));
       expect(migrated.isFavorite, true);
@@ -340,8 +340,7 @@ void main() {
         price: 0,
       );
 
-      final VideoGameHardwarev2 migrated =
-          DatabaseMigrator.migrateHardwarev1(hardwarev1);
+      final VideoGameHardwarev2 migrated = hardwarev1.migrate();
       expect(migrated.id, "123456");
       expect(migrated.createdAt, DateTime(2023, 4, 19));
       expect(migrated.lastModified, DateTime(2023, 4, 20));
@@ -363,8 +362,7 @@ void main() {
         price: 0,
       );
 
-      final VideoGameHardwarev2 migrated =
-          DatabaseMigrator.migrateHardwarev1(hardwarev1);
+      final VideoGameHardwarev2 migrated = hardwarev1.migrate();
       expect(migrated.id, "123456");
       expect(migrated.createdAt, DateTime(2023, 4, 19));
       expect(migrated.lastModified, DateTime(2023, 4, 20));
