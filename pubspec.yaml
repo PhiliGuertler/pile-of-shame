@@ -1,7 +1,7 @@
 name: pile_of_shame
 description: An offline list for the game status of all your video games
 publish_to: 'none'
-version: 1.6.0+804
+version: 1.6.1+805
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
