@@ -2,6 +2,7 @@ import 'package:misc_utils/misc_utils.dart';
 import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/models/game_sorting.dart';
 import 'package:pile_of_shame/utils/sorter_utils.dart';
+import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'game_sorter_provider.g.dart';
@@ -29,7 +30,7 @@ class SortGames extends _$SortGames with Persistable {
 
 @riverpod
 FutureOr<List<Game>> applyGameSorting(
-  ApplyGameSortingRef ref,
+  Ref ref,
   List<Game> games,
 ) async {
   final sorting = await ref.watch(sortGamesProvider.future);

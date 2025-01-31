@@ -4,12 +4,13 @@ import 'package:pile_of_shame/models/database.dart';
 import 'package:pile_of_shame/models/database_storage.dart';
 import 'package:pile_of_shame/providers/database/database_file_provider.dart';
 import 'package:pile_of_shame/utils/data_migration.dart';
+import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'database_provider.g.dart';
 
 @riverpod
-FutureOr<Database> database(DatabaseRef ref) async {
+FutureOr<Database> database(Ref ref) async {
   final databaseFile = await ref.watch(databaseFileProvider.future);
 
   final content = await databaseFile.readAsString();
@@ -23,5 +24,5 @@ FutureOr<Database> database(DatabaseRef ref) async {
 }
 
 @riverpod
-DatabaseStorage databaseStorage(DatabaseStorageRef ref) =>
+DatabaseStorage databaseStorage(Ref ref) =>
     DatabaseStorage(ref: ref);

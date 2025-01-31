@@ -7,6 +7,7 @@ import 'package:pile_of_shame/models/game_filters.dart';
 import 'package:pile_of_shame/models/game_platforms.dart';
 import 'package:pile_of_shame/models/play_status.dart';
 import 'package:pile_of_shame/providers/games/game_platforms_provider.dart';
+import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'game_filter_provider.g.dart';
@@ -33,7 +34,7 @@ class GameFilter extends _$GameFilter with Persistable {
 }
 
 @riverpod
-FutureOr<bool> isAnyFilterActive(IsAnyFilterActiveRef ref) async {
+FutureOr<bool> isAnyFilterActive(Ref ref) async {
   final allPlatforms = await ref.watch(activeGamePlatformsProvider.future);
   final allPlatformFamilies =
       await ref.read(activeGamePlatformFamiliesProvider.future);
@@ -56,7 +57,7 @@ FutureOr<bool> isAnyFilterActive(IsAnyFilterActiveRef ref) async {
 
 @riverpod
 FutureOr<List<Game>> applyGameFilters(
-  ApplyGameFiltersRef ref,
+  Ref ref,
   List<Game> games,
 ) async {
   final filters = await ref.watch(gameFilterProvider.future);

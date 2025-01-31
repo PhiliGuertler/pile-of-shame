@@ -2,13 +2,14 @@ import 'package:pile_of_shame/models/game_platforms.dart';
 import 'package:pile_of_shame/models/hardware.dart';
 import 'package:pile_of_shame/providers/database/database_provider.dart';
 import 'package:pile_of_shame/providers/hardware/hardware_sorter_provider.dart';
+import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'hardware_provider.g.dart';
 
 @riverpod
 FutureOr<List<VideoGameHardware>> hardware(
-  HardwareRef ref,
+  Ref ref,
 ) async {
   final database = await ref.watch(databaseProvider.future);
   return database.hardware;
@@ -16,7 +17,7 @@ FutureOr<List<VideoGameHardware>> hardware(
 
 @riverpod
 FutureOr<bool> hasHardware(
-  HasHardwareRef ref,
+  Ref ref,
 ) async {
   final hardware = await ref.watch(hardwareProvider.future);
   return hardware.isNotEmpty;
@@ -24,7 +25,7 @@ FutureOr<bool> hasHardware(
 
 @riverpod
 FutureOr<List<GamePlatform>> hardwarePlatforms(
-  HardwarePlatformsRef ref,
+  Ref ref,
 ) async {
   final hardware = await ref.watch(hardwareProvider.future);
 
@@ -41,7 +42,7 @@ FutureOr<List<GamePlatform>> hardwarePlatforms(
 
 @riverpod
 FutureOr<List<VideoGameHardware>> hardwareByPlatform(
-  HardwareByPlatformRef ref,
+  Ref ref,
   GamePlatform platform,
 ) async {
   final allHardware = await ref.watch(hardwareProvider.future);
@@ -61,7 +62,7 @@ FutureOr<List<VideoGameHardware>> hardwareByPlatform(
 
 @riverpod
 FutureOr<List<VideoGameHardware>> hardwareByPlatformFamily(
-  HardwareByPlatformFamilyRef ref,
+  Ref ref,
   GamePlatformFamily family,
 ) async {
   final allHardware = await ref.watch(hardwareProvider.future);
@@ -81,7 +82,7 @@ FutureOr<List<VideoGameHardware>> hardwareByPlatformFamily(
 
 @riverpod
 FutureOr<VideoGameHardware> hardwareById(
-  HardwareByIdRef ref,
+  Ref ref,
   String id,
 ) async {
   final allHardware = await ref.watch(hardwareProvider.future);
@@ -95,7 +96,7 @@ FutureOr<VideoGameHardware> hardwareById(
 
 @riverpod
 FutureOr<List<VideoGameHardware>> sortedHardwareByPlatform(
-  SortedHardwareByPlatformRef ref,
+  Ref ref,
   GamePlatform platform,
 ) async {
   final hardware = await ref.watch(hardwareByPlatformProvider(platform).future);

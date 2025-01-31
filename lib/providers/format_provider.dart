@@ -2,12 +2,13 @@ import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:pile_of_shame/models/app_currency.dart';
 import 'package:pile_of_shame/providers/currency_provider.dart';
+import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'format_provider.g.dart';
 
 @riverpod
-NumberFormat currencyFormat(CurrencyFormatRef ref, Locale locale) {
+NumberFormat currencyFormat(Ref ref, Locale locale) {
   final currency = ref.watch(currencySettingsProvider);
 
   final currencySymbol = currency.when(
@@ -24,14 +25,14 @@ NumberFormat currencyFormat(CurrencyFormatRef ref, Locale locale) {
 }
 
 @riverpod
-NumberFormat percentFormat(PercentFormatRef ref, Locale locale) {
+NumberFormat percentFormat(Ref ref, Locale locale) {
   return NumberFormat.percentPattern(
     locale.toLanguageTag(),
   );
 }
 
 @riverpod
-NumberFormat numberFormat(NumberFormatRef ref, Locale locale) {
+NumberFormat numberFormat(Ref ref, Locale locale) {
   return NumberFormat.decimalPatternDigits(
     decimalDigits: 2,
     locale: locale.toLanguageTag(),
@@ -39,11 +40,11 @@ NumberFormat numberFormat(NumberFormatRef ref, Locale locale) {
 }
 
 @riverpod
-DateFormat dateFormat(DateFormatRef ref, Locale locale) {
+DateFormat dateFormat(Ref ref, Locale locale) {
   return DateFormat.yMd(locale.toLanguageTag());
 }
 
 @riverpod
-DateFormat timeFormat(TimeFormatRef ref, Locale locale) {
+DateFormat timeFormat(Ref ref, Locale locale) {
   return DateFormat.Hms(locale.toLanguageTag());
 }

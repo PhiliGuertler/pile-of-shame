@@ -4,13 +4,14 @@ import 'package:pile_of_shame/models/game_platforms.dart';
 import 'package:pile_of_shame/models/hardware.dart';
 import 'package:pile_of_shame/providers/games/game_provider.dart';
 import 'package:pile_of_shame/providers/hardware/hardware_provider.dart';
+import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'analytics_provider.g.dart';
 
 @riverpod
 FutureOr<Database> databaseByPlatformFamily(
-  DatabaseByPlatformFamilyRef ref,
+  Ref ref,
   GamePlatformFamily? family,
 ) async {
   late List<Game> games;
@@ -29,7 +30,7 @@ FutureOr<Database> databaseByPlatformFamily(
 
 @riverpod
 FutureOr<Database> databaseByPlatform(
-  DatabaseByPlatformRef ref,
+  Ref ref,
   GamePlatform platform,
 ) async {
   final List<Game> games =
