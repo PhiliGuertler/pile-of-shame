@@ -2,13 +2,14 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:pile_of_shame/l10n/generated/app_localizations.dart';
+import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:theming/theming.dart';
 
 part 'l10n_provider.g.dart';
 
 @riverpod
-AppLocalizations l10n(L10nRef ref) {
+AppLocalizations l10n(Ref ref) {
   final appSettings = ref.watch(themeSettingsProvider);
 
   final platformLocale = Platform.localeName.split("_")[0];

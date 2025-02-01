@@ -60,7 +60,7 @@ class DefaultBarChart extends StatelessWidget {
             if (section.secondaryValue != null)
               BarChartRodData(
                 toY: section.secondaryValue!,
-                color: color.withOpacity(0.7),
+                color: color.withValues(alpha: 0.7),
                 width:
                     section.isSecondarySelected ? selectedBarWidth : barWidth,
                 borderRadius: BorderRadius.circular(4.0),
@@ -163,7 +163,6 @@ class DefaultBarChart extends StatelessWidget {
                       enabled: true,
                       handleBuiltInTouches: false,
                       touchTooltipData: BarTouchTooltipData(
-                        tooltipBgColor: Colors.transparent,
                         tooltipPadding: EdgeInsets.zero,
                         tooltipMargin: 8,
                         getTooltipItem: (
@@ -200,8 +199,8 @@ class DefaultBarChart extends StatelessWidget {
                     ),
                     gridData: const FlGridData(show: false),
                   ),
-                  swapAnimationDuration: transitionDuration,
-                  swapAnimationCurve: Curves.easeInOutBack,
+                  duration: transitionDuration,
+                  curve: Curves.easeInOutBack,
                 ),
               ),
             ),
@@ -244,11 +243,11 @@ class DefaultBarChartSkeleton extends StatelessWidget {
             barRods: [
               BarChartRodData(
                 toY: value,
-                color: color.withOpacity(rand.nextDouble() * 0.5 + 0.3),
+                color: color.withValues(alpha: rand.nextDouble() * 0.5 + 0.3),
                 width: 15.0,
                 borderRadius: BorderRadius.circular(4.0),
                 backDrawRodData: BackgroundBarChartRodData(
-                  color: color.withOpacity(0.1),
+                  color: color.withValues(alpha: 0.1),
                   fromY: 0,
                   toY: maxData,
                   show: true,
@@ -293,8 +292,8 @@ class DefaultBarChartSkeleton extends StatelessWidget {
                   ),
                   gridData: const FlGridData(show: false),
                 ),
-                swapAnimationDuration: 250.ms,
-                swapAnimationCurve: Curves.easeInOutBack,
+                duration: 250.ms,
+                curve: Curves.easeInOutBack,
               );
             },
           )

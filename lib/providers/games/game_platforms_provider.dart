@@ -2,6 +2,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:misc_utils/misc_utils.dart';
 import 'package:pile_of_shame/models/game_platforms.dart';
 import 'package:pile_of_shame/providers/games/game_provider.dart';
+import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'game_platforms_provider.freezed.dart';
@@ -45,7 +46,7 @@ class ActiveGamePlatforms extends _$ActiveGamePlatforms with Persistable {
 
 @riverpod
 FutureOr<List<GamePlatformFamily>> activeGamePlatformFamilies(
-  ActiveGamePlatformFamiliesRef ref,
+  Ref ref,
 ) async {
   final activePlatforms = await ref.watch(activeGamePlatformsProvider.future);
 
@@ -60,7 +61,7 @@ FutureOr<List<GamePlatformFamily>> activeGamePlatformFamilies(
 
 @riverpod
 Map<GamePlatformFamily, List<GamePlatform>> gamePlatformsByFamily(
-  GamePlatformsByFamilyRef ref,
+  Ref ref,
 ) {
   final Map<GamePlatformFamily, List<GamePlatform>> result = {};
 
@@ -76,7 +77,7 @@ Map<GamePlatformFamily, List<GamePlatform>> gamePlatformsByFamily(
 
 @riverpod
 FutureOr<Map<GamePlatformFamily, List<GamePlatform>>>
-    activeGamePlatformsByFamily(ActiveGamePlatformsByFamilyRef ref) async {
+    activeGamePlatformsByFamily(Ref ref) async {
   final activePlatforms = await ref.watch(activeGamePlatformsProvider.future);
 
   final Map<GamePlatformFamily, List<GamePlatform>> result = {};
@@ -92,7 +93,7 @@ FutureOr<Map<GamePlatformFamily, List<GamePlatform>>>
 
 @riverpod
 FutureOr<List<GamePlatformFamily>> gamePlatformFamiliesWithSavedGames(
-  GamePlatformFamiliesWithSavedGamesRef ref,
+  Ref ref,
 ) async {
   final games = await ref.watch(gamesProvider.future);
 

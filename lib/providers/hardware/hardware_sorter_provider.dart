@@ -2,6 +2,7 @@ import 'package:misc_utils/misc_utils.dart';
 import 'package:pile_of_shame/models/hardware.dart';
 import 'package:pile_of_shame/models/hardware_sorting.dart';
 import 'package:pile_of_shame/utils/sorter_utils.dart';
+import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'hardware_sorter_provider.g.dart';
@@ -29,7 +30,7 @@ class SortHardware extends _$SortHardware with Persistable {
 
 @riverpod
 FutureOr<List<VideoGameHardware>> applyHardwareSorting(
-  ApplyHardwareSortingRef ref,
+  Ref ref,
   List<VideoGameHardware> hardware,
 ) async {
   final sorting = await ref.watch(sortHardwareProvider.future);

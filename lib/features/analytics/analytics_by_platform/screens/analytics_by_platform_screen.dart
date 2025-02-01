@@ -1,8 +1,8 @@
-import 'package:custom_nested_scroll_view/custom_nested_scroll_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:misc_utils/misc_utils.dart';
+import 'package:nested_scroll_view_plus/nested_scroll_view_plus.dart';
 import 'package:pile_of_shame/features/analytics/analytics_by_families/providers/analytics_provider.dart';
 import 'package:pile_of_shame/features/analytics/analytics_by_families/widgets/sliver_analytics_details.dart';
 import 'package:pile_of_shame/features/games/games_list/widgets/slivers/sliver_grouped_games.dart';
@@ -30,7 +30,7 @@ class AnalyticsByPlatformScreen extends ConsumerWidget {
     return AppScaffold(
       body: DefaultTabController(
         length: 2,
-        child: CustomNestedScrollView(
+        child: NestedScrollViewPlus(
           headerSliverBuilder: (context, innerBoxIsScrolled) => [
             SliverFancyImageAppBar(
               imagePath: platform.controller.value,

@@ -1,7 +1,7 @@
 name: pile_of_shame
 description: An offline list for the game status of all your video games
 publish_to: 'none'
-version: 1.6.0+804
+version: 1.6.1+805
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
@@ -9,14 +9,9 @@ environment:
 dependencies:
   animations: ^2.0.7
   crypto: ^3.0.3
-  custom_nested_scroll_view:
-    git:
-      url: https://github.com/idootop/custom_nested_scroll_view.git
-      # Which branch to use is based on your local flutter version
-      ref: flutter-3.7 # flutter-2.x flutter-3.0 flutter-3.4 flutter-3.7
   dynamic_color: ^1.6.6
-  file_picker: ^6.1.1
-  fl_chart: ^0.64.0
+  file_picker: ^8.3.1
+  fl_chart: ^0.70.2
   flutter:
     sdk: flutter
   flutter_animate: ^4.2.0+1
@@ -26,18 +21,20 @@ dependencies:
   flutter_native_splash: ^2.3.2
   flutter_riverpod: ^2.3.6
   flutter_sharing_intent: ^1.1.0
-  flutter_slidable: ^3.0.0
-  flutter_sticky_header: ^0.6.5
+  flutter_slidable: ^4.0.0
+  flutter_sticky_header: ^0.7.0
   freezed_annotation: ^2.4.1
   fuzzywuzzy: ^1.1.6
   intl: any
   json_annotation: ^4.8.1
   misc_utils:
     path: packages/misc_utils
-  package_info_plus: ^5.0.1
+  nested_scroll_view_plus: ^3.0.0
+  package_info_plus: ^8.1.4
   path_provider: ^2.1.0
+  riverpod: ^2.6.1
   riverpod_annotation: ^2.1.1
-  share_plus: ^7.1.0
+  share_plus: ^10.1.4
   shared_preferences: ^2.2.0
   theming:
     path: packages/theming
@@ -48,8 +45,8 @@ dependencies:
 dev_dependencies:
   build_runner: ^2.4.6
   custom_lint: any
-  flutter_launcher_icons: ^0.13.1
-  flutter_lints: ^2.0.0
+  flutter_launcher_icons: ^0.14.3
+  flutter_lints: ^5.0.0
   flutter_test:
     sdk: flutter
   freezed: any

@@ -82,8 +82,9 @@ class CompactBarChart extends StatelessWidget {
               borderRadius: BorderRadius.zero,
               backDrawRodData: showBackground
                   ? BackgroundBarChartRodData(
-                      color: backgroundColor
-                          .withOpacity(section.isSelected ? 0.2 : 0.1),
+                      color: backgroundColor.withValues(
+                        alpha: section.isSelected ? 0.2 : 0.1,
+                      ),
                       fromY: 0,
                       toY: maxData,
                       show: true,
@@ -156,7 +157,6 @@ class CompactBarChart extends StatelessWidget {
                     enabled: true,
                     handleBuiltInTouches: false,
                     touchTooltipData: BarTouchTooltipData(
-                      tooltipBgColor: Colors.transparent,
                       tooltipPadding: EdgeInsets.zero,
                       tooltipMargin: 8,
                       getTooltipItem: (
@@ -191,8 +191,8 @@ class CompactBarChart extends StatelessWidget {
                   ),
                   gridData: const FlGridData(show: false),
                 ),
-                swapAnimationDuration: 250.ms,
-                swapAnimationCurve: Curves.easeInOutBack,
+                duration: 250.ms,
+                curve: Curves.easeInOutBack,
               );
             },
           ),

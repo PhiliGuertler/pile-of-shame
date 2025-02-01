@@ -2,6 +2,7 @@ import 'package:fuzzywuzzy/fuzzywuzzy.dart' as fuzzy;
 import 'package:misc_utils/misc_utils.dart';
 import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/utils/constants.dart';
+import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'game_search_provider.g.dart';
@@ -20,7 +21,7 @@ class GameSearch extends _$GameSearch {
 }
 
 @riverpod
-List<Game> applyGameSearch(ApplyGameSearchRef ref, List<Game> games) {
+List<Game> applyGameSearch(Ref ref, List<Game> games) {
   final searchTerm = ref.watch(gameSearchProvider);
 
   if (searchTerm.isEmpty) {
