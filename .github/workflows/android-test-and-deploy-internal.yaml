@@ -57,7 +57,7 @@ jobs:
       - name: Flutter - build application
         run: flutter build appbundle --release
       - name: Upload app artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: app-build-release
           path: build/app/outputs/bundle/release/app-release.aab
@@ -68,13 +68,13 @@ jobs:
       - name: move debug-symbols to android directory
         run: mv build/app/intermediates/merged_native_libs/release/out/lib/native-debug-symbols.zip android/native-debug-symbols.zip
       - name: Upload debug symbol artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: app-native-debug-symbols
           path: android/native-debug-symbols.zip
           retention-days: 5
       - name: Upload mapping artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: app-mapping
           path: build/app/outputs/mapping/release/mapping.txt
@@ -84,7 +84,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: Deployment
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
@@ -96,17 +96,17 @@ jobs:
       - name: Setup directory structure
         run: mkdir -p build/app/outputs/bundle/release/
       - name: Restore built app
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: app-build-release
           path: build/app/outputs/bundle/release/
       - name: Restore debug symbols
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: app-native-debug-symbols
           path: android/
       - name: Restore mapping
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: app-mapping
           path: android/
