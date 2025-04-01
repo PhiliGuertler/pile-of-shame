@@ -125,6 +125,7 @@ void main() {
           GamePlatform.wii,
           GamePlatform.wiiU,
           GamePlatform.nintendoSwitch,
+          GamePlatform.nintendoSwitch2,
         ],
         GamePlatformFamily.sony: [
           GamePlatform.playStationPortable,
