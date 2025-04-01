@@ -1,5 +1,5 @@
-Версия 1.6
+Version 1.7
 
-В этой версии вводится категория "Абонемент" как метод закупки.
+This version adds Nintendo Switch 2.
 
-Получайте удовольствие от игры Pile of Shame!
+Have fun with Pile of Shame!

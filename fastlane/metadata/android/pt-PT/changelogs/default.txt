@@ -1,5 +1,5 @@
-Versão 1.6
+Version 1.7
 
-Esta versão introduz a categoria "Assinatura" como método de aquisição.
+This version adds Nintendo Switch 2.
 
-Diverte-te com o Pile of Shame!
+Have fun with Pile of Shame!

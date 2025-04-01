@@ -1,5 +1,5 @@
-バージョン1.6
+Version 1.7
 
-このバージョンでは、調達方法として「サブスクリプション」カテゴリーが追加されました。
+This version adds Nintendo Switch 2.
 
-Pile of Shameを楽しもう！
+Have fun with Pile of Shame!
