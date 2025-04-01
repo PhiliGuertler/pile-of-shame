@@ -92,6 +92,9 @@ enum ImageAssets {
   controllerNintendoSwitch(
     value: 'assets/platforms/controllers/nintendo/nintendo_switch.webp',
   ),
+  controllerNintendoSwitch2(
+    value: 'assets/platforms/controllers/nintendo/nintendo_switch_2.webp',
+  ),
   controllerSNES(value: 'assets/platforms/controllers/nintendo/super_nes.webp'),
   controllerNintendoWii(
     value: 'assets/platforms/controllers/nintendo/wii.webp',
@@ -194,6 +197,9 @@ enum ImageAssets {
   iconNintendoDSi(value: 'assets/platforms/icons/nintendo/nintendo_dsi.webp'),
   iconNintendoSwitch(
     value: 'assets/platforms/icons/nintendo/nintendo_switch.webp',
+  ),
+  iconNintendoSwitch2(
+    value: 'assets/platforms/icons/nintendo/nintendo_switch_2.webp',
   ),
   iconSNES(value: 'assets/platforms/icons/nintendo/super_nes.webp'),
   iconNintendoWii(value: 'assets/platforms/icons/nintendo/wii.webp'),
