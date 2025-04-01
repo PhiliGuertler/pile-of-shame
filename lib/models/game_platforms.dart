@@ -174,6 +174,14 @@ enum GamePlatform {
     controller: ImageAssets.controllerNintendoSwitch,
     icon: ImageAssets.iconNintendoSwitch,
   ),
+  nintendoSwitch2(
+    family: GamePlatformFamily.nintendo,
+    name: "Nintendo Switch 2",
+    abbreviation: "Switch 2",
+    type: GamePlatformType.stationary,
+    controller: ImageAssets.controllerNintendoSwitch2,
+    icon: ImageAssets.iconNintendoSwitch2,
+  ),
   // #### Sony ############################################################## //
   // ### Handhelds ########################################################## //
   playStationPortable(

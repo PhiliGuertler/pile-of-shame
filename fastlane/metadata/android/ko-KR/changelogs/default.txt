@@ -1,5 +1,5 @@
-버전 1.6
+Version 1.7
 
-이 버전에서는 조달 방법으로 "구독" 카테고리를 도입합니다.
+This version adds Nintendo Switch 2.
 
-수치심 더미와 함께 즐거운 시간 보내세요!
+Have fun with Pile of Shame!

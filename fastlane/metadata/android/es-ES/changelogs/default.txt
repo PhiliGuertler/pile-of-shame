@@ -1,5 +1,5 @@
-Versión 1.6
+Version 1.7
 
-Esta versión introduce la categoría "Suscripción" como método de adquisición.
+This version adds Nintendo Switch 2.
 
-¡Diviértete con Pile of Shame!
+Have fun with Pile of Shame!
