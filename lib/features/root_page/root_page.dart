@@ -108,11 +108,7 @@ class _RootPageState extends ConsumerState<RootPage> {
         floatingActionButton:
             activeTab.fab(context, !isScrolled[activeTab.index]),
         appBar: activeTab.appBar(
-          _scrollControllers[activeTab.index],
-          hasGames.maybeWhen(
-            orElse: () => false,
-            data: (data) => data,
-          ),
+          _scrollControllers[activeTab.index]
         ),
         bottomNavigationBar: NavigationBar(
           selectedIndex: activeTab.index,
