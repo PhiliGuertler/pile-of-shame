@@ -33,6 +33,7 @@ void main() {
   setUp(() {
     mockFileUtils = MockFileUtils();
     container = ProviderContainer(
+      retry: (retryCount, error) => null,
       overrides: [
         fileUtilsProvider.overrideWithValue(mockFileUtils),
       ],

@@ -7,7 +7,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'edit_game_provider.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 class AddGame extends _$AddGame {
   @override
   EditableGame build([EditableGame? initialValue, PlayStatus? initialStatus]) {
@@ -27,7 +27,7 @@ class AddGame extends _$AddGame {
   }
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 class AddDLC extends _$AddDLC {
   @override
   EditableDLC build([EditableDLC? initialValue]) {

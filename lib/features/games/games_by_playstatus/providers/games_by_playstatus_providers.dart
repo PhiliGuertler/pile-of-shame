@@ -81,7 +81,7 @@ class GamesWithNotesSorter extends _$GamesWithNotesSorter with Persistable {
   }
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 Future<GameSorting> gameSortingByPlayStatus(
   Ref ref,
   PlayStatus status,
@@ -91,7 +91,7 @@ Future<GameSorting> gameSortingByPlayStatus(
   return sorters[status]!;
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 Future<List<Game>> gamesByPlayStatusesSorted(
   Ref ref,
   List<PlayStatus> statuses,
@@ -106,7 +106,7 @@ Future<List<Game>> gamesByPlayStatusesSorted(
   return SorterUtils.sortGames(games, sorter);
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 Future<List<Game>> favoriteGamesSorted(
   Ref ref,
 ) async {
@@ -117,7 +117,7 @@ Future<List<Game>> favoriteGamesSorted(
   return SorterUtils.sortGames(games, sorter);
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 Future<List<Game>> gamesWithNotesSorted(
   Ref ref,
 ) async {

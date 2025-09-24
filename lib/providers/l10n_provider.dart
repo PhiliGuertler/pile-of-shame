@@ -7,7 +7,7 @@ import 'package:theming/theming.dart';
 
 part 'l10n_provider.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 AppLocalizations l10n(Ref ref) {
   final appSettings = ref.watch(themeSettingsProvider);
 

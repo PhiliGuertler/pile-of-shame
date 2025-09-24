@@ -6,7 +6,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'format_provider.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 NumberFormat currencyFormat(Ref ref, Locale locale) {
   final currency = ref.watch(currencySettingsProvider);
 
@@ -23,14 +23,14 @@ NumberFormat currencyFormat(Ref ref, Locale locale) {
   );
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 NumberFormat percentFormat(Ref ref, Locale locale) {
   return NumberFormat.percentPattern(
     locale.toLanguageTag(),
   );
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 NumberFormat numberFormat(Ref ref, Locale locale) {
   return NumberFormat.decimalPatternDigits(
     decimalDigits: 2,
@@ -38,12 +38,12 @@ NumberFormat numberFormat(Ref ref, Locale locale) {
   );
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 DateFormat dateFormat(Ref ref, Locale locale) {
   return DateFormat.yMd(locale.toLanguageTag());
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 DateFormat timeFormat(Ref ref, Locale locale) {
   return DateFormat.Hms(locale.toLanguageTag());
 }

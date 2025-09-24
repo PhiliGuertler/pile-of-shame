@@ -43,7 +43,7 @@ class ActiveGamePlatforms extends _$ActiveGamePlatforms with Persistable {
   }
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 FutureOr<List<GamePlatformFamily>> activeGamePlatformFamilies(
   Ref ref,
 ) async {
@@ -58,7 +58,7 @@ FutureOr<List<GamePlatformFamily>> activeGamePlatformFamilies(
   return families.toList();
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 Map<GamePlatformFamily, List<GamePlatform>> gamePlatformsByFamily(
   Ref ref,
 ) {
@@ -74,7 +74,7 @@ Map<GamePlatformFamily, List<GamePlatform>> gamePlatformsByFamily(
   return result;
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 FutureOr<Map<GamePlatformFamily, List<GamePlatform>>>
     activeGamePlatformsByFamily(Ref ref) async {
   final activePlatforms = await ref.watch(activeGamePlatformsProvider.future);
@@ -90,7 +90,7 @@ FutureOr<Map<GamePlatformFamily, List<GamePlatform>>>
   return result;
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 FutureOr<List<GamePlatformFamily>> gamePlatformFamiliesWithSavedGames(
   Ref ref,
 ) async {

@@ -19,7 +19,7 @@ class GameSearch extends _$GameSearch {
   }
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 List<Game> applyGameSearch(Ref ref, List<Game> games) {
   final searchTerm = ref.watch(gameSearchProvider);
 

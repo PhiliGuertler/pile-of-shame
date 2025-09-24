@@ -28,7 +28,7 @@ class GroupGames extends _$GroupGames with Persistable {
   }
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 FutureOr<Map<String, List<Game>>> applyGameGroup(
   Ref ref,
   List<Game> games,

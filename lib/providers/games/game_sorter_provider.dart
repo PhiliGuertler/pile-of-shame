@@ -27,7 +27,7 @@ class SortGames extends _$SortGames with Persistable {
   }
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 FutureOr<List<Game>> applyGameSorting(
   Ref ref,
   List<Game> games,

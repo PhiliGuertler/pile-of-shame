@@ -8,7 +8,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'analytics_provider.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 FutureOr<Database> databaseByPlatformFamily(
   Ref ref,
   GamePlatformFamily? family,
@@ -27,7 +27,7 @@ FutureOr<Database> databaseByPlatformFamily(
   return Database(games: games, hardware: hardware);
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 FutureOr<Database> databaseByPlatform(
   Ref ref,
   GamePlatform platform,

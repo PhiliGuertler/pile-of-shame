@@ -32,11 +32,14 @@ class GameFilter extends _$GameFilter with Persistable {
   }
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 FutureOr<bool> isAnyFilterActive(Ref ref) async {
   final allPlatforms = await ref.watch(activeGamePlatformsProvider.future);
+  // if (!ref.mounted) return false;
+
   final allPlatformFamilies =
       await ref.read(activeGamePlatformFamiliesProvider.future);
+  // if (!ref.mounted) return false;
 
   final filters = await ref.watch(gameFilterProvider.future);
 
@@ -54,15 +57,18 @@ FutureOr<bool> isAnyFilterActive(Ref ref) async {
       filters.hasDLCs.length < 2;
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 FutureOr<List<Game>> applyGameFilters(
   Ref ref,
   List<Game> games,
 ) async {
   final filters = await ref.watch(gameFilterProvider.future);
+  // if (!ref.mounted) return [];
 
   final activeGamePlatforms =
       await ref.watch(activeGamePlatformsProvider.future);
+  // if (!ref.mounted) return [];
+
   final activeGamePlatformFamilies =
       await ref.watch(activeGamePlatformFamiliesProvider.future);
 

@@ -27,7 +27,7 @@ class SortHardware extends _$SortHardware with Persistable {
   }
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 FutureOr<List<VideoGameHardware>> applyHardwareSorting(
   Ref ref,
   List<VideoGameHardware> hardware,

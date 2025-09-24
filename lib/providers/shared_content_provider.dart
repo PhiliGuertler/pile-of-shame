@@ -17,7 +17,7 @@ class SharedContent extends _$SharedContent {
   }
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 bool hasSharedContent(Ref ref) {
   final content = ref.watch(sharedContentProvider);
   return content.isNotEmpty;

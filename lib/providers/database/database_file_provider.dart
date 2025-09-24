@@ -7,7 +7,7 @@ part 'database_file_provider.g.dart';
 
 const String gameFileName = "game-store.json";
 
-@riverpod
+@Riverpod(keepAlive: true)
 FutureOr<File> databaseFile(Ref ref) async {
   final fileUtils = ref.watch(fileUtilsProvider);
   final file = await fileUtils.openFile(gameFileName);
