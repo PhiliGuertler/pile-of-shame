@@ -2,7 +2,6 @@ import 'package:misc_utils/misc_utils.dart';
 import 'package:pile_of_shame/models/hardware.dart';
 import 'package:pile_of_shame/models/hardware_sorting.dart';
 import 'package:pile_of_shame/utils/sorter_utils.dart';
-import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'hardware_sorter_provider.g.dart';

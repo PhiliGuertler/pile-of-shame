@@ -2,7 +2,6 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:misc_utils/misc_utils.dart';
 import 'package:pile_of_shame/models/game_platforms.dart';
 import 'package:pile_of_shame/providers/games/game_provider.dart';
-import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'game_platforms_provider.freezed.dart';

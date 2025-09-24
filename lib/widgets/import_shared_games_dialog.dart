@@ -135,7 +135,7 @@ class _ImportSharedGamesState extends ConsumerState<ImportSharedGames> {
                       onTap: isLoading
                           ? null
                           : () => importSharedGames(
-                                (File pickedFile) async {
+                                (File pickedFile) {
                                   final gameStorage =
                                       ref.read(databaseStorageProvider);
                                   return gameStorage

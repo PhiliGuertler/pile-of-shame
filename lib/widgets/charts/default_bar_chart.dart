@@ -287,7 +287,7 @@ class DefaultBarChartSkeleton extends StatelessWidget {
                   ),
                   barGroups: snapshot.data,
                   borderData: FlBorderData(show: false),
-                  barTouchData: BarTouchData(
+                  barTouchData: const BarTouchData(
                     enabled: false,
                   ),
                   gridData: const FlGridData(show: false),

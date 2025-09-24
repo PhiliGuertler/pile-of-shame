@@ -2,7 +2,6 @@ import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:pile_of_shame/models/app_currency.dart';
 import 'package:pile_of_shame/providers/currency_provider.dart';
-import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'format_provider.g.dart';

@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:pile_of_shame/providers/file_provider.dart';
-import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'database_file_provider.g.dart';

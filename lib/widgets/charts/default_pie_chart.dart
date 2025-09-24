@@ -109,8 +109,8 @@ class DefaultPieChart extends StatelessWidget {
                 },
               ),
             ),
-            swapAnimationDuration: 350.ms,
-            swapAnimationCurve: Curves.easeInOutBack,
+            duration: 350.ms,
+            curve: Curves.easeInOutBack,
           ),
           IgnorePointer(
             child: Center(
@@ -156,7 +156,7 @@ class DefaultPieChartSkeleton extends StatelessWidget {
           PieChartSectionData(
             title: "",
             value: rand.nextDouble() * 10.0 + 10.0,
-            color: color.withOpacity(rand.nextDouble() * 0.5 + 0.2),
+            color: color.withValues(alpha: rand.nextDouble() * 0.5 + 0.2),
             radius: 60.0,
           ),
         );
@@ -185,8 +185,8 @@ class DefaultPieChartSkeleton extends StatelessWidget {
                   startDegreeOffset: 270,
                   pieTouchData: PieTouchData(enabled: false),
                 ),
-                swapAnimationDuration: 350.ms,
-                swapAnimationCurve: Curves.easeOutBack,
+                duration: 350.ms,
+                curve: Curves.easeOutBack,
               );
             },
           )

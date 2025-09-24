@@ -46,18 +46,18 @@ class EndDragTargetSlot extends StatelessWidget {
           begin: BoxShadow(
             spreadRadius: 5.0,
             color: isHovered
-                ? Colors.green.withOpacity(0.7)
+                ? Colors.green.withValues(alpha: 0.7)
                 : Theme.of(context)
                     .colorScheme
                     .surfaceContainerHighest
-                    .withOpacity(0.7),
+                    .withValues(alpha: 0.7),
             blurRadius: 5.0,
           ),
           end: BoxShadow(
             spreadRadius: 5.0,
             color: isHovered
-                ? Colors.green.withOpacity(0.7)
-                : Theme.of(context).colorScheme.surface.withOpacity(0.9),
+                ? Colors.green.withValues(alpha: 0.7)
+                : Theme.of(context).colorScheme.surface.withValues(alpha: 0.9),
             blurRadius: 5.0,
           ),
         );
@@ -96,18 +96,18 @@ class BottomDragTargetSlot extends StatelessWidget {
           begin: BoxShadow(
             spreadRadius: 5.0,
             color: isHovered
-                ? Colors.green.withOpacity(0.7)
+                ? Colors.green.withValues(alpha: 0.7)
                 : Theme.of(context)
                     .colorScheme
                     .surfaceContainerHighest
-                    .withOpacity(0.7),
+                    .withValues(alpha: 0.7),
             blurRadius: 5.0,
           ),
           end: BoxShadow(
             spreadRadius: 5.0,
             color: isHovered
-                ? Colors.green.withOpacity(0.7)
-                : Theme.of(context).colorScheme.surface.withOpacity(0.9),
+                ? Colors.green.withValues(alpha: 0.7)
+                : Theme.of(context).colorScheme.surface.withValues(alpha: 0.9),
             blurRadius: 5.0,
           ),
         );

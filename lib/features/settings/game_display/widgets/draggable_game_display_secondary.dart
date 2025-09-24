@@ -41,7 +41,7 @@ class DraggableGameDisplaySecondary extends StatelessWidget {
             borderRadius: BorderRadius.circular(8.0),
             boxShadow: [
               BoxShadow(
-                color: Colors.grey.shade700.withOpacity(0.4),
+                color: Colors.grey.shade700.withValues(alpha: 0.4),
               ),
               BoxShadow(
                 color: Theme.of(context).colorScheme.surface,
@@ -56,7 +56,7 @@ class DraggableGameDisplaySecondary extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8.0),
             border: Border.all(
-              color: Theme.of(context).colorScheme.primary.withOpacity(0.5),
+              color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.5),
             ),
           ),
           child: child,

@@ -5,7 +5,6 @@ import 'package:pile_of_shame/models/game_sorting.dart';
 import 'package:pile_of_shame/models/play_status.dart';
 import 'package:pile_of_shame/providers/games/game_provider.dart';
 import 'package:pile_of_shame/utils/sorter_utils.dart';
-import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'games_by_playstatus_providers.g.dart';

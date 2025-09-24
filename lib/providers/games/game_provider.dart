@@ -6,7 +6,6 @@ import 'package:pile_of_shame/providers/games/game_filter_provider.dart';
 import 'package:pile_of_shame/providers/games/game_group_provider.dart';
 import 'package:pile_of_shame/providers/games/game_search_provider.dart';
 import 'package:pile_of_shame/providers/games/game_sorter_provider.dart';
-import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'game_provider.g.dart';
