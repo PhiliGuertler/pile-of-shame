@@ -36,7 +36,7 @@ enum CurrencySymbols {
 }
 
 @freezed
-class AppCurrency with _$AppCurrency {
+abstract class AppCurrency with _$AppCurrency {
   const factory AppCurrency({
     @Default(CurrencySymbols.euro) CurrencySymbols currency,
   }) = _AppCurrency;

@@ -6,7 +6,7 @@ part 'hardware.freezed.dart';
 part 'hardware.g.dart';
 
 @freezed
-class VideoGameHardware with _$VideoGameHardware {
+abstract class VideoGameHardware with _$VideoGameHardware {
   const factory VideoGameHardware({
     required String id,
     required String name,

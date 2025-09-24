@@ -9,7 +9,7 @@ part 'game_platforms_provider.freezed.dart';
 part 'game_platforms_provider.g.dart';
 
 @freezed
-class GamePlatformList with _$GamePlatformList {
+abstract class GamePlatformList with _$GamePlatformList {
   const factory GamePlatformList({
     required List<GamePlatform> platforms,
   }) = _GamePlatformList;

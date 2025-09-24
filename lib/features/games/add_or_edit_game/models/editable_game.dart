@@ -9,7 +9,7 @@ import 'package:uuid/uuid.dart';
 part 'editable_game.freezed.dart';
 
 @freezed
-class EditableDLC with _$EditableDLC {
+abstract class EditableDLC with _$EditableDLC {
   const factory EditableDLC({
     DateTime? createdAt,
     String? uuid,
@@ -57,7 +57,7 @@ class EditableDLC with _$EditableDLC {
 }
 
 @freezed
-class EditableGame with _$EditableGame {
+abstract class EditableGame with _$EditableGame {
   const factory EditableGame({
     DateTime? createdAt,
     String? uuid,

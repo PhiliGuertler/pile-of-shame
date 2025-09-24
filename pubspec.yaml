@@ -4,65 +4,67 @@ publish_to: 'none'
 version: 1.7.0+807
 
 environment:
-  sdk: '>=3.0.0 <4.0.0'
+  sdk: '>=3.9.2 <4.0.0'
+  flutter: ">=3.35.4 <4.0.0"
 
 dependencies:
-  animations: ^2.0.7
-  crypto: ^3.0.3
-  dynamic_color: ^1.6.6
-  file_picker: ^8.3.1
-  fl_chart: ^0.70.2
+  animations: ^2.0.11
+  crypto: ^3.0.6
+  dynamic_color: ^1.8.1
+  file_picker: ^10.3.3
+  fl_chart: ^1.1.1
   flutter:
     sdk: flutter
-  flutter_animate: ^4.2.0+1
+  flutter_animate: ^4.5.2
   flutter_file_dialog: ^3.0.2
   flutter_localizations:
     sdk: flutter
-  flutter_native_splash: ^2.3.2
-  flutter_riverpod: ^2.3.6
-  flutter_sharing_intent: ^1.1.0
-  flutter_slidable: ^4.0.0
-  flutter_sticky_header: ^0.7.0
-  freezed_annotation: ^2.4.1
-  fuzzywuzzy: ^1.1.6
+  flutter_native_splash: ^2.4.6
+  flutter_riverpod: ^3.0.0
+  flutter_sharing_intent: ^1.1.1
+  flutter_slidable: ^4.0.1
+  flutter_sticky_header: ^0.8.0
+  freezed_annotation: ^3.1.0
+  fuzzywuzzy: ^1.2.0
   intl: any
-  json_annotation: ^4.8.1
+  json_annotation: ^4.9.0
   misc_utils:
     path: packages/misc_utils
   nested_scroll_view_plus: ^3.0.0
-  package_info_plus: ^8.1.4
-  path_provider: ^2.1.0
-  riverpod: ^2.6.1
-  riverpod_annotation: ^2.1.1
-  share_plus: ^10.1.4
-  shared_preferences: ^2.2.0
+  package_info_plus: ^9.0.0
+  path_provider: ^2.1.5
+  riverpod: ^3.0.0
+  riverpod_annotation: ^3.0.0
+  share_plus: ^12.0.0
+  shared_preferences: ^2.5.3
   theming:
     path: packages/theming
   transparent_image: ^2.0.1
-  url_launcher: ^6.1.14
-  uuid: ^4.2.1
+  url_launcher: ^6.3.2
+  uuid: ^4.5.1
 
 dev_dependencies:
-  build_runner: ^2.4.6
-  custom_lint: any
-  flutter_launcher_icons: ^0.14.3
-  flutter_lints: ^5.0.0
+  build_runner: ^2.5.4
+  riverpod_generator: ^3.0.0
+  flutter_launcher_icons: ^0.14.4
+  flutter_lints: ^6.0.0
   flutter_test:
     sdk: flutter
   freezed: any
-  golden_toolkit: ^0.15.0
+  # golden_toolkit: ^0.15.0
   json_serializable: any
-  lint: ^2.1.2
+  lint: ^2.8.0
   mockito: any
   # Testing path_provider requires these dependency
-  path_provider_platform_interface: ^2.1.0
+  path_provider_platform_interface: ^2.1.2
   # Testing path_provider requires this dependency
   plugin_platform_interface: any
-  riverpod_generator: any
-  riverpod_lint: any
+  # riverpod_generator: any  # Temporarily disabled due to analyzer compatibility
+  # riverpod_lint: any  # Temporarily disabled due to analyzer compatibility
 
 flutter:
   uses-material-design: true
+  generate: true
 
   assets:
     - assets/app/

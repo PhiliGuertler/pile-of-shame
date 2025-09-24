@@ -8,7 +8,7 @@ part 'game.freezed.dart';
 part 'game.g.dart';
 
 @freezed
-class DLC with _$DLC {
+abstract class DLC with _$DLC {
   const factory DLC({
     required String id,
     required String name,
@@ -26,7 +26,7 @@ class DLC with _$DLC {
 }
 
 @freezed
-class Game with _$Game {
+abstract class Game with _$Game {
   const factory Game({
     required String id,
     required String name,

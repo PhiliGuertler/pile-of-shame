@@ -189,7 +189,7 @@ enum GroupStrategy {
 }
 
 @freezed
-class GameGrouping with _$GameGrouping {
+abstract class GameGrouping with _$GameGrouping {
   const factory GameGrouping({
     @Default(GroupStrategy.byNone) GroupStrategy groupStrategy,
   }) = _GameGrouping;
