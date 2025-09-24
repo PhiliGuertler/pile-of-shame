@@ -24,7 +24,8 @@ class _RootPageState extends ConsumerState<RootPage> {
   RootTabs activeTab = RootTabs.games;
 
   void _handleRootTabChange(int index, BuildContext context) {
-    if (index == activeTab.index) {
+    if (index == activeTab.index && 
+      _scrollControllers[index].hasClients) {
       _scrollControllers[index].animateTo(
         0.0,
         duration: const Duration(milliseconds: 500),
