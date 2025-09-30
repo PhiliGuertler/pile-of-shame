@@ -88,3 +88,6 @@ flutter:
     - assets/platforms/icons/retro/
     - assets/platforms/icons/sega/
     - assets/platforms/icons/sony/
+
+  # Enable image caching and compression
+  fonts: []
