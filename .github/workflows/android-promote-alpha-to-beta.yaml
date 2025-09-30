@@ -48,6 +48,7 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
+          flutter-version-file: pubspec.yaml
           cache: true
         # Fetch dependencies and generate code
         ## packages
@@ -110,6 +111,7 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
+          flutter-version-file: pubspec.yaml
           cache: true
         # Fetch dependencies and generate code
         ## packages
