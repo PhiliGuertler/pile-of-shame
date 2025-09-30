@@ -4,12 +4,11 @@ import 'package:pile_of_shame/models/game_platforms.dart';
 import 'package:pile_of_shame/models/hardware.dart';
 import 'package:pile_of_shame/providers/games/game_provider.dart';
 import 'package:pile_of_shame/providers/hardware/hardware_provider.dart';
-import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'analytics_provider.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 FutureOr<Database> databaseByPlatformFamily(
   Ref ref,
   GamePlatformFamily? family,
@@ -28,7 +27,7 @@ FutureOr<Database> databaseByPlatformFamily(
   return Database(games: games, hardware: hardware);
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 FutureOr<Database> databaseByPlatform(
   Ref ref,
   GamePlatform platform,

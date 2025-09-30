@@ -6,7 +6,7 @@ part 'database.freezed.dart';
 part 'database.g.dart';
 
 @freezed
-class Database with _$Database {
+abstract class Database with _$Database {
   const factory Database({
     required List<Game> games,
     required List<VideoGameHardware> hardware,

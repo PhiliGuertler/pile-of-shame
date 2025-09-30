@@ -5,7 +5,6 @@ import 'package:pile_of_shame/models/game_sorting.dart';
 import 'package:pile_of_shame/models/play_status.dart';
 import 'package:pile_of_shame/providers/games/game_provider.dart';
 import 'package:pile_of_shame/utils/sorter_utils.dart';
-import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'games_by_playstatus_providers.g.dart';
@@ -82,7 +81,7 @@ class GamesWithNotesSorter extends _$GamesWithNotesSorter with Persistable {
   }
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 Future<GameSorting> gameSortingByPlayStatus(
   Ref ref,
   PlayStatus status,
@@ -92,7 +91,7 @@ Future<GameSorting> gameSortingByPlayStatus(
   return sorters[status]!;
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 Future<List<Game>> gamesByPlayStatusesSorted(
   Ref ref,
   List<PlayStatus> statuses,
@@ -107,7 +106,7 @@ Future<List<Game>> gamesByPlayStatusesSorted(
   return SorterUtils.sortGames(games, sorter);
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 Future<List<Game>> favoriteGamesSorted(
   Ref ref,
 ) async {
@@ -118,7 +117,7 @@ Future<List<Game>> favoriteGamesSorted(
   return SorterUtils.sortGames(games, sorter);
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 Future<List<Game>> gamesWithNotesSorted(
   Ref ref,
 ) async {

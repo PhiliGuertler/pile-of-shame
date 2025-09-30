@@ -14,7 +14,7 @@ part 'data_migration.g.dart';
 
 /// DLC without createdAt (before App-Version 0.6.1)
 @freezed
-class DLCv1 with _$DLCv1 {
+abstract class DLCv1 with _$DLCv1 {
   const factory DLCv1({
     required String id,
     required String name,
@@ -46,7 +46,7 @@ class DLCv1 with _$DLCv1 {
 
 /// DLC with wasGifted instead of priceVariant (before App-Version 1.3.0)
 @freezed
-class DLCv2 with _$DLCv2 {
+abstract class DLCv2 with _$DLCv2 {
   const factory DLCv2({
     required String id,
     required String name,
@@ -83,7 +83,7 @@ class DLCv2 with _$DLCv2 {
 
 /// DLC with every field mandatory for parsing (before App-Version 1.6.0)
 @freezed
-class DLCv3 with _$DLCv3 {
+abstract class DLCv3 with _$DLCv3 {
   const factory DLCv3({
     required String id,
     required String name,
@@ -117,7 +117,7 @@ class DLCv3 with _$DLCv3 {
 
 /// Current DLC with version counter (from App-Version 1.6.0)
 @freezed
-class DLCv4 with _$DLCv4 {
+abstract class DLCv4 with _$DLCv4 {
   const factory DLCv4({
     required int version,
     required String id,
@@ -153,7 +153,7 @@ class DLCv4 with _$DLCv4 {
 
 /// Game without createdAt (before App-Version 0.6.1)
 @freezed
-class Gamev1 with _$Gamev1 {
+abstract class Gamev1 with _$Gamev1 {
   const factory Gamev1({
     required String id,
     required String name,
@@ -191,7 +191,7 @@ class Gamev1 with _$Gamev1 {
 
 /// Game with wasGifted instead of priceVariant (before App-Version 1.3.0)
 @freezed
-class Gamev2 with _$Gamev2 {
+abstract class Gamev2 with _$Gamev2 {
   const factory Gamev2({
     required String id,
     required String name,
@@ -234,7 +234,7 @@ class Gamev2 with _$Gamev2 {
 
 /// Game with every field mandatory for parsing (before App-Version 1.6.0)
 @freezed
-class Gamev3 with _$Gamev3 {
+abstract class Gamev3 with _$Gamev3 {
   const factory Gamev3({
     required String id,
     required String name,
@@ -274,7 +274,7 @@ class Gamev3 with _$Gamev3 {
 
 /// Current Game with version counter (from App-Version 1.6.0)
 @freezed
-class Gamev4 with _$Gamev4 {
+abstract class Gamev4 with _$Gamev4 {
   const factory Gamev4({
     required int version,
     required String id,
@@ -320,7 +320,7 @@ class Gamev4 with _$Gamev4 {
 
 /// VideoGameHardware with wasGifted instead of priceVariant (before App-Version 1.3.0)
 @freezed
-class VideoGameHardwarev1 with _$VideoGameHardwarev1 {
+abstract class VideoGameHardwarev1 with _$VideoGameHardwarev1 {
   const factory VideoGameHardwarev1({
     required String id,
     required String name,
@@ -352,7 +352,7 @@ class VideoGameHardwarev1 with _$VideoGameHardwarev1 {
 
 /// VideoGameHardware with priceVariant instead of wasGifted (before App-Version 1.6.0)
 @freezed
-class VideoGameHardwarev2 with _$VideoGameHardwarev2 {
+abstract class VideoGameHardwarev2 with _$VideoGameHardwarev2 {
   const factory VideoGameHardwarev2({
     required String id,
     required String name,
@@ -385,7 +385,7 @@ class VideoGameHardwarev2 with _$VideoGameHardwarev2 {
 
 /// Current VideoGameHardware with version counter (from App-Version 1.6.0)
 @freezed
-class VideoGameHardwarev3 with _$VideoGameHardwarev3 {
+abstract class VideoGameHardwarev3 with _$VideoGameHardwarev3 {
   const factory VideoGameHardwarev3({
     required int version,
     required String id,
@@ -420,7 +420,7 @@ class VideoGameHardwarev3 with _$VideoGameHardwarev3 {
 
 /// GameList with Gamev1 (before App-Version 0.6.1)
 @freezed
-class GamesListv1 with _$GamesListv1 {
+abstract class GamesListv1 with _$GamesListv1 {
   const factory GamesListv1({
     required List<Gamev1> games,
   }) = _GamesListv1;
@@ -438,7 +438,7 @@ class GamesListv1 with _$GamesListv1 {
 
 /// GameList with Gamev2 without hardware (before App-Version 0.9.2)
 @freezed
-class GamesListv2 with _$GamesListv2 {
+abstract class GamesListv2 with _$GamesListv2 {
   const factory GamesListv2({
     required List<Gamev2> games,
     // GamesListv2 is missing the Map of platforms to hardware
@@ -458,7 +458,7 @@ class GamesListv2 with _$GamesListv2 {
 
 /// Database with Gamev2 (before App-Version 1.3.0)
 @freezed
-class Databasev1 with _$Databasev1 {
+abstract class Databasev1 with _$Databasev1 {
   const factory Databasev1({
     required List<Gamev2> games,
     required List<VideoGameHardwarev1> hardware,
@@ -478,7 +478,7 @@ class Databasev1 with _$Databasev1 {
 
 /// Database with Gamev3 (before App-Version 1.6.0)
 @freezed
-class Databasev2 with _$Databasev2 {
+abstract class Databasev2 with _$Databasev2 {
   const factory Databasev2({
     required List<Gamev3> games,
     required List<VideoGameHardwarev2> hardware,
@@ -499,7 +499,7 @@ class Databasev2 with _$Databasev2 {
 
 /// Database with Gamev4 and version (from App-Version 1.6.0)
 @freezed
-class Databasev3 with _$Databasev3 {
+abstract class Databasev3 with _$Databasev3 {
   const factory Databasev3({
     required int version,
     required List<Gamev4> games,

@@ -3,7 +3,6 @@ import 'package:pile_of_shame/models/game.dart';
 import 'package:pile_of_shame/models/game_grouping.dart';
 import 'package:pile_of_shame/providers/l10n_provider.dart';
 import 'package:pile_of_shame/utils/grouper_utils.dart';
-import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'game_group_provider.g.dart';
@@ -29,7 +28,7 @@ class GroupGames extends _$GroupGames with Persistable {
   }
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 FutureOr<Map<String, List<Game>>> applyGameGroup(
   Ref ref,
   List<Game> games,

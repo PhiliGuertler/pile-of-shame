@@ -2,12 +2,11 @@ import 'package:pile_of_shame/models/game_platforms.dart';
 import 'package:pile_of_shame/models/hardware.dart';
 import 'package:pile_of_shame/providers/database/database_provider.dart';
 import 'package:pile_of_shame/providers/hardware/hardware_sorter_provider.dart';
-import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'hardware_provider.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 FutureOr<List<VideoGameHardware>> hardware(
   Ref ref,
 ) async {
@@ -15,7 +14,7 @@ FutureOr<List<VideoGameHardware>> hardware(
   return database.hardware;
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 FutureOr<bool> hasHardware(
   Ref ref,
 ) async {
@@ -23,7 +22,7 @@ FutureOr<bool> hasHardware(
   return hardware.isNotEmpty;
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 FutureOr<List<GamePlatform>> hardwarePlatforms(
   Ref ref,
 ) async {
@@ -40,7 +39,7 @@ FutureOr<List<GamePlatform>> hardwarePlatforms(
   return result;
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 FutureOr<List<VideoGameHardware>> hardwareByPlatform(
   Ref ref,
   GamePlatform platform,
@@ -60,7 +59,7 @@ FutureOr<List<VideoGameHardware>> hardwareByPlatform(
   return hardware;
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 FutureOr<List<VideoGameHardware>> hardwareByPlatformFamily(
   Ref ref,
   GamePlatformFamily family,
@@ -80,7 +79,7 @@ FutureOr<List<VideoGameHardware>> hardwareByPlatformFamily(
   return hardware;
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 FutureOr<VideoGameHardware> hardwareById(
   Ref ref,
   String id,
@@ -94,7 +93,7 @@ FutureOr<VideoGameHardware> hardwareById(
   }
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 FutureOr<List<VideoGameHardware>> sortedHardwareByPlatform(
   Ref ref,
   GamePlatform platform,

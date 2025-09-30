@@ -6,6 +6,8 @@ import 'package:theming/theming.dart';
 
 void main() async {
   final providerContainer = ProviderContainer(
+    // Never retry any provider
+    retry: (retryCount, error) => null,
     overrides: [
       defaultAppColorProvider.overrideWithValue(const Color(0xFF3B0000)),
     ],

@@ -111,7 +111,7 @@ class _HighlightableCompactBarChartState
             isSelected: e.title == highlightedLabel,
             color: e.title == highlightedLabel
                 ? Theme.of(context).colorScheme.primary
-                : Theme.of(context).colorScheme.primary.withOpacity(0.6),
+                : Theme.of(context).colorScheme.primary.withValues(alpha: 0.6),
           ),
         )
         .toList();

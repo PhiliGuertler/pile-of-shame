@@ -5,7 +5,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'edit_hardware_provider.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 class AddHardware extends _$AddHardware {
   @override
   EditableHardware build([EditableHardware? initialValue]) {

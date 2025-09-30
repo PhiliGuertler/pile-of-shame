@@ -43,7 +43,7 @@ class USKDropdown extends StatelessWidget {
           .toList(),
       // Don't display the default icon, instead display nothing
       icon: const SizedBox(),
-      value: value,
+      initialValue: value,
       items: USK.values
           .map(
             (usk) => DropdownMenuItem<USK>(

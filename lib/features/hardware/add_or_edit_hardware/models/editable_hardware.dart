@@ -7,7 +7,7 @@ import 'package:uuid/uuid.dart';
 part 'editable_hardware.freezed.dart';
 
 @freezed
-class EditableHardware with _$EditableHardware {
+abstract class EditableHardware with _$EditableHardware {
   const factory EditableHardware({
     String? uuid,
     String? name,

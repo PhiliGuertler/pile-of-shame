@@ -60,7 +60,7 @@ enum GameDisplaySecondary {
 }
 
 @freezed
-class CustomGameDisplaySettings with _$CustomGameDisplaySettings {
+abstract class CustomGameDisplaySettings with _$CustomGameDisplaySettings {
   const factory CustomGameDisplaySettings({
     @Default(GameDisplayLeadingTrailing.playStatusIcon)
     GameDisplayLeadingTrailing leading,

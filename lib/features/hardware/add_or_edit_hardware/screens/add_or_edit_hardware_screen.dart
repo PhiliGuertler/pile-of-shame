@@ -168,7 +168,7 @@ class _AddOrEditHardwareScreenState
                     width: double.infinity,
                     child: ElevatedButton(
                       key: const ValueKey("save_game"),
-                      onPressed: () async {
+                      onPressed: () {
                         if (_formKey.currentState!.validate() &&
                             editableHardware.isValid()) {
                           if (context.mounted) {

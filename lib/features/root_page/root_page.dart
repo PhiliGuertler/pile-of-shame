@@ -24,7 +24,8 @@ class _RootPageState extends ConsumerState<RootPage> {
   RootTabs activeTab = RootTabs.games;
 
   void _handleRootTabChange(int index, BuildContext context) {
-    if (index == activeTab.index) {
+    if (index == activeTab.index && 
+      _scrollControllers[index].hasClients) {
       _scrollControllers[index].animateTo(
         0.0,
         duration: const Duration(milliseconds: 500),
@@ -107,11 +108,7 @@ class _RootPageState extends ConsumerState<RootPage> {
         floatingActionButton:
             activeTab.fab(context, !isScrolled[activeTab.index]),
         appBar: activeTab.appBar(
-          _scrollControllers[activeTab.index],
-          hasGames.maybeWhen(
-            orElse: () => false,
-            data: (data) => data,
-          ),
+          _scrollControllers[activeTab.index]
         ),
         bottomNavigationBar: NavigationBar(
           selectedIndex: activeTab.index,

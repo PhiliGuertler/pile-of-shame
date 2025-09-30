@@ -7,7 +7,7 @@ part 'game_filters.freezed.dart';
 part 'game_filters.g.dart';
 
 @freezed
-class GameFilters with _$GameFilters {
+abstract class GameFilters with _$GameFilters {
   const factory GameFilters({
     @Default(PlayStatus.values) List<PlayStatus> playstatuses,
     @Default(GamePlatformFamily.values)

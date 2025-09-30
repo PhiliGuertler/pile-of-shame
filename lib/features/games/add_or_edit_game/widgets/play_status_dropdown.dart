@@ -47,7 +47,7 @@ class PlayStatusDropdown extends StatelessWidget {
           .toList(),
       // Don't display the default icon, instead display nothing
       icon: const SizedBox(),
-      value: value,
+      initialValue: value,
       items: PlayStatus.values
           .map(
             (status) => DropdownMenuItem<PlayStatus>(

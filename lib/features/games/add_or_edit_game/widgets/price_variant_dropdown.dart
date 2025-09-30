@@ -77,7 +77,7 @@ class PriceVariantDropdown extends StatelessWidget {
             .toList(),
         // Don't display the default icon, instead display nothing
         icon: const SizedBox(),
-        value: value,
+        initialValue: value,
         items: PriceVariant.values
             .where((element) => element != PriceVariant.observing)
             .map(

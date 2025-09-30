@@ -6,7 +6,7 @@ part 'games_by_playstatus_models.freezed.dart';
 part 'games_by_playstatus_models.g.dart';
 
 @freezed
-class GamesByPlayStatusSorters with _$GamesByPlayStatusSorters {
+abstract class GamesByPlayStatusSorters with _$GamesByPlayStatusSorters {
   const factory GamesByPlayStatusSorters({
     @Default({
       PlayStatus.cancelled: GameSorting(),

@@ -59,16 +59,16 @@ class _ExportGamesScreenState extends ConsumerState<ExportGamesScreen> {
     });
   }
 
-  Future<void> exportGames() async {
+  Future<void> exportGames() {
     return handleExport(
-      (inputFile, fileName, title) async =>
+      (inputFile, fileName, title) =>
           ref.read(fileUtilsProvider).exportFile(inputFile, fileName, title),
     );
   }
 
-  Future<void> shareGames() async {
+  Future<void> shareGames() {
     return handleExport(
-      (inputFile, fileName, title) async =>
+      (inputFile, fileName, title) =>
           ref.read(fileUtilsProvider).shareFile(inputFile, fileName, title),
     );
   }

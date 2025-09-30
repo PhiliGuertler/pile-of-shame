@@ -267,7 +267,7 @@ enum SortStrategy {
 }
 
 @freezed
-class GameSorting with _$GameSorting {
+abstract class GameSorting with _$GameSorting {
   const factory GameSorting({
     @Default(true) bool isAscending,
     @Default(SortStrategy.byName) SortStrategy sortStrategy,

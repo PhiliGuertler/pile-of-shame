@@ -1,5 +1,5 @@
-Version 1.7
+Version 1.8
 
-This version adds Nintendo Switch 2.
+This version fixes a few bugs.
 
 Have fun with Pile of Shame!

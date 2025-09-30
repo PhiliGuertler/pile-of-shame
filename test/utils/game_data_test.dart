@@ -356,7 +356,7 @@ void main() {
         result[index].title,
         GamePlatform.playStation2.localizedAbbreviation(l10n),
       );
-      expect((result[index].value - (39.95)).abs() < 0.001, true);
+      expect((result[index].value - 39.95).abs() < 0.001, true);
       ++index;
     });
   });
@@ -419,7 +419,7 @@ void main() {
         GamePlatformFamily.microsoft.toLocale(l10n),
       );
       expect(
-        (result[index].value - (0.0)).abs() < 0.001,
+        (result[index].value - 0.0).abs() < 0.001,
         true,
       );
       ++index;

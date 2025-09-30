@@ -102,7 +102,7 @@ class _ImportGamesScreenState extends ConsumerState<ImportGamesScreen> {
                     onTap: isLoading
                         ? null
                         : () => importGames(
-                              (File pickedFile) async {
+                              (File pickedFile) {
                                 final gameStorage =
                                     ref.read(databaseStorageProvider);
                                 return gameStorage

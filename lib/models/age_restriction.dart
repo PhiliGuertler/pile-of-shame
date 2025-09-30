@@ -22,6 +22,6 @@ enum USK {
   }
 
   Color toBackgroundColor() {
-    return Color.alphaBlend(color.withOpacity(0.5), Colors.grey.shade500);
+    return Color.alphaBlend(color.withValues(alpha: 0.5), Colors.grey.shade500);
   }
 }

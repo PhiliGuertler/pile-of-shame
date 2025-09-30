@@ -130,7 +130,7 @@ enum SortStrategyHardware {
 }
 
 @freezed
-class HardwareSorting with _$HardwareSorting {
+abstract class HardwareSorting with _$HardwareSorting {
   const factory HardwareSorting({
     @Default(true) bool isAscending,
     @Default(SortStrategyHardware.byName) SortStrategyHardware sortStrategy,

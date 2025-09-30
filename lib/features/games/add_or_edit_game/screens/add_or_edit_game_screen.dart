@@ -359,7 +359,7 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
                     width: double.infinity,
                     child: ElevatedButton(
                       key: const ValueKey("save_game"),
-                      onPressed: () async {
+                      onPressed: () {
                         if (_formKey.currentState!.validate() &&
                             editableGame.isValid()) {
                           if (context.mounted) {
