@@ -1,0 +1,76 @@
+name: Publish Docs
+
+on:
+  push:
+    branches:
+      - master  # Changed from 'main' to match your default branch
+    paths:
+      - 'docs/**'
+      - '.github/workflows/publish-docs.yaml'
+  workflow_dispatch:  # Allows manual triggering
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+        with:
+          enablement: true
+
+      - name: Setup Jekyll
+        run: |
+          mkdir -p public
+          cp -r docs/* public/
+          
+          # Create Jekyll config for GitHub-style markdown rendering
+          cat > public/_config.yml << 'EOF'
+          markdown: kramdown
+          highlighter: rouge
+          kramdown:
+            input: GFM
+            syntax_highlighter: rouge
+          plugins:
+            - jekyll-relative-links
+          relative_links:
+            enabled: true
+            collections: true
+          include:
+            - README.md
+          EOF
+          
+          # Create index.html if no index file exists
+          if [ ! -f public/index.md ] && [ ! -f public/index.html ] && [ ! -f public/README.md ]; then
+            echo "# Documentation" > public/index.md
+            echo "" >> public/index.md
+            echo "Welcome to the documentation." >> public/index.md
+            echo "" >> public/index.md
+            # Auto-generate links to markdown files
+            find public -name "*.md" -not -name "index.md" | while read file; do
+              filename=$(basename "$file" .md)
+              relative_path=${file#public/}
+              echo "- [$filename]($relative_path)" >> public/index.md
+            done
+          fi
+
+      - name: Build with Jekyll
+        uses: actions/jekyll-build-pages@v1
+        with:
+          source: ./public
+          destination: ./_site
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./_site
+
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4
