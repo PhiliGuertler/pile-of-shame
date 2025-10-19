@@ -1,0 +1,5 @@
+Version 1.8.1
+
+Die Version behebt ein Problem, durch das der Preis eines Spiels nicht korrekt angepasst werden konnte, wenn die Münze als Währung gewählt war.
+
+Viel Spaß mit Pile of Shame!

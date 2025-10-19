@@ -33,9 +33,7 @@ class _AddDLCScreenState extends ConsumerState<AddDLCScreen> {
 
     return AppScaffold(
       appBar: AppBar(
-        title: Text(
-          widget.initialValue == null ? l10n.addDLC : l10n.editDLC,
-        ),
+        title: Text(widget.initialValue == null ? l10n.addDLC : l10n.editDLC),
       ),
       body: Form(
         key: _formKey,
@@ -58,8 +56,9 @@ class _AddDLCScreenState extends ConsumerState<AddDLCScreen> {
                   ),
                 ),
                 Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: defaultPaddingX),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: defaultPaddingX,
+                  ),
                   child: PlayStatusDropdown(
                     value: editableDLC.status,
                     onSelect: (selection) {
@@ -83,36 +82,35 @@ class _AddDLCScreenState extends ConsumerState<AddDLCScreen> {
                   ),
                 ),
                 Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: defaultPaddingX),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: defaultPaddingX,
+                  ),
                   child: PriceVariantDropdown(
                     enabled: editableDLC.status != PlayStatus.onWishList,
                     value: editableDLC.priceVariant,
                     onSelect: (selection) {
                       ref
-                          .read(
-                            addDLCProvider(
-                              widget.initialValue,
-                            ).notifier,
-                          )
+                          .read(addDLCProvider(widget.initialValue).notifier)
                           .updateDLC(
-                            editableDLC.copyWith(priceVariant: selection),
+                            editableDLC.copyWith(
+                              priceVariant: selection,
+                              price: selection.hasPrice ? null : 0.0,
+                            ),
                           );
                     },
                   ),
                 ),
                 Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: defaultPaddingX),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: defaultPaddingX,
+                  ),
                   child: AnimatedSize(
                     curve: Curves.easeInOutBack,
                     duration: const Duration(milliseconds: 200),
                     child: Builder(
                       builder: (context) {
                         if (!editableDLC.priceVariant.hasPrice) {
-                          return const SizedBox(
-                            height: 0,
-                          );
+                          return const SizedBox(height: 0);
                         }
                         return PriceInputField(
                           value: editableDLC.price,
@@ -121,9 +119,7 @@ class _AddDLCScreenState extends ConsumerState<AddDLCScreen> {
                                 .read(
                                   addDLCProvider(widget.initialValue).notifier,
                                 )
-                                .updateDLC(
-                                  editableDLC.copyWith(price: value),
-                                );
+                                .updateDLC(editableDLC.copyWith(price: value));
                           },
                         );
                       },

@@ -59,8 +59,9 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
                   },
                   child: Text(
                     l10n.delete,
-                    style:
-                        TextStyle(color: Theme.of(context).colorScheme.error),
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.error,
+                    ),
                   ),
                 ),
               ],
@@ -73,29 +74,23 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
 
             ref
                 .read(
-                  addGameProvider(widget.initialValue, widget.initialPlayStatus)
-                      .notifier,
+                  addGameProvider(
+                    widget.initialValue,
+                    widget.initialPlayStatus,
+                  ).notifier,
                 )
-                .updateGame(
-                  editableGame.copyWith(
-                    dlcs: updatedList,
-                  ),
-                );
+                .updateGame(editableGame.copyWith(dlcs: updatedList));
           }
         },
-        icon: Icon(
-          Icons.delete,
-          color: Theme.of(context).colorScheme.error,
-        ),
+        icon: Icon(Icons.delete, color: Theme.of(context).colorScheme.error),
       ),
       leading: const Icon(Icons.edit),
       title: Text(dlc.name),
       onTap: () async {
         final EditableDLC? update = await Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => AddDLCScreen(
-              initialValue: EditableDLC.fromDLC(dlc),
-            ),
+            builder: (context) =>
+                AddDLCScreen(initialValue: EditableDLC.fromDLC(dlc)),
           ),
         );
 
@@ -105,14 +100,12 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
 
           ref
               .read(
-                addGameProvider(widget.initialValue, widget.initialPlayStatus)
-                    .notifier,
+                addGameProvider(
+                  widget.initialValue,
+                  widget.initialPlayStatus,
+                ).notifier,
               )
-              .updateGame(
-                editableGame.copyWith(
-                  dlcs: updatedList,
-                ),
-              );
+              .updateGame(editableGame.copyWith(dlcs: updatedList));
         }
       },
     );
@@ -120,8 +113,9 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final editableGame = ref
-        .watch(addGameProvider(widget.initialValue, widget.initialPlayStatus));
+    final editableGame = ref.watch(
+      addGameProvider(widget.initialValue, widget.initialPlayStatus),
+    );
 
     return AppScaffold(
       appBar: AppBar(
@@ -157,8 +151,9 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
                   ),
                 ),
                 Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: defaultPaddingX),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: defaultPaddingX,
+                  ),
                   child: PlatformDropdown(
                     value: editableGame.platform,
                     onChanged: (value) {
@@ -174,8 +169,9 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
                   ),
                 ),
                 Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: defaultPaddingX),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: defaultPaddingX,
+                  ),
                   child: PlayStatusDropdown(
                     value: editableGame.status,
                     onSelect: (selection) {
@@ -204,8 +200,9 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
                   ),
                 ),
                 Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: defaultPaddingX),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: defaultPaddingX,
+                  ),
                   child: PriceVariantDropdown(
                     enabled: editableGame.status != PlayStatus.onWishList,
                     value: editableGame.priceVariant,
@@ -218,23 +215,25 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
                             ).notifier,
                           )
                           .updateGame(
-                            editableGame.copyWith(priceVariant: selection),
+                            editableGame.copyWith(
+                              priceVariant: selection,
+                              price: selection.hasPrice ? null : 0.0,
+                            ),
                           );
                     },
                   ),
                 ),
                 Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: defaultPaddingX),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: defaultPaddingX,
+                  ),
                   child: AnimatedSize(
                     curve: Curves.easeInOutBack,
                     duration: const Duration(milliseconds: 200),
                     child: Builder(
                       builder: (context) {
                         if (!editableGame.priceVariant.hasPrice) {
-                          return const SizedBox(
-                            height: 0,
-                          );
+                          return const SizedBox(height: 0);
                         }
 
                         return PriceInputField(
@@ -257,8 +256,9 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
                   ),
                 ),
                 Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: defaultPaddingX),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: defaultPaddingX,
+                  ),
                   child: USKDropdown(
                     onChanged: (value) {
                       ref
@@ -297,8 +297,9 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
                   ),
                 ),
                 Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: defaultPaddingX),
+                  padding: const EdgeInsets.symmetric(
+                    vertical: defaultPaddingX,
+                  ),
                   child: SegmentedActionCard(
                     items: [
                       SegmentedActionCardItem(
@@ -308,10 +309,10 @@ class _AddGameScreenState extends ConsumerState<AddGameScreen> {
                         onTap: () async {
                           final EditableDLC? result =
                               await Navigator.of(context).push<EditableDLC?>(
-                            MaterialPageRoute(
-                              builder: (context) => const AddDLCScreen(),
-                            ),
-                          );
+                                MaterialPageRoute(
+                                  builder: (context) => const AddDLCScreen(),
+                                ),
+                              );
 
                           if (result != null) {
                             ref
