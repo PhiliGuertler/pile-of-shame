@@ -1,0 +1,5 @@
+Version 1.8
+
+This version fixes an issue which prevented the user from changing the price of a game if the coin currency was selected.
+
+Have fun with Pile of Shame!
