@@ -28,15 +28,14 @@ class _AddOrEditHardwareScreenState
 
   @override
   Widget build(BuildContext context) {
-    final editableHardware =
-        ref.watch(addHardwareProvider(widget.initialValue));
+    final editableHardware = ref.watch(
+      addHardwareProvider(widget.initialValue),
+    );
 
     final l10n = AppLocalizations.of(context)!;
 
     return AppScaffold(
-      appBar: AppBar(
-        title: Text(l10n.hardware),
-      ),
+      appBar: AppBar(title: Text(l10n.hardware)),
       body: Form(
         key: _formKey,
         child: CustomScrollView(
@@ -53,9 +52,7 @@ class _AddOrEditHardwareScreenState
                     onChanged: (value) {
                       ref
                           .read(
-                            addHardwareProvider(
-                              widget.initialValue,
-                            ).notifier,
+                            addHardwareProvider(widget.initialValue).notifier,
                           )
                           .updateHardware(
                             editableHardware.copyWith(name: value),
@@ -64,16 +61,15 @@ class _AddOrEditHardwareScreenState
                   ),
                 ),
                 Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: defaultPaddingX),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: defaultPaddingX,
+                  ),
                   child: PlatformDropdown(
                     value: editableHardware.platform,
                     onChanged: (value) {
                       ref
                           .read(
-                            addHardwareProvider(
-                              widget.initialValue,
-                            ).notifier,
+                            addHardwareProvider(widget.initialValue).notifier,
                           )
                           .updateHardware(
                             editableHardware.copyWith(platform: value),
@@ -82,26 +78,29 @@ class _AddOrEditHardwareScreenState
                   ),
                 ),
                 Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: defaultPaddingX),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: defaultPaddingX,
+                  ),
                   child: PriceVariantDropdown(
                     value: editableHardware.priceVariant,
                     onSelect: (selection) {
                       ref
                           .read(
-                            addHardwareProvider(
-                              widget.initialValue,
-                            ).notifier,
+                            addHardwareProvider(widget.initialValue).notifier,
                           )
                           .updateHardware(
-                            editableHardware.copyWith(priceVariant: selection),
+                            editableHardware.copyWith(
+                              priceVariant: selection,
+                              price: selection.hasPrice ? null : 0.0,
+                            ),
                           );
                     },
                   ),
                 ),
                 Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: defaultPaddingX),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: defaultPaddingX,
+                  ),
                   child: AnimatedSize(
                     curve: Curves.easeInOutBack,
                     duration: const Duration(milliseconds: 200),
@@ -109,9 +108,7 @@ class _AddOrEditHardwareScreenState
                       builder: (context) {
                         if (editableHardware.priceVariant ==
                             PriceVariant.gifted) {
-                          return const SizedBox(
-                            height: 0,
-                          );
+                          return const SizedBox(height: 0);
                         }
                         return PriceInputField(
                           value: editableHardware.price,
@@ -141,9 +138,7 @@ class _AddOrEditHardwareScreenState
                     onChanged: (value) {
                       ref
                           .read(
-                            addHardwareProvider(
-                              widget.initialValue,
-                            ).notifier,
+                            addHardwareProvider(widget.initialValue).notifier,
                           )
                           .updateHardware(
                             editableHardware.copyWith(
