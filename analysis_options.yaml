@@ -1,8 +1,6 @@
 include: package:lint/strict.yaml
 
 analyzer:
-  plugins:
-    - custom_lint
   exclude:
     - '**.freezed.dart'
     - '**.g.dart'
@@ -10,6 +8,12 @@ analyzer:
     - test/appium/**
     - coverage/**
     - build/**
+    - android/**
+    - ios/**
+    - web/**
+    - windows/**
+    - macos/**
+    - linux/**
   errors:
     todo: warning
     fixme: warning

@@ -4,27 +4,24 @@ publish_to: 'none'
 version: 1.8.1+809
 
 environment:
-  sdk: '>=3.9.2 <4.0.0'
-  flutter: ">=3.35.4 <4.0.0"
+  sdk: '>=3.14.0 <4.0.0'
+  flutter: ">=3.50.0 <4.0.0"
 
 dependencies:
-  animations: ^2.0.11
+  animations: ^3.0.0
   crypto: ^3.0.6
-  custom_lint: ^0.8.0
-  dynamic_color: ^1.8.1
-  file_picker: ^10.3.3
+  dynamic_color: ^2.1.0
   fl_chart: ^1.1.1
   flutter:
     sdk: flutter
   flutter_animate: ^4.5.2
-  flutter_file_dialog: ^3.0.2
   flutter_localizations:
     sdk: flutter
   flutter_native_splash: ^2.4.6
   flutter_riverpod: ^3.0.0
-  flutter_sharing_intent: ^1.1.1
-  flutter_slidable: ^4.0.1
-  flutter_sticky_header: ^0.8.0
+  flutter_sharing_intent: ^2.0.4
+  flutter_slidable: ^5.2.0
+  flutter_sticky_header: ^0.11.0
   freezed_annotation: ^3.1.0
   fuzzywuzzy: ^1.2.0
   intl: any
@@ -32,12 +29,11 @@ dependencies:
   misc_utils:
     path: packages/misc_utils
   nested_scroll_view_plus: ^3.0.0
-  package_info_plus: ^9.0.0
+  package_info_plus: ^10.2.2
   path_provider: ^2.1.5
   riverpod: ^3.0.0
-  riverpod_annotation: ^3.0.0
-  riverpod_lint: ^3.0.0
-  share_plus: ^12.0.0
+  riverpod_annotation: ^4.0.8
+  share_plus: ^13.3.1
   shared_preferences: ^2.5.3
   theming:
     path: packages/theming
@@ -60,7 +56,7 @@ dev_dependencies:
   path_provider_platform_interface: ^2.1.2
   # Testing path_provider requires this dependency
   plugin_platform_interface: any
-  riverpod_generator: ^3.0.0
+  riverpod_generator: ^4.0.10
 
 flutter:
   uses-material-design: true
