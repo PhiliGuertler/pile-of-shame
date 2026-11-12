@@ -9,6 +9,19 @@ import 'package:pile_of_shame/features/settings/root/screens/settings_screen.dar
 import 'package:pile_of_shame/providers/games/game_provider.dart';
 import 'package:pile_of_shame/widgets/app_scaffold.dart';
 
+Widget rootPageTransitionBuilder(
+  Widget child,
+  Animation<double> primaryAnimation,
+  Animation<double> secondaryAnimation,
+) {
+  return FadeThroughTransition(
+    animation: primaryAnimation,
+    secondaryAnimation: secondaryAnimation,
+    fillColor: Colors.transparent,
+    child: child,
+  );
+}
+
 class RootPage extends ConsumerStatefulWidget {
   const RootPage({
     super.key,
@@ -94,12 +107,7 @@ class _RootPageState extends ConsumerState<RootPage> {
     return activeTab.wrapper(
       AppScaffold(
         body: PageTransitionSwitcher(
-          transitionBuilder: (child, primaryAnimation, secondaryAnimation) =>
-              FadeThroughTransition(
-            animation: primaryAnimation,
-            secondaryAnimation: secondaryAnimation,
-            child: child,
-          ),
+          transitionBuilder: rootPageTransitionBuilder,
           child: Container(
             key: ValueKey(activeTab.index),
             child: children[activeTab.index],

@@ -5,13 +5,13 @@ on:
       - master
 
 env:
-  FLUTTER_VERSION: 3.35.6
+  FLUTTER_VERSION: 3.50.0
 
 jobs:
   test_and_build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
         with:
           submodules: true
         # Setup environment

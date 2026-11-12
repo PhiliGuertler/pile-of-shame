@@ -1,0 +1,5 @@
+Version 1.8.2
+
+This version fixes screen background colors and improves scrolling performance.
+
+Have fun with Pile of Shame!
