@@ -1,0 +1,5 @@
+Version 1.8.2
+
+Diese Version behebt fehlerhafte Bildschirmhintergründe und verbessert die Scroll-Performance.
+
+Viel Spaß mit Pile of Shame!
